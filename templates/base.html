@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    .custom-btn {
+        width: 150px;    /* Adjust width as required */
+        height: 150px;   /* Adjust height as required */
+        font-size: 54px; /* Adjust font size as required */
+        line-height: 123px; /* Center the text vertically */
+        text-align: center; /* Center the text horizontally */
+    }
+    .center-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+    }
+
+    .item {s
+        border: 2px solid #000;
+        padding: 10px;
+        margin: 5px 0; /* Ajusta el margen para que solo afecte arriba y abajo */
+        text-align: center;
+        cursor: pointer;
+        background-color: #f5f5f5;
+        width: 200px;
+    }
+
+
+/* Para el navbar superior */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;  /* Esto asegura que la navbar esté por encima de otros contenidos */
+}
+
+/* Para la barra de navegación inferior */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;  /* Esto asegura que la barra de navegación esté por encima de otros contenidos */
+}
+
+.left-side {
+    position: fixed;
+    top: 70px;  /* Ajusta según el alto de tu navbar */
+    left: 0;
+    width: 25%; /* Ajusta según prefieras; 25% porque col-md-3 es 1/4 del ancho */
+    z-index: 999;  /* Esto asegura que la barra lateral esté por encima de otros contenidos, pero debajo de la navbar */
+}
+
+/* Ajustar el margen izquierdo del contenido principal */
+.col-md-9 {
+    margin-left: 25%;  /* Este valor debe coincidir con el width que le diste a .left-side */
+}
+
+
+/* Si decides hacer la barra de navegación inferior fija */
+.container {
+    margin-bottom: 1px;  /* Ajusta este valor según el alto de tu barra de navegación inferior */
+}
+
+
+
+</style>
+
+    <style>
+        .top-nav {
+            border-bottom: 2px solid #000;  /* Borde inferior en la barra superior */
+        }
+        .left-side {
+            border-right: 2px solid #000;  /* Borde derecha en la barra lateral */
+        }
+        body {
+            border-right: 2px solid #000;  /* Borde derecho en el margen de la página */
+            height: 100vh;  /* Ocupar toda la altura visible de la ventana */
+            margin-right: 0; /* Asegurarse de que el borde derecho se ajuste a la ventana */
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light top-nav">
+        <a class="navbar-brand" href="#">GeoFreak</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Instrucciones</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/HM1">HolaMundo1</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/HM2">HolaMundo2</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/HM3">HolaMundo3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/AhiEstuveYo">Ahí estuve yo</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/TCCP">TCCP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/P3">P3</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Perdidos">Perdidos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/TQTC">TQTC</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Left Sidebar -->
+
+            <div class="col-md-3 left-side">
+                <!-- Changed button color to success (green) and added the custom-btn class -->
+                <button id="btn1" class="btn btn-primary custom-btn rounded-circle mb-3">0</button><br>
+
+                <!-- Added the custom-btn class -->
+                <button id="btn2" class="btn btn-warning custom-btn rounded-circle mb-3">0</button>
+            </div>
+
+
+            <!-- Add some vertical separation -->
+            <div class="col-md-12 mb-3"></div>
+
+            <!-- Main Content -->
+            <div class="col-md-9">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Add bottom navigation bar if required -->
+    <div class="bottom-nav bg-light py-2">
+        {% block bottom_nav %}{% endblock %}
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load counters from the server on page load
+        fetch('/get_counters').then(response => response.json()).then(data => {
+            document.getElementById('btn1').innerHTML = data.btn1;
+            document.getElementById('btn2').innerHTML = data.btn2;
+        });
+    });
+
+    let btn1 = document.getElementById('btn1');
+    let btn2 = document.getElementById('btn2');
+
+    function updateCounter(btn, increment) {
+        let newValue = parseInt(btn.innerHTML) + increment;
+        btn.innerHTML = newValue;
+        // Update counter on the server
+        fetch('/update_counter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ button_id: btn.id, value: newValue })
+        });
+    }
+
+    btn1.addEventListener('click', function() {
+        updateCounter(btn1, 1);
+    });
+
+    btn2.addEventListener('click', function() {
+        updateCounter(btn2, 1);
+    });
+
+    btn1.addEventListener('contextmenu', function(e) {
+        e.preventDefault(); // prevent default behavior
+        updateCounter(btn1, -1);
+    });
+
+    btn2.addEventListener('contextmenu', function(e) {
+        e.preventDefault(); // prevent default behavior
+        updateCounter(btn2, -1);
+    });
+
+
+
+    function updateCounter(btn, increment) {
+        let newValue = parseInt(btn.innerHTML) + increment;
+        btn.innerHTML = newValue;
+        // Update counter on the server
+        fetch('/update_counter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ button_id: btn.id, value: newValue })
+        });
+    }
+
+    btn1.addEventListener('click', function(e) {
+        if (e.button === 0) updateCounter(btn1, 1);
+        else if (e.button === 2) updateCounter(btn1, -1);
+        e.preventDefault(); // prevent default behavior
+    });
+
+    btn2.addEventListener('click', function(e) {
+        if (e.button === 0) updateCounter(btn2, 1);
+        else if (e.button === 2) updateCounter(btn2, -1);
+        e.preventDefault(); // prevent default behavior
+    });
+
+    // Prevents the default context menu on right-click
+    btn1.addEventListener('contextmenu', e => e.preventDefault());
+    btn2.addEventListener('contextmenu', e => e.preventDefault());
+    </script>
+
+
+
+</body>
+</html>
+

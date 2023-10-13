@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>{{ clue }}</p>
+<form action="/show_clue" method="post">
+    <input type="submit" value="Siguiente pista">
+</form>
+{% endblock %}

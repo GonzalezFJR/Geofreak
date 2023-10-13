@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container center-content">
+<h3>{{ title }}</h3>
+<div id="sortable-list">
+    {% for item in items %}
+    <div class="item"><div class="item-text">{{ item }}</div></div>
+    {% endfor %}
+</div>
+
+<div id="controls">
+    <button onclick="submitOrder()">Enviar</button>
+</div>
+<div id="score"></div>
+</div>
+
+<div class="fixed-bottom bg-light py-2">
+    <div class="container d-flex justify-content-between">
+    <div class="container d-flex justify-content-between">
+        <button class="btn btn-light" id="prevQuestion">⟵ Anterior</button>
+        <span id="pageCounter" class="mx-3">{{ current_page }}/{{ total_pages }}</span>
+        <button class="btn btn-light" id="nextQuestion">Siguiente ⟶</button>
+    </div>
+</div>
+
+
+
+
+<script>
+    document.getElementById('prevQuestion').addEventListener('click', function() {
+        navigate('previous');
+    });
+
+    document.getElementById('nextQuestion').addEventListener('click', function() {
+        navigate('next');
+    });
+
+    function navigate(direction) {
+        fetch(`/HM2/navigate/${direction}`, {
+            method: 'POST'
+        }).then(() => {
+            location.reload();
+            document.getElementById('score').textContent = ""; // Resetea el texto de "score"
+        });
+    }
+
+
+    function submitOrder() {
+        let items = [];
+        document.querySelectorAll('#sortable-list .item-text').forEach(item => {
+            items.push(item.textContent);
+        });
+
+        fetch('/HM2/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({items: items})
+        }).then(response => response.text()).then(score => {
+            document.getElementById('score').textContent = "Puntuación: " + score;
+        });
+    }
+</script>
+
+
+<!-- Include SortableJS library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<script>
+    // Make the list sortable
+    new Sortable(document.getElementById('sortable-list'), {
+        animation: 150,
+        handle: '.item',
+        draggable: '.item',
+    });
+</script>
+{% endblock %}

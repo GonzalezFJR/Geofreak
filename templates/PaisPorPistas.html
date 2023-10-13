@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ country.country }}</h1>
+    <button id="hint-button">Pista</button>
+    <div id="hint-box" style="display: none; text-align: center;">
+        <p id="hint-text"></p>
+    </div>
+</div>
+
+<div class="footer">
+</div>
+
+<script>
+    let hintIndex = 0;
+
+    document.getElementById("hint-button").addEventListener("click", function() {
+        fetch('{{ url_for("P3.country_view", index=index) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'hint_index=' + hintIndex
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("hint-box").style.display = "block";
+            document.getElementById("hint-text").textContent = data.hint;
+            hintIndex = data.hint_index;
+            document.getElementById("hint-counter").textContent = hintIndex + "/" + "{{ country.points|length }}";
+        });
+    });
+</script>
+{% endblock %}

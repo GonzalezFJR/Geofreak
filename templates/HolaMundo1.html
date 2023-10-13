@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5 d-flex flex-column justify-content-center" style="height: 20vh;">
+    <div class="question-section">
+        <h3 id="questionText" class="text-center"></h3>
+        <!-- Introduce a white vertical space-->
+        <div class="w-100" style="height: 10vh;"></div>
+        <div class="options d-flex justify-content-around mt-4">
+            <button class="btn btn-primary btn-lg w-40" id="option1"></button>
+            <button class="btn btn-primary btn-lg w-40" id="option2"></button>
+        </div>
+    </div>
+</div>
+
+<div class="fixed-bottom bg-light py-2">
+    <div id="descriptionText" class="text-center mb-3 small"></div>
+    <div class="container d-flex justify-content-between">
+        <button class="btn btn-light" id="prevQuestion">⟵ Anterior</button>
+        <span id="pageCounter" class="mx-3"></span>
+        <button class="btn btn-light" id="nextQuestion">Siguiente ⟶</button>
+    </div>
+</div>
+
+
+
+<script>
+    let currentIndex = 0;
+    let questions = {{ preguntas|tojson }};
+    let nquestions = questions.length;
+
+    function resetButtons() {
+        let btn1 = document.getElementById('option1');
+        let btn2 = document.getElementById('option2');
+
+        btn1.className = 'btn btn-dark btn-lg w-40';
+        btn2.className = 'btn btn-dark btn-lg w-40';
+    }
+
+    function loadQuestion() {
+        resetButtons();
+        document.getElementById('questionText').textContent = questions[currentIndex]['Pregunta'];
+        document.getElementById('option1').textContent = questions[currentIndex]['Opciones'][0];
+        document.getElementById('option2').textContent = questions[currentIndex]['Opciones'][1];
+        document.getElementById("descriptionText").textContent = questions[currentIndex]['Descripción'];
+        document.getElementById("pageCounter").textContent = (currentIndex + 1) + "/" + nquestions.toString();
+    }
+
+    document.getElementById('option1').addEventListener('click', function() {
+        if (questions[currentIndex]['Respuesta'] === questions[currentIndex]['Opciones'][0]) {
+            this.classList.remove('btn-dark');
+            document.getElementById('option2').classList.remove('btn-dark');
+            this.classList.add('btn-success');
+            document.getElementById('option2').classList.add('btn-danger');
+        } else {
+            this.classList.remove('btn-dark');
+            document.getElementById('option2').classList.remove('btn-dark');
+            this.classList.add('btn-danger');
+            document.getElementById('option2').classList.add('btn-success');
+        }
+    });
+
+    document.getElementById('option2').addEventListener('click', function() {
+        if (questions[currentIndex]['Respuesta'] === questions[currentIndex]['Opciones'][1]) {
+            this.classList.add('btn-success');
+            this.classList.remove('btn-dark');
+            document.getElementById('option1').classList.remove('btn-dark');
+            document.getElementById('option1').classList.add('btn-danger');
+        } else {
+            this.classList.remove('btn-dark');
+            document.getElementById('option1').classList.remove('btn-dark');
+            this.classList.add('btn-danger');
+            document.getElementById('option1').classList.add('btn-success');
+        }
+    });
+
+    document.getElementById('prevQuestion').addEventListener('click', function() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            loadQuestion();
+        }
+    });
+
+    document.getElementById('nextQuestion').addEventListener('click', function() {
+        if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+        }
+    });
+
+    // Load the first question by default
+    loadQuestion();
+</script>
+{% endblock %}
