@@ -1,0 +1,22 @@
+{% extends "games/_base_game.html" %}
+
+
+
+{% block game_area %}
+<div class="map-game-container">
+    <div class="map-game-prompt" id="game-prompt" style="display:none">
+        <span class="prompt-country" id="prompt-country"></span>
+        <span class="prompt-label" id="prompt-text">¿Capital?</span>
+        <input type="text" id="answer-input" placeholder="Nombre de la capital…" autocomplete="off">
+        <button class="btn-reveal-map" onclick="MapGame.reveal()">👁️</button>
+    </div>
+    <div id="game-map" class="game-map"></div>
+</div>
+{% endblock %}
+
+{% block game_scripts %}
+<script src="/static/js/games/map-game.js"></script>
+<script>
+    MapGame.init({ mode: 'click', target: 'capital' });
+</script>
+{% endblock %}

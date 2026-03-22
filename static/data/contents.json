@@ -1,0 +1,70 @@
+{
+  "games": [
+    {
+      "id": "flags",
+      "name": "Adivinar banderas",
+      "description": "¿Reconoces las banderas del mundo? Identifica cada bandera que aparece.",
+      "icon": "🏳️",
+      "color": "#4caf50",
+      "type": "quiz",
+      "defaults": { "time_limit": 600, "max_items": 30 },
+      "has_continent_filter": true,
+      "enabled": true
+    },
+    {
+      "id": "outline",
+      "name": "Adivinar por contorno",
+      "description": "¿Reconoces un país solo por su silueta? Identifica cada contorno.",
+      "icon": "🗺️",
+      "color": "#1a73e8",
+      "type": "quiz",
+      "defaults": { "time_limit": 600, "max_items": 30 },
+      "has_continent_filter": true,
+      "enabled": true
+    },
+    {
+      "id": "name-countries-map",
+      "name": "Nombrar países (mapa)",
+      "description": "Haz click en cada país del mapa e intenta escribir su nombre.",
+      "icon": "🌍",
+      "color": "#ff9800",
+      "type": "map",
+      "defaults": { "time_limit": 600 },
+      "has_continent_filter": true,
+      "enabled": true
+    },
+    {
+      "id": "name-countries-type",
+      "name": "Nombrar países (escribir)",
+      "description": "Escribe nombres de países y observa cómo se iluminan en el mapa.",
+      "icon": "⌨️",
+      "color": "#9c27b0",
+      "type": "map",
+      "defaults": { "time_limit": 600 },
+      "has_continent_filter": true,
+      "enabled": true
+    },
+    {
+      "id": "name-capitals-map",
+      "name": "Nombrar capitales (mapa)",
+      "description": "Haz click en cada país y escribe el nombre de su capital.",
+      "icon": "🏛️",
+      "color": "#f44336",
+      "type": "map",
+      "defaults": { "time_limit": 600 },
+      "has_continent_filter": true,
+      "enabled": true
+    },
+    {
+      "id": "name-capitals-type",
+      "name": "Nombrar capitales (escribir)",
+      "description": "Escribe capitales del mundo y observa cómo se iluminan los países.",
+      "icon": "✍️",
+      "color": "#009688",
+      "type": "map",
+      "defaults": { "time_limit": 600 },
+      "has_continent_filter": true,
+      "enabled": true
+    }
+  ]
+}

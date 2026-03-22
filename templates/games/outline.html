@@ -1,0 +1,96 @@
+{% extends "games/_base_game.html" %}
+
+{% block extra_head %}
+{{ super() }}
+<style>
+    .outline-map-wrapper {
+        width: 100%;
+        height: 100%;
+        background: #f8fafc;
+        border-radius: 12px;
+    }
+    .outline-map-wrapper .leaflet-container { background: #f8fafc !important; }
+</style>
+{% endblock %}
+
+{% block extra_settings %}
+<div class="setting-group">
+    <label>Número de preguntas</label>
+    <select id="setting-max-items">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30" selected>30</option>
+        <option value="50">50</option>
+        <option value="0">Todas</option>
+    </select>
+</div>
+{% endblock %}
+
+{% block game_area %}
+<div class="quiz-container">
+    <div class="quiz-progress">
+        Contorno <span id="q-current">1</span> de <span id="q-total">?</span>
+    </div>
+    <div class="quiz-display" id="quiz-display"></div>
+    <div class="quiz-input-area">
+        <input type="text" id="answer-input" placeholder="Nombre del país…" autocomplete="off">
+        <button class="btn-skip" onclick="QuizGame.skip()">Saltar ⏭️</button>
+        <button class="btn-reveal" onclick="QuizGame.reveal()">👁️ Desvelar</button>
+    </div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+</div>
+{% endblock %}
+
+{% block game_scripts %}
+<script src="/static/js/games/quiz-game.js"></script>
+<script>
+    var _outlineMap = null;
+    var _outlineLayer = null;
+
+    QuizGame.init({
+        displayItem: function (country, el) {
+            // Create a wrapper div for the Leaflet map
+            el.innerHTML = '<div class="outline-map-wrapper" id="outline-map"></div>';
+            
+            // Clean up previous map
+            if (_outlineMap) { _outlineMap.remove(); _outlineMap = null; }
+
+            // Fetch this country's GeoJSON and render
+            fetch('/api/geojson/' + country.iso_a3)
+                .then(function (r) {
+                    if (!r.ok) throw new Error('No geojson');
+                    return r.json();
+                })
+                .then(function (geojson) {
+                    _outlineMap = L.map('outline-map', {
+                        zoomControl: false,
+                        attributionControl: false,
+                        dragging: false,
+                        scrollWheelZoom: false,
+                        doubleClickZoom: false,
+                        boxZoom: false,
+                        keyboard: false,
+                        touchZoom: false,
+                    });
+
+                    _outlineLayer = L.geoJSON(geojson, {
+                        style: {
+                            fillColor: '#1e293b',
+                            fillOpacity: 0.8,
+                            color: '#0f172a',
+                            weight: 2,
+                        }
+                    }).addTo(_outlineMap);
+
+                    _outlineMap.fitBounds(_outlineLayer.getBounds(), { padding: [20, 20] });
+                })
+                .catch(function () {
+                    el.innerHTML = '<div style="padding:40px;color:#94a3b8;">🗺️ Sin contorno</div>';
+                });
+        },
+        getAnswers: function (country) {
+            return GeoUtils.getCountryNames(country);
+        }
+    });
+</script>
+{% endblock %}

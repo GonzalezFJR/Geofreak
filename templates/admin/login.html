@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/games.css">
+{% endblock %}
+
+{% block content %}
+<div class="login-page">
+    <div class="login-card">
+        <h2>🔐 Acceso de administrador</h2>
+        {% if error %}
+        <div class="login-error">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="/admin/login">
+            <input type="text" name="username" placeholder="Usuario" required autocomplete="username">
+            <input type="password" name="password" placeholder="Contraseña" required autocomplete="current-password">
+            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;">Entrar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/games.css">
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="admin-header">
+        <div>
+            <h1>⚙️ Panel de administración</h1>
+            <p class="admin-subtitle">Editar nombres, descripciones y ajustes por defecto de los juegos</p>
+        </div>
+        <a href="/admin/logout" class="admin-logout">Cerrar sesión →</a>
+    </div>
+
+    {% if saved %}
+    <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:12px 16px;margin-bottom:20px;color:#2e7d32;font-weight:600;">
+        ✅ Cambios guardados correctamente
+    </div>
+    {% endif %}
+
+    {% for game in games %}
+    <form class="admin-game-card" method="post" action="/admin/games/{{ game.id }}">
+        <h3>{{ game.icon }} {{ game.name }}</h3>
+
+        <div class="form-row">
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">Nombre</label>
+                <input type="text" name="name" value="{{ game.name }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">Descripción</label>
+                <textarea name="description">{{ game.description }}</textarea>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">Tiempo por defecto (seg)</label>
+                <select name="time_limit">
+                    <option value="300" {{ 'selected' if game.defaults.time_limit == 300 }}>5 min</option>
+                    <option value="600" {{ 'selected' if game.defaults.time_limit == 600 }}>10 min</option>
+                    <option value="900" {{ 'selected' if game.defaults.time_limit == 900 }}>15 min</option>
+                    <option value="1800" {{ 'selected' if game.defaults.time_limit == 1800 }}>30 min</option>
+                    <option value="0" {{ 'selected' if game.defaults.time_limit == 0 }}>Sin límite</option>
+                </select>
+            </div>
+            {% if game.type == "quiz" %}
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">Preguntas por defecto</label>
+                <input type="number" name="max_items" value="{{ game.defaults.max_items }}" min="0" max="250">
+            </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn-save">💾 Guardar</button>
+    </form>
+    {% endfor %}
+</div>
+{% endblock %}

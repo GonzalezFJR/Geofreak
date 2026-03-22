@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/games.css">
+{% endblock %}
+
+{% block content %}
+<section class="games-dashboard">
+    <div class="dashboard-header">
+        <h1>🎮 Juegos geográficos</h1>
+        <p>Pon a prueba tus conocimientos del mundo</p>
+    </div>
+
+    <div class="games-grid">
+        {% for game in games %}
+        {% if game.enabled %}
+        <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
+            <div class="game-card-icon">{{ game.icon }}</div>
+            <h3>{{ game.name }}</h3>
+            <p>{{ game.description }}</p>
+            <div class="game-card-play">Jugar →</div>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

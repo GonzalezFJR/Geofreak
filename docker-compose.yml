@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  geofreak:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${DOCKER_CONTAINER_NAME:-geofreak-app}
+    image: ${DOCKER_IMAGE_NAME:-geofreak}:latest
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./static/data:/app/static/data
+    restart: unless-stopped

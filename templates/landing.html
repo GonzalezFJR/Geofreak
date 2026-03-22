@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}GeoFreak — Explora el mundo jugando{% endblock %}
+
+{% block extra_head %}
+<style>
+    .navbar { background: transparent; border-bottom: none; }
+    .nav-title { color: white; }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="hero">
+    <img src="/static/img/logo.svg" alt="" class="hero-bg-globe">
+    <div class="hero-content">
+        <img src="/static/img/logo.svg" alt="GeoFreak" class="hero-logo">
+        <h1 class="hero-title">
+            Geo<span class="accent">Freak</span>
+        </h1>
+        <p class="hero-subtitle">
+            La plataforma definitiva para aprender geografía jugando.<br>
+            Descubre países, banderas, capitales y estadísticas de todo el mundo.
+        </p>
+        <div class="hero-actions">
+            <a href="/map" class="btn btn-primary">
+                🗺️ Explorar el mapa
+            </a>
+            <a href="#features" class="btn btn-outline">
+                ✨ Descubre más
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-item">
+            <div class="stat-number">250</div>
+            <div class="stat-label">Países y territorios</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">7</div>
+            <div class="stat-label">Continentes</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">30+</div>
+            <div class="stat-label">Datos por país</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Diversión</div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features-section" id="features">
+    <div class="section-header">
+        <span class="section-badge">Juegos</span>
+        <h2 class="section-title">Aprende jugando</h2>
+        <p class="section-desc">
+            Múltiples modos de juego para poner a prueba tus conocimientos geográficos.
+        </p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon blue">🌍</div>
+            <h3 class="feature-title">Identifica por forma</h3>
+            <p class="feature-desc">
+                ¿Reconoces un país solo por su silueta? Demuéstralo con contornos de todo el mundo.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon green">🏳️</div>
+            <h3 class="feature-title">Banderas del mundo</h3>
+            <p class="feature-desc">
+                Adivina el país por su bandera. Desde las más conocidas hasta las más exóticas.
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon orange">📊</div>
+            <h3 class="feature-title">Quiz de estadísticas</h3>
+            <p class="feature-desc">
+                Población, PIB, densidad... ¿Sabrías ordenar los países por sus datos?
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon purple">📍</div>
+            <h3 class="feature-title">Coloca en el mapa</h3>
+            <p class="feature-desc">
+                Arrastra cada país a su lugar correcto en el mapa. ¿Cuántos aciertas?
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon red">🏙️</div>
+            <h3 class="feature-title">Capitales y ciudades</h3>
+            <p class="feature-desc">
+                ¿Conoces la capital de cada país? ¿Y sus ciudades más pobladas?
+            </p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon teal">🗺️</div>
+            <h3 class="feature-title">Explorador interactivo</h3>
+            <p class="feature-desc">
+                Navega por un mapa interactivo con todos los datos, banderas y estadísticas.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <h2 class="cta-title">¿Listo para explorar?</h2>
+    <p class="cta-desc">Empieza con el mapa interactivo y descubre todos los países del mundo.</p>
+    <a href="/map" class="btn btn-primary">🗺️ Abrir el mapa</a>
+</section>
+{% endblock %}

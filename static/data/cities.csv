@@ -1,0 +1,2020 @@
+geonameid,name,asciiname,lat,lon,iso_a2,iso_a3,country_name,population,is_capital,feature_code,timezone,elevation,dem
+3577154,Oranjestad,Oranjestad,12.52398,-70.02703,AW,ABW,Aruba,29998,True,PPLC,America/Aruba,5,22
+3577159,Noord,Noord,12.56596,-70.03198,AW,ABW,Aruba,24193,False,PPL,America/Aruba,,11
+3577072,Tanki Leendert,Tanki Leendert,12.53914,-70.02004,AW,ABW,Aruba,21500,False,PPL,America/Aruba,,26
+3577089,San Nicolas,San Nicolas,12.43624,-69.90713,AW,ABW,Aruba,15200,False,PPL,America/Aruba,,14
+1138958,Kabul,Kabul,34.52813,69.17233,AF,AFG,Afghanistan,4434550,True,PPLC,Asia/Kabul,,1798
+1140026,Herāt,Herat,34.34817,62.19967,AF,AFG,Afghanistan,574300,False,PPLA,Asia/Kabul,,927
+1133616,Mazār-e Sharīf,Mazar-e Sharif,36.70904,67.11087,AF,AFG,Afghanistan,523300,False,PPLA,Asia/Kabul,,361
+1138336,Kandahār,Kandahar,31.61332,65.71013,AF,AFG,Afghanistan,523300,False,PPLA,Asia/Kabul,,1007
+1139715,Jalālābād,Jalalabad,34.42647,70.45153,AF,AFG,Afghanistan,271900,False,PPLA,Asia/Kabul,,575
+1135689,Kunduz,Kunduz,36.72895,68.857,AF,AFG,Afghanistan,161902,False,PPLA,Asia/Kabul,,402
+1141269,Ghazni,Ghazni,33.55391,68.42096,AF,AFG,Afghanistan,141000,False,PPLA,Asia/Kabul,,2179
+1147290,Balkh,Balkh,36.75635,66.8972,AF,AFG,Afghanistan,114883,False,PPLA2,Asia/Kabul,,348
+1147540,Baghlān,Baghlan,36.13068,68.70829,AF,AFG,Afghanistan,108449,False,PPLA2,Asia/Kabul,,531
+1141857,Gardez,Gardez,33.59744,69.22592,AF,AFG,Afghanistan,103601,False,PPLA,Asia/Kabul,,2308
+2240449,Luanda,Luanda,-8.83682,13.23432,AO,AGO,Angola,2776168,True,PPLC,Africa/Luanda,,73
+3347762,Lubango,Lubango,-14.91717,13.4925,AO,AGO,Angola,600751,False,PPLA,Africa/Luanda,,1760
+3348313,Huambo,Huambo,-12.77611,15.73917,AO,AGO,Angola,595304,False,PPLA,Africa/Luanda,,1716
+3351663,Benguela,Benguela,-12.57674,13.40268,AO,AGO,Angola,555124,False,PPLA,Africa/Luanda,,30
+2243271,Cabinda,Cabinda,-5.56198,12.19476,AO,AGO,Angola,550000,False,PPLA,Africa/Luanda,,1
+2591976,Talatona,Talatona,-8.91783,13.18562,AO,AGO,Angola,500000,False,PPL,Africa/Luanda,,56
+2239862,Malanje,Malanje,-9.54015,16.34096,AO,AGO,Angola,455000,False,PPLA,Africa/Luanda,,1134
+2591949,Cazenga,Cazenga,-8.82488,13.31318,AO,AGO,Angola,424528,False,PPL,Africa/Luanda,,77
+145531,Saurimo,Saurimo,-9.66078,20.39155,AO,AGO,Angola,393000,False,PPLA,Africa/Luanda,,1071
+10627325,Ingombota,Ingombota,-8.81806,13.22889,AO,AGO,Angola,370000,False,PPLX,Africa/Luanda,,32
+3573374,The Valley,The Valley,18.21704,-63.05783,AI,AIA,Anguilla,2035,True,PPLC,America/Anguilla,7,19
+3041732,Mariehamn,Mariehamn,60.09726,19.93481,AX,ALA,Åland Islands,10682,True,PPLC,Europe/Mariehamn,,11
+3183875,Tirana,Tirana,41.32744,19.81866,AL,ALB,Albania,418495,True,PPLC,Europe/Tirane,,113
+3185728,Durrës,Durres,41.32355,19.45469,AL,ALB,Albania,195920,False,PPLA,Europe/Tirane,,0
+3183719,Vlorë,Vlore,40.4696,19.48379,AL,ALB,Albania,115261,False,PPLA,Europe/Tirane,,58
+783263,Elbasan,Elbasan,41.11138,20.08224,AL,ALB,Albania,100903,False,PPLA,Europe/Tirane,,126
+3184081,Shkodër,Shkoder,42.06828,19.51258,AL,ALB,Albania,95553,False,PPLA,Europe/Tirane,,12
+3184862,Lushnjë,Lushnje,40.94194,19.705,AL,ALB,Albania,63135,False,PPLA2,Europe/Tirane,,22
+3186084,Berat,Berat,40.70583,19.95222,AL,ALB,Albania,62232,False,PPLA,Europe/Tirane,,66
+3185670,Fier-Çifçi,Fier-Cifci,40.71667,19.56667,AL,ALB,Albania,60995,False,PPLX,Europe/Tirane,,17
+782756,Korçë,Korce,40.61861,20.78083,AL,ALB,Albania,58259,False,PPLA,Europe/Tirane,,869
+3185672,Fier,Fier,40.7251,19.55823,AL,ALB,Albania,56297,False,PPLA,Europe/Tirane,,28
+3041563,Andorra la Vella,Andorra la Vella,42.50779,1.52109,AD,AND,Andorra,20430,True,PPLC,Europe/Andorra,,1037
+3040051,les Escaldes,les Escaldes,42.50729,1.53414,AD,AND,Andorra,15853,False,PPLA,Europe/Andorra,,1033
+292223,Dubai,Dubai,25.07725,55.30927,AE,ARE,United Arab Emirates,3790000,False,PPLA,Asia/Dubai,,24
+292968,Abu Dhabi,Abu Dhabi,24.45118,54.39696,AE,ARE,United Arab Emirates,1807000,True,PPLC,Asia/Dubai,,6
+292672,Sharjah,Sharjah,25.3342,55.41221,AE,ARE,United Arab Emirates,1800000,False,PPLA,Asia/Dubai,,15
+292913,Al Ain City,Al Ain City,24.19167,55.76056,AE,ARE,United Arab Emirates,846747,False,PPL,Asia/Dubai,,275
+292932,Ajman,Ajman,25.40177,55.47878,AE,ARE,United Arab Emirates,490035,False,PPLA,Asia/Dubai,,2
+292261,Dayrah,Dayrah,25.27143,55.30207,AE,ARE,United Arab Emirates,400000,False,PPLX,Asia/Dubai,,10
+291074,Ras Al Khaimah,Ras Al Khaimah,25.78953,55.9432,AE,ARE,United Arab Emirates,351943,False,PPLA,Asia/Dubai,,2
+12042053,Musaffah,Musaffah,24.35893,54.48267,AE,ARE,United Arab Emirates,243341,False,PPL,Asia/Dubai,,7
+11524601,Jebel Ali,Jebel Ali,25.00255,55.10811,AE,ARE,United Arab Emirates,210000,False,PPL,Asia/Dubai,,5
+13118432,Business Bay,Business Bay,25.18544,55.26969,AE,ARE,United Arab Emirates,191000,False,PPLX,Asia/Dubai,,16
+3435910,Buenos Aires,Buenos Aires,-34.61315,-58.37723,AR,ARG,Argentina,2891082,True,PPLC,America/Argentina/Buenos_Aires,,31
+3860259,Córdoba,Cordoba,-31.40648,-64.18853,AR,ARG,Argentina,2106734,False,PPLA,America/Argentina/Cordoba,,378
+3838583,Rosario,Rosario,-32.94682,-60.63932,AR,ARG,Argentina,948312,False,PPLA2,America/Argentina/Cordoba,,38
+3430863,Mar del Plata,Mar del Plata,-38.00042,-57.5562,AR,ARG,Argentina,593337,False,PPLA2,America/Argentina/Buenos_Aires,,14
+3836873,San Miguel de Tucumán,San Miguel de Tucuman,-26.81601,-65.21051,AR,ARG,Argentina,548866,False,PPLA,America/Argentina/Tucuman,,440
+3838233,Salta,Salta,-24.80645,-65.41999,AR,ARG,Argentina,520683,False,PPLA,America/Argentina/Salta,,1054
+3836277,Santa Fe,Santa Fe,-31.64881,-60.70868,AR,ARG,Argentina,391164,False,PPLA,America/Argentina/Cordoba,,21
+3435217,Corrientes,Corrientes,-27.46784,-58.8344,AR,ARG,Argentina,346334,False,PPLA,America/Argentina/Cordoba,,63
+3429886,Posadas,Posadas,-27.39184,-55.92379,AR,ARG,Argentina,305874,False,PPLA,America/Argentina/Cordoba,83,108
+3865086,Bahía Blanca,Bahia Blanca,-38.7176,-62.26545,AR,ARG,Argentina,299101,False,PPLA2,America/Argentina/Buenos_Aires,,20
+616052,Yerevan,Yerevan,40.17765,44.5126,AM,ARM,Armenia,1144700,True,PPLC,Asia/Yerevan,,1002
+7670934,Malatia-Sebastia,Malatia-Sebastia,40.17396,44.4457,AM,ARM,Armenia,150500,False,PPLX,Asia/Yerevan,,943
+11111027,Shengavit,Shengavit,40.1557,44.4779,AM,ARM,Armenia,140600,False,PPLX,Asia/Yerevan,,930
+866153,Nor Nork,Nor Nork,40.19661,44.5669,AM,ARM,Armenia,137300,False,PPLX,Asia/Yerevan,,1302
+7670941,Kentron,Kentron,40.17806,44.51303,AM,ARM,Armenia,133000,False,PPLX,Asia/Yerevan,,997
+866152,Erebuni,Erebuni,40.13309,44.53009,AM,ARM,Armenia,129700,False,PPLX,Asia/Yerevan,,1005
+866164,Ajapnyak,Ajapnyak,40.19917,44.47056,AM,ARM,Armenia,122800,False,PPLX,Asia/Yerevan,,1061
+13156582,Arabkir,Arabkir,40.20624,44.50365,AM,ARM,Armenia,119300,False,PPLX,Asia/Yerevan,,1157
+616635,Gyumri,Gyumri,40.79305,43.84635,AM,ARM,Armenia,114667,False,PPLA,Asia/Yerevan,,1553
+616530,Vanadzor,Vanadzor,40.8074,44.49704,AM,ARM,Armenia,78100,False,PPLA,Asia/Yerevan,,1368
+5881576,Pago Pago,Pago Pago,-14.27806,-170.7025,AS,ASM,American Samoa,11500,True,PPLC,Pacific/Pago_Pago,2,144
+1546102,Port-aux-Français,Port-aux-Francais,-49.34916,70.21937,TF,ATF,French Southern and Antarctic Lands,45,True,PPLC,Indian/Kerguelen,,11
+3576022,Saint John’s,Saint John's,17.12096,-61.84329,AG,ATG,Antigua and Barbuda,51737,True,PPLC,America/Antigua,,12
+2147714,Sydney,Sydney,-33.86785,151.20732,AU,AUS,Australia,5557233,False,PPLA,Australia/Sydney,,58
+2158177,Melbourne,Melbourne,-37.814,144.96332,AU,AUS,Australia,5350705,False,PPLA,Australia/Melbourne,,25
+2174003,Brisbane,Brisbane,-27.46794,153.02809,AU,AUS,Australia,2780063,False,PPLA,Australia/Brisbane,,27
+2063523,Perth,Perth,-31.95224,115.8614,AU,AUS,Australia,2309338,False,PPLA,Australia/Perth,,34
+2078025,Adelaide,Adelaide,-34.92866,138.59863,AU,AUS,Australia,1469163,False,PPLA,Australia/Adelaide,,59
+2165087,Gold Coast,Gold Coast,-28.00029,153.43088,AU,AUS,Australia,640778,False,PPL,Australia/Brisbane,,12
+2155472,Newcastle,Newcastle,-32.92953,151.7801,AU,AUS,Australia,508437,False,PPLA2,Australia/Sydney,,48
+2172517,Canberra,Canberra,-35.28346,149.12807,AU,AUS,Australia,367752,True,PPLC,Australia/Sydney,,571
+8310663,Central Coast,Central Coast,-33.42979,151.37144,AU,AUS,Australia,346596,False,PPL,Australia/Sydney,,15
+10630449,Sunshine Coast,Sunshine Coast,-26.65682,153.07955,AU,AUS,Australia,346522,False,PPLA2,Australia/Brisbane,,9
+2761369,Vienna,Vienna,48.20849,16.37208,AT,AUT,Austria,1691468,True,PPLC,Europe/Vienna,171,193
+2778067,Graz,Graz,47.06733,15.44197,AT,AUT,Austria,303270,False,PPLA,Europe/Vienna,,362
+2772400,Linz,Linz,48.30639,14.28611,AT,AUT,Austria,204846,False,PPLA,Europe/Vienna,266,268
+8063098,Favoriten,Favoriten,48.16116,16.38233,AT,AUT,Austria,201882,False,PPLX,Europe/Vienna,,236
+11903636,Donaustadt,Donaustadt,48.2333,16.46002,AT,AUT,Austria,187007,False,PPLX,Europe/Vienna,,155
+2779469,Floridsdorf,Floridsdorf,48.25,16.4,AT,AUT,Austria,162779,False,PPLX,Europe/Vienna,,159
+2766824,Salzburg,Salzburg,47.79941,13.04399,AT,AUT,Austria,157245,False,PPLA,Europe/Vienna,424,435
+2775220,Innsbruck,Innsbruck,47.26266,11.39454,AT,AUT,Austria,132493,False,PPLA,Europe/Vienna,570,587
+2769359,Ottakring,Ottakring,48.21667,16.3,AT,AUT,Austria,104627,False,PPLX,Europe/Vienna,,247
+2765028,Simmering,Simmering,48.18333,16.43333,AT,AUT,Austria,101420,False,PPLX,Europe/Vienna,,163
+587084,Baku,Baku,40.37767,49.89201,AZ,AZE,Azerbaijan,1116513,True,PPLC,Asia/Baku,,-23
+584923,Sumqayıt,Sumqayit,40.58972,49.66861,AZ,AZE,Azerbaijan,358675,False,PPLA,Asia/Baku,,-11
+586523,Ganja,Ganja,40.68157,46.36134,AZ,AZE,Azerbaijan,335600,False,PPLA,Asia/Baku,,409
+147622,Lankaran,Lankaran,38.75428,48.85062,AZ,AZE,Azerbaijan,240300,False,PPLA,Asia/Baku,,-22
+584821,Tovuz,Tovuz,40.99249,45.62838,AZ,AZE,Azerbaijan,177200,False,PPLA,Asia/Baku,,421
+584649,Yevlakh,Yevlakh,40.61832,47.15014,AZ,AZE,Azerbaijan,127400,False,PPLA,Asia/Baku,,17
+585514,Mingachevir,Mingachevir,40.76422,47.06227,AZ,AZE,Azerbaijan,106048,False,PPLA,Asia/Baku,,26
+147429,Naxçıvan,Naxcivan,39.20889,45.41222,AZ,AZE,Azerbaijan,97200,False,PPLA,Asia/Baku,,887
+585103,Qaraçuxur,Qaracuxur,40.39667,49.97361,AZ,AZE,Azerbaijan,87349,False,PPL,Asia/Baku,,51
+147611,Lerik,Lerik,38.77388,48.41497,AZ,AZE,Azerbaijan,87000,False,PPLA,Asia/Baku,,1094
+425378,Bujumbura,Bujumbura,-3.38193,29.36142,BI,BDI,Burundi,769317,False,PPLA,Africa/Bujumbura,,807
+426272,Gitega,Gitega,-3.42708,29.92463,BI,BDI,Burundi,64904,True,PPLC,Africa/Bujumbura,,1684
+430569,Ngozi,Ngozi,-2.9075,29.8306,BI,BDI,Burundi,61716,False,PPLA,Africa/Bujumbura,,1824
+428632,Mpanda,Mpanda,-3.1703,29.4026,BI,BDI,Burundi,58913,False,PPL,Africa/Bujumbura,,876
+423549,Rumonge,Rumonge,-3.9736,29.4386,BI,BDI,Burundi,55599,False,PPLA,Africa/Bujumbura,,790
+430021,Cibitoke,Cibitoke,-2.8869,29.1248,BI,BDI,Burundi,36959,False,PPLA,Africa/Bujumbura,,937
+430952,Kayanza,Kayanza,-2.9221,29.6293,BI,BDI,Burundi,33682,False,PPLA,Africa/Bujumbura,,1918
+427204,Cendajuru,Cendajuru,-3.289,30.6011,BI,BDI,Burundi,32458,False,PPL,Africa/Bujumbura,,1369
+428515,Bubanza,Bubanza,-3.0804,29.391,BI,BDI,Burundi,30996,False,PPLA,Africa/Bujumbura,,1079
+421930,Vyanda,Vyanda,-4.1024,29.606,BI,BDI,Burundi,29685,False,PPL,Africa/Bujumbura,,1859
+2800866,Brussels,Brussels,50.85045,4.34878,BE,BEL,Belgium,1019022,True,PPLC,Europe/Brussels,,28
+2803138,Antwerpen,Antwerpen,51.22047,4.40026,BE,BEL,Belgium,529247,False,PPL,Europe/Brussels,,13
+2797656,Gent,Gent,51.05,3.71667,BE,BEL,Belgium,265086,False,PPL,Europe/Brussels,,10
+2800481,Charleroi,Charleroi,50.41136,4.44448,BE,BEL,Belgium,200132,False,PPL,Europe/Brussels,,136
+2792413,Liège,Liege,50.63373,5.56749,BE,BEL,Belgium,195278,False,PPL,Europe/Brussels,,66
+2803201,Anderlecht,Anderlecht,50.83619,4.31454,BE,BEL,Belgium,160553,False,PPLA4,Europe/Brussels,,27
+2787149,Schaerbeek,Schaerbeek,50.86935,4.37737,BE,BEL,Belgium,132761,False,PPL,Europe/Brussels,,29
+2800931,Brugge,Brugge,51.20892,3.22424,BE,BEL,Belgium,118509,False,PPL,Europe/Brussels,,13
+2790471,Namur,Namur,50.4669,4.86746,BE,BEL,Belgium,110939,False,PPLA,Europe/Brussels,,88
+2792482,Leuven,Leuven,50.87959,4.70093,BE,BEL,Belgium,101032,False,PPL,Europe/Brussels,,28
+2394819,Cotonou,Cotonou,6.36536,2.41833,BJ,BEN,Benin,679012,True,PPLG,Africa/Porto-Novo,,7
+2395914,Abomey-Calavi,Abomey-Calavi,6.44852,2.35566,BJ,BEN,Benin,385755,False,PPL,Africa/Porto-Novo,,11
+2392087,Porto-Novo,Porto-Novo,6.49646,2.60359,BJ,BEN,Benin,264320,True,PPLC,Africa/Porto-Novo,,20
+2392204,Parakou,Parakou,9.33716,2.63031,BJ,BEN,Benin,255478,False,PPLA,Africa/Porto-Novo,,369
+2394092,Godomè,Godome,6.38948,2.34581,BJ,BEN,Benin,253262,False,PPL,Africa/Porto-Novo,,8
+2395915,Abomey,Abomey,7.18286,1.99119,BJ,BEN,Benin,117824,False,PPLA,Africa/Porto-Novo,,228
+2394560,Djougou,Djougou,9.70853,1.66598,BJ,BEN,Benin,94773,False,PPLA,Africa/Porto-Novo,,444
+2395049,Bohicon,Bohicon,7.17826,2.0667,BJ,BEN,Benin,93744,False,PPLA2,Africa/Porto-Novo,,166
+2394427,Ekpé,Ekpe,6.39209,2.53725,BJ,BEN,Benin,75313,False,PPL,Africa/Porto-Novo,,9
+2392505,Nikki,Nikki,9.94009,3.21075,BJ,BEN,Benin,66109,False,PPL,Africa/Porto-Novo,,403
+3513563,Kralendijk,Kralendijk,12.15,-68.26667,BQ,BES,Caribbean Netherlands,10620,True,PPLC,America/Kralendijk,,4
+2357048,Ouagadougou,Ouagadougou,12.36566,-1.53388,BF,BFA,Burkina Faso,2415266,True,PPLC,Africa/Ouagadougou,,299
+2362344,Bobo-Dioulasso,Bobo-Dioulasso,11.18064,-4.29489,BF,BFA,Burkina Faso,904920,False,PPLA,Africa/Ouagadougou,,453
+2358946,Koudougou,Koudougou,12.25188,-2.36694,BF,BFA,Burkina Faso,160239,False,PPLA,Africa/Ouagadougou,,281
+2356157,Saaba,Saaba,12.37136,-1.41468,BF,BFA,Burkina Faso,136011,False,PPLA3,Africa/Ouagadougou,,305
+2357043,Ouahigouya,Ouahigouya,13.5769,-2.41786,BF,BFA,Burkina Faso,124587,False,PPLA,Africa/Ouagadougou,,317
+2359608,Kaya,Kaya,13.0883,-1.08368,BF,BFA,Burkina Faso,121970,False,PPLA,Africa/Ouagadougou,,366
+2362909,Banfora,Banfora,10.64064,-4.75285,BF,BFA,Burkina Faso,117452,False,PPLA,Africa/Ouagadougou,,304
+2356300,Pouytenga,Pouytenga,12.25162,-0.42565,BF,BFA,Burkina Faso,96469,False,PPL,Africa/Ouagadougou,,318
+2360073,Houndé,Hounde,11.5,-3.51667,BF,BFA,Burkina Faso,87151,False,PPLA2,Africa/Ouagadougou,,349
+2360886,Fada N'gourma,Fada N'gourma,12.06157,0.35843,BF,BFA,Burkina Faso,73200,False,PPLA,Africa/Ouagadougou,,298
+1185241,Dhaka,Dhaka,23.7104,90.40744,BD,BGD,Bangladesh,10356500,True,PPLC,Asia/Dhaka,,23
+1205733,Chattogram,Chattogram,22.3384,91.83168,BD,BGD,Bangladesh,3920222,False,PPLA,Asia/Dhaka,,15
+1200109,Gazipur,Gazipur,23.99844,90.42234,BD,BGD,Bangladesh,2674697,False,PPLA2,Asia/Dhaka,,12
+1336135,Khulna,Khulna,22.80979,89.56439,BD,BGD,Bangladesh,1500689,False,PPLA,Asia/Dhaka,,8
+1185188,Rangpur,Rangpur,25.74664,89.25166,BD,BGD,Bangladesh,1031388,False,PPLA,Asia/Dhaka,,36
+1185186,Comilla,Comilla,23.46186,91.18503,BD,BGD,Bangladesh,1030000,False,PPL,Asia/Dhaka,,17
+1185128,Rajshahi,Rajshahi,24.374,88.60114,BD,BGD,Bangladesh,763580,False,PPLA,Asia/Dhaka,,23
+7696679,Pallabi,Pallabi,23.825,90.37,BD,BGD,Bangladesh,597574,False,PPLX,Asia/Dhaka,,14
+11395976,Mirpur Model Thana,Mirpur Model Thana,23.80931,90.36093,BD,BGD,Bangladesh,546503,False,PPLX,Asia/Dhaka,,24
+1194041,Mohammadpur,Mohammadpur,24.89843,88.52844,BD,BGD,Bangladesh,527571,False,PPL,Asia/Dhaka,,40
+727011,Sofia,Sofia,42.69751,23.32415,BG,BGR,Bulgaria,1152556,True,PPLC,Europe/Sofia,,562
+728193,Plovdiv,Plovdiv,42.15387,24.75001,BG,BGR,Bulgaria,329489,False,PPLA,Europe/Sofia,,163
+726050,Varna,Varna,43.21912,27.91024,BG,BGR,Bulgaria,318737,False,PPLA,Europe/Sofia,,83
+732770,Burgas,Burgas,42.50651,27.46886,BG,BGR,Bulgaria,210646,False,PPLA,Europe/Sofia,,36
+726848,Stara Zagora,Stara Zagora,42.43205,25.64262,BG,BGR,Bulgaria,121582,False,PPLA,Europe/Sofia,,205
+727523,Ruse,Ruse,43.84872,25.9534,BG,BGR,Bulgaria,121168,False,PPLA,Europe/Sofia,,39
+728203,Pleven,Pleven,43.41791,24.61666,BG,BGR,Bulgaria,90209,False,PPLA,Europe/Sofia,,89
+727079,Sliven,Sliven,42.68607,26.32558,BG,BGR,Bulgaria,83740,False,PPLA,Europe/Sofia,,281
+728330,Pernik,Pernik,42.59671,23.03318,BG,BGR,Bulgaria,82467,False,PPLA,Europe/Sofia,,751
+727233,Shumen,Shumen,43.27064,26.92286,BG,BGR,Bulgaria,72342,False,PPLA,Europe/Sofia,,237
+290332,Al Muharraq,Al Muharraq,26.25722,50.61194,BH,BHR,Bahrain,176583,False,PPL,Asia/Bahrain,,7
+290340,Manama,Manama,26.22787,50.58565,BH,BHR,Bahrain,147074,True,PPLC,Asia/Bahrain,,12
+290247,Madīnat Ḩamad,Madinat Hamad,26.11528,50.50694,BH,BHR,Bahrain,133550,False,PPL,Asia/Bahrain,,35
+385038,Ar Rifā‘,Ar Rifa',26.13,50.555,BH,BHR,Bahrain,115495,False,PPL,Asia/Bahrain,,43
+290104,Sitrah,Sitrah,26.15472,50.62056,BH,BHR,Bahrain,72601,False,PPL,Asia/Bahrain,,5
+290215,Jidd Ḩafş,Jidd Hafs,26.21861,50.54778,BH,BHR,Bahrain,66588,False,PPL,Asia/Bahrain,,6
+290269,Dār Kulayb,Dar Kulayb,26.06861,50.50389,BH,BHR,Bahrain,65466,False,PPL,Asia/Bahrain,,10
+290187,Madīnat ‘Īsá,Madinat `Isa,26.17361,50.54778,BH,BHR,Bahrain,38090,False,PPL,Asia/Bahrain,,7
+3571824,Nassau,Nassau,25.05823,-77.34306,BS,BHS,Bahamas,227940,True,PPLC,America/Nassau,,5
+3571971,Lucaya,Lucaya,26.53333,-78.66667,BS,BHS,Bahamas,46525,False,PPL,America/Nassau,,7
+3572375,Freeport,Freeport,26.53333,-78.7,BS,BHS,Bahamas,26910,False,PPLA,America/Nassau,,6
+3572106,Killarney,Killarney,25.05,-77.41667,BS,BHS,Bahamas,17679,False,PPL,America/Nassau,,6
+3191281,Sarajevo,Sarajevo,43.84864,18.35644,BA,BIH,Bosnia and Herzegovina,696731,True,PPLC,Europe/Sarajevo,,509
+3204541,Banja Luka,Banja Luka,44.77879,17.20629,BA,BIH,Bosnia and Herzegovina,221106,False,PPLA,Europe/Sarajevo,,151
+3186573,Zenica,Zenica,44.20169,17.90397,BA,BIH,Bosnia and Herzegovina,164423,False,PPLA2,Europe/Sarajevo,,325
+3188582,Tuzla,Tuzla,44.53842,18.66709,BA,BIH,Bosnia and Herzegovina,142486,False,PPLA2,Europe/Sarajevo,,225
+3194828,Mostar,Mostar,43.34333,17.80806,BA,BIH,Bosnia and Herzegovina,104518,False,PPLA2,Europe/Sarajevo,,66
+3204222,Bihać,Bihac,44.81694,15.87083,BA,BIH,Bosnia and Herzegovina,75641,False,PPLA2,Europe/Sarajevo,,223
+3199145,Ilidža,Ilidza,43.83148,18.30697,BA,BIH,Bosnia and Herzegovina,71277,False,PPLA3,Europe/Sarajevo,,495
+3196079,Lukavac,Lukavac,44.54245,18.52618,BA,BIH,Bosnia and Herzegovina,44520,False,PPLA3,Europe/Sarajevo,,194
+3203099,Bugojno,Bugojno,44.05722,17.45083,BA,BIH,Bosnia and Herzegovina,41378,False,PPLA3,Europe/Sarajevo,,565
+3203521,Brčko,Brcko,44.87162,18.8163,BA,BIH,Bosnia and Herzegovina,38968,False,PPLA,Europe/Sarajevo,,92
+3579132,Gustavia,Gustavia,17.89618,-62.84978,BL,BLM,Saint Barthélemy,5988,True,PPLC,America/St_Barthelemy,,6
+625144,Minsk,Minsk,53.90019,27.56653,BY,BLR,Belarus,1742124,True,PPLC,Europe/Minsk,,222
+627907,Homyel',Homyel',52.4345,30.9754,BY,BLR,Belarus,501102,False,PPLA,Europe/Minsk,,138
+627904,Hrodna,Hrodna,53.6758,23.82887,BY,BLR,Belarus,361115,False,PPLA,Europe/Minsk,,142
+620127,Vitebsk,Vitebsk,55.1904,30.2049,BY,BLR,Belarus,358395,False,PPLA,Europe/Minsk,,150
+625665,Mahilyow,Mahilyow,53.90876,30.34044,BY,BLR,Belarus,353110,False,PPLA,Europe/Minsk,,187
+629634,Brest,Brest,52.10894,23.71749,BY,BLR,Belarus,344470,False,PPLA,Europe/Minsk,,144
+630468,Bobruysk,Bobruysk,53.14636,29.20552,BY,BLR,Belarus,207351,False,PPLA2,Europe/Minsk,,153
+630429,Baranovichi,Baranovichi,53.13253,26.00774,BY,BLR,Belarus,171361,False,PPLA2,Europe/Minsk,,195
+630376,Barysaw,Barysaw,54.2279,28.505,BY,BLR,Belarus,135696,False,PPLA2,Europe/Minsk,,172
+623549,Pinsk,Pinsk,52.12153,26.06726,BY,BLR,Belarus,124295,False,PPLA2,Europe/Minsk,,148
+3582677,Belize City,Belize City,17.49952,-88.19756,BZ,BLZ,Belize,65222,False,PPLA,America/Belize,,6
+3581164,San Pedro,San Pedro,17.91598,-87.9659,BZ,BLZ,Belize,17429,False,PPL,America/Belize,,4
+3581514,Orange Walk,Orange Walk,18.08124,-88.56328,BZ,BLZ,Belize,15298,False,PPLA,America/Belize,,16
+3582672,Belmopan,Belmopan,17.25376,-88.76401,BZ,BLZ,Belize,13381,True,PPLC,America/Belize,,56
+3573197,Hamilton,Hamilton,32.2949,-64.78303,BM,BMU,Bermuda,902,True,PPLC,Atlantic/Bermuda,,22
+3911925,La Paz,La Paz,-16.5,-68.15,BO,BOL,Bolivia,2004652,True,PPLG,America/La_Paz,,3782
+3904906,Santa Cruz de la Sierra,Santa Cruz de la Sierra,-17.78629,-63.18117,BO,BOL,Bolivia,1831434,False,PPLA,America/La_Paz,,433
+3919968,Cochabamba,Cochabamba,-17.38195,-66.15995,BO,BOL,Bolivia,841276,False,PPLA,America/La_Paz,,2537
+3903987,Sucre,Sucre,-19.03332,-65.26274,BO,BOL,Bolivia,224838,True,PPLC,America/La_Paz,,2798
+3909234,Oruro,Oruro,-17.97153,-67.0932,BO,BOL,Bolivia,208684,False,PPLA,America/La_Paz,,3885
+3906194,Sacaba,Sacaba,-17.39799,-66.03825,BO,BOL,Bolivia,180726,False,PPL,America/La_Paz,,2710
+3906791,Quillacollo,Quillacollo,-17.39228,-66.27838,BO,BOL,Bolivia,172405,False,PPL,America/La_Paz,,2559
+3903320,Tarija,Tarija,-21.53549,-64.72956,BO,BOL,Bolivia,159269,False,PPLA,America/La_Paz,,1870
+3907584,Potosí,Potosi,-19.58361,-65.75306,BO,BOL,Bolivia,141251,False,PPLA,America/La_Paz,,3967
+3906466,Riberalta,Riberalta,-11.01026,-66.05257,BO,BOL,Bolivia,99070,False,PPL,America/La_Paz,,145
+3448439,São Paulo,Sao Paulo,-23.5475,-46.63611,BR,BRA,Brazil,12400232,False,PPLA,America/Sao_Paulo,,769
+3451190,Rio de Janeiro,Rio de Janeiro,-22.90642,-43.18223,BR,BRA,Brazil,6747815,False,PPLA,America/Sao_Paulo,,12
+3470127,Belo Horizonte,Belo Horizonte,-19.92083,-43.93778,BR,BRA,Brazil,2721564,False,PPLA,America/Sao_Paulo,888,872
+3450554,Salvador,Salvador,-12.97563,-38.49096,BR,BRA,Brazil,2711840,False,PPLA,America/Bahia,,4
+3399415,Fortaleza,Fortaleza,-3.71722,-38.54306,BR,BRA,Brazil,2400000,False,PPLA,America/Fortaleza,,18
+3663517,Manaus,Manaus,-3.10194,-60.025,BR,BRA,Brazil,2219580,False,PPLA,America/Manaus,,20
+3469058,Brasília,Brasilia,-15.77972,-47.92972,BR,BRA,Brazil,2207718,True,PPLC,America/Sao_Paulo,,1136
+3464975,Curitiba,Curitiba,-25.42778,-49.27306,BR,BRA,Brazil,1948626,False,PPLA,America/Sao_Paulo,,924
+3390760,Recife,Recife,-8.05389,-34.88111,BR,BRA,Brazil,1653461,False,PPLA,America/Recife,,8
+3462377,Goiânia,Goiania,-16.67861,-49.25389,BR,BRA,Brazil,1536097,False,PPLA,America/Sao_Paulo,,766
+3405870,Belém,Belem,-1.45583,-48.50444,BR,BRA,Brazil,1499641,False,PPLA,America/Belem,,15
+3452925,Porto Alegre,Porto Alegre,-30.03283,-51.23019,BR,BRA,Brazil,1488252,False,PPLA,America/Sao_Paulo,,46
+3461786,Guarulhos,Guarulhos,-23.46278,-46.53333,BR,BRA,Brazil,1169577,False,PPL,America/Sao_Paulo,,774
+3395981,Maceió,Maceio,-9.66583,-35.73528,BR,BRA,Brazil,1031597,False,PPLA,America/Maceio,,11
+3467865,Campinas,Campinas,-22.90556,-47.06083,BR,BRA,Brazil,1031554,False,PPL,America/Sao_Paulo,,686
+3374036,Bridgetown,Bridgetown,13.10732,-59.62021,BB,BRB,Barbados,98511,True,PPLC,America/Barbados,,10
+1820906,Bandar Seri Begawan,Bandar Seri Begawan,4.89035,114.94006,BN,BRN,Brunei,64409,True,PPLC,Asia/Brunei,,10
+1820575,Sengkurong,Sengkurong,4.88333,114.83333,BN,BRN,Brunei,40972,False,PPL,Asia/Brunei,,14
+1820635,Mentiri,Mentiri,4.97058,115.02078,BN,BRN,Brunei,39324,False,PPL,Asia/Brunei,,8
+1820491,Kuala Belait,Kuala Belait,4.58361,114.2312,BN,BRN,Brunei,31178,False,PPLA,Asia/Brunei,,5
+1820187,Seria,Seria,4.60637,114.32476,BN,BRN,Brunei,30097,False,PPL,Asia/Brunei,,6
+1820071,Tutong,Tutong,4.80278,114.64917,BN,BRN,Brunei,19151,False,PPLA,Asia/Brunei,,8
+1820574,Serasa,Serasa,5.01761,115.05798,BN,BRN,Brunei,18569,False,PPL,Asia/Brunei,,7
+1820557,Liang,Liang,4.67747,114.49587,BN,BRN,Brunei,16813,False,PPL,Asia/Brunei,,14
+1252416,Thimphu,Thimphu,27.46609,89.64191,BT,BTN,Bhutan,98676,True,PPLC,Asia/Thimphu,2320,2307
+1252484,Phuntsholing,Phuntsholing,26.85164,89.38837,BT,BTN,Bhutan,27658,False,PPL,Asia/Thimphu,,330
+1252608,Tsirang,Tsirang,27.0219,90.12291,BT,BTN,Bhutan,22376,False,PPLA,Asia/Thimphu,,1410
+1252479,Punākha,Punakha,27.59137,89.87743,BT,BTN,Bhutan,21500,False,PPLA,Asia/Thimphu,,1293
+933773,Gaborone,Gaborone,-24.65451,25.90859,BW,BWA,Botswana,246325,True,PPLC,Africa/Gaborone,,1011
+933778,Francistown,Francistown,-21.17,27.50778,BW,BWA,Botswana,103417,False,PPLA,Africa/Gaborone,,989
+933331,Mogoditshane,Mogoditshane,-24.62694,25.86556,BW,BWA,Botswana,88004,False,PPL,Africa/Gaborone,,1026
+933366,Maun,Maun,-19.98333,23.41667,BW,BWA,Botswana,85350,False,PPLA,Africa/Gaborone,,947
+933305,Molepolole,Molepolole,-24.40659,25.49508,BW,BWA,Botswana,74861,False,PPLA,Africa/Gaborone,,1146
+933088,Serowe,Serowe,-22.38754,26.71077,BW,BWA,Botswana,55676,False,PPLA,Africa/Gaborone,,1147
+933004,Tlokweng,Tlokweng,-24.66861,25.97111,BW,BWA,Botswana,55508,False,PPL,Africa/Gaborone,,990
+933182,Palapye,Palapye,-22.54605,27.12507,BW,BWA,Botswana,52636,False,PPL,Africa/Gaborone,,926
+933340,Mochudi,Mochudi,-24.41667,26.15,BW,BWA,Botswana,50321,False,PPLA,Africa/Gaborone,,952
+933471,Mahalapye,Mahalapye,-23.10407,26.81421,BW,BWA,Botswana,48431,False,PPL,Africa/Gaborone,,1025
+2389853,Bangui,Bangui,4.36122,18.55496,CF,CAF,Central African Republic,812407,True,PPLC,Africa/Bangui,,351
+2388873,Bimbo,Bimbo,4.25671,18.41583,CF,CAF,Central African Republic,348802,False,PPLA,Africa/Bangui,,371
+2389422,Bégoua,Begoua,4.45437,18.53475,CF,CAF,Central African Republic,264067,False,PPL,Africa/Bangui,,410
+2387495,Carnot,Carnot,4.94273,15.87735,CF,CAF,Central African Republic,129032,False,PPLA,Africa/Bangui,,551
+2389086,Berbérati,Berberati,4.26116,15.79216,CF,CAF,Central African Republic,103713,False,PPLA,Africa/Bangui,,599
+240604,Bambari,Bambari,5.76795,20.67565,CF,CAF,Central African Republic,83029,False,PPLA,Africa/Bangui,,465
+2387926,Bouar,Bouar,5.93404,15.59599,CF,CAF,Central African Republic,71680,False,PPLA,Africa/Bangui,,976
+2388036,Bossangoa,Bossangoa,6.49263,17.45518,CF,CAF,Central African Republic,55353,False,PPLA,Africa/Bangui,,456
+2386012,Kaga-Bandoro,Kaga-Bandoro,6.98961,19.18744,CF,CAF,Central African Republic,55047,False,PPLA,Africa/Bangui,,416
+240498,Bangassou,Bangassou,4.74132,22.81838,CF,CAF,Central African Republic,54059,False,PPLA,Africa/Bangui,,506
+6167865,Toronto,Toronto,43.70643,-79.39864,CA,CAN,Canada,2794356,False,PPLA,America/Toronto,,161
+6077243,Montréal,Montreal,45.50884,-73.58781,CA,CAN,Canada,1762949,False,PPLA2,America/Toronto,,216
+5913490,Calgary,Calgary,51.05011,-114.08529,CA,CAN,Canada,1306784,False,PPL,America/Edmonton,1048,1042
+6094817,Ottawa,Ottawa,45.41117,-75.69812,CA,CAN,Canada,1017449,True,PPLC,America/Toronto,,71
+5946768,Edmonton,Edmonton,53.55014,-113.46871,CA,CAN,Canada,1010899,False,PPLA,America/Edmonton,668,610
+6183235,Winnipeg,Winnipeg,49.8844,-97.14704,CA,CAN,Canada,749607,False,PPLA,America/Winnipeg,,245
+6075357,Mississauga,Mississauga,43.5789,-79.6583,CA,CAN,Canada,717961,False,PPL,America/Toronto,,159
+6173331,Vancouver,Vancouver,49.24966,-123.11934,CA,CAN,Canada,662248,False,PPL,America/Vancouver,,70
+5907364,Brampton,Brampton,43.68341,-79.76633,CA,CAN,Canada,656480,False,PPL,America/Toronto,,221
+13512378,Harewood,Harewood,49.1474,-123.94739,CA,CAN,Canada,8769,True,PPLG,America/Vancouver,,61
+7304591,West Island,West Island,-12.15681,96.82251,CC,CCK,Cocos (Keeling) Islands,120,True,PPLC,Indian/Cocos,,12
+2657896,Zürich,Zuerich,47.36667,8.55,CH,CHE,Switzerland,415367,False,PPLA,Europe/Zurich,,429
+2660646,Genève,Geneve,46.20222,6.14569,CH,CHE,Switzerland,201741,False,PPLA,Europe/Zurich,,400
+2661604,Basel,Basel,47.55839,7.57327,CH,CHE,Switzerland,177595,False,PPLA,Europe/Zurich,,279
+2659994,Lausanne,Lausanne,46.516,6.63282,CH,CHE,Switzerland,139111,False,PPLA,Europe/Zurich,,453
+2661552,Bern,Bern,46.94809,7.44744,CH,CHE,Switzerland,121631,True,PPLC,Europe/Zurich,,549
+2657970,Winterthur,Winterthur,47.50564,8.72413,CH,CHE,Switzerland,111840,False,PPLA2,Europe/Zurich,,441
+2659811,Luzern,Luzern,47.05048,8.30635,CH,CHE,Switzerland,81691,False,PPLA,Europe/Zurich,,437
+2658822,Sankt Gallen,Sankt Gallen,47.42391,9.37477,CH,CHE,Switzerland,75833,False,PPLA,Europe/Zurich,,684
+2659836,Lugano,Lugano,46.01008,8.96004,CH,CHE,Switzerland,63185,False,PPLA2,Europe/Zurich,,284
+2661513,Biel/Bienne,Biel/Bienne,47.13713,7.24608,CH,CHE,Switzerland,55120,False,PPLA2,Europe/Zurich,434,439
+3871336,Santiago,Santiago,-33.45694,-70.64827,CL,CHL,Chile,4837295,True,PPLC,America/Santiago,,556
+3875024,Puente Alto,Puente Alto,-33.61169,-70.57577,CL,CHL,Chile,568106,False,PPLA2,America/Santiago,,700
+3880980,Maipú,Maipu,-33.51421,-70.7651,CL,CHL,Chile,503635,False,PPL,America/Santiago,,478
+3899539,Antofagasta,Antofagasta,-23.65094,-70.39752,CL,CHL,Chile,401096,False,PPLA,America/Santiago,,276
+3868121,Viña del Mar,Vina del Mar,-33.02457,-71.55183,CL,CHL,Chile,334248,False,PPL,America/Santiago,,17
+3868626,Valparaíso,Valparaiso,-33.036,-71.62963,CL,CHL,Chile,282448,False,PPLA,America/Santiago,,15
+3878431,Ñuñoa,Nunoa,-33.44735,-70.58279,CL,CHL,Chile,255823,False,PPLX,America/Santiago,,615
+3872348,San Bernardo,San Bernardo,-33.59217,-70.6996,CL,CHL,Chile,249858,False,PPLA2,America/Santiago,,571
+3874960,Puerto Montt,Puerto Montt,-41.4693,-72.94237,CL,CHL,Chile,245902,False,PPLA,America/Santiago,,11
+3899361,Arica,Arica,-18.47552,-70.30058,CL,CHL,Chile,241653,False,PPLA,America/Santiago,,80
+1796236,Shanghai,Shanghai,31.22222,121.45806,CN,CHN,China,24874500,False,PPLA,Asia/Shanghai,,12
+1816670,Beijing,Beijing,39.9075,116.39723,CN,CHN,China,18960744,True,PPLC,Asia/Shanghai,,49
+1795565,Shenzhen,Shenzhen,22.54554,114.0683,CN,CHN,China,17494398,False,PPLA2,Asia/Shanghai,,4
+1809858,Guangzhou,Guangzhou,23.11667,113.25,CN,CHN,China,16096724,False,PPLA,Asia/Shanghai,,15
+1815286,Chengdu,Chengdu,30.66667,104.06667,CN,CHN,China,13568357,False,PPLA,Asia/Shanghai,,499
+1792947,Tianjin,Tianjin,39.14222,117.17667,CN,CHN,China,11090314,False,PPLA,Asia/Shanghai,,11
+1791247,Wuhan,Wuhan,30.58333,114.26667,CN,CHN,China,10392693,False,PPLA,Asia/Shanghai,,20
+1812545,Dongguan,Dongguan,23.01797,113.74866,CN,CHN,China,9644871,False,PPLA2,Asia/Shanghai,,1
+1790630,Xi’an,Xi'an,34.25833,108.92861,CN,CHN,China,9600000,False,PPLA,Asia/Shanghai,,416
+1799962,Nanjing,Nanjing,32.06167,118.77778,CN,CHN,China,9314685,False,PPLA,Asia/Shanghai,,22
+1808926,Hangzhou,Hangzhou,30.29365,120.16142,CN,CHN,China,9236032,False,PPLA,Asia/Shanghai,,12
+1811103,Foshan,Foshan,23.02677,113.13148,CN,CHN,China,9042509,False,PPLA2,Asia/Shanghai,,5
+1814906,Chongqing,Chongqing,29.56026,106.55771,CN,CHN,China,7457599,False,PPLA,Asia/Shanghai,,289
+1797929,Qingdao,Qingdao,36.06488,120.38042,CN,CHN,China,7172451,False,PPLA2,Asia/Shanghai,,16
+2034937,Shenyang,Shenyang,41.79222,123.43278,CN,CHN,China,7050000,False,PPLA,Asia/Shanghai,,53
+1886760,Suzhou,Suzhou,31.30408,120.59538,CN,CHN,China,6715559,False,PPLA2,Asia/Shanghai,,10
+2037013,Harbin,Harbin,45.75,126.65,CN,CHN,China,5242897,False,PPLA,Asia/Shanghai,,140
+1808722,Hefei,Hefei,31.86389,117.28083,CN,CHN,China,5050000,False,PPLA,Asia/Shanghai,,24
+1814087,Dalian,Dalian,38.91222,121.60222,CN,CHN,China,4913879,False,PPL,Asia/Shanghai,,33
+2038180,Changchun,Changchun,43.88,125.32278,CN,CHN,China,4714996,False,PPLA,Asia/Shanghai,,206
+1790645,Xiamen,Xiamen,24.47979,118.08187,CN,CHN,China,4617251,False,PPLA2,Asia/Shanghai,,12
+13308620,Bao'an,Bao'an,22.55213,113.88288,CN,CHN,China,4476554,False,PPLA3,Asia/Shanghai,,-9999
+1790923,Wuxi,Wuxi,31.56887,120.28857,CN,CHN,China,4396835,False,PPLA2,Asia/Shanghai,,10
+1805753,Jinan,Jinan,36.66833,116.99722,CN,CHN,China,4335989,False,PPLA,Asia/Shanghai,,32
+1793511,Taiyuan,Taiyuan,37.86944,112.56028,CN,CHN,China,4303673,False,PPLA,Asia/Shanghai,,795
+1784658,Zhengzhou,Zhengzhou,34.75778,113.64861,CN,CHN,China,4253913,False,PPLA,Asia/Shanghai,,104
+1795270,Shijiazhuang,Shijiazhuang,38.04139,114.47861,CN,CHN,China,3938513,False,PPLA,Asia/Shanghai,,77
+1804651,Kunming,Kunming,25.03889,102.71833,CN,CHN,China,3855346,False,PPLA,Asia/Shanghai,,1895
+6986104,Zhongshan,Zhongshan,22.52306,113.37912,CN,CHN,China,3841873,False,PPLA2,Asia/Shanghai,,9
+1799869,Nanning,Nanning,22.81667,108.31667,CN,CHN,China,3839800,False,PPLA,Asia/Shanghai,,91
+1795940,Shantou,Shantou,23.35489,116.67876,CN,CHN,China,3838900,False,PPLA2,Asia/Shanghai,,3
+1810821,Fuzhou,Fuzhou,26.06139,119.30611,CN,CHN,China,3740000,False,PPLA,Asia/Shanghai,,14
+1799397,Ningbo,Ningbo,29.87819,121.54945,CN,CHN,China,3731203,False,PPLA2,Asia/Shanghai,,15
+1798425,Puyang,Puyang,29.45679,119.88872,CN,CHN,China,3590000,False,PPLA3,Asia/Shanghai,,76
+1794903,Shiyan,Shiyan,32.6475,110.77806,CN,CHN,China,3460000,False,PPLA2,Asia/Shanghai,,247
+1793346,Tangshan,Tangshan,39.64381,118.18319,CN,CHN,China,3372102,False,PPLA2,Asia/Shanghai,,7
+13512505,Lüliang,Lueliang,37.5192,111.14436,CN,CHN,China,3346500,False,PPLA2,Asia/Shanghai,,959
+1815456,Changzhou,Changzhou,31.77359,119.95401,CN,CHN,China,3290918,False,PPLA2,Asia/Shanghai,,9
+1785286,Zibo,Zibo,36.79056,118.06333,CN,CHN,China,3129228,False,PPL,Asia/Shanghai,,51
+1815577,Changsha,Changsha,28.19874,112.97087,CN,CHN,China,3093980,False,PPLA,Asia/Shanghai,,67
+1809461,Guiyang,Guiyang,26.58333,106.71667,CN,CHN,China,3037159,False,PPLA,Asia/Shanghai,,1087
+1529102,Ürümqi,UEruemqi,43.80096,87.60046,CN,CHN,China,3029372,False,PPLA,Asia/Urumqi,,862
+1804430,Lanzhou,Lanzhou,36.05701,103.83987,CN,CHN,China,3000000,False,PPLA,Asia/Shanghai,,1521
+1806776,Huizhou,Huizhou,23.11147,114.41523,CN,CHN,China,2900113,False,PPLA2,Asia/Shanghai,,25
+1809078,Haikou,Haikou,20.03421,110.34651,CN,CHN,China,2873358,False,PPLA,Asia/Shanghai,,9
+1803318,Linyi,Linyi,35.06306,118.34278,CN,CHN,China,2743843,False,PPLA2,Asia/Shanghai,,69
+1816971,Baoding,Baoding,38.87288,115.46246,CN,CHN,China,2739887,False,PPLA2,Asia/Shanghai,,15
+1791388,Wenzhou,Wenzhou,27.99942,120.66682,CN,CHN,China,2650000,False,PPLA3,Asia/Shanghai,,10
+1785725,Yunfu,Yunfu,22.92787,112.03809,CN,CHN,China,2612800,False,PPLA2,Asia/Shanghai,,67
+1797873,Huai'an,Huai'an,33.58861,119.01917,CN,CHN,China,2494013,False,PPL,Asia/Shanghai,,14
+1800163,Nanchang,Nanchang,28.68396,115.85306,CN,CHN,China,2357839,False,PPLA,Asia/Shanghai,,20
+2036892,Hohhot,Hohhot,40.81056,111.65222,CN,CHN,China,2350000,False,PPLA,Asia/Shanghai,,1051
+1795855,Shaoxing,Shaoxing,30.00237,120.57864,CN,CHN,China,2300000,False,PPLA3,Asia/Shanghai,,21
+1799722,Nantong,Nantong,32.03028,120.87472,CN,CHN,China,2273326,False,PPLA2,Asia/Shanghai,,6
+1787093,Yantai,Yantai,37.47649,121.44081,CN,CHN,China,2227733,False,PPL,Asia/Shanghai,,22
+1790437,Zhuhai,Zhuhai,22.27694,113.56778,CN,CHN,China,2207090,False,PPLA2,Asia/Shanghai,,35
+2038432,Baotou,Baotou,40.6516,109.84389,CN,CHN,China,2150000,False,PPL,Asia/Shanghai,,1064
+12359313,Qingyang,Qingyang,35.70976,107.64455,CN,CHN,China,2125400,False,PPLA2,Asia/Shanghai,,1427
+1785623,Kunshan,Kunshan,31.37762,120.95431,CN,CHN,China,2092496,False,PPLA3,Asia/Shanghai,,10
+1791681,Weifang,Weifang,36.71,119.10194,CN,CHN,China,2044028,False,PPL,Asia/Shanghai,,30
+1783621,Zunyi,Zunyi,27.68667,106.90722,CN,CHN,China,2037775,False,PPLA2,Asia/Shanghai,,867
+10859300,Lianyungang,Lianyungang,34.59845,119.21556,CN,CHN,China,2001009,False,PPLA2,Asia/Shanghai,,1
+1810638,Ganzhou,Ganzhou,25.84664,114.9326,CN,CHN,China,1977253,False,PPLA2,Asia/Shanghai,,117
+8347664,Ordos,Ordos,39.6086,109.78157,CN,CHN,China,1940653,False,PPL,Asia/Shanghai,2149,1310
+1797121,Jieyang,Jieyang,23.5418,116.36581,CN,CHN,China,1899394,False,PPLA2,Asia/Shanghai,,7
+2036502,Jilin,Jilin,43.84652,126.5608,CN,CHN,China,1895865,False,PPLA2,Asia/Shanghai,,188
+1800146,Nanchong,Nanchong,30.79508,106.08473,CN,CHN,China,1858875,False,PPLA2,Asia/Shanghai,,287
+2037799,Datong,Datong,40.09361,113.29139,CN,CHN,China,1850000,False,PPL,Asia/Shanghai,,1054
+1799629,Nanyang,Nanyang,33.00524,112.54659,CN,CHN,China,1811812,False,PPLA2,Asia/Shanghai,,126
+1806299,Jiangmen,Jiangmen,22.58333,113.08333,CN,CHN,China,1795459,False,PPLA2,Asia/Shanghai,,11
+1815251,Jiangyin,Jiangyin,31.91102,120.26302,CN,CHN,China,1779515,False,PPLA3,Asia/Shanghai,,7
+1810845,Fuyang,Fuyang,32.9,115.81667,CN,CHN,China,1768947,False,PPLA2,Asia/Shanghai,,31
+11838258,Bayan Nur,Bayan Nur,40.74143,107.38599,CN,CHN,China,1760000,False,PPL,Asia/Shanghai,1050,1041
+1815395,Chaozhou,Chaozhou,23.65396,116.62262,CN,CHN,China,1750945,False,PPLA2,Asia/Shanghai,,23
+1797945,Qingyuan,Qingyuan,23.7,113.03333,CN,CHN,China,1738424,False,PPLA2,Asia/Shanghai,,11
+1793724,Tai’an,Tai'an,36.18528,117.12,CN,CHN,China,1735425,False,PPLA2,Asia/Shanghai,,143
+1788852,Xining,Xining,36.62554,101.75739,CN,CHN,China,1677177,False,PPLA,Asia/Shanghai,,2275
+7283386,Changshu,Changshu,31.64615,120.74221,CN,CHN,China,1677050,False,PPLA3,Asia/Shanghai,,9
+1807681,Huainan,Huainan,32.62639,116.99694,CN,CHN,China,1666826,False,PPL,Asia/Shanghai,,47
+1793743,Suzhou,Suzhou,33.63611,116.97889,CN,CHN,China,1647642,False,PPLA2,Asia/Shanghai,,34
+1802206,Lu’an,Lu'an,31.73561,116.51688,CN,CHN,China,1644344,False,PPLA2,Asia/Shanghai,,81
+1787746,Yancheng,Yancheng,33.3575,120.1573,CN,CHN,China,1615717,False,PPLA2,Asia/Shanghai,,3
+1793505,Taizhou,Taizhou,32.49069,119.90812,CN,CHN,China,1607108,False,PPLA3,Asia/Shanghai,,10
+2037860,Daqing,Daqing,46.58333,125.0,CN,CHN,China,1604027,False,PPLA2,Asia/Shanghai,,146
+1791236,Wuhu,Wuhu,31.35259,118.42947,CN,CHN,China,1598165,False,PPLA2,Asia/Shanghai,,9
+1813325,Dazhou,Dazhou,31.2106,107.46308,CN,CHN,China,1589435,False,PPLA2,Asia/Shanghai,,292
+1787227,Yangzhou,Yangzhou,32.39722,119.43583,CN,CHN,China,1584237,False,PPL,Asia/Shanghai,,14
+1809498,Guilin,Guilin,25.28022,110.29639,CN,CHN,China,1572300,False,PPLA2,Asia/Shanghai,,141
+1784853,Zhaoqing,Zhaoqing,23.04893,112.46091,CN,CHN,China,1553109,False,PPLA2,Asia/Shanghai,,16
+1800627,Mianyang,Mianyang,31.46784,104.68168,CN,CHN,China,1550000,False,PPLA3,Asia/Shanghai,,471
+12358576,Wanzhou,Wanzhou,30.76451,108.39586,CN,CHN,China,1545900,False,PPLA3,Asia/Shanghai,,205
+1798449,Putian,Putian,25.43944,119.01028,CN,CHN,China,1539389,False,PPLA2,Asia/Shanghai,,23
+1783934,Shangqiu,Shangqiu,34.45,115.65,CN,CHN,China,1536392,False,PPL,Asia/Shanghai,,51
+1786657,Yinchuan,Yinchuan,38.46806,106.27306,CN,CHN,China,1487579,False,PPLA,Asia/Shanghai,,1117
+8400694,Taizhou,Taizhou,28.66266,121.43312,CN,CHN,China,1485502,False,PPLA2,Asia/Shanghai,,15
+1814870,Yiwu,Yiwu,29.31506,120.07676,CN,CHN,China,1481384,False,PPLA3,Asia/Shanghai,,84
+1797353,Quanzhou,Quanzhou,24.91389,118.58583,CN,CHN,China,1469157,False,PPLA2,Asia/Shanghai,,14
+1805528,Jinhua,Jinhua,29.10678,119.64421,CN,CHN,China,1463990,False,PPLA2,Asia/Shanghai,,55
+1806602,Cixi,Cixi,30.1764,121.2457,CN,CHN,China,1457510,False,PPLA3,Asia/Shanghai,,11
+1791121,Changde,Changde,29.03205,111.69844,CN,CHN,China,1457419,False,PPLA3,Asia/Shanghai,,38
+1804879,Kaifeng,Kaifeng,34.7986,114.30742,CN,CHN,China,1451741,False,PPL,Asia/Shanghai,,76
+2038632,Anshan,Anshan,41.12361,122.99,CN,CHN,China,1450000,False,PPL,Asia/Shanghai,,55
+10942359,Baoji,Baoji,34.36775,107.23705,CN,CHN,China,1437802,False,PPLA2,Asia/Shanghai,,567
+1793771,Suqian,Suqian,33.94917,118.29583,CN,CHN,China,1437685,False,PPLA2,Asia/Shanghai,,23
+1803300,Liuzhou,Liuzhou,24.32405,109.40698,CN,CHN,China,1436599,False,PPLA2,Asia/Shanghai,,102
+1787331,Zhangjiagang,Zhangjiagang,31.865,120.53889,CN,CHN,China,1432044,False,PPLA3,Asia/Shanghai,,13
+1797658,Jinjiang,Jinjiang,24.81978,118.57415,CN,CHN,China,1416151,False,PPLA3,Asia/Shanghai,,33
+1816234,Bozhou,Bozhou,33.87722,115.77028,CN,CHN,China,1409436,False,PPLA2,Asia/Shanghai,,40
+1797318,Qujing,Qujing,25.48333,103.78333,CN,CHN,China,1408500,False,PPL,Asia/Shanghai,,1887
+1784990,Zhanjiang,Zhanjiang,21.23391,110.38749,CN,CHN,China,1400709,False,PPLA2,Asia/Shanghai,,16
+2037355,Fushun,Fushun,41.88669,123.94363,CN,CHN,China,1400646,False,PPLA2,Asia/Shanghai,,85
+1801792,Luoyang,Luoyang,34.67345,112.43684,CN,CHN,China,1390581,False,PPLA2,Asia/Shanghai,,128
+1802875,Guankou,Guankou,28.15861,113.62709,CN,CHN,China,1380000,False,PPLA3,Asia/Shanghai,,79
+1808963,Handan,Handan,36.60999,114.48764,CN,CHN,China,1358318,False,PPLA2,Asia/Shanghai,,61
+1786764,Yichang,Yichang,30.71444,111.28472,CN,CHN,China,1350150,False,PPLA2,Asia/Shanghai,,63
+1808198,Heze,Heze,35.23929,115.47358,CN,CHN,China,1346717,False,PPLA2,Asia/Shanghai,,53
+8533133,Liupanshui,Liupanshui,26.59444,104.83333,CN,CHN,China,1320825,False,PPL,Asia/Shanghai,,1799
+1801180,Maoming,Maoming,21.66625,110.91364,CN,CHN,China,1307802,False,PPLA2,Asia/Shanghai,,31
+1797551,Qinzhou,Qinzhou,21.98247,108.65061,CN,CHN,China,1296300,False,PPLA2,Asia/Shanghai,,12
+1801934,Luohe,Luohe,33.56394,114.04272,CN,CHN,China,1294974,False,PPLA2,Asia/Shanghai,,62
+1790587,Xiangyang,Xiangyang,32.0422,112.14479,CN,CHN,China,1294733,False,PPLA2,Asia/Shanghai,,71
+1806408,Yangjiang,Yangjiang,21.85563,111.96272,CN,CHN,China,1292987,False,PPLA2,Asia/Shanghai,,15
+1786760,Yixing,Yixing,31.36059,119.82016,CN,CHN,China,1285785,False,PPLA3,Asia/Shanghai,,8
+1788046,Xuchang,Xuchang,34.03189,113.86299,CN,CHN,China,1265536,False,PPLA2,Asia/Shanghai,,71
+1783745,Zigong,Zigong,29.34162,104.77689,CN,CHN,China,1262064,False,PPL,Asia/Shanghai,,306
+10630003,Xuzhou,Xuzhou,34.20442,117.28386,CN,CHN,China,1253991,False,PPLA2,Asia/Shanghai,,35
+1799491,Neijiang,Neijiang,29.58354,105.06216,CN,CHN,China,1251095,False,PPLA3,Asia/Shanghai,,349
+1808316,Heshan,Heshan,28.56938,112.34733,CN,CHN,China,1249807,False,PPLA2,Asia/Shanghai,,73
+1805518,Jining,Jining,35.405,116.58139,CN,CHN,China,1241012,False,PPL,Asia/Shanghai,,43
+1788534,Xinyang,Xinyang,32.12278,114.06556,CN,CHN,China,1230042,False,PPL,Asia/Shanghai,,89
+1803834,Liaocheng,Liaocheng,36.45064,116.00247,CN,CHN,China,1229768,False,PPLA2,Asia/Shanghai,,32
+10942283,Jinzhong,Jinzhong,37.68403,112.75471,CN,CHN,China,1226617,False,PPLA2,Asia/Shanghai,,821
+1808956,Changzhi,Changzhi,36.18389,113.10528,CN,CHN,China,1214940,False,PPLA2,Asia/Shanghai,,937
+1792892,Tianshui,Tianshui,34.57952,105.74238,CN,CHN,China,1212791,False,PPLA3,Asia/Shanghai,,1153
+1791636,Weinan,Weinan,34.50355,109.50891,CN,CHN,China,1199290,False,PPLA2,Asia/Shanghai,,354
+1805953,Jiaxing,Jiaxing,30.7522,120.75,CN,CHN,China,1180000,False,PPLA2,Asia/Shanghai,,8
+1805179,Jiujiang,Jiujiang,29.70475,116.00206,CN,CHN,China,1164268,False,PPLA2,Asia/Shanghai,,41
+1785294,Anyang,Anyang,36.096,114.38278,CN,CHN,China,1146839,False,PPLA2,Asia/Shanghai,,70
+13405906,Luohu District,Luohu District,22.54721,114.13149,CN,CHN,China,1143801,False,PPLX,Asia/Shanghai,,2
+1816373,Bijie,Bijie,27.30193,105.28627,CN,CHN,China,1137383,False,PPLA2,Asia/Shanghai,,1471
+1783763,Zhuzhou,Zhuzhou,27.83333,113.15,CN,CHN,China,1129687,False,PPLA2,Asia/Shanghai,,54
+1787858,Shangrao,Shangrao,28.45179,117.94287,CN,CHN,China,1116486,False,PPLA2,Asia/Shanghai,,84
+1807700,Huaibei,Huaibei,33.97444,116.79167,CN,CHN,China,1113321,False,PPLA2,Asia/Shanghai,,51
+1800818,Meishan,Meishan,30.04392,103.83696,CN,CHN,China,1107742,False,PPLA2,Asia/Shanghai,,423
+1810820,Fuzhou,Fuzhou,27.95999,116.33333,CN,CHN,China,1089888,False,PPLA2,Asia/Shanghai,,53
+1809532,Guigang,Guigang,23.11603,109.59472,CN,CHN,China,1086327,False,PPLA2,Asia/Shanghai,,40
+1808370,Hengyang,Hengyang,26.88946,112.61888,CN,CHN,China,1075516,False,PPL,Asia/Shanghai,,66
+1785781,Yulin,Yulin,22.6305,110.14686,CN,CHN,China,1056743,False,PPLA3,Asia/Shanghai,,87
+1805540,Jingzhou,Jingzhou,30.35028,112.19028,CN,CHN,China,1052282,False,PPLA2,Asia/Shanghai,,39
+1788572,Xinxiang,Xinxiang,35.19033,113.80151,CN,CHN,China,1047088,False,PPLA2,Asia/Shanghai,,82
+1786746,Yichun,Yichun,27.83333,114.4,CN,CHN,China,1045952,False,PPLA2,Asia/Shanghai,,99
+1790353,Xianyang,Xianyang,34.33778,108.70261,CN,CHN,China,1034081,False,PPLA3,Asia/Shanghai,,387
+1796556,Sanya,Sanya,18.25435,109.50947,CN,CHN,China,1031396,False,PPLA2,Asia/Shanghai,,1
+1795874,Shaoguan,Shaoguan,24.8,113.58333,CN,CHN,China,1028460,False,PPLA2,Asia/Shanghai,,69
+1802276,Longyan,Longyan,25.07485,117.01775,CN,CHN,China,1025087,False,PPLA2,Asia/Shanghai,,318
+1786217,Yongzhou,Yongzhou,26.42389,111.61306,CN,CHN,China,1020715,False,PPLA2,Asia/Shanghai,,101
+1806535,Huzhou,Huzhou,30.8703,120.0933,CN,CHN,China,1015937,False,PPLA2,Asia/Shanghai,,6
+1803936,Wuwei,Wuwei,37.92672,102.63202,CN,CHN,China,1010295,False,PPLA2,Asia/Shanghai,,1542
+1808857,Hanzhong,Hanzhong,33.07507,107.02214,CN,CHN,China,1006557,False,PPLA2,Asia/Shanghai,,517
+7576887,Hezhou,Hezhou,24.40357,111.56675,CN,CHN,China,1005490,False,PPLA2,Asia/Shanghai,,106
+7602670,Zhu Cheng City,Zhu Cheng City,35.99502,119.40259,CN,CHN,China,1000000,False,PPLA3,Asia/Shanghai,,67
+2293538,Abidjan,Abidjan,5.35444,-4.00167,CI,CIV,Ivory Coast,6321017,False,PPLA,Africa/Abidjan,,50
+2293521,Abobo,Abobo,5.41613,-4.0159,CI,CIV,Ivory Coast,1340083,False,PPL,Africa/Abidjan,,105
+2290956,Bouaké,Bouake,7.69385,-5.03031,CI,CIV,Ivory Coast,832371,False,PPLA,Africa/Abidjan,,339
+2286304,Korhogo,Korhogo,9.45803,-5.62961,CI,CIV,Ivory Coast,440926,False,PPLA,Africa/Abidjan,,360
+2290486,Daloa,Daloa,6.87735,-6.45022,CI,CIV,Ivory Coast,421871,False,PPLA,Africa/Abidjan,,262
+2285853,Koumassi,Koumassi,5.29716,-3.96753,CI,CIV,Ivory Coast,412282,False,PPL,Africa/Abidjan,,4
+2282006,San-Pédro,San-Pedro,4.74851,-6.6363,CI,CIV,Ivory Coast,390654,False,PPLA,Africa/Abidjan,,9
+2288829,Gagnoa,Gagnoa,6.13193,-5.9506,CI,CIV,Ivory Coast,277044,False,PPLA,Africa/Abidjan,,202
+2279755,Yamoussoukro,Yamoussoukro,6.82055,-5.27674,CI,CIV,Ivory Coast,275686,True,PPLC,Africa/Abidjan,,214
+2281606,Sinfra,Sinfra,6.62103,-5.91144,CI,CIV,Ivory Coast,245226,False,PPL,Africa/Abidjan,,265
+2232593,Douala,Douala,4.04827,9.70428,CM,CMR,Cameroon,1338082,False,PPLA,Africa/Douala,,19
+2220957,Yaoundé,Yaounde,3.86667,11.51667,CM,CMR,Cameroon,1299369,True,PPLC,Africa/Douala,,726
+2234974,Bamenda,Bamenda,5.9597,10.14597,CM,CMR,Cameroon,420445,False,PPLA,Africa/Douala,,1258
+2235189,Bafoussam,Bafoussam,5.47775,10.41759,CM,CMR,Cameroon,373268,False,PPLA,Africa/Douala,,1438
+2228373,Maroua,Maroua,10.59095,14.31593,CM,CMR,Cameroon,314122,False,PPLA,Africa/Douala,,406
+2224827,Ngaoundéré,Ngaoundere,7.32765,13.58472,CM,CMR,Cameroon,238196,False,PPLA,Africa/Douala,,1128
+2229752,Kumba,Kumba,4.6363,9.4469,CM,CMR,Cameroon,225046,False,PPL,Africa/Douala,,244
+2223763,Nkongsamba,Nkongsamba,4.9547,9.9404,CM,CMR,Cameroon,162309,False,PPL,Africa/Douala,,844
+2233410,Buea,Buea,4.15342,9.24231,CM,CMR,Cameroon,140533,False,PPLA,Africa/Douala,,859
+2229798,Kousséri,Kousseri,12.07689,15.03063,CM,CMR,Cameroon,139024,False,PPL,Africa/Douala,,300
+2314302,Kinshasa,Kinshasa,-4.32758,15.31357,CD,COD,DR Congo,16000000,True,PPLC,Africa/Kinshasa,,281
+922704,Lubumbashi,Lubumbashi,-11.66089,27.47938,CD,COD,DR Congo,2221925,False,PPLA,Africa/Lubumbashi,,1260
+209228,Mbuji-Mayi,Mbuji-Mayi,-6.13603,23.58979,CD,COD,DR Congo,2101332,False,PPLA,Africa/Lubumbashi,,621
+214481,Kananga,Kananga,-5.89624,22.41659,CD,COD,DR Congo,1247168,False,PPLA,Africa/Lubumbashi,,643
+212730,Kisangani,Kisangani,0.51528,25.19099,CD,COD,DR Congo,1181788,False,PPLA,Africa/Lubumbashi,,400
+217831,Bukavu,Bukavu,-2.49077,28.84281,CD,COD,DR Congo,816811,False,PPLA,Africa/Lubumbashi,,1631
+922773,Kolwezi,Kolwezi,-10.71484,25.46674,CD,COD,DR Congo,790248,False,PPLA2,Africa/Lubumbashi,,1485
+922741,Likasi,Likasi,-10.98303,26.7384,CD,COD,DR Congo,635768,False,PPL,Africa/Lubumbashi,,1288
+204953,Tshikapa,Tshikapa,-6.41621,20.79995,CD,COD,DR Congo,634529,False,PPLA2,Africa/Lubumbashi,,484
+2314705,Kikwit,Kikwit,-5.04098,18.81619,CD,COD,DR Congo,509367,False,PPL,Africa/Kinshasa,,466
+2260535,Brazzaville,Brazzaville,-4.26613,15.28318,CG,COG,Republic of the Congo,1982000,True,PPLC,Africa/Brazzaville,,284
+2255414,Pointe-Noire,Pointe-Noire,-4.77609,11.86352,CG,COG,Republic of the Congo,1032000,False,PPLA,Africa/Brazzaville,,12
+2258261,Dolisie,Dolisie,-4.19834,12.66664,CG,COG,Republic of the Congo,121000,False,PPLA,Africa/Brazzaville,,332
+8521334,Nkayi,Nkayi,-4.18396,13.2859,CG,COG,Republic of the Congo,103000,False,PPLA2,Africa/Brazzaville,,181
+2259383,Kayes,Kayes,-4.20493,13.28608,CG,COG,Republic of the Congo,58737,False,PPL,Africa/Brazzaville,,165
+2259655,Impfondo,Impfondo,1.61804,18.05981,CG,COG,Republic of the Congo,48939,False,PPLA,Africa/Brazzaville,,323
+2255564,Ouesso,Ouesso,1.61361,16.05167,CG,COG,Republic of the Congo,40667,False,PPLA,Africa/Brazzaville,,348
+2255542,Owando,Owando,-0.48193,15.89988,CG,COG,Republic of the Congo,35698,False,PPLA,Africa/Brazzaville,,355
+2255285,Sibiti,Sibiti,-3.68192,13.34985,CG,COG,Republic of the Congo,33122,False,PPLA,Africa/Brazzaville,,531
+2258080,Loutété,Loutete,-4.29611,13.85083,CG,COG,Republic of the Congo,27726,False,PPL,Africa/Brazzaville,,215
+4035715,Avarua,Avarua,-21.2075,-159.77546,CK,COK,Cook Islands,13373,True,PPLC,Pacific/Rarotonga,,7
+3688689,Bogotá,Bogota,4.60971,-74.08175,CO,COL,Colombia,7674366,True,PPLC,America/Bogota,,2582
+3687925,Cali,Cali,3.43054,-76.5199,CO,COL,Colombia,2392877,False,PPLA,America/Bogota,,758
+3674962,Medellín,Medellin,6.245,-75.57151,CO,COL,Colombia,1999979,False,PPLA,America/Bogota,1405,1528
+3689147,Barranquilla,Barranquilla,10.96854,-74.78132,CO,COL,Colombia,1206319,False,PPLA,America/Bogota,,24
+3687238,Cartagena,Cartagena,10.39817,-75.49328,CO,COL,Colombia,914552,False,PPLA,America/Bogota,,20
+3685533,Cúcuta,Cucuta,7.90745,-72.5049,CO,COL,Colombia,777106,False,PPLA,America/Bogota,,298
+3667905,Soacha,Soacha,4.57937,-74.21682,CO,COL,Colombia,655025,False,PPLA2,America/Bogota,,2565
+3688465,Bucaramanga,Bucaramanga,7.125,-73.11895,CO,COL,Colombia,581130,False,PPLA,America/Bogota,,1010
+3680656,Ibagué,Ibague,4.43573,-75.20289,CO,COL,Colombia,529635,False,PPLA,America/Bogota,,1047
+3668605,Santa Marta,Santa Marta,11.23855,-74.19427,CO,COL,Colombia,499192,False,PPLA,America/Bogota,,14
+921772,Moroni,Moroni,-11.70216,43.25506,KM,COM,Comoros,74749,True,PPLC,Indian/Comoro,,27
+921753,Moutsamoudou,Moutsamoudou,-12.16672,44.39944,KM,COM,Comoros,26313,False,PPLA,Indian/Comoro,,61
+921889,Fomboni,Fomboni,-12.28759,43.74344,KM,COM,Comoros,17291,False,PPLA,Indian/Comoro,,18
+3374333,Praia,Praia,14.93152,-23.51254,CV,CPV,Cape Verde,137868,True,PPLC,Atlantic/Cape_Verde,0,18
+3374462,Mindelo,Mindelo,16.89014,-24.98042,CV,CPV,Cape Verde,69013,False,PPLA,Atlantic/Cape_Verde,,44
+8521418,Espargos,Espargos,16.75524,-22.9446,CV,CPV,Cape Verde,24500,False,PPLA,Atlantic/Cape_Verde,,53
+3374888,Assomada,Assomada,15.1,-23.68333,CV,CPV,Cape Verde,21297,False,PPLA,Atlantic/Cape_Verde,,391
+3621849,San José,San Jose,9.93388,-84.08489,CR,CRI,Costa Rica,335007,True,PPLC,America/Costa_Rica,,1133
+3622247,Limón,Limon,9.99074,-83.03596,CR,CRI,Costa Rica,63081,False,PPLA,America/Costa_Rica,,29
+3621911,San Francisco,San Francisco,9.9938,-84.12742,CR,CRI,Costa Rica,55923,False,PPLX,America/Costa_Rica,,1131
+3624955,Alajuela,Alajuela,10.01723,-84.21275,CR,CRI,Costa Rica,47494,False,PPLA,America/Costa_Rica,,955
+3623076,Liberia,Liberia,10.63517,-85.43779,CR,CRI,Costa Rica,45380,False,PPLA,America/Costa_Rica,,148
+3622547,Paraíso,Paraiso,9.83847,-83.86655,CR,CRI,Costa Rica,39702,False,PPL,America/Costa_Rica,,1306
+3622228,Puntarenas,Puntarenas,9.97691,-84.8379,CR,CRI,Costa Rica,35650,False,PPLA,America/Costa_Rica,,1
+3621889,San Isidro,San Isidro,9.3674,-83.69713,CR,CRI,Costa Rica,34877,False,PPLA3,America/Costa_Rica,,713
+3623977,Curridabat,Curridabat,9.9139,-84.03595,CR,CRI,Costa Rica,34586,False,PPL,America/Costa_Rica,,1192
+3621841,San José,San Jose,10.95192,-85.13572,CR,CRI,Costa Rica,31430,True,PPL,America/Costa_Rica,,50
+3553478,Havana,Havana,23.13302,-82.38304,CU,CUB,Cuba,2163824,True,PPLC,America/Havana,,41
+3536729,Santiago de Cuba,Santiago de Cuba,20.02287,-75.82171,CU,CUB,Cuba,555865,False,PPLA,America/Havana,,33
+3566067,Camagüey,Camagueey,21.38083,-77.91694,CU,CUB,Cuba,347562,False,PPLA,America/Havana,,102
+3556969,Holguín,Holguin,20.88722,-76.26306,CU,CUB,Cuba,319102,False,PPLA,America/Havana,,146
+3557689,Guantánamo,Guantanamo,20.14444,-75.20917,CU,CUB,Cuba,272801,False,PPLA,America/Havana,,56
+3537906,Santa Clara,Santa Clara,22.40711,-79.96581,CU,CUB,Cuba,250512,False,PPLA,America/Havana,,132
+3569175,Almendares,Almendares,23.11012,-82.42322,CU,CUB,Cuba,240000,False,PPLX,America/Havana,,22
+6956648,Diez de Octubre,Diez de Octubre,23.0881,-82.3597,CU,CUB,Cuba,227293,False,PPLX,America/Havana,,63
+3568342,Arroyo Naranjo,Arroyo Naranjo,23.03811,-82.37703,CU,CUB,Cuba,210053,False,PPL,America/Havana,,85
+3547932,Mantilla,Mantilla,23.06794,-82.34143,CU,CUB,Cuba,206918,False,PPLX,America/Havana,,73
+3513090,Willemstad,Willemstad,12.12246,-68.88641,CW,CUW,Curaçao,125000,True,PPLC,America/Curacao,,1
+13308487,Bandariba,Bandariba,12.09257,-68.83092,CW,CUW,Curaçao,20838,False,PPL,America/Curacao,,1
+2078127,Flying Fish Cove,Flying Fish Cove,-10.42172,105.67912,CX,CXR,Christmas Island,500,True,PPLC,Indian/Christmas,,135
+3580661,George Town,George Town,19.2866,-81.37436,KY,CYM,Cayman Islands,29370,True,PPLC,America/Cayman,,3
+3580477,West Bay,West Bay,19.38197,-81.39281,KY,CYM,Cayman Islands,15335,False,PPLA,America/Cayman,,5
+146268,Nicosia,Nicosia,35.17284,33.35397,CY,CYP,Cyprus,200452,True,PPLC,Asia/Nicosia,,155
+146384,Limassol,Limassol,34.68406,33.03794,CY,CYP,Cyprus,154000,False,PPLA,Asia/Nicosia,,27
+146400,Larnaca,Larnaca,34.9221,33.62794,CY,CYP,Cyprus,72000,False,PPLA,Asia/Nicosia,,24
+146054,Stróvolos,Strovolos,35.14867,33.33384,CY,CYP,Cyprus,67904,False,PPLA2,Asia/Nicosia,,182
+146617,Famagusta,Famagusta,35.12489,33.94135,CY,CYP,Cyprus,42526,False,PPLA,Asia/Famagusta,,12
+146523,Káto Lakatámeia,Kato Lakatameia,35.11755,33.32539,CY,CYP,Cyprus,40000,False,PPLA2,Asia/Nicosia,,215
+146214,Paphos,Paphos,34.77679,32.42451,CY,CYP,Cyprus,35961,False,PPLA,Asia/Nicosia,,81
+146412,Kyrenia,Kyrenia,35.33634,33.31729,CY,CYP,Cyprus,26701,False,PPLA,Asia/Famagusta,,20
+146286,Mórfou,Morfou,35.19869,32.99338,CY,CYP,Cyprus,24070,False,PPL,Asia/Nicosia,,48
+146516,Káto Polemídia,Kato Polemidia,34.69721,32.99324,CY,CYP,Cyprus,23231,False,PPL,Asia/Nicosia,,71
+3067696,Prague,Prague,50.08804,14.42076,CZ,CZE,Czechia,1165581,True,PPLC,Europe/Prague,,202
+3078610,Brno,Brno,49.19522,16.60796,CZ,CZE,Czechia,379466,False,PPLA,Europe/Prague,,226
+3068799,Ostrava,Ostrava,49.83465,18.28204,CZ,CZE,Czechia,279791,False,PPLA,Europe/Prague,,211
+3068160,Pilsen,Pilsen,49.74747,13.37759,CZ,CZE,Czechia,168733,False,PPLA,Europe/Prague,,316
+3071961,Liberec,Liberec,50.76711,15.05619,CZ,CZE,Czechia,102951,False,PPLA,Europe/Prague,,359
+3069011,Olomouc,Olomouc,49.59552,17.25175,CZ,CZE,Czechia,99496,False,PPLA,Europe/Prague,,223
+3077916,České Budějovice,Ceske Budejovice,48.97447,14.47434,CZ,CZE,Czechia,93426,False,PPLA,Europe/Prague,381,390
+3074967,Hradec Králové,Hradec Kralove,50.20923,15.83277,CZ,CZE,Czechia,90596,False,PPLA,Europe/Prague,,250
+3063548,Ústí nad Labem,Usti nad Labem,50.6607,14.03227,CZ,CZE,Czechia,90378,False,PPLA,Europe/Prague,,150
+3068582,Pardubice,Pardubice,50.04075,15.77659,CZ,CZE,Czechia,88520,False,PPLA,Europe/Prague,,227
+2950159,Berlin,Berlin,52.52437,13.41053,DE,DEU,Germany,3426354,True,PPLC,Europe/Berlin,74,43
+2911298,Hamburg,Hamburg,53.55073,9.99302,DE,DEU,Germany,1845229,False,PPLA,Europe/Berlin,,9
+2867714,Munich,Munich,48.13743,11.57549,DE,DEU,Germany,1260391,False,PPLA,Europe/Berlin,,524
+2886242,Köln,Koeln,50.93333,6.95,DE,DEU,Germany,963395,False,PPLA2,Europe/Berlin,,58
+2925533,Frankfurt am Main,Frankfurt am Main,50.11552,8.68417,DE,DEU,Germany,650000,False,PPLA3,Europe/Berlin,,113
+2825297,Stuttgart,Stuttgart,48.78232,9.17702,DE,DEU,Germany,630305,False,PPLA,Europe/Berlin,,252
+2934246,Düsseldorf,Duesseldorf,51.22172,6.77616,DE,DEU,Germany,620523,False,PPLA,Europe/Berlin,,45
+2928810,Essen,Essen,51.45657,7.01228,DE,DEU,Germany,593085,False,PPLA3,Europe/Berlin,,83
+2935517,Dortmund,Dortmund,51.51494,7.466,DE,DEU,Germany,588462,False,PPLA3,Europe/Berlin,,96
+2935022,Dresden,Dresden,51.05089,13.73832,DE,DEU,Germany,556227,False,PPLA,Europe/Berlin,,116
+223817,Djibouti,Djibouti,11.58901,43.14503,DJ,DJI,Djibouti,626512,True,PPLC,Africa/Djibouti,,6
+225284,Ali Sabih,Ali Sabih,11.15583,42.7125,DJ,DJI,Djibouti,50006,False,PPLA,Africa/Djibouti,,699
+223890,Dikhil,Dikhil,11.10454,42.36971,DJ,DJI,Djibouti,32801,False,PPLA,Africa/Djibouti,,479
+220782,Tadjoura,Tadjoura,11.78778,42.88222,DJ,DJI,Djibouti,19533,False,PPLA,Africa/Djibouti,,3
+225037,Arta,Arta,11.52639,42.85194,DJ,DJI,Djibouti,17477,False,PPLA,Africa/Djibouti,,684
+221527,Obock,Obock,11.96693,43.28835,DJ,DJI,Djibouti,15429,False,PPLA,Africa/Djibouti,,13
+3575635,Roseau,Roseau,15.30174,-61.38808,DM,DMA,Dominica,16571,True,PPLC,America/Dominica,,11
+2618425,Copenhagen,Copenhagen,55.67594,12.56553,DK,DNK,Denmark,1153615,True,PPLC,Europe/Copenhagen,,14
+2624652,Århus,Arhus,56.15674,10.21076,DK,DNK,Denmark,285273,False,PPLA2,Europe/Copenhagen,,10
+2615876,Odense,Odense,55.39594,10.38831,DK,DNK,Denmark,180863,False,PPLA2,Europe/Copenhagen,,17
+2624886,Aalborg,Aalborg,57.048,9.9187,DK,DNK,Denmark,142937,False,PPLA,Europe/Copenhagen,,10
+2621942,Frederiksberg,Frederiksberg,55.67938,12.53463,DK,DNK,Denmark,95029,False,PPLA2,Europe/Copenhagen,,15
+2622447,Esbjerg,Esbjerg,55.47028,8.45187,DK,DNK,Denmark,71698,False,PPLA2,Europe/Copenhagen,,17
+2615006,Randers,Randers,56.4607,10.03639,DK,DNK,Denmark,62802,False,PPLA2,Europe/Copenhagen,,12
+2618528,Kolding,Kolding,55.4904,9.47216,DK,DNK,Denmark,61638,False,PPLA2,Europe/Copenhagen,,8
+2619771,Horsens,Horsens,55.86066,9.85034,DK,DNK,Denmark,61074,False,PPLA2,Europe/Copenhagen,4,4
+2610613,Vejle,Vejle,55.70927,9.5357,DK,DNK,Denmark,60231,False,PPLA,Europe/Copenhagen,,5
+3492908,Santo Domingo,Santo Domingo,18.47186,-69.89232,DO,DOM,Dominican Republic,2201941,True,PPLC,America/Santo_Domingo,,24
+3492914,Santiago de los Caballeros,Santiago de los Caballeros,19.45036,-70.69085,DO,DOM,Dominican Republic,1200000,False,PPLA,America/Santo_Domingo,,209
+7874116,Santo Domingo Oeste,Santo Domingo Oeste,18.5,-70.0,DO,DOM,Dominican Republic,701269,False,PPL,America/Santo_Domingo,,58
+8601412,Santo Domingo Este,Santo Domingo Este,18.48511,-69.84757,DO,DOM,Dominican Republic,700000,False,PPLA,America/Santo_Domingo,,41
+3493032,San Pedro de Macorís,San Pedro de Macoris,18.4539,-69.30864,DO,DOM,Dominican Republic,217899,False,PPLA,America/Santo_Domingo,,6
+3500957,La Romana,La Romana,18.42332,-68.96635,DO,DOM,Dominican Republic,208437,False,PPLA,America/Santo_Domingo,,9
+3511550,Bella Vista,Bella Vista,18.45539,-69.9454,DO,DOM,Dominican Republic,175683,False,PPLX,America/Santo_Domingo,,50
+3511540,San Cristóbal,San Cristobal,18.41713,-70.10682,DO,DOM,Dominican Republic,154040,False,PPLA,America/Santo_Domingo,,45
+3493175,Puerto Plata,Puerto Plata,19.79344,-70.6884,DO,DOM,Dominican Republic,146000,False,PPLA,America/Santo_Domingo,,34
+3493146,San Francisco de Macorís,San Francisco de Macoris,19.29377,-70.25285,DO,DOM,Dominican Republic,124763,False,PPLA,America/Santo_Domingo,,123
+2507480,Algiers,Algiers,36.73225,3.08746,DZ,DZA,Algeria,2364230,True,PPLC,Africa/Algiers,,113
+2485926,Oran,Oran,35.69906,-0.63588,DZ,DZA,Algeria,803329,False,PPLA,Africa/Algiers,,118
+2501152,Constantine,Constantine,36.365,6.61472,DZ,DZA,Algeria,448028,False,PPLA,Africa/Algiers,,574
+2506999,Annaba,Annaba,36.9,7.76667,DZ,DZA,Algeria,342703,False,PPLA,Africa/Algiers,,5
+2503769,Blida,Blida,36.47004,2.8277,DZ,DZA,Algeria,331779,False,PPLA,Africa/Algiers,,256
+2505572,Batna City,Batna City,35.55597,6.17414,DZ,DZA,Algeria,289504,False,PPLA,Africa/Algiers,,1037
+2505854,Bab Ezzouar,Bab Ezzouar,36.72615,3.18291,DZ,DZA,Algeria,275630,False,PPL,Africa/Algiers,,20
+2500017,Djelfa,Djelfa,34.67279,3.263,DZ,DZA,Algeria,265833,False,PPLA,Africa/Algiers,,1138
+2481700,Sétif,Setif,36.19112,5.41373,DZ,DZA,Algeria,252127,False,PPLA,Africa/Algiers,,1096
+2481007,Sidi Bel Abbes,Sidi Bel Abbes,35.18994,-0.63085,DZ,DZA,Algeria,210146,False,PPLA,Africa/Algiers,492,476
+3652462,Quito,Quito,-0.22985,-78.52495,EC,ECU,Ecuador,2781641,True,PPLC,America/Guayaquil,,2854
+3657509,Guayaquil,Guayaquil,-2.19616,-79.88621,EC,ECU,Ecuador,2723665,False,PPLA,America/Guayaquil,,14
+3658666,Cuenca,Cuenca,-2.8953,-78.9963,EC,ECU,Ecuador,636996,False,PPLA,America/Guayaquil,,2484
+3651297,Santo Domingo de los Colorados,Santo Domingo de los Colorados,-0.25368,-79.17628,EC,ECU,Ecuador,458580,False,PPLA,America/Guayaquil,,555
+3660689,Ambato,Ambato,-1.24908,-78.61675,EC,ECU,Ecuador,387309,False,PPLA,America/Guayaquil,,2597
+3652941,Portoviejo,Portoviejo,-1.05764,-80.45145,EC,ECU,Ecuador,321800,False,PPLA,America/Guayaquil,,90
+3658192,Eloy Alfaro,Eloy Alfaro,-2.16919,-79.83987,EC,ECU,Ecuador,315724,False,PPLA2,America/Guayaquil,,3
+3654533,Machala,Machala,-3.25886,-79.95876,EC,ECU,Ecuador,289141,False,PPLA,America/Guayaquil,,16
+3654667,Loja,Loja,-3.99313,-79.20422,EC,ECU,Ecuador,274112,False,PPLA,America/Guayaquil,,2060
+3654410,Manta,Manta,-0.94937,-80.73137,EC,ECU,Ecuador,264281,False,PPLA2,America/Guayaquil,,3
+360630,Cairo,Cairo,30.06263,31.24967,EG,EGY,Egypt,9606916,True,PPLC,Africa/Cairo,,23
+361058,Alexandria,Alexandria,31.20176,29.91582,EG,EGY,Egypt,5263542,False,PPLA,Africa/Cairo,,9
+360995,Giza,Giza,30.00944,31.20861,EG,EGY,Egypt,4367343,False,PPLA,Africa/Cairo,,19
+349076,Shubrā al Khaymah,Shubra al Khaymah,30.12511,31.25053,EG,EGY,Egypt,1240289,False,PPLA2,Africa/Cairo,,26
+358619,Port Said,Port Said,31.26531,32.3019,EG,EGY,Egypt,780515,False,PPLA,Africa/Cairo,,16
+359796,Suez,Suez,29.97371,32.52627,EG,EGY,Egypt,699541,False,PPLA,Africa/Cairo,,11
+353225,Madīnat an Naşr,Madinat an Nasr,30.06667,31.3,EG,EGY,Egypt,668413,False,PPLX,Africa/Cairo,,47
+360761,Al Mansurah,Al Mansurah,31.03637,31.38069,EG,EGY,Egypt,621953,False,PPLA,Africa/Cairo,,15
+360829,Al Maḩallah al Kubrá,Al Mahallah al Kubra,30.97063,31.1669,EG,EGY,Egypt,592573,False,PPL,Africa/Cairo,,17
+347497,Tanta,Tanta,30.78847,31.00192,EG,EGY,Egypt,576648,False,PPLA,Africa/Cairo,,18
+343300,Asmara,Asmara,15.33805,38.93184,ER,ERI,Eritrea,563930,True,PPLC,Africa/Asmara,,2334
+333287,Keren,Keren,15.77792,38.45107,ER,ERI,Eritrea,74800,False,PPLA,Africa/Asmara,,1399
+334717,Himora,Himora,14.30427,36.60601,ER,ERI,Eritrea,46100,False,PPL,Africa/Asmara,,585
+330546,Massawa,Massawa,15.60811,39.47455,ER,ERI,Eritrea,23100,False,PPLA,Africa/Asmara,,9
+343386,Assab,Assab,13.00917,42.73944,ER,ERI,Eritrea,21300,False,PPLA,Africa/Asmara,,22
+344901,Mendefera,Mendefera,14.88722,38.81528,ER,ERI,Eritrea,17781,False,PPLA,Africa/Asmara,,1977
+342711,Barentu,Barentu,15.10582,37.59067,ER,ERI,Eritrea,15891,False,PPLA,Africa/Asmara,,1009
+2462881,Laayoune,Laayoune,27.1418,-13.18797,EH,ESH,Western Sahara,196331,False,PPLA,Africa/El_Aaiun,,68
+2463447,Dakhla,Dakhla,23.68477,-15.95798,EH,ESH,Western Sahara,75000,False,PPLA,Africa/El_Aaiun,,6
+2463029,Boujdour,Boujdour,26.13073,-14.48513,EH,ESH,Western Sahara,42651,False,PPL,Africa/El_Aaiun,,28
+2461993,El Marsa,El Marsa,27.09611,-13.41583,EH,ESH,Western Sahara,17917,False,PPL,Africa/El_Aaiun,,4
+3117735,Madrid,Madrid,40.4165,-3.70256,ES,ESP,Spain,3255944,True,PPLC,Europe/Madrid,,665
+3128760,Barcelona,Barcelona,41.38879,2.15899,ES,ESP,Spain,1686208,False,PPLA,Europe/Madrid,15,47
+2509954,Valencia,Valencia,39.47391,-0.37966,ES,ESP,Spain,824340,False,PPLA,Europe/Madrid,15,10
+3104324,Zaragoza,Zaragoza,41.65606,-0.87734,ES,ESP,Spain,686986,False,PPLA,Europe/Madrid,,214
+2510911,Sevilla,Sevilla,37.38283,-5.97317,ES,ESP,Spain,686741,False,PPLA,Europe/Madrid,,16
+2514256,Málaga,Malaga,36.72016,-4.42034,ES,ESP,Spain,591637,False,PPLA2,Europe/Madrid,,22
+2513416,Murcia,Murcia,37.98704,-1.13004,ES,ESP,Spain,471982,False,PPLA,Europe/Madrid,,53
+2512989,Palma,Palma,39.56939,2.65024,ES,ESP,Spain,438234,False,PPLA,Europe/Madrid,,34
+2515270,Las Palmas de Gran Canaria,Las Palmas de Gran Canaria,28.10178,-15.41573,ES,ESP,Spain,383516,False,PPLA,Atlantic/Canary,,122
+2521978,Alicante,Alicante,38.34517,-0.48149,ES,ESP,Spain,348901,False,PPLA2,Europe/Madrid,,18
+588409,Tallinn,Tallinn,59.43696,24.75353,EE,EST,Estonia,394024,True,PPLC,Europe/Tallinn,,12
+588335,Tartu,Tartu,58.38062,26.72509,EE,EST,Estonia,91407,False,PPLA,Europe/Tallinn,,39
+590031,Narva,Narva,59.37722,28.19028,EE,EST,Estonia,54409,False,PPLA2,Europe/Tallinn,,30
+589580,Pärnu,Paernu,58.38588,24.49711,EE,EST,Estonia,40228,False,PPLA,Europe/Tallinn,,6
+589947,Nõmme,Nomme,59.37757,24.68587,EE,EST,Estonia,39422,False,PPLX,Europe/Tallinn,,57
+591260,Kohtla-Järve,Kohtla-Jaerve,59.39861,27.27306,EE,EST,Estonia,35395,False,PPL,Europe/Tallinn,,66
+587577,Viljandi,Viljandi,58.36319,25.59159,EE,EST,Estonia,17407,False,PPLA,Europe/Tallinn,,84
+590447,Maardu,Maardu,59.46529,24.98215,EE,EST,Estonia,16630,False,PPLA2,Europe/Tallinn,,25
+344979,Addis Ababa,Addis Ababa,9.02497,38.74689,ET,ETH,Ethiopia,3860000,True,PPLC,Africa/Addis_Ababa,,2405
+333795,Jijiga,Jijiga,9.35,42.8,ET,ETH,Ethiopia,483000,False,PPLA,Africa/Addis_Ababa,,1646
+336014,Gonder,Gonder,12.6,37.46667,ET,ETH,Ethiopia,466000,False,PPL,Africa/Addis_Ababa,,2201
+331180,Mek'ele,Mek'ele,13.49667,39.47528,ET,ETH,Ethiopia,457900,False,PPLA,Africa/Addis_Ababa,,2068
+330186,Nazrēt,Nazret,8.55,39.26667,ET,ETH,Ethiopia,456900,False,PPL,Africa/Addis_Ababa,,1627
+326282,Warder,Warder,6.97444,45.34083,ET,ETH,Ethiopia,450400,False,PPL,Africa/Addis_Ababa,,556
+343137,Awasa,Awasa,7.06205,38.47635,ET,ETH,Ethiopia,422200,False,PPLA,Africa/Addis_Ababa,,1697
+342884,Bahir Dar,Bahir Dar,11.59364,37.39077,ET,ETH,Ethiopia,350000,False,PPLA,Africa/Addis_Ababa,,1799
+338832,Dire Dawa,Dire Dawa,9.59306,41.86611,ET,ETH,Ethiopia,343000,False,PPLA,Africa/Addis_Ababa,,1204
+339219,Dessie,Dessie,11.13333,39.63333,ET,ETH,Ethiopia,270400,False,PPL,Africa/Addis_Ababa,,2494
+658225,Helsinki,Helsinki,60.16952,24.93545,FI,FIN,Finland,658864,True,PPLC,Europe/Helsinki,,26
+660158,Espoo,Espoo,60.2052,24.6522,FI,FIN,Finland,323910,False,PPLA3,Europe/Helsinki,,16
+634963,Tampere,Tampere,61.49911,23.78712,FI,FIN,Finland,260646,False,PPLA,Europe/Helsinki,,114
+632453,Vantaa,Vantaa,60.29414,25.04099,FI,FIN,Finland,252724,False,PPLA3,Europe/Helsinki,,18
+643492,Oulu,Oulu,65.01236,25.46816,FI,FIN,Finland,216066,False,PPLA,Europe/Helsinki,,15
+633679,Turku,Turku,60.45148,22.26869,FI,FIN,Finland,206655,False,PPLA,Europe/Helsinki,,22
+12747032,East Helsinki,East Helsinki,60.21043,25.08289,FI,FIN,Finland,170557,False,PPLX,Europe/Helsinki,,9
+655194,Jyväskylä,Jyvaeskylae,62.24147,25.72088,FI,FIN,Finland,148744,False,PPLA,Europe/Helsinki,,109
+650224,Kuopio,Kuopio,62.89238,27.67703,FI,FIN,Finland,125462,False,PPLA,Europe/Helsinki,,90
+649360,Lahti,Lahti,60.98267,25.66151,FI,FIN,Finland,121622,False,PPLA,Europe/Helsinki,,105
+8740209,Nasinu,Nasinu,-18.07051,178.51313,FJ,FJI,Fiji,92043,False,PPL,Pacific/Fiji,,31
+2198148,Suva,Suva,-18.13683,178.42531,FJ,FJI,Fiji,77366,True,PPLC,Pacific/Fiji,,-9999
+2204506,Lautoka,Lautoka,-17.61686,177.45049,FJ,FJI,Fiji,52500,False,PPLA,Pacific/Fiji,,47
+2202064,Nadi,Nadi,-17.80309,177.41617,FJ,FJI,Fiji,42284,False,PPL,Pacific/Fiji,,9
+2204582,Labasa,Labasa,-16.4332,179.36451,FJ,FJI,Fiji,27949,False,PPLA,Pacific/Fiji,,5
+2204575,Lami,Lami,-18.11094,178.40943,FJ,FJI,Fiji,24639,False,PPL,Pacific/Fiji,,7
+2198365,Sigatoka,Sigatoka,-18.14307,177.50691,FJ,FJI,Fiji,17622,False,PPL,Pacific/Fiji,,6
+3426691,Stanley,Stanley,-51.69382,-57.85701,FK,FLK,Falkland Islands,2213,True,PPLC,Atlantic/Stanley,,28
+2988507,Paris,Paris,48.85341,2.3488,FR,FRA,France,2138551,True,PPLC,Europe/Paris,,42
+2995469,Marseille,Marseille,43.29695,5.38107,FR,FRA,France,877215,False,PPLA,Europe/Paris,,28
+2996944,Lyon,Lyon,45.74906,4.84789,FR,FRA,France,520774,False,PPLA,Europe/Paris,,173
+2972315,Toulouse,Toulouse,43.60426,1.44367,FR,FRA,France,511684,False,PPLA,Europe/Paris,,150
+2990440,Nice,Nice,43.70313,7.26608,FR,FRA,France,342669,False,PPLA2,Europe/Paris,25,18
+2990969,Nantes,Nantes,47.21725,-1.55336,FR,FRA,France,325070,False,PPLA,Europe/Paris,,19
+12278193,Marne La Vallée,Marne La Vallee,48.83584,2.64241,FR,FRA,France,318325,False,PPL,Europe/Paris,,96
+2973783,Strasbourg,Strasbourg,48.58392,7.74553,FR,FRA,France,274845,False,PPLA,Europe/Paris,,147
+3031582,Bordeaux,Bordeaux,44.84124,-0.58046,FR,FRA,France,265328,False,PPLA,Europe/Paris,,20
+2992166,Montpellier,Montpellier,43.61093,3.87635,FR,FRA,France,248252,False,PPLA2,Europe/Paris,,55
+2611396,Tórshavn,Torshavn,62.00973,-6.77164,FO,FRO,Faroe Islands,13200,True,PPLC,Atlantic/Faroe,,1
+2081986,Palikir,Palikir,6.92477,158.16109,FM,FSM,Micronesia,6942,True,PPLC,Pacific/Pohnpei,90,92
+2399697,Libreville,Libreville,0.39241,9.45356,GA,GAB,Gabon,846090,True,PPLC,Africa/Libreville,,8
+2396518,Port-Gentil,Port-Gentil,-0.71933,8.78151,GA,GAB,Gabon,164018,False,PPLA,Africa/Libreville,,4
+2400555,Franceville,Franceville,-1.63333,13.58357,GA,GAB,Gabon,132895,False,PPLA,Africa/Libreville,,405
+2396657,Owendo,Owendo,0.29123,9.50465,GA,GAB,Gabon,95313,False,PPL,Africa/Libreville,,6
+2396646,Oyem,Oyem,1.5995,11.57933,GA,GAB,Gabon,72939,False,PPLA,Africa/Libreville,,656
+2398269,Moanda,Moanda,-1.56652,13.1987,GA,GAB,Gabon,71099,False,PPL,Africa/Libreville,,416
+2397169,Ntoum,Ntoum,0.39051,9.76096,GA,GAB,Gabon,62445,False,PPL,Africa/Libreville,,11
+2399888,Lambaréné,Lambarene,-0.7001,10.24055,GA,GAB,Gabon,46605,False,PPLA,Africa/Libreville,,26
+2398073,Mouila,Mouila,-1.86846,11.05594,GA,GAB,Gabon,43342,False,PPLA,Africa/Libreville,,92
+12640495,Akanda,Akanda,0.60732,9.32933,GA,GAB,Gabon,41524,False,PPL,Africa/Libreville,,291
+2643743,London,London,51.50853,-0.12574,GB,GBR,United Kingdom,8961989,True,PPLC,Europe/London,,25
+2655603,Birmingham,Birmingham,52.48142,-1.89983,GB,GBR,United Kingdom,1157603,False,PPLA2,Europe/London,,149
+2648579,Glasgow,Glasgow,55.86515,-4.25763,GB,GBR,United Kingdom,626410,False,PPLA2,Europe/London,,40
+2643123,Manchester,Manchester,53.48095,-2.23743,GB,GBR,United Kingdom,568996,False,PPLA2,Europe/London,,51
+2638077,Sheffield,Sheffield,53.38297,-1.4659,GB,GBR,United Kingdom,556500,False,PPLA2,Europe/London,,75
+2644688,Leeds,Leeds,53.79648,-1.54785,GB,GBR,United Kingdom,536280,False,PPLA2,Europe/London,,50
+2650225,Edinburgh,Edinburgh,55.95206,-3.19648,GB,GBR,United Kingdom,514990,False,PPLA,Europe/London,,66
+2644210,Liverpool,Liverpool,53.41058,-2.97794,GB,GBR,United Kingdom,496770,False,PPLA2,Europe/London,,30
+2654675,Bristol,Bristol,51.45523,-2.59665,GB,GBR,United Kingdom,479024,False,PPLA2,Europe/London,,21
+2653822,Cardiff,Cardiff,51.48,-3.18,GB,GBR,United Kingdom,372089,False,PPLA,Europe/London,,17
+611717,Tbilisi,Tbilisi,41.69143,44.83412,GE,GEO,Georgia,1049498,True,PPLC,Asia/Tbilisi,,433
+615532,Batumi,Batumi,41.64077,41.6306,GE,GEO,Georgia,186949,False,PPLA,Asia/Tbilisi,,8
+613607,Kutaisi,Kutaisi,42.26791,42.69459,GE,GEO,Georgia,135201,False,PPLA,Asia/Tbilisi,,153
+612287,Rustavi,Rustavi,41.56271,44.9787,GE,GEO,Georgia,128249,False,PPLA,Asia/Tbilisi,,345
+611847,Sokhumi,Sokhumi,43.00697,40.9893,GE,GEO,Georgia,65439,False,PPLA,Europe/Moscow,,21
+614455,Gori,Gori,41.98532,44.1129,GE,GEO,Georgia,41933,False,PPLA,Asia/Tbilisi,,602
+612366,Poti,Poti,42.14272,41.67384,GE,GEO,Georgia,41175,False,PPLA2,Asia/Tbilisi,,6
+610824,Zugdidi,Zugdidi,42.5084,41.86796,GE,GEO,Georgia,40067,False,PPLA,Asia/Tbilisi,,128
+611403,Ts’khinvali,Ts'khinvali,42.22764,43.96861,GE,GEO,Georgia,32180,False,PPL,Asia/Tbilisi,,874
+615912,Stantsiya Novyy Afon,Stantsiya Novyy Afon,43.08056,40.83833,GE,GEO,Georgia,26636,False,PPL,Asia/Tbilisi,,8
+3042287,Saint Peter Port,Saint Peter Port,49.45981,-2.53527,GG,GGY,Guernsey,16488,True,PPLC,Europe/Guernsey,,10
+2298890,Kumasi,Kumasi,6.68848,-1.62443,GH,GHA,Ghana,2544530,False,PPLA,Africa/Accra,,270
+2306104,Accra,Accra,5.55602,-0.1969,GH,GHA,Ghana,1963264,True,PPLC,Africa/Accra,,33
+2294877,Tamale,Tamale,9.40079,-0.8393,GH,GHA,Ghana,464316,False,PPLA,Africa/Accra,,196
+2294915,Takoradi,Takoradi,4.89816,-1.76029,GH,GHA,Ghana,389114,False,PPL,Africa/Accra,,10
+11808941,Sekondi,Sekondi,4.93422,-1.71454,GH,GHA,Ghana,285506,False,PPLA2,Africa/Accra,,7
+2302357,Cape Coast,Cape Coast,5.10535,-1.2466,GH,GHA,Ghana,212426,False,PPLA,Africa/Accra,,21
+2306079,Atsiaman,Atsiaman,5.69775,-0.32824,GH,GHA,Ghana,202932,False,PPL,Africa/Accra,,45
+2304121,Ashaiman,Ashaiman,5.69951,-0.03484,GH,GHA,Ghana,190972,False,PPL,Africa/Accra,,23
+2296606,Obuase,Obuase,6.20228,-1.66796,GH,GHA,Ghana,179604,False,PPL,Africa/Accra,,215
+2294700,Tema,Tema,5.6698,-0.01657,GH,GHA,Ghana,155782,False,PPL,Africa/Accra,,27
+2411585,Gibraltar,Gibraltar,36.14474,-5.35257,GI,GIB,Gibraltar,26544,True,PPLC,Europe/Gibraltar,,11
+2422465,Conakry,Conakry,9.53795,-13.67729,GN,GIN,Guinea,1928389,True,PPLC,Africa/Conakry,,13
+2422488,Camayenne,Camayenne,9.535,-13.68778,GN,GIN,Guinea,1871242,False,PPL,Africa/Conakry,,6
+2416969,Nzérékoré,Nzerekore,7.75624,-8.8179,GN,GIN,Guinea,226426,False,PPLA,Africa/Conakry,,482
+2419992,Kankan,Kankan,10.38542,-9.30568,GN,GIN,Guinea,221428,False,PPLA,Africa/Conakry,,381
+2417786,Manéah,Maneah,9.73333,-13.41667,GN,GIN,Guinea,194297,False,PPL,Africa/Conakry,,46
+2421535,Dubréka,Dubreka,9.79111,-13.52333,GN,GIN,Guinea,182296,False,PPLA2,Africa/Conakry,,19
+2419533,Kindia,Kindia,10.05692,-12.86576,GN,GIN,Guinea,161024,False,PPLA,Africa/Conakry,,415
+2415703,Siguiri,Siguiri,11.42282,-9.16852,GN,GIN,Guinea,148018,False,PPLA2,Africa/Conakry,,368
+2421820,Dixinn,Dixinn,9.55111,-13.67306,GN,GIN,Guinea,137287,False,PPL,Africa/Conakry,,7
+2419472,Kissidougou,Kissidougou,9.1848,-10.09987,GN,GIN,Guinea,116019,False,PPLA2,Africa/Conakry,,530
+3578959,Les Abymes,Les Abymes,16.273,-61.50507,GP,GLP,Guadeloupe,53514,False,PPL,America/Guadeloupe,,20
+3579767,Baie-Mahault,Baie-Mahault,16.26738,-61.58543,GP,GLP,Guadeloupe,30837,False,PPL,America/Guadeloupe,,18
+3578978,Le Gosier,Le Gosier,16.20618,-61.49306,GP,GLP,Guadeloupe,28698,False,PPL,America/Guadeloupe,,24
+3578682,Petit-Bourg,Petit-Bourg,16.19163,-61.5914,GP,GLP,Guadeloupe,24994,False,PPL,America/Guadeloupe,,7
+3578466,Sainte-Anne,Sainte-Anne,16.22564,-61.38098,GP,GLP,Guadeloupe,22859,False,PPL,America/Guadeloupe,,3
+3578967,Le Moule,Le Moule,16.33164,-61.34656,GP,GLP,Guadeloupe,22692,False,PPL,America/Guadeloupe,,8
+3578447,Sainte-Rose,Sainte-Rose,16.33264,-61.6969,GP,GLP,Guadeloupe,20192,False,PPL,America/Guadeloupe,,22
+3579585,Capesterre-Belle-Eau,Capesterre-Belle-Eau,16.04495,-61.56425,GP,GLP,Guadeloupe,19821,False,PPL,America/Guadeloupe,,17
+3578599,Pointe-à-Pitre,Pointe-a-Pitre,16.23638,-61.53459,GP,GLP,Guadeloupe,15181,False,PPLA3,America/Guadeloupe,,-9999
+3579732,Basse-Terre,Basse-Terre,15.99714,-61.73214,GP,GLP,Guadeloupe,11472,True,PPLC,America/Guadeloupe,,11
+2411989,Serekunda,Serekunda,13.43833,-16.67806,GM,GMB,Gambia,340000,False,PPL,Africa/Banjul,,15
+2413753,Brikama,Brikama,13.27136,-16.64944,GM,GMB,Gambia,97233,False,PPLA,Africa/Banjul,,24
+2413709,Bununka Kunda,Bununka Kunda,13.42722,-16.68528,GM,GMB,Gambia,66449,False,PPLX,Africa/Banjul,,20
+2411880,Sukuta,Sukuta,13.41033,-16.70815,GM,GMB,Gambia,56472,False,PPL,Africa/Banjul,,27
+12640502,Talinding,Talinding,13.42558,-16.67261,GM,GMB,Gambia,48687,False,PPL,Africa/Banjul,,24
+2413525,Faji Kunda,Faji Kunda,13.41778,-16.66667,GM,GMB,Gambia,45757,False,PPL,Africa/Banjul,,16
+2413920,Bakau,Bakau,13.47806,-16.68194,GM,GMB,Gambia,43098,False,PPL,Africa/Banjul,,22
+2413876,Banjul,Banjul,13.45274,-16.57803,GM,GMB,Gambia,37274,True,PPLC,Africa/Banjul,,5
+2412452,Nema Kunku,Nema Kunku,13.25,-15.88333,GM,GMB,Gambia,34390,False,PPL,Africa/Banjul,,18
+2413515,Farafenni,Farafenni,13.56667,-15.6,GM,GMB,Gambia,32883,False,PPL,Africa/Banjul,,15
+2374775,Bissau,Bissau,11.86357,-15.59767,GW,GNB,Guinea-Bissau,439704,True,PPLC,Africa/Bissau,,13
+2372532,Gabú,Gabu,12.28,-14.22222,GW,GNB,Guinea-Bissau,49371,False,PPLA,Africa/Bissau,,64
+2375254,Bafatá,Bafata,12.16583,-14.66167,GW,GNB,Guinea-Bissau,33502,False,PPLA,Africa/Bissau,,20
+2368657,Xitole,Xitole,11.73333,-14.81667,GW,GNB,Guinea-Bissau,19424,False,PPL,Africa/Bissau,,32
+2310046,Bata,Bata,1.86391,9.76582,GQ,GNQ,Equatorial Guinea,173046,False,PPLA,Africa/Malabo,,13
+2309527,Malabo,Malabo,3.75578,8.78166,GQ,GNQ,Equatorial Guinea,155963,False,PPLA,Africa/Malabo,,34
+2309332,Ebebiyin,Ebebiyin,2.15218,11.33013,GQ,GNQ,Equatorial Guinea,24831,False,PPLA,Africa/Malabo,,392
+12226438,Ciudad de la Paz,Ciudad de la Paz,1.5925,10.82361,GQ,GNQ,Equatorial Guinea,2000,True,PPLC,Africa/Malabo,454,646
+264371,Athens,Athens,37.98376,23.72784,GR,GRC,Greece,664046,True,PPLC,Europe/Athens,70,84
+734077,Thessaloníki,Thessaloniki,40.64072,22.93493,GR,GRC,Greece,317778,False,PPLA,Europe/Athens,,-9999
+255683,Pátra,Patra,38.2462,21.73508,GR,GRC,Greece,168034,False,PPLA,Europe/Athens,,52
+255274,Piraeus,Piraeus,37.94203,23.64619,GR,GRC,Greece,163688,False,PPLA3,Europe/Athens,,29
+258576,Lárisa,Larisa,39.62847,22.42112,GR,GRC,Greece,146926,False,PPLA,Europe/Athens,,76
+255524,Peristéri,Peristeri,38.01539,23.69187,GR,GRC,Greece,139981,False,PPLA3,Europe/Athens,,66
+261745,Irákleion,Irakleion,35.32787,25.14341,GR,GRC,Greece,137154,False,PPLA,Europe/Athens,,60
+261414,Kallithéa,Kallithea,37.95,23.7,GR,GRC,Greece,100641,False,PPLA3,Europe/Athens,,28
+265488,Acharnés,Acharnes,38.08333,23.73333,GR,GRC,Greece,99346,False,PPLA3,Europe/Athens,,171
+736083,Kalamariá,Kalamaria,40.5825,22.95028,GR,GRC,Greece,91518,False,PPLA3,Europe/Athens,,39
+3579925,Saint George's,Saint George's,12.05288,-61.75226,GD,GRD,Grenada,7500,True,PPLC,America/Grenada,6,26
+3421319,Nuuk,Nuuk,64.18347,-51.72157,GL,GRL,Greenland,14798,True,PPLC,America/Nuuk,5,1
+3598132,Guatemala City,Guatemala City,14.64072,-90.51327,GT,GTM,Guatemala,994938,True,PPLC,America/Guatemala,,1508
+3587902,Villa Nueva,Villa Nueva,14.52512,-90.58544,GT,GTM,Guatemala,618397,False,PPLA2,America/Guatemala,,1331
+3592519,Mixco,Mixco,14.63077,-90.60711,GT,GTM,Guatemala,465773,False,PPLA2,America/Guatemala,,1726
+3598119,Cobán,Coban,15.47025,-90.37455,GT,GTM,Guatemala,212047,False,PPLA,America/Guatemala,,1326
+3590979,Quetzaltenango,Quetzaltenango,14.84462,-91.52316,GT,GTM,Guatemala,180706,False,PPLA,America/Guatemala,,2351
+3595237,Jalapa,Jalapa,14.63542,-89.99112,GT,GTM,Guatemala,159840,False,PPLA,America/Guatemala,,1360
+3595803,Escuintla,Escuintla,14.30097,-90.78816,GT,GTM,Guatemala,156313,False,PPLA,America/Guatemala,,349
+3587923,Villa Canales,Villa Canales,14.48285,-90.53425,GT,GTM,Guatemala,155423,False,PPLA2,America/Guatemala,,1218
+3595069,Jutiapa,Jutiapa,14.28491,-89.88798,GT,GTM,Guatemala,145880,False,PPLA,America/Guatemala,,871
+3598655,Chichicastenango,Chichicastenango,14.94333,-91.11116,GT,GTM,Guatemala,141567,False,PPLA2,America/Guatemala,,2077
+3382160,Cayenne,Cayenne,4.9381,-52.33455,GF,GUF,French Guiana,61550,True,PPLC,America/Cayenne,,7
+3380965,Matoury,Matoury,4.84921,-52.32355,GF,GUF,French Guiana,26350,False,PPLA3,America/Cayenne,,13
+3380387,Saint-Laurent-du-Maroni,Saint-Laurent-du-Maroni,5.50153,-54.02916,GF,GUF,French Guiana,24287,False,PPLA2,America/Cayenne,,10
+3381303,Kourou,Kourou,5.16281,-52.64265,GF,GUF,French Guiana,24029,False,PPLA3,America/Cayenne,,7
+3380892,Rémire-Montjoly,Remire-Montjoly,4.91667,-52.26667,GF,GUF,French Guiana,19029,False,PPL,America/Cayenne,,7
+4043909,Dededo Village,Dededo Village,13.51777,144.8391,GU,GUM,Guam,44943,False,PPLA,Pacific/Guam,98,100
+4038794,Yigo Village,Yigo Village,13.53605,144.88855,GU,GUM,Guam,20539,False,PPLA,Pacific/Guam,140,132
+4038659,Tamuning-Tumon-Harmon Village,Tamuning-Tumon-Harmon Village,13.48773,144.78138,GU,GUM,Guam,19685,False,PPLA,Pacific/Guam,13,20
+7874631,Tamuning,Tamuning,13.48754,144.78143,GU,GUM,Guam,19685,False,PPLX,Pacific/Guam,13,20
+7268049,Mangilao Village,Mangilao Village,13.44761,144.80109,GU,GUM,Guam,15191,False,PPLA,Pacific/Guam,62,58
+4044012,Hagåtña,Hagatna,13.47567,144.74886,GU,GUM,Guam,1051,True,PPLC,Pacific/Guam,3,5
+3378644,Georgetown,Georgetown,6.80448,-58.15527,GY,GUY,Guyana,235017,True,PPLC,America/Guyana,,3
+3377408,Linden,Linden,6.00815,-58.30724,GY,GUY,Guyana,44690,False,PPLA,America/Guyana,,4
+3376762,New Amsterdam,New Amsterdam,6.24924,-57.51578,GY,GUY,Guyana,35039,False,PPLA,America/Guyana,,1
+1819729,Hong Kong,Hong Kong,22.27832,114.17469,HK,HKG,Hong Kong,7396076,True,PPLC,Asia/Hong_Kong,,60
+12747063,New Territories,New Territories,22.42441,114.11095,HK,HKG,Hong Kong,3984077,False,PPLX,Asia/Hong_Kong,,231
+1819609,Kowloon,Kowloon,22.31667,114.18333,HK,HKG,Hong Kong,2232339,False,PPLX,Asia/Hong_Kong,,92
+12747064,Hong Kong Island,Hong Kong Island,22.26302,114.18419,HK,HKG,Hong Kong,1195529,False,PPLX,Asia/Hong_Kong,,170
+1931681,Victoria,Victoria,22.2875,114.14417,HK,HKG,Hong Kong,956800,False,PPL,Asia/Hong_Kong,,31
+1818446,Tuen Mun,Tuen Mun,22.39175,113.97157,HK,HKG,Hong Kong,507900,False,PPLA,Asia/Hong_Kong,,7
+1818920,Sha Tin,Sha Tin,22.38333,114.18333,HK,HKG,Hong Kong,495200,False,PPLA,Asia/Hong_Kong,,115
+1818953,Sham Shui Po,Sham Shui Po,22.33023,114.15945,HK,HKG,Hong Kong,431090,False,PPLA,Asia/Hong_Kong,,10
+1818304,Wong Tai Sin,Wong Tai Sin,22.35,114.18333,HK,HKG,Hong Kong,425235,False,PPLA,Asia/Hong_Kong,,253
+1819607,Kowloon City,Kowloon City,22.33047,114.19222,HK,HKG,Hong Kong,418732,False,PPL,Asia/Hong_Kong,,11
+3600949,Tegucigalpa,Tegucigalpa,14.0818,-87.20681,HN,HND,Honduras,850848,True,PPLC,America/Tegucigalpa,,944
+3601782,San Pedro Sula,San Pedro Sula,15.50585,-88.02588,HN,HND,Honduras,801259,False,PPLA,America/Tegucigalpa,,90
+3608248,La Ceiba,La Ceiba,15.75971,-86.78221,HN,HND,Honduras,222055,False,PPLA,America/Tegucigalpa,,14
+3613533,Choloma,Choloma,15.61444,-87.95302,HN,HND,Honduras,139100,False,PPLA2,America/Tegucigalpa,,41
+3610613,El Progreso,El Progreso,15.4,-87.8,HN,HND,Honduras,100810,False,PPLA2,America/Tegucigalpa,,48
+3613528,Ciudad Choluteca,Ciudad Choluteca,13.30569,-87.17882,HN,HND,Honduras,75872,False,PPLA,America/Tegucigalpa,,45
+3613321,Comayagua,Comayagua,14.45577,-87.63968,HN,HND,Honduras,58784,False,PPLA,America/Tegucigalpa,,551
+3600026,Puerto Cortez,Puerto Cortez,15.82562,-87.92968,HN,HND,Honduras,48013,False,PPL,America/Tegucigalpa,,10
+3607511,La Lima,La Lima,15.43333,-87.91667,HN,HND,Honduras,45955,False,PPL,America/Tegucigalpa,,33
+3612907,Danlí,Danli,14.03333,-86.58333,HN,HND,Honduras,44799,False,PPL,America/Tegucigalpa,,763
+3186886,Zagreb,Zagreb,45.81444,15.97798,HR,HRV,Croatia,663592,True,PPLC,Europe/Zagreb,,135
+3190261,Split,Split,43.50891,16.43915,HR,HRV,Croatia,149830,False,PPLA,Europe/Zagreb,,12
+3191648,Rijeka,Rijeka,45.32673,14.44241,HR,HRV,Croatia,107964,False,PPLA,Europe/Zagreb,,12
+3193935,Osijek,Osijek,45.55066,18.6942,HR,HRV,Croatia,75535,False,PPLA,Europe/Zagreb,,87
+3186952,Zadar,Zadar,44.11578,15.22514,HR,HRV,Croatia,67309,False,PPLA,Europe/Zagreb,,2
+3190966,Sesvete,Sesvete,45.83111,16.11639,HR,HRV,Croatia,55313,False,PPL,Europe/Zagreb,,142
+3192224,Pula,Pula,44.86833,13.84806,HR,HRV,Croatia,52220,False,PPLA2,Europe/Zagreb,,11
+3190586,Slavonski Brod,Slavonski Brod,45.16158,18.0163,HR,HRV,Croatia,45005,False,PPLA,Europe/Zagreb,,83
+3345300,Karlovac,Karlovac,45.49167,15.55,HR,HRV,Croatia,41869,False,PPLA,Europe/Zagreb,,114
+13405691,Liberpolis,Liberpolis,45.77468,18.88007,HR,HRV,Croatia,63,True,PPLG,Europe/Zagreb,,77
+3718426,Port-au-Prince,Port-au-Prince,18.54349,-72.33881,HT,HTI,Haiti,1234742,True,PPLC,America/Port-au-Prince,,27
+3728338,Carrefour,Carrefour,18.54114,-72.39922,HT,HTI,Haiti,442156,False,PPLX,America/Port-au-Prince,,32
+3726786,Delmas,Delmas,18.54478,-72.30036,HT,HTI,Haiti,382920,False,PPL,America/Port-au-Prince,,127
+3718420,Port-de-Paix,Port-de-Paix,19.93984,-72.83037,HT,HTI,Haiti,306217,False,PPLA,America/Port-au-Prince,,11
+3719028,Pétionville,Petionville,18.5125,-72.28528,HT,HTI,Haiti,283052,False,PPL,America/Port-au-Prince,,389
+3727135,Croix-des-Bouquets,Croix-des-Bouquets,18.57677,-72.22625,HT,HTI,Haiti,229127,False,PPLA2,America/Port-au-Prince,,69
+3723779,Jacmel,Jacmel,18.23569,-72.53686,HT,HTI,Haiti,137966,False,PPLA,America/Port-au-Prince,,29
+3728474,Cap-Haïtien,Cap-Haitien,19.75938,-72.19815,HT,HTI,Haiti,134815,False,PPLA,America/Port-au-Prince,,7
+3722286,Léogâne,Leogane,18.5111,-72.63343,HT,HTI,Haiti,134190,False,PPL,America/Port-au-Prince,,18
+3731088,Arcahaie,Arcahaie,18.77019,-72.51226,HT,HTI,Haiti,130306,False,PPL,America/Port-au-Prince,15,15
+3054643,Budapest,Budapest,47.49835,19.04045,HU,HUN,Hungary,1741041,True,PPLC,Europe/Budapest,,104
+721472,Debrecen,Debrecen,47.53167,21.62444,HU,HUN,Hungary,202402,False,PPLA,Europe/Budapest,,124
+715429,Szeged,Szeged,46.253,20.14824,HU,HUN,Hungary,160766,False,PPLA,Europe/Budapest,,84
+717582,Miskolc,Miskolc,48.10327,20.77806,HU,HUN,Hungary,154521,False,PPLA,Europe/Budapest,,127
+3046526,Pécs,Pecs,46.07617,18.22814,HU,HUN,Hungary,145347,False,PPLA,Europe/Budapest,,155
+7284824,Budapest XI. kerület,Budapest XI. keruelet,47.47603,19.03605,HU,HUN,Hungary,139049,False,PPLX,Europe/Budapest,,107
+3042430,Zugló,Zuglo,47.51758,19.10549,HU,HUN,Hungary,130000,False,PPLX,Europe/Budapest,,111
+3052009,Győr,Gyor,47.68333,17.63512,HU,HUN,Hungary,129301,False,PPLA,Europe/Budapest,,122
+7284842,Budapest III. kerület,Budapest III. keruelet,47.54157,19.04501,HU,HUN,Hungary,123723,False,PPLX,Europe/Budapest,,109
+716935,Nyíregyháza,Nyiregyhaza,47.95539,21.71671,HU,HUN,Hungary,117689,False,PPLA,Europe/Budapest,,111
+1642911,Jakarta,Jakarta,-6.21462,106.84513,ID,IDN,Indonesia,8540121,True,PPLC,Asia/Jakarta,,16
+1625822,Surabaya,Surabaya,-7.24917,112.75083,ID,IDN,Indonesia,2874314,False,PPLA,Asia/Jakarta,,8
+1649378,Bekasi,Bekasi,-6.2349,106.9896,ID,IDN,Indonesia,2564940,False,PPL,Asia/Jakarta,,18
+1650357,Bandung,Bandung,-6.92222,107.60694,ID,IDN,Indonesia,2444160,False,PPLA,Asia/Jakarta,,714
+1214520,Medan,Medan,3.58333,98.66667,ID,IDN,Indonesia,2435252,False,PPLA,Asia/Jakarta,,26
+1645524,Depok,Depok,-6.4,106.81861,ID,IDN,Indonesia,2145400,False,PPL,Asia/Jakarta,,92
+1625084,Tangerang,Tangerang,-6.17806,106.63,ID,IDN,Indonesia,1912679,False,PPL,Asia/Jakarta,,18
+1633070,Palembang,Palembang,-2.91673,104.7458,ID,IDN,Indonesia,1668848,False,PPLA,Asia/Jakarta,,5
+1627896,Semarang,Semarang,-6.99306,110.42083,ID,IDN,Indonesia,1653524,False,PPLA,Asia/Jakarta,,18
+1622786,Makassar,Makassar,-5.14861,119.43194,ID,IDN,Indonesia,1423877,False,PPLA,Asia/Makassar,,6
+8581443,South Tangerang,South Tangerang,-6.28862,106.71789,ID,IDN,Indonesia,1404785,False,PPL,Asia/Jakarta,,39
+1642548,Jepara,Jepara,-6.5924,110.671,ID,IDN,Indonesia,1257912,False,PPLA2,Asia/Jakarta,,5
+1624917,Bandar Lampung,Bandar Lampung,-5.42917,105.26111,ID,IDN,Indonesia,1166066,False,PPLA,Asia/Jakarta,,95
+6295587,Batam,Batam,1.14937,104.02491,ID,IDN,Indonesia,1164352,False,PPL,Asia/Jakarta,,38
+1648473,Bogor,Bogor,-6.59444,106.78917,ID,IDN,Indonesia,1127408,False,PPL,Asia/Jakarta,,245
+1631761,Pekanbaru,Pekanbaru,0.51667,101.44167,ID,IDN,Indonesia,1085000,False,PPLA,Asia/Jakarta,,19
+3042237,Douglas,Douglas,54.15,-4.48333,IM,IMN,Isle of Man,26218,True,PPLC,Europe/Isle_of_Man,,31
+1275339,Mumbai,Mumbai,19.07283,72.88261,IN,IND,India,12691836,False,PPLA,Asia/Kolkata,,8
+1273294,Delhi,Delhi,28.65195,77.23149,IN,IND,India,11034555,False,PPLA,Asia/Kolkata,,227
+1277333,Bengaluru,Bengaluru,12.97194,77.59369,IN,IND,India,8495492,False,PPLA,Asia/Kolkata,920,914
+1269843,Hyderabad,Hyderabad,17.38405,78.45636,IN,IND,India,6993262,False,PPLA,Asia/Kolkata,,515
+1279233,Ahmedabad,Ahmedabad,23.02579,72.58727,IN,IND,India,6357693,False,PPL,Asia/Kolkata,,56
+1264527,Chennai,Chennai,13.08784,80.27847,IN,IND,India,4681087,False,PPLA,Asia/Kolkata,,14
+1275004,Kolkata,Kolkata,22.56263,88.36304,IN,IND,India,4631392,False,PPLA,Asia/Kolkata,,11
+1255364,Surat,Surat,21.19594,72.83023,IN,IND,India,4591246,False,PPL,Asia/Kolkata,,20
+1259229,Pune,Pune,18.51957,73.85535,IN,IND,India,3124458,False,PPL,Asia/Kolkata,,554
+1269515,Jaipur,Jaipur,26.91962,75.78781,IN,IND,India,3046163,False,PPLA,Asia/Kolkata,,435
+1267995,Kanpur,Kanpur,26.46523,80.34975,IN,IND,India,2823249,False,PPL,Asia/Kolkata,,137
+6619347,Navi Mumbai,Navi Mumbai,19.03681,73.01582,IN,IND,India,2600000,False,PPLX,Asia/Kolkata,,14
+1264733,Lucknow,Lucknow,26.83928,80.92313,IN,IND,India,2472011,False,PPLA,Asia/Kolkata,,126
+1262180,Nagpur,Nagpur,21.14631,79.08491,IN,IND,India,2405665,False,PPLA2,Asia/Kolkata,,319
+1273865,Coimbatore,Coimbatore,11.00555,76.96612,IN,IND,India,2136916,False,PPL,Asia/Kolkata,411,425
+1269743,Indore,Indore,22.71792,75.8333,IN,IND,India,1994397,False,PPL,Asia/Kolkata,,550
+1254661,Thāne,Thane,19.19704,72.96355,IN,IND,India,1841488,False,PPL,Asia/Kolkata,,23
+1253573,Vadodara,Vadodara,22.29941,73.20812,IN,IND,India,1822221,False,PPL,Asia/Kolkata,,46
+1275841,Bhopal,Bhopal,23.25469,77.40289,IN,IND,India,1798218,False,PPLA,Asia/Kolkata,,523
+1258393,Rasapūdipalem,Rasapudipalem,17.73308,83.31622,IN,IND,India,1728128,False,PPL,Asia/Kolkata,,45
+7626690,Pimpri-Chinchwad,Pimpri-Chinchwad,18.61867,73.80375,IN,IND,India,1727692,False,PPL,Asia/Kolkata,,568
+1260086,Patna,Patna,25.59408,85.13563,IN,IND,India,1684297,False,PPLA,Asia/Kolkata,,53
+12165956,Kallakurichi,Kallakurichi,11.73379,78.95925,IN,IND,India,1682687,False,PPLA2,Asia/Kolkata,,124
+1264728,Ludhiana,Ludhiana,30.91204,75.85379,IN,IND,India,1618879,False,PPL,Asia/Kolkata,,256
+1261731,Nashik,Nashik,19.99727,73.79096,IN,IND,India,1486053,False,PPLA2,Asia/Kolkata,,584
+1264521,Madurai,Madurai,9.919,78.11953,IN,IND,India,1465625,False,PPLA2,Asia/Kolkata,,139
+1254361,Tirunelveli,Tirunelveli,8.72742,77.6838,IN,IND,India,1435844,False,PPLA2,Asia/Kolkata,,49
+1279259,Agra,Agra,27.18333,78.01667,IN,IND,India,1430055,False,PPLA2,Asia/Kolkata,,166
+1271951,Faridabad,Faridabad,28.41124,77.31316,IN,IND,India,1414050,False,PPLA2,Asia/Kolkata,,209
+1258847,Rājkot,Rajkot,22.29161,70.79322,IN,IND,India,1390640,False,PPL,Asia/Kolkata,,140
+1262111,Najafgarh,Najafgarh,28.60922,76.97982,IN,IND,India,1365000,False,PPL,Asia/Kolkata,,215
+1269300,Jamshedpur,Jamshedpur,22.80278,86.18545,IN,IND,India,1339438,False,PPL,Asia/Kolkata,,171
+1270926,Gorakhpur,Gorakhpur,29.44768,75.67206,IN,IND,India,1324570,False,PPL,Asia/Kolkata,,218
+1259652,Pimpri,Pimpri,18.62292,73.80696,IN,IND,India,1284606,False,PPL,Asia/Kolkata,,571
+1268295,Kalyān,Kalyan,19.2437,73.13554,IN,IND,India,1262255,False,PPL,Asia/Kolkata,,10
+1272423,Dombivali,Dombivali,19.21667,73.08333,IN,IND,India,1247327,False,PPL,Asia/Kolkata,,11
+1263214,Meerut,Meerut,28.98002,77.70636,IN,IND,India,1223184,False,PPL,Asia/Kolkata,,228
+1253133,Virār,Virar,19.45591,72.81136,IN,IND,India,1222390,False,PPL,Asia/Kolkata,,9
+1261162,Nowrangapur,Nowrangapur,19.23114,82.54826,IN,IND,India,1220946,False,PPLA2,Asia/Kolkata,,578
+1255634,Srinagar,Srinagar,34.08565,74.80555,IN,IND,India,1206419,False,PPLA,Asia/Kolkata,,1589
+1271308,Ghāziābād,Ghaziabad,28.66535,77.43915,IN,IND,India,1199191,False,PPLA2,Asia/Kolkata,,214
+1272979,Dhanbad,Dhanbad,23.79759,86.42992,IN,IND,India,1196214,False,PPLA2,Asia/Kolkata,,247
+1278149,Aurangabad,Aurangabad,19.87757,75.34226,IN,IND,India,1175116,False,PPLA2,Asia/Kolkata,,588
+1253405,Varanasi,Varanasi,25.31668,83.01041,IN,IND,India,1164404,False,PPL,Asia/Kolkata,,86
+1278710,Amritsar,Amritsar,31.62234,74.87534,IN,IND,India,1159227,False,PPL,Asia/Kolkata,,244
+1253184,Vijayawada,Vijayawada,16.50745,80.6466,IN,IND,India,1143232,False,PPL,Asia/Kolkata,,47
+1258526,Ranchi,Ranchi,23.34316,85.3094,IN,IND,India,1120374,False,PPLA,Asia/Kolkata,,643
+1269633,Jabalpur,Jabalpur,23.16697,79.95006,IN,IND,India,1081677,False,PPL,Asia/Kolkata,,416
+1278994,Prayagraj,Prayagraj,25.44478,81.84322,IN,IND,India,1073438,False,PPL,Asia/Kolkata,,99
+1253102,Visakhapatnam,Visakhapatnam,17.68009,83.20161,IN,IND,India,1063178,False,PPLA2,Asia/Kolkata,,24
+1268865,Jodhpur,Jodhpur,26.26841,73.00594,IN,IND,India,1056191,False,PPL,Asia/Kolkata,,237
+1270583,Gwalior,Gwalior,26.22983,78.17337,IN,IND,India,1054420,False,PPL,Asia/Kolkata,,220
+1254745,Teni,Teni,10.01115,77.47772,IN,IND,India,1034724,False,PPLX,Asia/Kolkata,,300
+1270396,Howrah,Howrah,22.57688,88.31857,IN,IND,India,1027672,False,PPL,Asia/Kolkata,,8
+1258980,Raipur,Raipur,21.23333,81.63333,IN,IND,India,1027264,False,PPLA,Asia/Kolkata,,296
+1254388,Tiruchirappalli,Tiruchirappalli,10.8155,78.69651,IN,IND,India,1022518,False,PPL,Asia/Kolkata,,79
+1266049,Kota,Kota,25.18254,75.83907,IN,IND,India,1001694,False,PPL,Asia/Kolkata,,267
+6943660,Shivaji Nagar,Shivaji Nagar,18.53017,73.85263,IN,IND,India,1000000,False,PPLX,Asia/Kolkata,1000,559
+1261481,New Delhi,New Delhi,28.62137,77.2148,IN,IND,India,317797,True,PPLC,Asia/Kolkata,,211
+2964574,Dublin,Dublin,53.33306,-6.24889,IE,IRL,Ireland,1024027,True,PPLC,Europe/Dublin,,17
+6697759,South Dublin,South Dublin,53.29026,-6.34151,IE,IRL,Ireland,278749,False,PPLX,Europe/Dublin,,80
+2965140,Cork,Cork,51.89797,-8.47061,IE,IRL,Ireland,190384,False,PPLA2,Europe/Dublin,,10
+2962943,Limerick,Limerick,52.66472,-8.62306,IE,IRL,Ireland,94192,False,PPLA2,Europe/Dublin,,7
+2964180,Galway,Galway,53.27245,-9.05095,IE,IRL,Ireland,83456,False,PPLA,Europe/Dublin,,10
+2961284,Tallaght,Tallaght,53.2859,-6.37344,IE,IRL,Ireland,80339,False,PPLA2,Europe/Dublin,,103
+2960992,Waterford,Waterford,52.25833,-7.11194,IE,IRL,Ireland,53504,False,PPLA2,Europe/Dublin,,10
+2961297,Swords,Swords,53.45972,-6.21806,IE,IRL,Ireland,42738,False,PPLA,Europe/Dublin,,17
+2964661,Drogheda,Drogheda,53.71889,-6.34778,IE,IRL,Ireland,40956,False,PPL,Europe/Dublin,,28
+2964540,Dundalk,Dundalk,54.0,-6.41667,IE,IRL,Ireland,39004,False,PPLA2,Europe/Dublin,,18
+112931,Tehran,Tehran,35.69439,51.42151,IR,IRN,Iran,7153309,True,PPLC,Asia/Tehran,,1178
+124665,Mashhad,Mashhad,36.29807,59.60567,IR,IRN,Iran,2307177,False,PPLA,Asia/Tehran,,980
+418863,Isfahan,Isfahan,32.65246,51.67462,IR,IRN,Iran,1547164,False,PPLA,Asia/Tehran,,1578
+128747,Karaj,Karaj,35.83266,50.99155,IR,IRN,Iran,1448075,False,PPLA,Asia/Tehran,,1341
+113646,Tabriz,Tabriz,38.08,46.2919,IR,IRN,Iran,1424641,False,PPLA,Asia/Tehran,,1396
+115019,Shiraz,Shiraz,29.61031,52.53113,IR,IRN,Iran,1249942,False,PPLA,Asia/Tehran,,1545
+119208,Qom,Qom,34.6401,50.8764,IR,IRN,Iran,900000,False,PPLA,Asia/Tehran,,935
+144448,Ahvaz,Ahvaz,31.31901,48.6842,IR,IRN,Iran,841145,False,PPLA,Asia/Tehran,,23
+128226,Kermanshah,Kermanshah,34.31417,47.065,IR,IRN,Iran,621100,False,PPLA,Asia/Tehran,,1392
+118743,Rasht,Rasht,37.27611,49.58862,IR,IRN,Iran,594590,False,PPLA,Asia/Tehran,,4
+98182,Baghdad,Baghdad,33.34058,44.40088,IQ,IRQ,Iraq,7216000,True,PPLC,Asia/Baghdad,,41
+99071,Al Mawşil al Jadīdah,Al Mawsil al Jadidah,36.33271,43.10555,IQ,IRQ,Iraq,2065597,False,PPLX,Asia/Baghdad,,239
+388349,Al Başrah al Qadīmah,Al Basrah al Qadimah,30.50316,47.81507,IQ,IRQ,Iraq,2015483,False,PPLX,Asia/Baghdad,,7
+99072,Mosul,Mosul,36.335,43.11889,IQ,IRQ,Iraq,1683000,False,PPLA,Asia/Baghdad,,228
+95446,Erbil,Erbil,36.19117,44.00943,IQ,IRQ,Iraq,1612700,False,PPLA,Asia/Baghdad,,429
+99532,Basrah,Basrah,30.50852,47.7804,IQ,IRQ,Iraq,1326564,False,PPLA,Asia/Baghdad,,4
+94824,Karbala,Karbala,32.61603,44.02488,IQ,IRQ,Iraq,1218732,False,PPLA,Asia/Baghdad,,32
+94787,Kirkuk,Kirkuk,35.46806,44.39222,IQ,IRQ,Iraq,1031000,False,PPLA,Asia/Baghdad,,346
+100077,Abū Ghurayb,Abu Ghurayb,33.30563,44.18477,IQ,IRQ,Iraq,900000,False,PPLA2,Asia/Baghdad,,42
+98463,Sulaymaniyah,Sulaymaniyah,35.56496,45.4329,IQ,IRQ,Iraq,878146,False,PPLA,Asia/Baghdad,,847
+3413829,Reykjavík,Reykjavik,64.13548,-21.89541,IS,ISL,Iceland,118918,True,PPLC,Atlantic/Reykjavik,,37
+3415212,Kópavogur,Kopavogur,64.11234,-21.91298,IS,ISL,Iceland,37959,False,PPL,Atlantic/Reykjavik,,37
+3416706,Hafnarfjörður,Hafnarfjoerdur,64.0671,-21.93774,IS,ISL,Iceland,29971,False,PPL,Atlantic/Reykjavik,,39
+8644037,Reykjanesbær,Reykjanesbaer,63.99813,-22.56111,IS,ISL,Iceland,19724,False,PPL,Atlantic/Reykjavik,,13
+2633274,Akureyri,Akureyri,65.68353,-18.0878,IS,ISL,Iceland,19219,False,PPLA,Atlantic/Reykjavik,,-9999
+3415496,Keflavík,Keflavik,64.00492,-22.56242,IS,ISL,Iceland,15930,False,PPLA,Atlantic/Reykjavik,,5
+281184,Jerusalem,Jerusalem,31.76904,35.21633,IL,ISR,Israel,971800,True,PPLA,Asia/Jerusalem,,786
+293397,Tel Aviv,Tel Aviv,32.08088,34.78057,IL,ISR,Israel,432892,False,PPLA,Asia/Jerusalem,,15
+7498240,West Jerusalem,West Jerusalem,31.78199,35.21961,IL,ISR,Israel,400000,False,PPLX,Asia/Jerusalem,,796
+294801,Haifa,Haifa,32.81303,34.99928,IL,ISR,Israel,285316,False,PPLA,Asia/Jerusalem,,101
+293703,Rishon LeTsiyyon,Rishon LeTsiyyon,31.97102,34.78939,IL,ISR,Israel,258535,False,PPL,Asia/Jerusalem,,56
+293918,Petaẖ Tiqva,Petah Tiqva,32.08707,34.88747,IL,ISR,Israel,253529,False,PPL,Asia/Jerusalem,,54
+294071,Netanya,Netanya,32.33291,34.85992,IL,ISR,Israel,228204,False,PPL,Asia/Jerusalem,,38
+295629,Ashdod,Ashdod,31.79213,34.64966,IL,ISR,Israel,226838,False,PPL,Asia/Jerusalem,,27
+295514,Bnei Brak,Bnei Brak,32.08074,34.8338,IL,ISR,Israel,214444,False,PPL,Asia/Jerusalem,,51
+294751,H̱olon,Holon,32.01034,34.77918,IL,ISR,Israel,196282,False,PPL,Asia/Jerusalem,,31
+3169070,Rome,Rome,41.89193,12.51133,IT,ITA,Italy,2318895,True,PPLC,Europe/Rome,20,52
+3173435,Milan,Milan,45.46427,9.18951,IT,ITA,Italy,1371498,False,PPLA,Europe/Rome,122,127
+3172394,Naples,Naples,40.85216,14.26811,IT,ITA,Italy,909048,False,PPLA,Europe/Rome,17,14
+3165524,Turin,Turin,45.07049,7.68682,IT,ITA,Italy,847287,False,PPLA,Europe/Rome,239,245
+2523920,Palermo,Palermo,38.1166,13.3636,IT,ITA,Italy,648260,False,PPLA,Europe/Rome,14,20
+3176219,Genoa,Genoa,44.40478,8.94439,IT,ITA,Italy,580097,False,PPLA,Europe/Rome,19,17
+3181928,Bologna,Bologna,44.49381,11.33875,IT,ITA,Italy,394843,False,PPLA,Europe/Rome,54,71
+3176959,Florence,Florence,43.77925,11.24626,IT,ITA,Italy,367150,False,PPLA,Europe/Rome,50,51
+3182351,Bari,Bari,41.12066,16.86982,IT,ITA,Italy,316491,False,PPLA,Europe/Rome,5,7
+2525068,Catania,Catania,37.49223,15.07041,IT,ITA,Italy,311584,False,PPLA2,Europe/Rome,7,40
+3489854,Kingston,Kingston,17.99702,-76.79358,JM,JAM,Jamaica,937700,True,PPLC,America/Jamaica,,65
+3489297,New Kingston,New Kingston,18.00747,-76.78319,JM,JAM,Jamaica,583958,False,PPLX,America/Jamaica,,99
+3488465,Spanish Town,Spanish Town,17.99107,-76.95742,JM,JAM,Jamaica,145018,False,PPLA,America/Jamaica,,31
+3488981,Portmore,Portmore,17.97102,-76.88691,JM,JAM,Jamaica,102861,False,PPL,America/Jamaica,,7
+3489460,Montego Bay,Montego Bay,18.47116,-77.91883,JM,JAM,Jamaica,82867,False,PPLA,America/Jamaica,,12
+3489577,Mandeville,Mandeville,18.04168,-77.50714,JM,JAM,Jamaica,47115,False,PPLA,America/Jamaica,,609
+3489523,May Pen,May Pen,17.96454,-77.24515,JM,JAM,Jamaica,44755,False,PPLA,America/Jamaica,,81
+3489227,Old Harbour,Old Harbour,17.94144,-77.10898,JM,JAM,Jamaica,26024,False,PPL,America/Jamaica,,30
+3489760,Linstead,Linstead,18.13683,-77.03171,JM,JAM,Jamaica,20660,False,PPL,America/Jamaica,,119
+3490165,Half Way Tree,Half Way Tree,18.01248,-76.79928,JM,JAM,Jamaica,18552,False,PPLA,America/Jamaica,,72
+3042091,Saint Helier,Saint Helier,49.18804,-2.10491,JE,JEY,Jersey,28000,True,PPLC,Europe/Jersey,,11
+250441,Amman,Amman,31.95522,35.94503,JO,JOR,Jordan,1275857,True,PPLC,Asia/Amman,,757
+250090,Zarqa,Zarqa,32.07275,36.08796,JO,JOR,Jordan,792665,False,PPLA,Asia/Amman,,625
+248946,Irbid,Irbid,32.55556,35.85,JO,JOR,Jordan,569068,False,PPLA,Asia/Amman,,570
+7838895,Russeifa,Russeifa,32.01778,36.04639,JO,JOR,Jordan,268237,False,PPL,Asia/Amman,,614
+248583,Ḩayy Khildā,Hayy Khilda,31.99202,35.84002,JO,JOR,Jordan,251000,False,PPLX,Asia/Amman,,988
+248460,Khuraybat as Sūq,Khuraybat as Suq,31.87913,35.92098,JO,JOR,Jordan,186158,False,PPL,Asia/Amman,,894
+246013,Wādī as Sīr,Wadi as Sir,31.9545,35.81831,JO,JOR,Jordan,181212,False,PPLA2,Asia/Amman,,764
+250336,Ar Ramthā,Ar Ramtha,32.55873,36.00816,JO,JOR,Jordan,155693,False,PPLA2,Asia/Amman,,536
+13286467,Ṣuwayliḥ,Suwaylih,32.0221,35.84394,JO,JOR,Jordan,151016,False,PPL,Asia/Amman,,981
+250799,‘Ajlūn,'Ajlun,32.33326,35.75279,JO,JOR,Jordan,125557,False,PPLA,Asia/Amman,,769
+1850147,Tokyo,Tokyo,35.6895,139.69171,JP,JPN,Japan,9733276,True,PPLC,Asia/Tokyo,,44
+1848354,Yokohama,Yokohama,35.43333,139.65,JP,JPN,Japan,3777491,False,PPLA,Asia/Tokyo,,21
+1853909,Osaka,Osaka,34.69379,135.50107,JP,JPN,Japan,2753862,False,PPLA,Asia/Tokyo,,4
+1856057,Nagoya,Nagoya,35.18147,136.90641,JP,JPN,Japan,2332176,False,PPLA,Asia/Tokyo,,23
+2128295,Sapporo,Sapporo,43.06667,141.35,JP,JPN,Japan,1973832,False,PPLA,Asia/Tokyo,,26
+1863967,Fukuoka,Fukuoka,33.6,130.41667,JP,JPN,Japan,1612392,False,PPLA,Asia/Tokyo,,3
+1859642,Kawasaki,Kawasaki,35.52056,139.71722,JP,JPN,Japan,1538262,False,PPLA2,Asia/Tokyo,,1
+1859171,Kobe,Kobe,34.6913,135.183,JP,JPN,Japan,1525152,False,PPLA,Asia/Tokyo,,35
+1857910,Kyoto,Kyoto,35.02107,135.75385,JP,JPN,Japan,1463723,False,PPLA,Asia/Tokyo,,50
+6940394,Saitama,Saitama,35.90807,139.65657,JP,JPN,Japan,1324854,False,PPLA,Asia/Tokyo,,16
+1862415,Hiroshima,Hiroshima,34.4,132.45,JP,JPN,Japan,1200754,False,PPLA,Asia/Tokyo,,16
+2111149,Sendai,Sendai,38.26667,140.86667,JP,JPN,Japan,1096704,False,PPLA,Asia/Tokyo,,53
+1526384,Almaty,Almaty,43.25249,76.9115,KZ,KAZ,Kazakhstan,1977011,False,PPLA,Asia/Almaty,,783
+1518980,Shymkent,Shymkent,42.30988,69.60042,KZ,KAZ,Kazakhstan,1200000,False,PPLA,Asia/Almaty,,520
+610611,Aktobe,Aktobe,50.27969,57.20718,KZ,KAZ,Kazakhstan,500757,False,PPLA,Asia/Aqtobe,,210
+609655,Karagandy,Karagandy,49.80187,73.10211,KZ,KAZ,Kazakhstan,497777,False,PPLA,Asia/Almaty,,545
+1516905,Taraz,Taraz,42.89799,71.37334,KZ,KAZ,Kazakhstan,358153,False,PPLA,Asia/Almaty,,611
+1519922,Kyzylorda,Kyzylorda,44.85278,65.50917,KZ,KAZ,Kazakhstan,354800,False,PPLA,Asia/Qyzylorda,,128
+1526273,Astana,Astana,51.1801,71.44598,KZ,KAZ,Kazakhstan,345604,True,PPLC,Asia/Almaty,,358
+608668,Oral,Oral,51.24601,51.42558,KZ,KAZ,Kazakhstan,330000,False,PPLA,Asia/Oral,,29
+1520240,Pavlodar,Pavlodar,52.27601,76.96881,KZ,KAZ,Kazakhstan,329002,False,PPLA,Asia/Almaty,,125
+1520316,Ust-Kamenogorsk,Ust-Kamenogorsk,49.97143,82.60586,KZ,KAZ,Kazakhstan,319067,False,PPLA,Asia/Almaty,,287
+184745,Nairobi,Nairobi,-1.28333,36.81667,KE,KEN,Kenya,4397073,True,PPLC,Africa/Nairobi,,1684
+195272,Kakamega,Kakamega,0.28422,34.75229,KE,KEN,Kenya,1867579,False,PPLA,Africa/Nairobi,,1563
+186301,Mombasa,Mombasa,-4.05466,39.66359,KE,KEN,Kenya,1208333,False,PPLA,Africa/Nairobi,,20
+184622,Nakuru,Nakuru,-0.30719,36.07225,KE,KEN,Kenya,570674,False,PPLA,Africa/Nairobi,,1802
+181032,Ruiru,Ruiru,-1.14665,36.96087,KE,KEN,Kenya,490120,False,PPL,Africa/Nairobi,,1531
+198629,Eldoret,Eldoret,0.52036,35.26993,KE,KEN,Kenya,475716,False,PPLA,Africa/Nairobi,,2095
+191245,Kisumu,Kisumu,-0.10221,34.76171,KE,KEN,Kenya,397957,False,PPLA,Africa/Nairobi,,1174
+192126,Kikuyu,Kikuyu,-1.24627,36.66291,KE,KEN,Kenya,323881,False,PPL,Africa/Nairobi,,2047
+179330,Thika,Thika,-1.03326,37.06933,KE,KEN,Kenya,251407,False,PPL,Africa/Nairobi,,1506
+184707,Naivasha,Naivasha,-0.71383,36.43261,KE,KEN,Kenya,198444,False,PPL,Africa/Nairobi,,1902
+1528675,Bishkek,Bishkek,42.87,74.59,KG,KGZ,Kyrgyzstan,900000,True,PPLC,Asia/Bishkek,,767
+1527534,Osh,Osh,40.52828,72.7985,KG,KGZ,Kyrgyzstan,322164,False,PPLA,Asia/Bishkek,,988
+1528249,Jalal-Abad,Jalal-Abad,40.94498,72.99313,KG,KGZ,Kyrgyzstan,123239,False,PPLA,Asia/Bishkek,,780
+1528121,Karakol,Karakol,42.49047,78.39197,KG,KGZ,Kyrgyzstan,84351,False,PPLA,Asia/Bishkek,,1770
+1527199,Tokmok,Tokmok,42.84194,75.30149,KG,KGZ,Kyrgyzstan,71443,False,PPLA2,Asia/Bishkek,800,824
+1527513,Uzgen,Uzgen,40.76994,73.30068,KG,KGZ,Kyrgyzstan,49410,False,PPL,Asia/Bishkek,,1027
+1528182,Kara-Balta,Kara-Balta,42.81423,73.84813,KG,KGZ,Kyrgyzstan,48278,False,PPLA2,Asia/Bishkek,,789
+1527004,Balykchy,Balykchy,42.46017,76.18709,KG,KGZ,Kyrgyzstan,42875,False,PPL,Asia/Bishkek,,1641
+1527592,Naryn,Naryn,41.4283,75.9957,KG,KGZ,Kyrgyzstan,41178,False,PPLA,Asia/Bishkek,,2033
+1528717,Bazar-Korgon,Bazar-Korgon,41.0376,72.74586,KG,KGZ,Kyrgyzstan,41011,False,PPLA2,Asia/Bishkek,,729
+1821306,Phnom Penh,Phnom Penh,11.56245,104.91601,KH,KHM,Cambodia,1573544,True,PPLC,Asia/Phnom_Penh,,20
+1821940,Takeo,Takeo,10.99081,104.78498,KH,KHM,Cambodia,843931,False,PPLA,Asia/Phnom_Penh,,12
+1822214,Siem Reap,Siem Reap,13.36179,103.86056,KH,KHM,Cambodia,139458,False,PPLA,Asia/Phnom_Penh,,18
+1831797,Battambang,Battambang,13.10271,103.19822,KH,KHM,Cambodia,119251,False,PPLA,Asia/Phnom_Penh,,18
+1830194,Paoy Paet,Paoy Paet,13.65805,102.56365,KH,KHM,Cambodia,98934,False,PPL,Asia/Phnom_Penh,,43
+1830784,Dangkao,Dangkao,11.50881,104.89144,KH,KHM,Cambodia,76421,False,PPL,Asia/Phnom_Penh,,12
+1831167,Kampong Chhnang,Kampong Chhnang,12.25,104.66667,KH,KHM,Cambodia,75244,False,PPLA,Asia/Phnom_Penh,,21
+1831142,Sihanoukville,Sihanoukville,10.60932,103.52958,KH,KHM,Cambodia,73036,False,PPLA,Asia/Phnom_Penh,,6
+1825978,Preaek Prasab,Preaek Prasab,12.35367,106.03562,KH,KHM,Cambodia,64466,False,PPLA2,Asia/Phnom_Penh,,27
+1831173,Kampong Cham,Kampong Cham,11.99339,105.4635,KH,KHM,Cambodia,61750,False,PPLA,Asia/Phnom_Penh,,23
+2110257,Tarawa,Tarawa,1.3278,172.97696,KI,KIR,Kiribati,40311,True,PPLC,Pacific/Tarawa,,6
+3575551,Basseterre,Basseterre,17.2955,-62.72499,KN,KNA,Saint Kitts and Nevis,12920,True,PPLC,America/St_Kitts,-22,12
+1835848,Seoul,Seoul,37.566,126.9784,KR,KOR,South Korea,10349312,True,PPLC,Asia/Seoul,,38
+1838524,Busan,Busan,35.10168,129.03004,KR,KOR,South Korea,3343903,False,PPLA,Asia/Seoul,,15
+1843564,Incheon,Incheon,37.45646,126.70515,KR,KOR,South Korea,3039450,False,PPLA,Asia/Seoul,,43
+1835329,Daegu,Daegu,35.87028,128.59111,KR,KOR,South Korea,2365523,False,PPLA,Asia/Seoul,,45
+1835235,Daejeon,Daejeon,36.34913,127.38493,KR,KOR,South Korea,1470336,False,PPLA,Asia/Seoul,,58
+1841811,Gwangju,Gwangju,35.15472,126.91556,KR,KOR,South Korea,1398538,False,PPLA,Asia/Seoul,,47
+1835553,Suwon,Suwon,37.29111,127.00889,KR,KOR,South Korea,1191063,False,PPLA,Asia/Seoul,,58
+1833747,Ulsan,Ulsan,35.53722,129.31667,KR,KOR,South Korea,1095014,False,PPLA,Asia/Seoul,,10
+1842485,Goyang-si,Goyang-si,37.65639,126.835,KR,KOR,South Korea,1061752,False,PPLA2,Asia/Seoul,,19
+1846326,Changwon,Changwon,35.22806,128.68111,KR,KOR,South Korea,1025702,False,PPLA,Asia/Seoul,,27
+285839,Al Aḩmadī,Al Ahmadi,29.07694,48.08389,KW,KWT,Kuwait,637411,False,PPLA,Asia/Kuwait,,70
+285629,Ḩawallī,Hawalli,29.33278,48.02861,KW,KWT,Kuwait,164212,False,PPLA,Asia/Kuwait,,19
+285704,As Sālimīyah,As Salimiyah,29.33389,48.07611,KW,KWT,Kuwait,147649,False,PPLX,Asia/Kuwait,,11
+412800,Şabāḩ as Sālim,Sabah as Salim,29.25722,48.05722,KW,KWT,Kuwait,139163,False,PPL,Asia/Kuwait,,32
+285815,Al Farwānīyah,Al Farwaniyah,29.2775,47.95861,KW,KWT,Kuwait,86525,False,PPLA,Asia/Kuwait,,44
+285811,Al Faḩāḩīl,Al Fahahil,29.0825,48.13028,KW,KWT,Kuwait,68290,False,PPL,Asia/Kuwait,,18
+285787,Kuwait City,Kuwait City,29.367,47.97429,KW,KWT,Kuwait,60064,True,PPLC,Asia/Kuwait,,11
+285726,Ar Rumaythīyah,Ar Rumaythiyah,29.31167,48.07417,KW,KWT,Kuwait,58135,False,PPLX,Asia/Kuwait,,9
+285728,Ar Riqqah,Ar Riqqah,29.14583,48.09472,KW,KWT,Kuwait,52068,False,PPL,Asia/Kuwait,,45
+387958,Salwá,Salwa,29.29583,48.07861,KW,KWT,Kuwait,40945,False,PPLX,Asia/Kuwait,,15
+1651944,Vientiane,Vientiane,17.96667,102.6,LA,LAO,Laos,196731,True,PPLC,Asia/Vientiane,,174
+1653316,Savannakhet,Savannakhet,16.5703,104.7622,LA,LAO,Laos,125760,False,PPLA,Asia/Vientiane,,154
+1654379,Pakse,Pakse,15.12022,105.79898,LA,LAO,Laos,88332,False,PPLA,Asia/Vientiane,,105
+1655199,Thakhèk,Thakhek,17.41027,104.83068,LA,LAO,Laos,85000,False,PPLA,Asia/Vientiane,,176
+11244752,Ban Khoan,Ban Khoan,20.35008,100.09022,LA,LAO,Laos,65348,False,PPL,Asia/Vientiane,,373
+1661283,Ban Napè,Ban Nape,18.3053,105.0718,LA,LAO,Laos,63268,False,PPL,Asia/Vientiane,,522
+1655559,Luang Prabang,Luang Prabang,19.8933,102.1525,LA,LAO,Laos,47378,False,PPLA,Asia/Vientiane,,296
+1652203,Xam Nua,Xam Nua,20.4164,104.045,LA,LAO,Laos,46800,False,PPLA,Asia/Vientiane,,957
+1655123,Muang Phônsavan,Muang Phonsavan,19.4494,103.1917,LA,LAO,Laos,37507,False,PPLA,Asia/Vientiane,,1106
+1655076,Ban Xèpôn,Ban Xepon,16.68083,106.23896,LA,LAO,Laos,35600,False,PPL,Asia/Vientiane,,193
+276781,Beirut,Beirut,33.89332,35.50157,LB,LBN,Lebanon,1916100,True,PPLC,Asia/Beirut,,40
+268743,Ra’s Bayrūt,Ra's Bayrut,33.9,35.48333,LB,LBN,Lebanon,1251739,False,PPLX,Asia/Beirut,,35
+266826,Tripoli,Tripoli,34.43352,35.84415,LB,LBN,Lebanon,229398,False,PPLA,Asia/Beirut,,51
+268064,Sidon,Sidon,33.55751,35.37148,LB,LBN,Lebanon,163554,False,PPLA,Asia/Beirut,,9
+267008,Tyre,Tyre,33.27333,35.19389,LB,LBN,Lebanon,135204,False,PPLA2,Asia/Beirut,,7
+280425,Aley,Aley,33.80528,35.6,LB,LBN,Lebanon,130000,False,PPLA2,Asia/Beirut,,878
+278913,Nabatîyé et Tahta,Nabatiye et Tahta,33.37889,35.48389,LB,LBN,Lebanon,120000,False,PPLA,Asia/Beirut,,428
+274874,Habboûch,Habbouch,33.40729,35.48169,LB,LBN,Lebanon,98433,False,PPL,Asia/Beirut,,457
+273140,Jounieh,Jounieh,33.98083,35.61778,LB,LBN,Lebanon,96315,False,PPLA2,Asia/Beirut,,40
+266045,Zahlé,Zahle,33.84675,35.90203,LB,LBN,Lebanon,78145,False,PPLA,Asia/Beirut,,963
+2274895,Monrovia,Monrovia,6.30054,-10.7969,LR,LBR,Liberia,1542549,True,PPLC,Africa/Monrovia,,32
+2277060,Gbarnga,Gbarnga,6.99543,-9.47122,LR,LBR,Liberia,86031,False,PPLA,Africa/Monrovia,,253
+2278158,Buchanan,Buchanan,5.87693,-10.04964,LR,LBR,Liberia,75854,False,PPLA,Africa/Monrovia,,11
+2277241,Ganta,Ganta,7.235,-8.98444,LR,LBR,Liberia,63523,False,PPL,Africa/Monrovia,,282
+2276086,Kakata,Kakata,6.53104,-10.35368,LR,LBR,Liberia,52247,False,PPLA,Africa/Monrovia,,97
+2272491,Zwedru,Zwedru,6.06846,-8.13559,LR,LBR,Liberia,38269,False,PPLA,Africa/Monrovia,,221
+2276506,Harbel,Harbel,6.24683,-10.35642,LR,LBR,Liberia,38208,False,PPL,Africa/Monrovia,,10
+2276492,Harper,Harper,4.3782,-7.71081,LR,LBR,Liberia,35503,False,PPLA,Africa/Monrovia,,14
+2274372,Pleebo City,Pleebo City,4.58953,-7.67218,LR,LBR,Liberia,35423,False,PPL,Africa/Monrovia,,57
+2277301,Foya Kamara,Foya Kamara,8.36028,-10.20639,LR,LBR,Liberia,31052,False,PPL,Africa/Monrovia,,484
+2210247,Tripoli,Tripoli,32.88743,13.18733,LY,LBY,Libya,1302947,True,PPLC,Africa/Tripoli,,15
+88319,Benghazi,Benghazi,32.11486,20.06859,LY,LBY,Libya,757490,False,PPLA,Africa/Tripoli,,3
+2214846,Misratah,Misratah,32.37535,15.09254,LY,LBY,Libya,355657,False,PPLA,Africa/Tripoli,,11
+2208485,Zliten,Zliten,32.46739,14.56874,LY,LBY,Libya,203790,False,PPL,Africa/Tripoli,,9
+2219905,Al Khums,Al Khums,32.64861,14.26191,LY,LBY,Libya,201943,False,PPLA,Africa/Tripoli,,27
+2218970,Az Zāwīyah,Az Zawiyah,32.7571,12.72764,LY,LBY,Libya,200000,False,PPLA,Africa/Tripoli,,18
+2216885,Zawiya,Zawiya,32.75222,12.72778,LY,LBY,Libya,186123,False,PPL,Africa/Tripoli,,21
+2216349,Janzūr,Janzur,32.81868,13.01727,LY,LBY,Libya,154389,False,PPL,Africa/Tripoli,,21
+2212775,Sabha,Sabha,27.03766,14.42832,LY,LBY,Libya,149329,False,PPLA,Africa/Tripoli,,421
+81302,Tobruk,Tobruk,32.08963,23.95385,LY,LBY,Libya,141499,False,PPLA,Africa/Tripoli,,23
+3576686,Gros Islet,Gros Islet,14.06667,-60.95,LC,LCA,Saint Lucia,25210,False,PPLA,America/St_Lucia,,58
+3576812,Castries,Castries,13.9957,-61.00614,LC,LCA,Saint Lucia,20000,True,PPLC,America/St_Lucia,,119
+3042030,Vaduz,Vaduz,47.14151,9.52154,LI,LIE,Liechtenstein,5197,True,PPLC,Europe/Vaduz,,465
+1248991,Colombo,Colombo,6.93548,79.84868,LK,LKA,Sri Lanka,648034,True,PPLC,Asia/Colombo,,7
+1234569,Dehiwala-Mount Lavinia,Dehiwala-Mount Lavinia,6.84019,79.87116,LK,LKA,Sri Lanka,219827,False,PPL,Asia/Colombo,,16
+1236854,Maharagama,Maharagama,6.848,79.9265,LK,LKA,Sri Lanka,195355,False,PPL,Asia/Colombo,,26
+1242833,Jaffna,Jaffna,9.66845,80.00742,LK,LKA,Sri Lanka,169102,False,PPLA,Asia/Colombo,,7
+1234633,Moratuwa,Moratuwa,6.773,79.8816,LK,LKA,Sri Lanka,168280,False,PPL,Asia/Colombo,,10
+1233369,Negombo,Negombo,7.2083,79.8358,LK,LKA,Sri Lanka,137223,False,PPL,Asia/Colombo,,8
+1230089,Pita Kotte,Pita Kotte,6.8905,79.9015,LK,LKA,Sri Lanka,118179,False,PPL,Asia/Colombo,,20
+1238992,Sri Jayewardenepura Kotte,Sri Jayewardenepura Kotte,6.88297,79.90708,LK,LKA,Sri Lanka,115826,False,PPL,Asia/Colombo,,27
+1241622,Kandy,Kandy,7.2906,80.6336,LK,LKA,Sri Lanka,111701,False,PPLA,Asia/Colombo,,500
+1226260,Trincomalee,Trincomalee,8.5778,81.2289,LK,LKA,Sri Lanka,108420,False,PPLA,Asia/Colombo,,10
+932505,Maseru,Maseru,-29.31667,27.48333,LS,LSO,Lesotho,359753,True,PPLC,Africa/Maseru,,1552
+932521,Maputsoe,Maputsoe,-28.8866,27.89915,LS,LSO,Lesotho,61916,False,PPL,Africa/Maseru,,1583
+932438,Mohale's Hoek,Mohale's Hoek,-30.15137,27.47691,LS,LSO,Lesotho,46593,False,PPLA,Africa/Maseru,,1598
+932614,Mafeteng,Mafeteng,-29.82299,27.23744,LS,LSO,Lesotho,45287,False,PPLA,Africa/Maseru,,1669
+932698,Hlotse,Hlotse,-28.87185,28.04501,LS,LSO,Lesotho,43967,False,PPLA,Africa/Maseru,,1645
+932886,Butha-Buthe,Butha-Buthe,-28.76659,28.24937,LS,LSO,Lesotho,40599,False,PPLA,Africa/Maseru,,1716
+11237575,Mabote,Mabote,-29.27861,27.52417,LS,LSO,Lesotho,38047,False,PPL,Africa/Maseru,,1507
+932183,Quthing,Quthing,-30.40001,27.70027,LS,LSO,Lesotho,33910,False,PPLA,Africa/Maseru,,1515
+932035,Teyateyaneng,Teyateyaneng,-29.14719,27.74895,LS,LSO,Lesotho,27272,False,PPLA,Africa/Maseru,,1693
+932218,Qacha’s Nek,Qacha's Nek,-30.11537,28.68936,LS,LSO,Lesotho,25573,False,PPL,Africa/Maseru,,1974
+593116,Vilnius,Vilnius,54.68916,25.2798,LT,LTU,Lithuania,542366,True,PPLC,Europe/Vilnius,,98
+598316,Kaunas,Kaunas,54.90156,23.90909,LT,LTU,Lithuania,289380,False,PPLA,Europe/Vilnius,,96
+598098,Klaipėda,Klaipeda,55.7068,21.13912,LT,LTU,Lithuania,172292,False,PPLA,Europe/Vilnius,,6
+594739,Šiauliai,Siauliai,55.93333,23.31667,LT,LTU,Lithuania,99462,False,PPLA,Europe/Vilnius,,129
+596128,Panevėžys,Panevezys,55.73186,24.35983,LT,LTU,Lithuania,85885,False,PPLA,Europe/Vilnius,,55
+6618486,Dainava (Kaunas),Dainava (Kaunas),54.91525,23.96831,LT,LTU,Lithuania,70000,False,PPLX,Europe/Vilnius,100,70
+601084,Alytus,Alytus,54.39574,24.03885,LT,LTU,Lithuania,49195,False,PPLA,Europe/Vilnius,,104
+9610004,Šilainiai,Silainiai,54.92911,23.88599,LT,LTU,Lithuania,40600,False,PPLX,Europe/Vilnius,,68
+9610008,Eiguliai,Eiguliai,54.93133,23.93243,LT,LTU,Lithuania,40453,False,PPLX,Europe/Vilnius,,69
+601041,Antakalnis,Antakalnis,54.70781,25.31706,LT,LTU,Lithuania,40000,False,PPLX,Europe/Vilnius,,112
+2960316,Luxembourg,Luxembourg,49.60982,6.13268,LU,LUX,Luxembourg,76684,True,PPLC,Europe/Luxembourg,,259
+2960596,Esch-sur-Alzette,Esch-sur-Alzette,49.49583,5.98056,LU,LUX,Luxembourg,36625,False,PPLA2,Europe/Luxembourg,,295
+2960634,Dudelange,Dudelange,49.48056,6.0875,LU,LUX,Luxembourg,18013,False,PPLA3,Europe/Luxembourg,,295
+456172,Riga,Riga,56.946,24.10589,LV,LVA,Latvia,742572,True,PPLC,Europe/Riga,,6
+460413,Daugavpils,Daugavpils,55.88333,26.53333,LV,LVA,Latvia,78126,False,PPLA,Europe/Riga,,103
+457954,Liepāja,Liepaja,56.50474,21.01085,LV,LVA,Latvia,67421,False,PPLA,Europe/Riga,,6
+459279,Jelgava,Jelgava,56.65,23.71278,LV,LVA,Latvia,54834,False,PPLA,Europe/Riga,,5
+459201,Jūrmala,Jurmala,56.968,23.77038,LV,LVA,Latvia,52001,False,PPLA,Europe/Riga,,6
+454310,Ventspils,Ventspils,57.39485,21.56121,LV,LVA,Latvia,32723,False,PPLA,Europe/Riga,,9
+456202,Rēzekne,Rezekne,56.51028,27.34,LV,LVA,Latvia,26429,False,PPLA,Europe/Riga,,156
+453754,Valmiera,Valmiera,57.54108,25.42751,LV,LVA,Latvia,22812,False,PPLA,Europe/Riga,45,43
+457065,Ogre,Ogre,56.8162,24.61401,LV,LVA,Latvia,22767,False,PPLA,Europe/Riga,,21
+459283,Jēkabpils,Jekabpils,56.49903,25.85735,LV,LVA,Latvia,21014,False,PPLA,Europe/Riga,,83
+1821274,Macau,Macau,22.20056,113.54611,MO,MAC,Macau,649335,True,PPLC,Asia/Macau,,28
+1821263,Taipa,Taipa,22.15583,113.55694,MO,MAC,Macau,112051,False,PPL,Asia/Macau,,5
+13527317,Sé,Se,22.19089,113.54733,MO,MAC,Macau,52200,False,PPLA2,Asia/Macau,,1
+1821292,Luhuan,Luhuan,22.11806,113.55194,MO,MAC,Macau,36384,False,PPL,Asia/Macau,,5
+1821294,Zhuojiacun,Zhuojiacun,22.16139,113.55639,MO,MAC,Macau,24000,False,PPL,Asia/Macau,,11
+1821279,Lai Chi Van,Lai Chi Van,22.11972,113.55111,MO,MAC,Macau,22125,False,PPL,Asia/Macau,,22
+3578851,Marigot,Marigot,18.06819,-63.08302,MF,MAF,Saint Martin,5700,True,PPLC,America/Marigot,,9
+2553604,Casablanca,Casablanca,33.58831,-7.61138,MA,MAR,Morocco,3665954,False,PPLA,Africa/Casablanca,,27
+2538475,Rabat,Rabat,34.01325,-6.83255,MA,MAR,Morocco,1655753,True,PPLC,Africa/Casablanca,,46
+2548885,Fes,Fes,34.03313,-5.00028,MA,MAR,Morocco,1191905,False,PPLA,Africa/Casablanca,,406
+2530335,Tangier,Tangier,35.76727,-5.79975,MA,MAR,Morocco,1035141,False,PPLA,Africa/Casablanca,,20
+2542997,Marrakesh,Marrakesh,31.63416,-7.99994,MA,MAR,Morocco,995871,False,PPLA,Africa/Casablanca,,457
+2537763,Salé,Sale,34.0531,-6.79846,MA,MAR,Morocco,972299,False,PPL,Africa/Casablanca,,34
+2561668,Agadir,Agadir,30.42018,-9.59815,MA,MAR,Morocco,698310,False,PPLA,Africa/Casablanca,,31
+2542715,Meknes,Meknes,33.89352,-5.54727,MA,MAR,Morocco,568295,False,PPLA2,Africa/Casablanca,,531
+2540483,Oujda,Oujda,34.68139,-1.90858,MA,MAR,Morocco,539711,False,PPLA,Africa/Casablanca,,549
+2544571,Kenitra,Kenitra,34.26101,-6.5802,MA,MAR,Morocco,470949,False,PPLA,Africa/Casablanca,,13
+2993458,Monaco,Monaco,43.73718,7.42145,MC,MCO,Monaco,32965,True,PPLC,Europe/Monaco,,-9999
+2992741,Monte-Carlo,Monte-Carlo,43.73976,7.42732,MC,MCO,Monaco,16012,False,PPLX,Europe/Monaco,,45
+618426,Chisinau,Chisinau,47.00902,28.85938,MD,MDA,Moldova,635994,True,PPLC,Europe/Chisinau,,24
+617239,Tiraspol,Tiraspol,46.84275,29.6284,MD,MDA,Moldova,157000,False,PPLA,Europe/Chisinau,,30
+618605,Bălţi,Balti,47.76291,27.92854,MD,MDA,Moldova,125000,False,PPLA,Europe/Chisinau,,110
+618577,Bender,Bender,46.83158,29.47671,MD,MDA,Moldova,110175,False,PPLA,Europe/Chisinau,,33
+617486,Rîbniţa,Ribnita,47.76817,29.01,MD,MDA,Moldova,55455,False,PPL,Europe/Chisinau,,96
+618456,Cahul,Cahul,45.90456,28.19516,MD,MDA,Moldova,34492,False,PPLA,Europe/Chisinau,,27
+617180,Ungheni,Ungheni,47.21023,27.80013,MD,MDA,Moldova,34422,False,PPLA,Europe/Chisinau,,66
+617367,Soroca,Soroca,48.15659,28.28489,MD,MDA,Moldova,27423,False,PPLA,Europe/Chisinau,,191
+618356,Durleşti,Durlesti,47.02156,28.76303,MD,MDA,Moldova,26308,False,PPL,Europe/Chisinau,,150
+617638,Orhei,Orhei,47.38503,28.82535,MD,MDA,Moldova,24918,False,PPLA,Europe/Chisinau,,86
+1070940,Antananarivo,Antananarivo,-18.91368,47.53613,MG,MDG,Madagascar,1349501,True,PPLC,Indian/Antananarivo,,1274
+1053384,Toamasina,Toamasina,-18.1492,49.40234,MG,MDG,Madagascar,345107,False,PPLA,Indian/Antananarivo,,12
+1069166,Antsirabe,Antsirabe,-19.86586,47.03333,MG,MDG,Madagascar,260907,False,PPLA,Indian/Antananarivo,,1513
+1062663,Mahajanga,Mahajanga,-15.71667,46.31667,MG,MDG,Madagascar,260556,False,PPLA,Indian/Antananarivo,,20
+1064890,Fianarantsoa,Fianarantsoa,-21.45267,47.08569,MG,MDG,Madagascar,203105,False,PPLA,Indian/Antananarivo,,1117
+1055429,Toliara,Toliara,-23.35,43.66667,MG,MDG,Madagascar,178725,False,PPLA,Indian/Antananarivo,,11
+1069129,Antsiranana,Antsiranana,-12.31732,49.29188,MG,MDG,Madagascar,136959,False,PPLA,Indian/Antananarivo,,60
+1056899,Sambava,Sambava,-14.26667,50.16667,MG,MDG,Madagascar,89003,False,PPLA,Indian/Antananarivo,,10
+1064121,Imerintsiatosika,Imerintsiatosika,-18.98333,47.31667,MG,MDG,Madagascar,74085,False,PPL,Indian/Antananarivo,,1296
+1071296,Antalaha,Antalaha,-14.90033,50.27876,MG,MDG,Madagascar,71898,False,PPL,Indian/Antananarivo,,13
+1282027,Male,Male,4.17521,73.50916,MV,MDV,Maldives,103693,True,PPLC,Indian/Maldives,,8
+3530597,Mexico City,Mexico City,19.42847,-99.12766,MX,MEX,Mexico,12294193,True,PPLC,America/Mexico_City,,2240
+3981609,Tijuana,Tijuana,32.5027,-117.00371,MX,MEX,Mexico,1922523,False,PPLA2,America/Tijuana,,97
+3526683,Iztapalapa,Iztapalapa,19.35529,-99.06224,MX,MEX,Mexico,1835486,False,PPL,America/Mexico_City,,2238
+3521081,Puebla,Puebla,19.04778,-98.20723,MX,MEX,Mexico,1692181,False,PPLA,America/Mexico_City,,2166
+3529612,Ecatepec de Morelos,Ecatepec de Morelos,19.60492,-99.06064,MX,MEX,Mexico,1645352,False,PPLA2,America/Mexico_City,,2306
+3991164,Santiago de Querétaro,Santiago de Queretaro,20.58806,-100.38806,MX,MEX,Mexico,1594212,False,PPLA,America/Mexico_City,,1826
+3998655,León de los Aldama,Leon de los Aldama,21.12908,-101.67374,MX,MEX,Mexico,1579803,False,PPLA2,America/Mexico_City,,1806
+4013708,Ciudad Juárez,Ciudad Juarez,31.72024,-106.46084,MX,MEX,Mexico,1512450,False,PPLA2,America/Ciudad_Juarez,,1124
+3979770,Zapopan,Zapopan,20.72111,-103.38742,MX,MEX,Mexico,1476491,False,PPLA2,America/Mexico_City,,1565
+4005539,Guadalajara,Guadalajara,20.67738,-103.34749,MX,MEX,Mexico,1385629,False,PPLA,America/Mexico_City,,1546
+3523349,Mérida,Merida,20.967,-89.62318,MX,MEX,Mexico,1201000,False,PPLA,America/Merida,,10
+3514674,Gustavo Adolfo Madero,Gustavo Adolfo Madero,19.49392,-99.11075,MX,MEX,Mexico,1185772,False,PPL,America/Mexico_City,,2284
+3995465,Monterrey,Monterrey,25.68435,-100.31721,MX,MEX,Mexico,1135512,False,PPLA,America/Monterrey,,560
+3530589,Ciudad Nezahualcoyotl,Ciudad Nezahualcoyotl,19.40061,-99.01483,MX,MEX,Mexico,1077208,False,PPL,America/Mexico_City,,2235
+3996069,Mexicali,Mexicali,32.62781,-115.45446,MX,MEX,Mexico,1032686,False,PPLA,America/Tijuana,,4
+2113779,Majuro,Majuro,7.08971,171.38027,MH,MHL,Marshall Islands,25400,True,PPLC,Pacific/Majuro,,6
+785842,Skopje,Skopje,41.99646,21.43141,MK,MKD,North Macedonia,474889,True,PPLC,Europe/Skopje,,247
+788886,Kumanovo,Kumanovo,42.13279,21.71585,MK,MKD,North Macedonia,75051,False,PPLA,Europe/Skopje,,352
+786735,Prilep,Prilep,41.34558,21.5537,MK,MKD,North Macedonia,73814,False,PPLA,Europe/Skopje,,655
+792578,Bitola,Bitola,41.03226,21.33553,MK,MKD,North Macedonia,69287,False,PPLA,Europe/Skopje,,583
+833262,Čair,Cair,42.01528,21.44111,MK,MKD,North Macedonia,64773,False,PPLA2,Europe/Skopje,,270
+785082,Tetovo,Tetovo,42.00989,20.97138,MK,MKD,North Macedonia,63176,False,PPLA,Europe/Skopje,,466
+863675,Kisela Voda,Kisela Voda,41.94889,21.50278,MK,MKD,North Macedonia,58216,False,PPLA2,Europe/Skopje,,239
+785058,Veles,Veles,41.71719,21.77196,MK,MKD,North Macedonia,57873,False,PPLA,Europe/Skopje,,207
+790295,Gostivar,Gostivar,41.79627,20.90799,MK,MKD,North Macedonia,50974,False,PPLA,Europe/Skopje,,535
+785482,Shtip,Shtip,41.74583,22.19583,MK,MKD,North Macedonia,48279,False,PPLA,Europe/Skopje,,294
+2460596,Bamako,Bamako,12.60915,-7.97522,ML,MLI,Mali,4227569,True,PPLC,Africa/Bamako,,374
+2451185,Sikasso,Sikasso,11.31755,-5.66654,ML,MLI,Mali,349324,False,PPLA,Africa/Bamako,,368
+2454268,Koutiala,Koutiala,12.38723,-5.46507,ML,MLI,Mali,218031,False,PPLA2,Africa/Bamako,,324
+2451478,Ségou,Segou,13.44032,-6.25947,ML,MLI,Mali,205787,False,PPLA,Africa/Bamako,,291
+2455518,Kayes,Kayes,14.44776,-11.44393,ML,MLI,Mali,194716,False,PPLA,Africa/Bamako,,47
+2453348,Mopti,Mopti,14.4843,-4.18296,ML,MLI,Mali,186187,False,PPLA,Africa/Bamako,,268
+2455914,Kalaban Koro,Kalaban Koro,12.57329,-8.02907,ML,MLI,Mali,148247,False,PPL,Africa/Bamako,,331
+2457163,Gao,Gao,16.27167,-0.04472,ML,MLI,Mali,133110,False,PPLA,Africa/Bamako,,257
+2455558,Kati,Kati,12.74409,-8.07257,ML,MLI,Mali,130254,False,PPLA2,Africa/Bamako,,423
+2451778,San,San,13.29701,-4.89627,ML,MLI,Mali,103227,False,PPLA2,Africa/Bamako,,277
+2562541,San Pawl il-Baħar,San Pawl il-Bahar,35.95064,14.41561,MT,MLT,Malta,32042,False,PPLA,Europe/Malta,,22
+2563191,Birkirkara,Birkirkara,35.89706,14.46115,MT,MLT,Malta,24356,False,PPLA,Europe/Malta,,41
+2562704,Mosta,Mosta,35.90942,14.42566,MT,MLT,Malta,23482,False,PPLA,Europe/Malta,,80
+2562501,Sliema,Sliema,35.91247,14.50175,MT,MLT,Malta,22591,False,PPLA,Europe/Malta,,40
+2562629,Qormi,Qormi,35.87601,14.472,MT,MLT,Malta,16801,False,PPLA,Europe/Malta,,41
+2562266,Żabbar,Zabbar,35.87687,14.53592,MT,MLT,Malta,15648,False,PPLA,Europe/Malta,,30
+2562305,Valletta,Valletta,35.89968,14.5148,MT,MLT,Malta,6794,True,PPLC,Europe/Malta,,44
+1298824,Yangon,Yangon,16.80528,96.15611,MM,MMR,Myanmar,4477638,False,PPLA,Asia/Yangon,,30
+1311874,Mandalay,Mandalay,21.97473,96.08359,MM,MMR,Myanmar,1208099,False,PPLA,Asia/Yangon,,83
+6611854,Nay Pyi Taw,Nay Pyi Taw,19.745,96.12972,MM,MMR,Myanmar,925000,True,PPLC,Asia/Yangon,,122
+8740157,Hlaingthaya,Hlaingthaya,16.85,96.06667,MM,MMR,Myanmar,687867,False,PPL,Asia/Yangon,,5
+1308465,Mawlamyine,Mawlamyine,16.49051,97.62825,MM,MMR,Myanmar,438861,False,PPLA,Asia/Yangon,,52
+1321218,Kalemyo,Kalemyo,23.19014,94.06405,MM,MMR,Myanmar,348573,False,PPL,Asia/Yangon,,119
+1321937,Insein,Insein,16.88874,96.10257,MM,MMR,Myanmar,247675,False,PPL,Asia/Yangon,,17
+1300466,Bago,Bago,17.33521,96.48135,MM,MMR,Myanmar,244376,False,PPLA,Asia/Yangon,,18
+1329221,Amarapura,Amarapura,21.90709,96.04894,MM,MMR,Myanmar,237618,False,PPLA3,Asia/Yangon,,79
+1328421,Pathein,Pathein,16.77919,94.73212,MM,MMR,Myanmar,237089,False,PPLA,Asia/Yangon,,8
+3193044,Podgorica,Podgorica,42.44124,19.26309,ME,MNE,Montenegro,236852,True,PPLC,Europe/Podgorica,,49
+3194494,Nikšić,Niksic,42.7731,18.94446,ME,MNE,Montenegro,58212,False,PPLA,Europe/Podgorica,,630
+3199394,Herceg Novi,Herceg Novi,42.45306,18.5375,ME,MNE,Montenegro,19536,False,PPLA,Europe/Podgorica,,87
+3193161,Pljevlja,Pljevlja,43.3567,19.35843,ME,MNE,Montenegro,19489,False,PPLA,Europe/Podgorica,,772
+3203106,Budva,Budva,42.28721,18.83922,ME,MNE,Montenegro,18000,False,PPLA,Europe/Podgorica,,4
+3204509,Bar,Bar,42.0937,19.09841,ME,MNE,Montenegro,17727,False,PPLA,Europe/Podgorica,,5
+3204176,Bijelo Polje,Bijelo Polje,43.03834,19.74758,ME,MNE,Montenegro,15400,False,PPLA,Europe/Podgorica,,623
+3202641,Cetinje,Cetinje,42.39063,18.91417,ME,MNE,Montenegro,15137,False,PPLA,Europe/Podgorica,,686
+2028462,Ulan Bator,Ulan Bator,47.90771,106.88324,MN,MNG,Mongolia,844818,True,PPLC,Asia/Ulaanbaatar,,1284
+2031405,Erdenet,Erdenet,49.03333,104.08333,MN,MNG,Mongolia,97814,False,PPLA,Asia/Ulaanbaatar,,1307
+2031964,Darhan,Darhan,49.48667,105.92278,MN,MNG,Mongolia,83883,False,PPLA,Asia/Ulaanbaatar,,683
+2032054,Choibalsan,Choibalsan,48.07257,114.53264,MN,MNG,Mongolia,44835,False,PPLA,Asia/Ulaanbaatar,,741
+2029901,Nalayh,Nalayh,47.76667,107.28333,MN,MNG,Mongolia,39579,False,PPL,Asia/Ulaanbaatar,,1434
+2029945,Mörön,Moeroen,49.63417,100.1625,MN,MNG,Mongolia,39404,False,PPLA,Asia/Ulaanbaatar,,1280
+2032533,Bayanhongor,Bayanhongor,46.19444,100.71806,MN,MNG,Mongolia,30931,False,PPLA,Asia/Ulaanbaatar,,1873
+1515029,Ulaangom,Ulaangom,49.98111,92.06667,MN,MNG,Mongolia,30092,False,PPLA,Asia/Hovd,,935
+1516048,Khovd,Khovd,48.00556,91.64194,MN,MNG,Mongolia,29800,False,PPLA,Asia/Hovd,,1395
+2032814,Arvayheer,Arvayheer,46.26389,102.775,MN,MNG,Mongolia,29420,False,PPLA,Asia/Ulaanbaatar,,1838
+7828758,Saipan,Saipan,15.21233,145.7545,MP,MNP,Northern Mariana Islands,48220,True,PPLC,Pacific/Saipan,5,211
+1040652,Maputo,Maputo,-25.96553,32.58322,MZ,MOZ,Mozambique,1254837,True,PPLC,Africa/Maputo,,70
+1039854,Matola,Matola,-25.96222,32.45889,MZ,MOZ,Mozambique,1198988,False,PPLA,Africa/Maputo,,42
+1033356,Nampula,Nampula,-15.11646,39.2666,MZ,MOZ,Mozambique,770379,False,PPLA,Africa/Maputo,,431
+1052373,Beira,Beira,-19.84361,34.83889,MZ,MOZ,Mozambique,687764,False,PPLA,Africa/Maputo,,6
+1049261,Chimoio,Chimoio,-19.11639,33.48333,MZ,MOZ,Mozambique,422046,False,PPLA,Africa/Maputo,,709
+1026014,Tete,Tete,-16.15639,33.58667,MZ,MOZ,Mozambique,357000,False,PPLA,Africa/Maputo,,137
+1028434,Quelimane,Quelimane,-17.87861,36.88833,MZ,MOZ,Mozambique,349842,False,PPLA,Africa/Maputo,,9
+1043893,Lichinga,Lichinga,-13.31278,35.24056,MZ,MOZ,Mozambique,281341,False,PPLA,Africa/Maputo,,1349
+1035025,Nacala,Nacala,-14.56257,40.68538,MZ,MOZ,Mozambique,239808,False,PPL,Africa/Maputo,,137
+1028918,Pemba,Pemba,-12.97395,40.51775,MZ,MOZ,Mozambique,232932,False,PPLA,Africa/Maputo,,50
+2377450,Nouakchott,Nouakchott,18.08581,-15.9785,MR,MRT,Mauritania,1184530,True,PPLC,Africa/Nouakchott,,10
+2377457,Nouadhibou,Nouadhibou,20.94188,-17.03842,MR,MRT,Mauritania,146048,False,PPLA,Africa/Nouakchott,,16
+2378538,Kiffa,Kiffa,16.62073,-11.40208,MR,MRT,Mauritania,62051,False,PPLA,Africa/Nouakchott,,127
+11496397,Dar Naim,Dar Naim,18.10808,-15.92666,MR,MRT,Mauritania,61089,False,PPLA,Africa/Nouakchott,,3
+2377539,Néma,Nema,16.61702,-7.25649,MR,MRT,Mauritania,60000,False,PPLA,Africa/Nouakchott,,266
+12718654,Mbera,Mbera,15.85615,-5.79067,MR,MRT,Mauritania,58985,False,PPL,Africa/Nouakchott,,295
+2595352,Ksar,Ksar,18.0995,-15.9574,MR,MRT,Mauritania,57758,False,PPL,Africa/Nouakchott,,5
+2378736,Kaédi,Kaedi,16.15071,-13.50582,MR,MRT,Mauritania,56283,False,PPLA,Africa/Nouakchott,,17
+2375558,Zouérat,Zouerat,22.73542,-12.47134,MR,MRT,Mauritania,55183,False,PPLA,Africa/Nouakchott,,352
+11009418,Tevragh Zeina,Tevragh Zeina,18.09894,-15.98848,MR,MRT,Mauritania,48093,False,PPLA,Africa/Nouakchott,,1
+7266440,Brades,Brades,16.79183,-62.21058,MS,MSR,Montserrat,1000,True,PPLG,America/Montserrat,,52
+3578069,Plymouth,Plymouth,16.70555,-62.21292,MS,MSR,Montserrat,0,True,PPLC,America/Montserrat,,77
+3570675,Fort-de-France,Fort-de-France,14.60365,-61.07418,MQ,MTQ,Martinique,89995,True,PPLC,America/Martinique,,5
+3570428,Le Lamentin,Le Lamentin,14.61341,-60.99964,MQ,MTQ,Martinique,40581,False,PPL,America/Martinique,,10
+3570412,Le Robert,Le Robert,14.67751,-60.94228,MQ,MTQ,Martinique,23814,False,PPL,America/Martinique,,8
+3569926,Sainte-Marie,Sainte-Marie,14.78352,-60.99227,MQ,MTQ,Martinique,20380,False,PPL,America/Martinique,,14
+3570429,Le François,Le Francois,14.61513,-60.90311,MQ,MTQ,Martinique,19682,False,PPL,America/Martinique,,14
+3570785,Ducos,Ducos,14.57529,-60.97453,MQ,MTQ,Martinique,17394,False,PPL,America/Martinique,,62
+3569915,Saint-Joseph,Saint-Joseph,14.67099,-61.03905,MQ,MTQ,Martinique,16974,False,PPL,America/Martinique,,240
+3570446,La Trinité,La Trinite,14.73807,-60.96319,MQ,MTQ,Martinique,15040,False,PPL,America/Martinique,,6
+934154,Port Louis,Port Louis,-20.16194,57.49889,MU,MUS,Mauritius,155226,True,PPLC,Indian/Mauritius,,3
+933945,Vacoas,Vacoas,-20.29806,57.47833,MU,MUS,Mauritius,115289,False,PPL,Indian/Mauritius,,390
+934765,Beau Bassin-Rose Hill,Beau Bassin-Rose Hill,-20.23325,57.46609,MU,MUS,Mauritius,111355,False,PPLA,Indian/Mauritius,,249
+934570,Curepipe,Curepipe,-20.31628,57.52594,MU,MUS,Mauritius,78618,False,PPL,Indian/Mauritius,,559
+934131,Quatre Bornes,Quatre Bornes,-20.26381,57.4791,MU,MUS,Mauritius,77308,False,PPL,Indian/Mauritius,,335
+933959,Triolet,Triolet,-20.0576,57.55025,MU,MUS,Mauritius,24361,False,PPL,Indian/Mauritius,,34
+934488,Goodlands,Goodlands,-20.03841,57.65055,MU,MUS,Mauritius,21063,False,PPL,Indian/Mauritius,,45
+934750,Bel Air Rivière Sèche,Bel Air Riviere Seche,-20.25777,57.74976,MU,MUS,Mauritius,18036,False,PPL,Indian/Mauritius,,78
+934778,Bambous,Bambous,-20.25667,57.40611,MU,MUS,Mauritius,17818,False,PPL,Indian/Mauritius,,122
+934631,Centre de Flacq,Centre de Flacq,-20.18972,57.71444,MU,MUS,Mauritius,17710,False,PPLA,Indian/Mauritius,,53
+927967,Lilongwe,Lilongwe,-13.96692,33.78725,MW,MWI,Malawi,1115815,True,PPLC,Africa/Blantyre,,1056
+931755,Blantyre,Blantyre,-15.78499,35.00854,MW,MWI,Malawi,902588,False,PPLA,Africa/Blantyre,,1041
+925475,Mzuzu,Mzuzu,-11.46556,34.02071,MW,MWI,Malawi,249564,False,PPLA,Africa/Blantyre,,1275
+923295,Zomba,Zomba,-15.38596,35.3188,MW,MWI,Malawi,118440,False,PPLA2,Africa/Blantyre,,949
+235715,Karonga,Karonga,-9.93333,33.93333,MW,MWI,Malawi,69486,False,PPLA2,Africa/Blantyre,,486
+928534,Kasungu,Kasungu,-13.03333,33.48333,MW,MWI,Malawi,66152,False,PPLA2,Africa/Blantyre,,1051
+927246,Mangochi,Mangochi,-14.47815,35.26448,MW,MWI,Malawi,60338,False,PPLA2,Africa/Blantyre,,484
+924055,Salima,Salima,-13.7804,34.4587,MW,MWI,Malawi,41492,False,PPLA2,Africa/Blantyre,,512
+927834,Liwonde,Liwonde,-15.06665,35.22543,MW,MWI,Malawi,41077,False,PPL,Africa/Blantyre,,499
+931865,Balaka,Balaka,-14.97928,34.95575,MW,MWI,Malawi,40950,False,PPLA2,Africa/Blantyre,,633
+1735161,Kuala Lumpur,Kuala Lumpur,3.1412,101.68653,MY,MYS,Malaysia,1453975,True,PPLC,Asia/Kuala_Lumpur,,56
+1732752,Johor Bahru,Johor Bahru,1.4655,103.7578,MY,MYS,Malaysia,858118,False,PPLA,Asia/Kuala_Lumpur,,32
+1771023,Kampung Baru Subang,Kampung Baru Subang,3.15,101.53333,MY,MYS,Malaysia,833571,False,PPL,Asia/Kuala_Lumpur,,27
+1735158,Petaling Jaya,Petaling Jaya,3.10726,101.60671,MY,MYS,Malaysia,807879,False,PPLA2,Asia/Kuala_Lumpur,,45
+1734634,Ipoh,Ipoh,4.5841,101.0829,MY,MYS,Malaysia,759952,False,PPLA,Asia/Kuala_Lumpur,,45
+1732903,Shah Alam,Shah Alam,3.08507,101.53281,MY,MYS,Malaysia,740750,False,PPL,Asia/Kuala_Lumpur,,53
+8504423,Subang Jaya,Subang Jaya,3.04384,101.58062,MY,MYS,Malaysia,708296,False,PPLX,Asia/Kuala_Lumpur,,41
+13118225,Bukit Rahman Putra,Bukit Rahman Putra,3.21727,101.5608,MY,MYS,Malaysia,607000,False,PPL,Asia/Kuala_Lumpur,,76
+1732747,Pelentong,Pelentong,1.5243,103.824,MY,MYS,Malaysia,583640,False,PPL,Asia/Kuala_Lumpur,,25
+6697380,Putrajaya,Putrajaya,2.93527,101.69112,MY,MYS,Malaysia,50000,True,PPLG,Asia/Kuala_Lumpur,,35
+921815,Mamoudzou,Mamoudzou,-12.78234,45.22878,YT,MYT,Mayotte,54831,True,PPLC,Indian/Mayotte,,23
+1090225,Koungou,Koungou,-12.73361,45.20417,YT,MYT,Mayotte,18118,False,PPLA,Indian/Mayotte,,40
+1090275,Labattoir,Labattoir,-12.77698,45.28234,YT,MYT,Mayotte,17739,False,PPL,Indian/Mayotte,,34
+1090239,Kaouéni,Kaoueni,-12.77121,45.22419,YT,MYT,Mayotte,17060,False,PPL,Indian/Mayotte,,9
+1090242,Mtsapéré,Mtsapere,-12.78636,45.21732,YT,MYT,Mayotte,15880,False,PPLX,Indian/Mayotte,,37
+921900,Dzaoudzi,Dzaoudzi,-12.78339,45.25693,YT,MYT,Mayotte,15339,False,PPLA,Indian/Mayotte,,26
+3352136,Windhoek,Windhoek,-22.55941,17.08323,NA,NAM,Namibia,386219,True,PPLC,Africa/Windhoek,1700,1656
+3353383,Rundu,Rundu,-17.91796,19.77314,NA,NAM,Namibia,75180,False,PPLA,Africa/Windhoek,,1114
+3359638,Walvis Bay,Walvis Bay,-22.9575,14.50528,NA,NAM,Namibia,73598,False,PPL,Africa/Windhoek,,6
+3352844,Swakopmund,Swakopmund,-22.67842,14.52663,NA,NAM,Namibia,53009,False,PPLA,Africa/Windhoek,,18
+3354021,Oshakati,Oshakati,-17.78833,15.70436,NA,NAM,Namibia,43309,False,PPLA,Africa/Windhoek,,1103
+3353540,Rehoboth,Rehoboth,-23.317,17.09,NA,NAM,Namibia,34185,False,PPL,Africa/Windhoek,,1391
+877178,Katima Mulilo,Katima Mulilo,-17.50467,24.27574,NA,NAM,Namibia,33615,False,PPLA,Africa/Windhoek,,951
+3353811,Otjiwarongo,Otjiwarongo,-20.46369,16.64772,NA,NAM,Namibia,33481,False,PPLA,Africa/Windhoek,,1475
+3354247,Ondangwa,Ondangwa,-17.90824,15.98037,NA,NAM,Namibia,27049,False,PPL,Africa/Windhoek,,1081
+3354898,Okahandja,Okahandja,-21.98141,16.9029,NA,NAM,Namibia,26832,False,PPL,Africa/Windhoek,,1370
+2139521,Nouméa,Noumea,-22.27407,166.44884,NC,NCL,New Caledonia,93060,True,PPLC,Pacific/Noumea,,26
+2140066,Mont-Dore,Mont-Dore,-22.26257,166.56621,NC,NCL,New Caledonia,24680,False,PPL,Pacific/Noumea,,11
+2141394,Dumbéa,Dumbea,-22.15757,166.4572,NC,NCL,New Caledonia,19346,False,PPL,Pacific/Noumea,,50
+2440485,Niamey,Niamey,13.51366,2.1098,NE,NER,Niger,1323691,True,PPLC,Africa/Niamey,,206
+2441291,Maradi,Maradi,13.5,7.10174,NE,NER,Niger,361702,False,PPLA,Africa/Niamey,,360
+2437798,Zinder,Zinder,13.80716,8.9881,NE,NER,Niger,318874,False,PPLA,Africa/Niamey,,460
+2439376,Tahoua,Tahoua,14.8888,5.2692,NE,NER,Niger,159468,False,PPLA,Africa/Niamey,,389
+2448085,Agadez,Agadez,16.97333,7.99111,NE,NER,Niger,149549,False,PPLA,Africa/Niamey,,505
+2447513,Arlit,Arlit,18.73694,7.38528,NE,NER,Niger,106448,False,PPLA2,Africa/Niamey,,423
+2447938,Alaghsas,Alaghsas,17.0187,8.0168,NE,NER,Niger,88561,False,PPL,Africa/Niamey,,519
+2437732,Birni N Konni,Birni N Konni,13.79599,5.25026,NE,NER,Niger,85494,False,PPL,Africa/Niamey,,272
+2445488,Dosso,Dosso,13.049,3.1937,NE,NER,Niger,79406,False,PPLA,Africa/Niamey,,218
+2444489,Gaya,Gaya,11.88435,3.44919,NE,NER,Niger,61533,False,PPLA2,Africa/Niamey,,177
+2161314,Kingston,Kingston,-29.05459,167.96628,NF,NFK,Norfolk Island,880,True,PPLC,Pacific/Norfolk,,71
+2332459,Lagos,Lagos,6.45407,3.39467,NG,NGA,Nigeria,15388000,False,PPLA2,Africa/Lagos,,11
+2335204,Kano,Kano,12.00012,8.51672,NG,NGA,Nigeria,4910000,False,PPLA,Africa/Lagos,,484
+2339354,Ibadan,Ibadan,7.37756,3.90591,NG,NGA,Nigeria,3649000,False,PPLA,Africa/Lagos,,181
+2352778,Abuja,Abuja,9.05785,7.49508,NG,NGA,Nigeria,2690000,True,PPLC,Africa/Lagos,,476
+2324774,Port Harcourt,Port Harcourt,4.77742,7.0134,NG,NGA,Nigeria,2120000,False,PPLA,Africa/Lagos,,16
+2335727,Kaduna,Kaduna,10.52641,7.43879,NG,NGA,Nigeria,1850000,False,PPLA,Africa/Lagos,,626
+2347283,Benin City,Benin City,6.33815,5.62575,NG,NGA,Nigeria,1782000,False,PPLA,Africa/Lagos,,88
+2326016,Onitsha,Onitsha,6.14978,6.78569,NG,NGA,Nigeria,1553000,False,PPLA2,Africa/Lagos,,57
+2353151,Aba,Aba,5.10658,7.36667,NG,NGA,Nigeria,1160000,False,PPLA2,Africa/Lagos,,64
+2331447,Maiduguri,Maiduguri,11.84692,13.15712,NG,NGA,Nigeria,1110000,False,PPLA,Africa/Lagos,,325
+2337639,Ilorin,Ilorin,8.49664,4.54214,NG,NGA,Nigeria,1080000,False,PPLA,Africa/Lagos,,320
+2322911,Sokoto,Sokoto,13.06269,5.24322,NG,NGA,Nigeria,1040000,False,PPLA,Africa/Lagos,,296
+2335953,Jos,Jos,9.92849,8.89212,NG,NGA,Nigeria,1040000,False,PPLA,Africa/Lagos,,1186
+3617763,Managua,Managua,12.13282,-86.2504,NI,NIC,Nicaragua,973087,True,PPLC,America/Managua,,108
+3618030,León,Leon,12.43527,-86.87862,NI,NIC,Nicaragua,144538,False,PPLA,America/Managua,,102
+3617723,Masaya,Masaya,11.97316,-86.09587,NI,NIC,Nicaragua,130113,False,PPLA,America/Managua,,242
+3620381,Chinandega,Chinandega,12.62951,-87.13133,NI,NIC,Nicaragua,126387,False,PPLA,America/Managua,,69
+3617708,Matagalpa,Matagalpa,12.92795,-85.91906,NI,NIC,Nicaragua,109089,False,PPLA,America/Managua,,689
+3619194,Estelí,Esteli,13.09291,-86.35589,NI,NIC,Nicaragua,96422,False,PPLA,America/Managua,,833
+3619136,Granada,Granada,11.93062,-85.95368,NI,NIC,Nicaragua,89409,False,PPLA,America/Managua,,62
+3617697,Mateare,Mateare,12.23512,-86.42809,NI,NIC,Nicaragua,61234,False,PPLA2,America/Managua,,60
+3618929,Jinotega,Jinotega,13.09103,-86.00234,NI,NIC,Nicaragua,55000,False,PPLA,America/Managua,1007,1010
+3619267,El Viejo,El Viejo,12.66348,-87.16663,NI,NIC,Nicaragua,53504,False,PPLA2,America/Managua,,49
+4036284,Alofi,Alofi,-19.05294,-169.91957,NU,NIU,Niue,624,True,PPLC,Pacific/Niue,,51
+2747891,Rotterdam,Rotterdam,51.9225,4.47917,NL,NLD,Netherlands,868135,False,PPL,Europe/Amsterdam,,9
+2759794,Amsterdam,Amsterdam,52.37403,4.88969,NL,NLD,Netherlands,741636,True,PPLC,Europe/Amsterdam,,13
+2747373,The Hague,The Hague,52.07667,4.29861,NL,NLD,Netherlands,474292,True,PPLG,Europe/Amsterdam,,4
+2745912,Utrecht,Utrecht,52.09083,5.12222,NL,NLD,Netherlands,376435,False,PPLA,Europe/Amsterdam,,13
+2755251,Groningen,Groningen,53.21917,6.56667,NL,NLD,Netherlands,244807,False,PPLA,Europe/Amsterdam,,16
+2756253,Eindhoven,Eindhoven,51.44083,5.47778,NL,NLD,Netherlands,235691,False,PPL,Europe/Amsterdam,,22
+2746301,Tilburg,Tilburg,51.55551,5.0913,NL,NLD,Netherlands,221947,False,PPL,Europe/Amsterdam,,16
+2758401,Breda,Breda,51.58656,4.77596,NL,NLD,Netherlands,184126,False,PPL,Europe/Amsterdam,,9
+2750053,Nijmegen,Nijmegen,51.8425,5.85278,NL,NLD,Netherlands,177359,False,PPL,Europe/Amsterdam,,25
+2759879,Almere Stad,Almere Stad,52.37025,5.21413,NL,NLD,Netherlands,176432,False,PPL,Europe/Amsterdam,,-3
+3143244,Oslo,Oslo,59.91273,10.74609,NO,NOR,Norway,1082575,True,PPLC,Europe/Oslo,,26
+3161732,Bergen,Bergen,60.39299,5.32415,NO,NOR,Norway,294029,False,PPLA,Europe/Oslo,,20
+3133880,Trondheim,Trondheim,63.43049,10.39506,NO,NOR,Norway,216518,False,PPL,Europe/Oslo,,18
+3137115,Stavanger,Stavanger,58.97005,5.73332,NO,NOR,Norway,148682,False,PPLA,Europe/Oslo,,15
+3149318,Kristiansand,Kristiansand,58.14671,7.9956,NO,NOR,Norway,117237,False,PPLA,Europe/Oslo,,12
+3159016,Drammen,Drammen,59.74389,10.20449,NO,NOR,Norway,105042,False,PPLA,Europe/Oslo,,11
+3147465,Lillestrøm,Lillestrom,59.95597,11.04918,NO,NOR,Norway,89684,False,PPLA2,Europe/Oslo,,116
+3140321,Sandnes,Sandnes,58.85244,5.73521,NO,NOR,Norway,85386,False,PPLA2,Europe/Oslo,,8
+3156529,Fredrikstad,Fredrikstad,59.2181,10.9298,NO,NOR,Norway,83761,False,PPLA2,Europe/Oslo,,6
+3140390,Sandefjord,Sandefjord,59.13118,10.21665,NO,NOR,Norway,64345,False,PPLA2,Europe/Oslo,,11
+1283240,Kathmandu,Kathmandu,27.70169,85.3206,NP,NPL,Nepal,1442271,True,PPLC,Asia/Kathmandu,1317,1296
+1282898,Pokhara,Pokhara,28.26689,83.96851,NP,NPL,Nepal,600051,False,PPLA,Asia/Kathmandu,,1008
+1283613,Bharatpur,Bharatpur,27.68027,84.43647,NP,NPL,Nepal,369377,False,PPL,Asia/Kathmandu,,206
+1282931,Pātan,Patan,27.67658,85.31417,NP,NPL,Nepal,299283,False,PPL,Asia/Kathmandu,,1334
+1283581,Birgañj,Birganj,27.01736,84.88047,NP,NPL,Nepal,268273,False,PPL,Asia/Kathmandu,,89
+1283582,Biratnagar,Biratnagar,26.45505,87.27007,NP,NPL,Nepal,244750,False,PPL,Asia/Kathmandu,,74
+1283467,Dhangaḍhi̇̄,Dhangadhi,28.70159,80.58991,NP,NPL,Nepal,204788,False,PPL,Asia/Kathmandu,,183
+1283339,Hetauda,Hetauda,27.42839,85.03219,NP,NPL,Nepal,195951,False,PPL,Asia/Kathmandu,,467
+1283318,Janakpur,Janakpur,26.72882,85.92628,NP,NPL,Nepal,195438,False,PPLA,Asia/Kathmandu,,83
+1283562,Butwāl,Butwal,27.70055,83.44836,NP,NPL,Nepal,195054,False,PPLA,Asia/Kathmandu,,322
+7626461,Yaren,Yaren,-0.55085,166.9252,NR,NRU,Nauru,1100,True,PPLC,Pacific/Nauru,5,6
+2193733,Auckland,Auckland,-36.84853,174.76349,NZ,NZL,New Zealand,1530500,False,PPLA,Pacific/Auckland,,43
+2192362,Christchurch,Christchurch,-43.53333,172.63333,NZ,NZL,New Zealand,412000,False,PPLA,Pacific/Auckland,,14
+2179537,Wellington,Wellington,-41.28664,174.77557,NZ,NZL,New Zealand,381900,True,PPLC,Pacific/Auckland,,31
+2187404,Manukau City,Manukau City,-36.99282,174.87986,NZ,NZL,New Zealand,362000,False,PPL,Pacific/Auckland,,43
+2185964,North Shore,North Shore,-36.8,174.75,NZ,NZL,New Zealand,258697,False,PPLX,Pacific/Auckland,,30
+2190324,Hamilton,Hamilton,-37.78333,175.28333,NZ,NZL,New Zealand,189700,False,PPLA,Pacific/Auckland,,39
+2208032,Tauranga,Tauranga,-37.68611,176.16667,NZ,NZL,New Zealand,155200,False,PPLA2,Pacific/Auckland,,18
+2191562,Dunedin,Dunedin,-45.87416,170.50361,NZ,NZL,New Zealand,131800,False,PPLA,Pacific/Auckland,,21
+2188164,Lower Hutt,Lower Hutt,-41.21667,174.91667,NZ,NZL,New Zealand,113400,False,PPL,Pacific/Auckland,,9
+2185018,Palmerston North,Palmerston North,-40.35636,175.61113,NZ,NZL,New Zealand,91300,False,PPLA,Pacific/Auckland,,34
+287286,Muscat,Muscat,23.58413,58.40778,OM,OMN,Oman,797000,True,PPLC,Asia/Muscat,,14
+288967,Seeb,Seeb,23.67027,58.18911,OM,OMN,Oman,470878,False,PPL,Asia/Muscat,,7
+288764,Bawshar,Bawshar,23.57769,58.39982,OM,OMN,Oman,383257,False,PPL,Asia/Muscat,,18
+287830,‘Ibrī,'Ibri,23.22573,56.51572,OM,OMN,Oman,163473,False,PPL,Asia/Muscat,,359
+286621,Şalālah,Salalah,17.01505,54.09237,OM,OMN,Oman,163140,False,PPLA,Asia/Muscat,,13
+286647,Şaḩam,Saham,24.17222,56.88861,OM,OMN,Oman,140000,False,PPL,Asia/Muscat,,2
+289011,Rustaq,Rustaq,23.39083,57.42444,OM,OMN,Oman,120000,False,PPL,Asia/Muscat,,341
+286282,Sohar,Sohar,24.34745,56.70937,OM,OMN,Oman,108274,False,PPLA,Asia/Muscat,,12
+288955,As Suwayq,As Suwayq,23.84944,57.43861,OM,OMN,Oman,107143,False,PPL,Asia/Muscat,,6
+288789,Barkā’,Barka',23.67872,57.88605,OM,OMN,Oman,81647,False,PPLX,Asia/Muscat,,13
+1172451,Lahore,Lahore,31.558,74.35071,PK,PAK,Pakistan,13004135,False,PPLA,Asia/Karachi,,216
+1174872,Karachi,Karachi,24.8608,67.0104,PK,PAK,Pakistan,11624219,False,PPLA,Asia/Karachi,,8
+1168197,Peshawar,Peshawar,34.008,71.57849,PK,PAK,Pakistan,4758762,False,PPLA,Asia/Karachi,,340
+1179400,Faisalabad,Faisalabad,31.41554,73.08969,PK,PAK,Pakistan,3800193,False,PPLA2,Asia/Karachi,,186
+1166993,Rawalpindi,Rawalpindi,33.59733,73.0479,PK,PAK,Pakistan,3357612,False,PPLA2,Asia/Karachi,,501
+1177662,Gujranwala,Gujranwala,32.15567,74.18705,PK,PAK,Pakistan,2511118,False,PPLA2,Asia/Karachi,,230
+1169825,Multan,Multan,30.19679,71.47824,PK,PAK,Pakistan,2169915,False,PPLA2,Asia/Karachi,,126
+1176734,Hyderabad,Hyderabad,25.39689,68.37718,PK,PAK,Pakistan,1921275,False,PPLA2,Asia/Karachi,,14
+1167528,Quetta,Quetta,30.18414,67.00141,PK,PAK,Pakistan,1565546,False,PPLA,Asia/Karachi,,1683
+1183460,Bannu,Bannu,32.98527,70.60403,PK,PAK,Pakistan,1357890,False,PPLA2,Asia/Karachi,,379
+1176615,Islamabad,Islamabad,33.72148,73.04329,PK,PAK,Pakistan,601600,True,PPLC,Asia/Karachi,,579
+3703443,Panamá,Panama,8.9936,-79.51973,PA,PAN,Panama,408168,True,PPLC,America/Panama,,17
+3701329,San Miguelito,San Miguelito,9.05032,-79.47068,PA,PAN,Panama,321501,False,PPLA2,America/Panama,,57
+3708306,Juan Díaz,Juan Diaz,9.04059,-79.44083,PA,PAN,Panama,100636,False,PPL,America/Panama,,7
+3711668,David,David,8.42729,-82.43085,PA,PAN,Panama,81957,False,PPLA,America/Panama,,47
+3714637,Arraiján,Arraijan,8.9398,-79.64038,PA,PAN,Panama,76815,False,PPLA2,America/Panama,,123
+3712076,Colón,Colon,9.36025,-79.90019,PA,PAN,Panama,76643,False,PPLA,America/Panama,,2
+3706567,Las Cumbres,Las Cumbres,9.09211,-79.53895,PA,PAN,Panama,69102,False,PPLX,America/Panama,,93
+3707961,La Chorrera,La Chorrera,8.87763,-79.78007,PA,PAN,Panama,61232,False,PPLA,America/Panama,,70
+3703227,Pedregal,Pedregal,9.0661,-79.42577,PA,PAN,Panama,51641,False,PPLX,America/Panama,,30
+3700563,Tocumen,Tocumen,9.08939,-79.3831,PA,PAN,Panama,50844,False,PPLA3,America/Panama,,35
+4030723,Adamstown,Adamstown,-25.06597,-130.10147,PN,PCN,Pitcairn Islands,46,True,PPLC,Pacific/Pitcairn,,67
+3936456,Lima,Lima,-12.04318,-77.02824,PE,PER,Peru,7737002,True,PPLC,America/Lima,,152
+3946083,Callao,Callao,-12.05162,-77.13452,PE,PER,Peru,1300000,False,PPLA,America/Lima,,5
+3947322,Arequipa,Arequipa,-16.39899,-71.53747,PE,PER,Peru,1008290,False,PPLA,America/Lima,,2397
+3691175,Trujillo,Trujillo,-8.11599,-79.02998,PE,PER,Peru,919899,False,PPLA,America/Lima,,31
+3698350,Chiclayo,Chiclayo,-6.77008,-79.85495,PE,PER,Peru,552508,False,PPLA,America/Lima,,1
+3693528,Piura,Piura,-5.18192,-80.65715,PE,PER,Peru,484475,False,PPLA,America/Lima,,29
+3939459,Huancayo,Huancayo,-12.06866,-75.21027,PE,PER,Peru,456250,False,PPLA,America/Lima,,3596
+3941584,Cusco,Cusco,-13.53188,-71.96701,PE,PER,Peru,428450,False,PPLA,America/Lima,,3312
+3696183,Iquitos,Iquitos,-3.74814,-73.2529,PE,PER,Peru,377609,False,PPLA,America/Lima,,107
+3693345,Pucallpa,Pucallpa,-8.37915,-74.55387,PE,PER,Peru,326040,False,PPLA,America/Lima,,155
+1692192,Quezon City,Quezon City,14.6488,121.0509,PH,PHL,Philippines,3084270,False,PPLA2,Asia/Manila,,49
+1715348,Davao,Davao,7.07306,125.61278,PH,PHL,Philippines,1848947,False,PPLA,Asia/Manila,,13
+1720151,Caloocan,Caloocan,14.64953,120.96788,PH,PHL,Philippines,1712945,False,PPLA2,Asia/Manila,,6
+1701668,Manila,Manila,14.6042,120.9822,PH,PHL,Philippines,1600000,True,PPLC,Asia/Manila,,13
+1684308,Taguig,Taguig,14.5243,121.0792,PH,PHL,Philippines,1308085,False,PPLA3,Asia/Manila,,5
+1723510,Budta,Budta,7.20417,124.43972,PH,PHL,Philippines,1273715,False,PPL,Asia/Manila,,4
+1978681,Malingao,Malingao,7.16083,124.475,PH,PHL,Philippines,1121974,False,PPL,Asia/Manila,,5
+1679432,Zamboanga,Zamboanga,6.91028,122.07389,PH,PHL,Philippines,1018849,False,PPLA2,Asia/Manila,,9
+1717512,Cebu City,Cebu City,10.31672,123.89071,PH,PHL,Philippines,965332,False,PPLA,Asia/Manila,,37
+1730501,Antipolo,Antipolo,14.62578,121.12251,PH,PHL,Philippines,913712,False,PPLA2,Asia/Manila,,23
+8063361,Ngerulmud,Ngerulmud,7.50077,134.6238,PW,PLW,Palau,1,True,PPLC,Pacific/Palau,,72
+2088122,Port Moresby,Port Moresby,-9.47723,147.15089,PG,PNG,Papua New Guinea,283733,True,PPLC,Pacific/Port_Moresby,,25
+2092740,Lae,Lae,-6.72333,146.99611,PG,PNG,Papua New Guinea,76255,False,PPLA,Pacific/Port_Moresby,,44
+2100633,Arawa,Arawa,-6.22977,155.56598,PG,PNG,Papua New Guinea,40266,False,PPLA2,Pacific/Bougainville,,28
+2090409,Mount Hagen,Mount Hagen,-5.85746,144.23058,PG,PNG,Papua New Guinea,33623,False,PPLA,Pacific/Port_Moresby,,1728
+2088163,Popondetta,Popondetta,-8.76536,148.23252,PG,PNG,Papua New Guinea,28198,False,PPLA,Pacific/Port_Moresby,,106
+2091996,Madang,Madang,-5.22152,145.78695,PG,PNG,Papua New Guinea,27419,False,PPLA,Pacific/Port_Moresby,,4
+2093685,Kokopo,Kokopo,-4.3432,152.26867,PG,PNG,Papua New Guinea,26273,False,PPLA,Pacific/Port_Moresby,,22
+2090990,Mendi,Mendi,-6.14755,143.65633,PG,PNG,Papua New Guinea,26252,False,PPLA,Pacific/Port_Moresby,,1729
+2093967,Kimbe,Kimbe,-5.55085,150.13766,PG,PNG,Papua New Guinea,18847,False,PPLA,Pacific/Port_Moresby,,27
+2096742,Goroka,Goroka,-6.085,145.38667,PG,PNG,Papua New Guinea,18503,False,PPLA,Pacific/Port_Moresby,,1574
+756135,Warsaw,Warsaw,52.22977,21.01178,PL,POL,Poland,1702139,True,PPLC,Europe/Warsaw,,113
+3094802,Kraków,Krakow,50.06143,19.93658,PL,POL,Poland,804237,False,PPLA,Europe/Warsaw,,219
+3081368,Wrocław,Wroclaw,51.10286,17.03006,PL,POL,Poland,672545,False,PPLA,Europe/Warsaw,,115
+3093133,Łódź,Lodz,51.77058,19.47395,PL,POL,Poland,645693,False,PPLA,Europe/Warsaw,,214
+3088171,Poznań,Poznan,52.40692,16.92993,PL,POL,Poland,536151,False,PPLA,Europe/Warsaw,,69
+3099434,Gdańsk,Gdansk,54.35227,18.64912,PL,POL,Poland,487371,False,PPLA,Europe/Warsaw,,8
+3083829,Szczecin,Szczecin,53.42894,14.55302,PL,POL,Poland,395513,False,PPLA,Europe/Warsaw,149,25
+765876,Lublin,Lublin,51.25058,22.57009,PL,POL,Poland,336339,False,PPLA,Europe/Warsaw,,184
+3102014,Bydgoszcz,Bydgoszcz,53.1235,18.00762,PL,POL,Poland,330038,False,PPLA,Europe/Warsaw,,37
+776069,Białystok,Bialystok,53.13333,23.16433,PL,POL,Poland,295683,False,PPLA,Europe/Warsaw,,135
+4568127,San Juan,San Juan,18.46633,-66.10572,PR,PRI,Puerto Rico,418140,True,PPLC,America/Puerto_Rico,7,11
+4562831,Bayamón,Bayamon,18.39856,-66.15572,PR,PRI,Puerto Rico,203499,False,PPLA,America/Puerto_Rico,16,20
+4563243,Carolina,Carolina,18.38078,-65.95739,PR,PRI,Puerto Rico,170404,False,PPLA,America/Puerto_Rico,16,22
+4566880,Ponce,Ponce,18.01031,-66.62398,PR,PRI,Puerto Rico,137491,False,PPLA,America/Puerto_Rico,15,12
+4562635,Arecibo,Arecibo,18.47245,-66.71573,PR,PRI,Puerto Rico,87754,False,PPLA,America/Puerto_Rico,7,14
+4563008,Caguas,Caguas,18.23412,-66.0485,PR,PRI,Puerto Rico,86804,False,PPLA,America/Puerto_Rico,65,65
+4565119,Guaynabo,Guaynabo,18.35745,-66.111,PR,PRI,Puerto Rico,81360,False,PPLA,America/Puerto_Rico,47,50
+4568451,Trujillo Alto,Trujillo Alto,18.35467,-66.00739,PR,PRI,Puerto Rico,75243,False,PPLA,America/Puerto_Rico,20,21
+4566385,Mayagüez,Mayagueez,18.20107,-67.13962,PR,PRI,Puerto Rico,73077,False,PPLA,America/Puerto_Rico,21,27
+4564946,Fajardo,Fajardo,18.32579,-65.65238,PR,PRI,Puerto Rico,32124,False,PPLA,America/Puerto_Rico,10,16
+1871859,Pyongyang,Pyongyang,39.03385,125.75432,KP,PRK,North Korea,3222000,True,PPLC,Asia/Pyongyang,,43
+1877449,Hamhŭng,Hamhung,39.91833,127.53639,KP,PRK,North Korea,559056,False,PPLA,Asia/Pyongyang,,16
+1873757,Namp’o,Namp'o,38.7375,125.40778,KP,PRK,North Korea,455000,False,PPLA,Asia/Pyongyang,,9
+1869012,Sunch’ŏn,Sunch'on,39.43167,125.93278,KP,PRK,North Korea,437000,False,PPLA3,Asia/Pyongyang,,72
+1877030,Hŭngnam,Hungnam,39.84198,127.63206,KP,PRK,North Korea,346082,False,PPL,Asia/Pyongyang,,3
+1876373,Kaesŏng,Kaesong,37.97083,126.55444,KP,PRK,North Korea,338155,False,PPLA,Asia/Pyongyang,,42
+1866923,Wŏnsan,Wonsan,39.15278,127.44361,KP,PRK,North Korea,329207,False,PPLA,Asia/Pyongyang,,7
+2044757,Chongjin,Chongjin,41.79556,129.77583,KP,PRK,North Korea,327000,False,PPLA,Asia/Pyongyang,,5
+1874533,Man’gyŏngdae-ri,Man'gyongdae-ri,38.99182,125.65871,KP,PRK,North Korea,321690,False,PPL,Asia/Pyongyang,,14
+1876401,Kaech’ŏn,Kaech'on,39.70056,125.89333,KP,PRK,North Korea,319554,False,PPL,Asia/Pyongyang,,35
+2267057,Lisbon,Lisbon,38.72509,-9.1498,PT,PRT,Portugal,517802,True,PPLC,Europe/Lisbon,,68
+2735943,Porto,Porto,41.1485,-8.61097,PT,PRT,Portugal,252687,False,PPLA,Europe/Lisbon,,91
+2742032,Braga,Braga,41.5514,-8.42311,PT,PRT,Portugal,193324,False,PPLA,Europe/Lisbon,,190
+2271772,Amadora,Amadora,38.75382,-9.23083,PT,PRT,Portugal,178858,False,PPL,Europe/Lisbon,,138
+2740637,Coimbra,Coimbra,40.20686,-8.41996,PT,PRT,Portugal,140796,False,PPLA,Europe/Lisbon,,59
+2267095,Leiria,Leiria,39.74362,-8.80705,PT,PRT,Portugal,128640,False,PPLA,Europe/Lisbon,,33
+2262963,Setúbal,Setubal,38.5244,-8.8882,PT,PRT,Portugal,118166,False,PPLA,Europe/Lisbon,,16
+2267827,Funchal,Funchal,32.66568,-16.92547,PT,PRT,Portugal,105795,False,PPLA,Atlantic/Madeira,,280
+2732265,Viseu,Viseu,40.66165,-7.90905,PT,PRT,Portugal,103502,False,PPLA,Europe/Lisbon,,469
+2264268,Queluz,Queluz,38.75657,-9.25451,PT,PRT,Portugal,103399,False,PPL,Europe/Lisbon,,125
+3439389,Asunción,Asuncion,-25.28646,-57.647,PY,PRY,Paraguay,1482200,True,PPLC,America/Asuncion,,113
+3439101,Ciudad del Este,Ciudad del Este,-25.5036,-54.65067,PY,PRY,Paraguay,301815,False,PPLA,America/Asuncion,,197
+3437056,San Lorenzo,San Lorenzo,-25.33968,-57.50879,PY,PRY,Paraguay,227876,False,PPL,America/Asuncion,,119
+3439214,Capiatá,Capiata,-25.3552,-57.44545,PY,PRY,Paraguay,198553,False,PPL,America/Asuncion,,130
+3437863,Lambaré,Lambare,-25.34682,-57.60647,PY,PRY,Paraguay,126377,False,PPL,America/Asuncion,,119
+3438115,Fernando de la Mora,Fernando de la Mora,-25.3386,-57.52167,PY,PRY,Paraguay,120167,False,PPL,America/Asuncion,,131
+3437842,Limpio,Limpio,-25.16611,-57.48562,PY,PRY,Paraguay,96143,False,PPL,America/Asuncion,,74
+3437665,Nemby,Nemby,-25.3949,-57.53574,PY,PRY,Paraguay,94641,False,PPL,America/Asuncion,,109
+3437547,Pedro Juan Caballero,Pedro Juan Caballero,-22.54925,-55.7387,PY,PRY,Paraguay,75109,False,PPLA,America/Asuncion,,649
+3438735,Encarnación,Encarnacion,-27.33176,-55.86662,PY,PRY,Paraguay,74983,False,PPLA,America/Asuncion,,99
+7303419,East Jerusalem,East Jerusalem,31.78336,35.23388,PS,PSE,Palestine,428304,False,PPLX,Asia/Hebron,,759
+281133,Gaza,Gaza,31.50161,34.46672,PS,PSE,Palestine,410000,False,PPLA,Asia/Gaza,,38
+281124,Khān Yūnis,Khan Yunis,31.34018,34.30627,PS,PSE,Palestine,173183,False,PPLA2,Asia/Gaza,,55
+281129,Jabālyā,Jabalya,31.5272,34.48347,PS,PSE,Palestine,168568,False,PPL,Asia/Gaza,,43
+285066,Hebron,Hebron,31.52935,35.0938,PS,PSE,Palestine,160470,False,PPLA2,Asia/Hebron,,903
+282615,Nablus,Nablus,32.22111,35.25444,PS,PSE,Palestine,130326,False,PPLA2,Asia/Hebron,,569
+281102,Rafaḩ,Rafah,31.29722,34.24357,PS,PSE,Palestine,126305,False,PPLA2,Asia/Gaza,,30
+281141,Dayr al Balaḩ,Dayr al Balah,31.41834,34.34933,PS,PSE,Palestine,59504,False,PPLA2,Asia/Gaza,,17
+281145,Bayt Lāhyā,Bayt Lahya,31.5464,34.49514,PS,PSE,Palestine,56919,False,PPL,Asia/Gaza,,33
+282239,Ramallah,Ramallah,31.89964,35.20422,PS,PSE,Palestine,43880,True,PPL,Asia/Hebron,,879
+4034561,Faaa,Faaa,-17.55933,-149.60352,PF,PYF,French Polynesia,29851,False,PPL,Pacific/Tahiti,,72
+4033936,Papeete,Papeete,-17.5347,-149.56843,PF,PYF,French Polynesia,26357,True,PPLC,Pacific/Tahiti,,42
+4033779,Punaauia,Punaauia,-17.63333,-149.6,PF,PYF,French Polynesia,25750,False,PPL,Pacific/Tahiti,,24
+290030,Doha,Doha,25.28545,51.53096,QA,QAT,Qatar,344939,True,PPLC,Asia/Qatar,,11
+289888,Ar Rayyān,Ar Rayyan,25.29194,51.42444,QA,QAT,Qatar,272465,False,PPLA,Asia/Qatar,,23
+13512674,Lusail,Lusail,25.4175,51.5075,QA,QAT,Qatar,198600,False,PPL,Asia/Qatar,,4
+12242643,Al Maţār al ‘Atīq,Al Matar al 'Atiq,25.25138,51.55569,QA,QAT,Qatar,76774,False,PPLX,Asia/Qatar,,16
+411759,Al Manşūrah,Al Mansurah,25.26807,51.53219,QA,QAT,Qatar,65493,False,PPLX,Asia/Qatar,,14
+289847,Az̧ Z̧a‘āyin,Az Za'ayin,25.57744,51.48306,QA,QAT,Qatar,54339,False,PPLA,Asia/Qatar,,6
+289738,Madīnat Khalīfah,Madinat Khalifah,25.32047,51.47787,QA,QAT,Qatar,44459,False,PPLX,Asia/Qatar,,19
+411760,An Najmah,An Najmah,25.26704,51.54322,QA,QAT,Qatar,43695,False,PPLX,Asia/Qatar,,16
+289511,Al ‘Unayzah,Al 'Unayzah,25.33759,51.50953,QA,QAT,Qatar,39761,False,PPLX,Asia/Qatar,,5
+289545,Umm Ghuwaylīnah,Umm Ghuwaylinah,25.58716,51.14986,QA,QAT,Qatar,39457,False,PPL,Asia/Qatar,,34
+935264,Saint-Denis,Saint-Denis,-20.88231,55.4504,RE,REU,Réunion,154765,True,PPLC,Indian/Reunion,,44
+935221,Saint-Paul,Saint-Paul,-21.00961,55.27134,RE,REU,Réunion,105240,False,PPL,Indian/Reunion,,11
+935214,Saint-Pierre,Saint-Pierre,-21.3393,55.47811,RE,REU,Réunion,84077,False,PPL,Indian/Reunion,,36
+935582,Le Tampon,Le Tampon,-21.2766,55.51766,RE,REU,Réunion,81943,False,PPL,Indian/Reunion,,585
+935268,Saint-André,Saint-Andre,-20.96333,55.65031,RE,REU,Réunion,57150,False,PPL,Indian/Reunion,,103
+935223,Saint-Louis,Saint-Louis,-21.28585,55.41124,RE,REU,Réunion,53935,False,PPL,Indian/Reunion,,40
+935227,Saint-Joseph,Saint-Joseph,-21.3777,55.61691,RE,REU,Réunion,38807,False,PPL,Indian/Reunion,,43
+935267,Saint-Benoît,Saint-Benoit,-21.03795,55.71546,RE,REU,Réunion,37023,False,PPL,Indian/Reunion,,17
+935691,La Possession,La Possession,-20.92909,55.3348,RE,REU,Réunion,35245,False,PPL,Indian/Reunion,,24
+935225,Saint-Leu,Saint-Leu,-21.17059,55.28824,RE,REU,Réunion,34893,False,PPL,Indian/Reunion,,10
+683506,Bucharest,Bucharest,44.43225,26.10626,RO,ROU,Romania,1877155,True,PPLC,Europe/Bucharest,,83
+11048319,Sector 3,Sector 3,44.4234,26.16874,RO,ROU,Romania,385439,False,PPLX,Europe/Bucharest,,76
+675810,Iaşi,Iasi,47.16667,27.6,RO,ROU,Romania,378954,False,PPLA,Europe/Bucharest,,66
+11048323,Sector 6,Sector 6,44.43579,26.01649,RO,ROU,Romania,367760,False,PPLX,Europe/Bucharest,,95
+680963,Constanţa,Constanta,44.18073,28.63432,RO,ROU,Romania,317832,False,PPLA,Europe/Bucharest,,40
+11048318,Sector 2,Sector 2,44.4528,26.13321,RO,ROU,Romania,290507,False,PPLX,Europe/Bucharest,,80
+11048320,Sector 4,Sector 4,44.37571,26.12085,RO,ROU,Romania,287828,False,PPLX,Europe/Bucharest,,79
+681290,Cluj-Napoca,Cluj-Napoca,46.76667,23.6,RO,ROU,Romania,286598,False,PPLA,Europe/Bucharest,,352
+11048322,Sector 5,Sector 5,44.38808,26.07144,RO,ROU,Romania,271575,False,PPLX,Europe/Bucharest,,81
+683844,Braşov,Brasov,45.64861,25.60613,RO,ROU,Romania,253200,False,PPLA,Europe/Bucharest,,573
+524901,Moscow,Moscow,55.75204,37.61781,RU,RUS,Russia,10381222,True,PPLC,Europe/Moscow,,155
+498817,Saint Petersburg,Saint Petersburg,59.93863,30.31413,RU,RUS,Russia,5351935,False,PPLA,Europe/Moscow,,11
+1496747,Novosibirsk,Novosibirsk,55.02259,82.93175,RU,RUS,Russia,1612833,False,PPLA,Asia/Novosibirsk,,113
+1486209,Yekaterinburg,Yekaterinburg,56.85733,60.61529,RU,RUS,Russia,1495066,False,PPLA,Asia/Yekaterinburg,,278
+520555,Nizhniy Novgorod,Nizhniy Novgorod,56.32867,44.00205,RU,RUS,Russia,1259013,False,PPLA,Europe/Moscow,,141
+551487,Kazan,Kazan,55.78874,49.12214,RU,RUS,Russia,1243500,False,PPLA,Europe/Moscow,,61
+1508291,Chelyabinsk,Chelyabinsk,55.1611,61.42877,RU,RUS,Russia,1202371,False,PPLA,Asia/Yekaterinburg,,232
+1496153,Omsk,Omsk,54.99244,73.36859,RU,RUS,Russia,1172070,False,PPLA,Asia/Omsk,,90
+499099,Samara,Samara,53.20767,50.13553,RU,RUS,Russia,1163399,False,PPLA,Europe/Samara,,107
+501175,Rostov-na-Donu,Rostov-na-Donu,47.21997,39.70769,RU,RUS,Russia,1130305,False,PPLA,Europe/Moscow,,54
+479561,Ufa,Ufa,54.74306,55.96779,RU,RUS,Russia,1120547,False,PPLA,Asia/Yekaterinburg,,158
+1502026,Krasnoyarsk,Krasnoyarsk,56.03742,92.93136,RU,RUS,Russia,1090811,False,PPLA,Asia/Krasnoyarsk,,182
+472045,Voronezh,Voronezh,51.66833,39.19204,RU,RUS,Russia,1047549,False,PPLA,Europe/Moscow,,148
+472757,Volgograd,Volgograd,48.71378,44.4976,RU,RUS,Russia,1013533,False,PPLA,Europe/Volgograd,,42
+202061,Kigali,Kigali,-1.94995,30.05885,RW,RWA,Rwanda,1132686,True,PPLC,Africa/Kigali,,1542
+202905,Gisenyi,Gisenyi,-1.70278,29.25639,RW,RWA,Rwanda,172357,False,PPLA2,Africa/Kigali,,1461
+201521,Musanze,Musanze,-1.49984,29.63497,RW,RWA,Rwanda,153368,False,PPL,Africa/Kigali,,1849
+201650,Nyagatare,Nyagatare,-1.2952,30.3226,RW,RWA,Rwanda,100000,False,PPL,Africa/Kigali,,1342
+202217,Gitarama,Gitarama,-2.07444,29.75667,RW,RWA,Rwanda,87613,False,PPLA2,Africa/Kigali,,1824
+201830,Muhanga,Muhanga,-2.02269,29.70691,RW,RWA,Rwanda,82797,False,PPLL,Africa/Kigali,,1802
+203112,Butare,Butare,-2.59667,29.73944,RW,RWA,Rwanda,62823,False,PPL,Africa/Kigali,,1769
+202065,Kibuye,Kibuye,-2.06028,29.34778,RW,RWA,Rwanda,48024,False,PPLA,Africa/Kigali,,1480
+201463,Rwamagana,Rwamagana,-1.9487,30.4347,RW,RWA,Rwanda,47203,False,PPLA,Africa/Kigali,,1537
+202068,Kibungo,Kibungo,-2.1597,30.5427,RW,RWA,Rwanda,46240,False,PPL,Africa/Kigali,,1607
+105343,Jeddah,Jeddah,21.49012,39.18624,SA,SAU,Saudi Arabia,4697000,False,PPL,Asia/Riyadh,,7
+108410,Riyadh,Riyadh,24.68773,46.72185,SA,SAU,Saudi Arabia,4205961,True,PPLC,Asia/Riyadh,,612
+104515,Makkah,Makkah,21.42664,39.82563,SA,SAU,Saudi Arabia,1578722,False,PPLA,Asia/Riyadh,,333
+109223,Madinah,Madinah,24.46861,39.61417,SA,SAU,Saudi Arabia,1300000,False,PPLA,Asia/Riyadh,,603
+110336,Dammam,Dammam,26.43442,50.10326,SA,SAU,Saudi Arabia,1252523,False,PPLA,Asia/Riyadh,,10
+101760,Sulţānah,Sultanah,24.49258,39.58572,SA,SAU,Saudi Arabia,946697,False,PPL,Asia/Riyadh,,597
+107304,Buraydah,Buraydah,26.32599,43.97497,SA,SAU,Saudi Arabia,745353,False,PPLA,Asia/Riyadh,,606
+107968,Ta’if,Ta'if,21.27028,40.41583,SA,SAU,Saudi Arabia,688693,False,PPL,Asia/Riyadh,,1672
+101628,Tabuk,Tabuk,28.3998,36.57151,SA,SAU,Saudi Arabia,667000,False,PPLA,Asia/Riyadh,,768
+106281,Ha'il,Ha'il,27.52188,41.69073,SA,SAU,Saudi Arabia,605930,False,PPLA,Asia/Riyadh,,1002
+379252,Khartoum,Khartoum,15.55177,32.53241,SD,SDN,Sudan,1974647,True,PPLC,Africa/Khartoum,,381
+365137,Omdurman,Omdurman,15.64453,32.47773,SD,SDN,Sudan,1849659,False,PPL,Africa/Khartoum,,391
+379251,Khartoum North,Khartoum North,15.64925,32.53458,SD,SDN,Sudan,1012211,False,PPL,Africa/Khartoum,,381
+369004,Nyala,Nyala,12.04888,24.88069,SD,SDN,Sudan,565734,False,PPLA,Africa/Khartoum,,661
+377039,Port Sudan,Port Sudan,19.61745,37.21644,SD,SDN,Sudan,489725,False,PPLA,Africa/Khartoum,,10
+372753,Kassala,Kassala,15.45099,36.39998,SD,SDN,Sudan,401477,False,PPLA,Africa/Khartoum,,507
+379003,El Obeid,El Obeid,13.18421,30.21669,SD,SDN,Sudan,393311,False,PPLA,Africa/Khartoum,,573
+379062,Al Qadarif,Al Qadarif,14.03493,35.38344,SD,SDN,Sudan,363945,False,PPLA,Africa/Khartoum,,608
+371760,Kosti,Kosti,13.1629,32.66347,SD,SDN,Sudan,345068,False,PPL,Africa/Khartoum,,387
+364103,Wad Medani,Wad Medani,14.40118,33.51989,SD,SDN,Sudan,332714,False,PPLA,Africa/Khartoum,,410
+2253354,Dakar,Dakar,14.6937,-17.44406,SN,SEN,Senegal,2646503,True,PPLC,Africa/Dakar,,12
+2244322,Touba,Touba,14.86229,-15.87532,SN,SEN,Senegal,1120824,False,PPL,Africa/Dakar,,47
+2246678,Pikine,Pikine,14.76457,-17.39071,SN,SEN,Senegal,874062,False,PPL,Africa/Dakar,,17
+2595778,Guédiawaye,Guediawaye,14.77446,-17.40212,SN,SEN,Senegal,329659,False,PPL,Africa/Dakar,,20
+2244802,Thiès,Thies,14.78944,-16.92602,SN,SEN,Senegal,317763,False,PPLA2,Africa/Dakar,,72
+2250805,Kaolack,Kaolack,14.15197,-16.07259,SN,SEN,Senegal,298904,False,PPLA,Africa/Dakar,,7
+2246512,Rufisque,Rufisque,14.71542,-17.27334,SN,SEN,Senegal,295459,False,PPL,Africa/Dakar,,5
+2248477,Mbour,Mbour,14.42196,-16.96375,SN,SEN,Senegal,284189,False,PPL,Africa/Dakar,,15
+2246452,Saint-Louis,Saint-Louis,16.01793,-16.48962,SN,SEN,Senegal,254171,False,PPLA,Africa/Dakar,,8
+2244799,Thiès Nones,Thies Nones,14.78333,-16.96667,SN,SEN,Senegal,252320,False,PPL,Africa/Dakar,,85
+1880252,Singapore,Singapore,1.28967,103.85007,SG,SGP,Singapore,5638700,True,PPLC,Asia/Singapore,,23
+1880159,Ulu Bedok,Ulu Bedok,1.33333,103.93333,SG,SGP,Singapore,276990,False,PPL,Asia/Singapore,,20
+1884382,Bedok New Town,Bedok New Town,1.32639,103.94167,SG,SGP,Singapore,276990,False,PPL,Asia/Singapore,,9
+1880216,Tampines Estate,Tampines Estate,1.35806,103.94028,SG,SGP,Singapore,265340,False,PPLX,Asia/Singapore,,10
+1881953,Jurong Town,Jurong Town,1.33417,103.72278,SG,SGP,Singapore,262730,False,PPL,Asia/Singapore,,20
+1882115,Tampines New Town,Tampines New Town,1.34917,103.94972,SG,SGP,Singapore,259900,False,PPLX,Asia/Singapore,,22
+1881955,Jurong West,Jurong West,1.35028,103.72278,SG,SGP,Singapore,257470,False,PPL,Asia/Singapore,,27
+1882316,Woodlands,Woodlands,1.43801,103.78877,SG,SGP,Singapore,255180,False,PPL,Asia/Singapore,,27
+7289760,Sengkang New Town,Sengkang New Town,1.39167,103.89444,SG,SGP,Singapore,244600,False,PPL,Asia/Singapore,,21
+1881948,Hougang New Town,Hougang New Town,1.35667,103.89083,SG,SGP,Singapore,227560,False,PPLX,Asia/Singapore,,17
+3426466,Grytviken,Grytviken,-54.28111,-36.5092,GS,SGS,South Georgia,2,True,PPLC,Atlantic/South_Georgia,,4
+3370903,Jamestown,Jamestown,-15.92488,-5.71816,SH,SHN,"Saint Helena, Ascension and Tristan da Cunha",637,True,PPLC,Atlantic/St_Helena,10,256
+2729907,Longyearbyen,Longyearbyen,78.22334,15.64689,SJ,SJM,Svalbard and Jan Mayen,2368,True,PPLC,Arctic/Longyearbyen,,1
+2108502,Honiara,Honiara,-9.43333,159.95,SB,SLB,Solomon Islands,56298,True,PPLC,Pacific/Guadalcanal,,49
+2104533,Panatina,Panatina,-9.43215,160.00607,SB,SLB,Solomon Islands,32712,False,PPLQ,Pacific/Guadalcanal,,15
+2105033,Nggosi,Nggosi,-9.43056,159.92103,SB,SLB,Solomon Islands,26009,False,PPLX,Pacific/Guadalcanal,,27
+13527002,Tandai,Tandai,-9.44666,159.94549,SB,SLB,Solomon Islands,24592,False,PPL,Pacific/Guadalcanal,,65
+13526998,Kola'a,Kola'a,-9.44112,159.97002,SB,SLB,Solomon Islands,20783,False,PPLX,Pacific/Guadalcanal,,45
+13526999,Vura,Vura,-9.44203,159.98877,SB,SLB,Solomon Islands,18753,False,PPLX,Pacific/Guadalcanal,,114
+13527001,Malango,Malango,-9.42497,160.05329,SB,SLB,Solomon Islands,15560,False,PPL,Pacific/Guadalcanal,,1
+2409306,Freetown,Freetown,8.48714,-13.2356,SL,SLE,Sierra Leone,802639,True,PPLC,Africa/Freetown,,38
+2410048,Bo,Bo,7.96472,-11.73833,SL,SLE,Sierra Leone,174354,False,PPLA,Africa/Freetown,,104
+2407790,Kenema,Kenema,7.87687,-11.19025,SL,SLE,Sierra Leone,143137,False,PPLA,Africa/Freetown,,182
+2407656,Koidu,Koidu,8.64387,-10.9714,SL,SLE,Sierra Leone,124662,False,PPL,Africa/Freetown,,381
+2406407,Makeni,Makeni,8.88605,-12.04417,SL,SLE,Sierra Leone,87679,False,PPLA,Africa/Freetown,,93
+2403094,Waterloo,Waterloo,8.3389,-13.07091,SL,SLE,Sierra Leone,55000,False,PPL,Africa/Freetown,,23
+2404837,Njala,Njala,8.23231,-12.01558,SL,SLE,Sierra Leone,40000,False,PPL,Africa/Freetown,,67
+2406916,Lunsar,Lunsar,8.68439,-12.53499,SL,SLE,Sierra Leone,22461,False,PPL,Africa/Freetown,,64
+2404433,Port Loko,Port Loko,8.76609,-12.78696,SL,SLE,Sierra Leone,21308,False,PPLA,Africa/Freetown,,51
+9191693,Goderich,Goderich,8.42756,-13.28598,SL,SLE,Sierra Leone,19209,False,PPLX,Africa/Freetown,,10
+3583361,San Salvador,San Salvador,13.68935,-89.18718,SV,SLV,El Salvador,525990,True,PPLC,America/El_Salvador,,653
+3583096,Soyapango,Soyapango,13.71024,-89.13989,SV,SLV,El Salvador,329708,False,PPL,America/El_Salvador,,634
+3583446,San Miguel,San Miguel,13.48261,-88.18211,SV,SLV,El Salvador,247126,False,PPLA,America/El_Salvador,,130
+3583334,Santa Ana,Santa Ana,13.98827,-89.55685,SV,SLV,El Salvador,176661,False,PPLA,America/El_Salvador,,645
+3584399,Mejicanos,Mejicanos,13.72397,-89.188,SV,SLV,El Salvador,160317,False,PPL,America/El_Salvador,,652
+3584257,Santa Tecla,Santa Tecla,13.67741,-89.28335,SV,SLV,El Salvador,124694,False,PPLA,America/El_Salvador,,965
+3587345,Apopa,Apopa,13.80722,-89.17917,SV,SLV,El Salvador,112158,False,PPL,America/El_Salvador,,434
+3586814,Delgado,Delgado,13.72171,-89.16874,SV,SLV,El Salvador,71594,False,PPL,America/El_Salvador,,644
+3583102,Sonsonate,Sonsonate,13.71726,-89.72304,SV,SLV,El Salvador,59468,False,PPLA,America/El_Salvador,,245
+3583480,San Marcos,San Marcos,13.66108,-89.18252,SV,SLV,El Salvador,54615,False,PPL,America/El_Salvador,,733
+3168070,San Marino,San Marino,43.93667,12.44639,SM,SMR,San Marino,4500,True,PPLC,Europe/San_Marino,,683
+53654,Mogadishu,Mogadishu,2.03711,45.34375,SO,SOM,Somalia,2587183,True,PPLC,Africa/Mogadishu,,12
+64021,Borama,Borama,9.93611,43.18278,SO,SOM,Somalia,597842,False,PPL,Africa/Mogadishu,,1468
+57289,Hargeysa,Hargeysa,9.56,44.065,SO,SOM,Somalia,477876,False,PPLA,Africa/Mogadishu,,1261
+64435,Berbera,Berbera,10.43959,45.01432,SO,SOM,Somalia,242344,False,PPL,Africa/Mogadishu,,11
+55671,Kismayo,Kismayo,-0.35817,42.54536,SO,SOM,Somalia,234852,False,PPLA,Africa/Mogadishu,,11
+54225,Marka,Marka,1.71594,44.77166,SO,SOM,Somalia,230100,False,PPLA,Africa/Mogadishu,,12
+60149,El Dibir,El Dibir,11.76667,51.21667,SO,SOM,Somalia,200000,False,PPL,Africa/Mogadishu,,48
+52407,Ruqi,Ruqi,9.97293,43.4276,SO,SOM,Somalia,148702,False,PPL,Africa/Mogadishu,,1113
+64536,Baidoa,Baidoa,3.11383,43.6498,SO,SOM,Somalia,129839,False,PPLA,Africa/Mogadishu,,441
+63400,Cabudwaaq,Cabudwaaq,6.24585,46.2247,SO,SOM,Somalia,120000,False,PPL,Africa/Addis_Ababa,,336
+3424934,Saint-Pierre,Saint-Pierre,46.77914,-56.1773,PM,SPM,Saint Pierre and Miquelon,6200,True,PPLC,America/Miquelon,,30
+792680,Belgrade,Belgrade,44.80401,20.46513,RS,SRB,Serbia,1273651,True,PPLC,Europe/Belgrade,,120
+787657,Niš,Nis,43.32472,21.90333,RS,SRB,Serbia,250000,False,PPLA2,Europe/Belgrade,,194
+3194360,Novi Sad,Novi Sad,45.25167,19.83694,RS,SRB,Serbia,215400,False,PPLA,Europe/Belgrade,,79
+783920,Zemun,Zemun,44.8458,20.40116,RS,SRB,Serbia,155591,False,PPLA3,Europe/Belgrade,,100
+789128,Kragujevac,Kragujevac,44.01667,20.91667,RS,SRB,Serbia,147473,False,PPLA2,Europe/Belgrade,,182
+792078,Čačak,Cacak,43.89139,20.34972,RS,SRB,Serbia,117072,False,PPLA2,Europe/Belgrade,,241
+3189595,Subotica,Subotica,46.1,19.66667,RS,SRB,Serbia,100000,False,PPLA2,Europe/Belgrade,,115
+788709,Leskovac,Leskovac,42.99806,21.94611,RS,SRB,Serbia,94758,False,PPLA2,Europe/Belgrade,,230
+787595,Novi Pazar,Novi Pazar,43.13667,20.51222,RS,SRB,Serbia,85996,False,PPLA3,Europe/Belgrade,,511
+789107,Kraljevo,Kraljevo,43.72583,20.68944,RS,SRB,Serbia,82846,False,PPLA2,Europe/Belgrade,,207
+373303,Juba,Juba,4.85165,31.58247,SS,SSD,South Sudan,450000,True,PPLC,Africa/Juba,,518
+363807,Winejok,Winejok,9.01222,27.57081,SS,SSD,South Sudan,300000,False,PPL,Africa/Juba,,419
+363619,Yei,Yei,4.09444,30.67639,SS,SSD,South Sudan,260720,False,PPL,Africa/Juba,,836
+370737,Malakal,Malakal,9.53342,31.66049,SS,SSD,South Sudan,160765,False,PPLA,Africa/Juba,,400
+363885,Wau,Wau,7.70111,27.98972,SS,SSD,South Sudan,127384,False,PPLA,Africa/Juba,,440
+371712,Kuacjok,Kuacjok,8.30278,27.98,SS,SSD,South Sudan,78000,False,PPLA,Africa/Juba,,428
+375495,Pajok,Pajok,3.86512,32.48212,SS,SSD,South Sudan,49000,False,PPL,Africa/Juba,,823
+374739,Gogrial,Gogrial,8.53324,28.10037,SS,SSD,South Sudan,44600,False,PPL,Africa/Juba,,414
+363656,Yambio,Yambio,4.57083,28.39417,SS,SSD,South Sudan,40382,False,PPLA,Africa/Juba,,655
+364367,Aweil,Aweil,8.76194,27.39194,SS,SSD,South Sudan,38745,False,PPLA,Africa/Juba,,425
+2410763,São Tomé,Sao Tome,0.33756,6.7299,ST,STP,São Tomé and Príncipe,53300,True,PPLC,Africa/Sao_Tome,,140
+3383330,Paramaribo,Paramaribo,5.86638,-55.16682,SR,SUR,Suriname,223757,True,PPLC,America/Paramaribo,,5
+3384562,Blauwgrond,Blauwgrond,5.84342,-55.11929,SR,SUR,Suriname,31483,False,PPLX,America/Paramaribo,,4
+3383188,Rainville,Rainville,5.83436,-55.13769,SR,SUR,Suriname,22747,False,PPLX,America/Paramaribo,,4
+3384242,Flora,Flora,5.8,-55.2,SR,SUR,Suriname,19538,False,PPLX,America/Paramaribo,,3
+8220924,Welgelegen,Welgelegen,5.84213,-55.21863,SR,SUR,Suriname,19304,False,PPLX,America/Paramaribo,,6
+3383714,Lelydorp,Lelydorp,5.7,-55.23333,SR,SUR,Suriname,18223,False,PPLA,America/Paramaribo,,8
+8220838,Munder Buiten,Munder Buiten,5.84116,-55.18247,SR,SUR,Suriname,17234,False,PPLX,America/Paramaribo,,5
+8220949,Beekhuizen,Beekhuizen,5.80575,-55.17367,SR,SUR,Suriname,17185,False,PPLX,America/Paramaribo,,3
+8220851,Tammenga,Tammenga,5.82893,-55.202,SR,SUR,Suriname,15819,False,PPLX,America/Paramaribo,,3
+3060972,Bratislava,Bratislava,48.14816,17.10674,SK,SVK,Slovakia,423737,True,PPLC,Europe/Bratislava,,157
+724443,Košice,Kosice,48.71441,21.25802,SK,SVK,Slovakia,225044,False,PPLA,Europe/Bratislava,,205
+3058213,Petržalka,Petrzalka,48.12331,17.12866,SK,SVK,Slovakia,112380,False,PPL,Europe/Bratislava,,141
+3058531,Nitra,Nitra,48.30763,18.08453,SK,SVK,Slovakia,86329,False,PPLA,Europe/Bratislava,,144
+723819,Prešov,Presov,48.99923,21.2355,SK,SVK,Slovakia,82927,False,PPLA,Europe/Bratislava,,253
+3056508,Žilina,Zilina,49.22315,18.73941,SK,SVK,Slovakia,81219,False,PPLA,Europe/Bratislava,,347
+3061186,Banská Bystrica,Banska Bystrica,48.73947,19.14932,SK,SVK,Slovakia,74590,False,PPLA,Europe/Bratislava,,329
+3057124,Trnava,Trnava,48.37773,17.58603,SK,SVK,Slovakia,62806,False,PPLA,Europe/Bratislava,,147
+3057140,Trenčín,Trencin,48.89452,18.04436,SK,SVK,Slovakia,58278,False,PPLA,Europe/Bratislava,217,284
+3058780,Martin,Martin,49.06651,18.92399,SK,SVK,Slovakia,51139,False,PPLA2,Europe/Bratislava,400,396
+3196359,Ljubljana,Ljubljana,46.05108,14.50513,SI,SVN,Slovenia,272220,True,PPLC,Europe/Ljubljana,,295
+3195506,Maribor,Maribor,46.55583,15.64593,SI,SVN,Slovenia,96209,False,PPLA,Europe/Ljubljana,,262
+3202781,Celje,Celje,46.23092,15.26044,SI,SVN,Slovenia,38059,False,PPLA,Europe/Ljubljana,,240
+3197378,Kranj,Kranj,46.23887,14.35561,SI,SVN,Slovenia,37966,False,PPLA,Europe/Ljubljana,,387
+3197753,Koper,Koper,45.5482,13.72963,SI,SVN,Slovenia,25753,False,PPLA,Europe/Ljubljana,,12
+3194351,Novo Mesto,Novo Mesto,45.80397,15.16886,SI,SVN,Slovenia,24446,False,PPLA,Europe/Ljubljana,,187
+3189075,Velenje,Velenje,46.35719,15.11277,SI,SVN,Slovenia,24327,False,PPLA,Europe/Ljubljana,,428
+3192241,Ptuj,Ptuj,46.42005,15.87018,SI,SVN,Slovenia,17984,False,PPLA,Europe/Ljubljana,,237
+3188915,Trbovlje,Trbovlje,46.1541,15.05178,SI,SVN,Slovenia,15163,False,PPLA,Europe/Ljubljana,,409
+2673730,Stockholm,Stockholm,59.32938,18.06871,SE,SWE,Sweden,1515017,True,PPLC,Europe/Stockholm,,17
+2711537,Göteborg,Goeteborg,57.70716,11.96679,SE,SWE,Sweden,608462,False,PPLA,Europe/Stockholm,,10
+2692969,Malmö,Malmoe,55.60587,13.00073,SE,SWE,Sweden,362133,False,PPLA,Europe/Stockholm,10,12
+2666199,Uppsala,Uppsala,59.85882,17.63889,SE,SWE,Sweden,177074,False,PPLA,Europe/Stockholm,,20
+2694762,Linköping,Linkoeping,58.41086,15.62157,SE,SWE,Sweden,166673,False,PPLA,Europe/Stockholm,,58
+2686657,Örebro,OErebro,59.27412,15.2066,SE,SWE,Sweden,155989,False,PPLA,Europe/Stockholm,,35
+2675408,Sollentuna,Sollentuna,59.42804,17.95093,SE,SWE,Sweden,139606,False,PPLA2,Europe/Stockholm,,25
+602150,Umeå,Umea,63.82842,20.25972,SE,SWE,Sweden,130224,False,PPLA,Europe/Stockholm,,24
+2664454,Västerås,Vaesteras,59.61617,16.55276,SE,SWE,Sweden,127799,False,PPLA,Europe/Stockholm,,16
+2676209,Södermalm,Soedermalm,59.31278,18.07577,SE,SWE,Sweden,127323,False,PPLX,Europe/Stockholm,,39
+934995,Manzini,Manzini,-26.49884,31.38004,SZ,SWZ,Eswatini,110537,False,PPLA,Africa/Mbabane,,601
+934985,Mbabane,Mbabane,-26.31667,31.13333,SZ,SWZ,Eswatini,76218,True,PPLC,Africa/Mbabane,,1209
+935048,Lobamba,Lobamba,-26.46667,31.2,SZ,SWZ,Eswatini,4557,True,PPLG,Africa/Mbabane,,694
+3513392,Philipsburg,Philipsburg,18.026,-63.04582,SX,SXM,Sint Maarten,1400,True,PPLC,America/Lower_Princes,,0
+241131,Victoria,Victoria,-4.62001,55.45501,SC,SYC,Seychelles,22881,True,PPLC,Indian/Mahe,,4
+170063,Aleppo,Aleppo,36.20124,37.16117,SY,SYR,Syria,2098210,False,PPLA,Asia/Damascus,,401
+170654,Damascus,Damascus,33.5102,36.29128,SY,SYR,Syria,1569394,True,PPLC,Asia/Damascus,,701
+169577,Homs,Homs,34.72405,36.72559,SY,SYR,Syria,775404,False,PPLA,Asia/Damascus,,508
+173576,Latakia,Latakia,35.53125,35.79088,SY,SYR,Syria,709000,False,PPLA,Asia/Damascus,,29
+172955,Ar Raqqah,Ar Raqqah,35.95283,39.00788,SY,SYR,Syria,531952,False,PPLA,Asia/Damascus,,259
+170017,Ḩamāh,Hamah,35.13179,36.75783,SY,SYR,Syria,460602,False,PPLA,Asia/Damascus,,270
+163345,Ţarţūs,Tartus,34.88902,35.88659,SY,SYR,Syria,458327,False,PPLA,Asia/Damascus,,20
+173811,Al Ḩasakah,Al Hasakah,36.50237,40.74772,SY,SYR,Syria,422445,False,PPLA,Asia/Damascus,,305
+170794,Deir ez-Zor,Deir ez-Zor,35.33588,40.14084,SY,SYR,Syria,271800,False,PPLA,Asia/Damascus,,210
+174018,Al Bāb,Al Bab,36.37051,37.5157,SY,SYR,Syria,130745,False,PPLA2,Asia/Damascus,,460
+11703857,Providenciales,Providenciales,21.78254,-72.25206,TC,TCA,Turks and Caicos Islands,23769,False,PPL,America/Grand_Turk,,18
+3576994,Cockburn Town,Cockburn Town,21.46122,-71.14188,TC,TCA,Turks and Caicos Islands,3720,True,PPLC,America/Grand_Turk,,7
+2427123,N'Djamena,N'Djamena,12.10672,15.0444,TD,TCD,Chad,1359526,True,PPLC,Africa/Ndjamena,,299
+2427455,Moundou,Moundou,8.57437,16.07722,TD,TCD,Chad,196124,False,PPLA,Africa/Ndjamena,,402
+245785,Abéché,Abeche,13.82916,20.8324,TD,TCD,Chad,139983,False,PPLA,Africa/Ndjamena,,545
+2425791,Sarh,Sarh,9.14555,18.38331,TD,TCD,Chad,138928,False,PPLA,Africa/Ndjamena,,370
+2430506,Kelo,Kelo,9.30859,15.80658,TD,TCD,Chad,82677,False,PPL,Africa/Ndjamena,,375
+245338,Am Timan,Am Timan,11.0433,20.28342,TD,TCD,Chad,74691,False,PPLA,Africa/Ndjamena,,441
+2433437,Doba,Doba,8.66389,16.85324,TD,TCD,Chad,70942,False,PPLA,Africa/Ndjamena,,391
+2426240,Pala,Pala,9.3646,14.90725,TD,TCD,Chad,70677,False,PPLA,Africa/Ndjamena,,441
+2434910,Bongor,Bongor,10.28088,15.37425,TD,TCD,Chad,63699,False,PPLA,Africa/Ndjamena,,332
+243787,Goz Beida,Goz Beida,12.22643,21.40983,TD,TCD,Chad,58941,False,PPLA,Africa/Ndjamena,,567
+2365267,Lomé,Lome,6.12874,1.22154,TG,TGO,Togo,2188376,True,PPLC,Africa/Lome,,13
+2364104,Sokodé,Sokode,8.98333,1.13333,TG,TGO,Togo,117811,False,PPLA,Africa/Lome,,402
+2366152,Kara,Kara,9.55111,1.18611,TG,TGO,Togo,104207,False,PPLA,Africa/Lome,,291
+2367886,Atakpamé,Atakpame,7.53333,1.13333,TG,TGO,Togo,80683,False,PPLA,Africa/Lome,,361
+2365560,Kpalimé,Kpalime,6.9,0.63333,TG,TGO,Togo,75084,False,PPL,Africa/Lome,,225
+2367568,Bassar,Bassar,9.25025,0.78213,TG,TGO,Togo,61845,False,PPL,Africa/Lome,,388
+2367164,Dapaong,Dapaong,10.86225,0.20762,TG,TGO,Togo,58071,False,PPLA,Africa/Lome,,323
+2363534,Tsévié,Tsevie,6.42611,1.21333,TG,TGO,Togo,55775,False,PPLA,Africa/Lome,,97
+2367990,Aného,Aneho,6.22798,1.5919,TG,TGO,Togo,47579,False,PPL,Africa/Lome,,5
+2365190,Mango,Mango,10.35917,0.47083,TG,TGO,Togo,37748,False,PPL,Africa/Lome,,143
+1609350,Bangkok,Bangkok,13.75398,100.50144,TH,THA,Thailand,5104476,True,PPLC,Asia/Bangkok,,12
+1606590,Samut Prakan,Samut Prakan,13.5976,100.5972,TH,THA,Thailand,388920,False,PPLA,Asia/Bangkok,,2
+1608133,Mueang Nonthaburi,Mueang Nonthaburi,13.86075,100.51477,TH,THA,Thailand,254375,False,PPLA,Asia/Bangkok,,1
+1611110,Chon Buri,Chon Buri,13.3622,100.98345,TH,THA,Thailand,219164,False,PPLA,Asia/Bangkok,,8
+1607508,Phra Pradaeng,Phra Pradaeng,13.65855,100.53362,TH,THA,Thailand,196129,False,PPLA2,Asia/Bangkok,,5
+7026720,Bang Khae,Bang Khae,13.69196,100.40691,TH,THA,Thailand,193002,False,PPLA2,Asia/Bangkok,,7
+1610780,Hat Yai,Hat Yai,7.00836,100.47668,TH,THA,Thailand,191696,False,PPLA2,Asia/Bangkok,,12
+1608048,Pak Kret,Pak Kret,13.91301,100.49883,TH,THA,Thailand,190272,False,PPLA2,Asia/Bangkok,,8
+7026886,Sai Mai,Sai Mai,13.92068,100.64552,TH,THA,Thailand,188123,False,PPLA2,Asia/Bangkok,,4
+1606250,Si Racha,Si Racha,13.17372,100.93111,TH,THA,Thailand,178916,False,PPLA2,Asia/Bangkok,,13
+1221874,Dushanbe,Dushanbe,38.53575,68.77905,TJ,TJK,Tajikistan,679400,True,PPLC,Asia/Dushanbe,,767
+1514896,Isfara,Isfara,40.12649,70.62526,TJ,TJK,Tajikistan,274000,False,PPLA2,Asia/Dushanbe,,824
+1220253,Istaravshan,Istaravshan,39.9142,69.00328,TJ,TJK,Tajikistan,273500,False,PPLA2,Asia/Dushanbe,,979
+1221194,Kŭlob,Kulob,37.91459,69.78454,TJ,TJK,Tajikistan,214700,False,PPLA2,Asia/Dushanbe,,609
+1514891,Konibodom,Konibodom,40.29414,70.43122,TJ,TJK,Tajikistan,211100,False,PPLA2,Asia/Dushanbe,,409
+1514879,Khujand,Khujand,40.28256,69.62216,TJ,TJK,Tajikistan,191000,False,PPLA,Asia/Dushanbe,,340
+1220747,Bokhtar,Bokhtar,37.83654,68.77762,TJ,TJK,Tajikistan,110800,False,PPLA,Asia/Dushanbe,,426
+1514883,Qayroqqum,Qayroqqum,40.26598,69.79585,TJ,TJK,Tajikistan,49200,False,PPL,Asia/Dushanbe,,362
+1220855,Vahdat,Vahdat,38.55632,69.01354,TJ,TJK,Tajikistan,45693,False,PPLA2,Asia/Dushanbe,,872
+1282601,Tursunzoda,Tursunzoda,38.51271,68.23163,TJ,TJK,Tajikistan,37000,False,PPLA2,Asia/Dushanbe,,707
+162183,Ashgabat,Ashgabat,37.95,58.38333,TM,TKM,Turkmenistan,727700,True,PPLC,Asia/Ashgabat,,219
+1219649,Türkmenabat,Turkmenabat,39.07328,63.57861,TM,TKM,Turkmenistan,234817,False,PPLA,Asia/Ashgabat,,191
+601734,Daşoguz,Dasoguz,41.83625,59.96661,TM,TKM,Turkmenistan,166500,False,PPLA,Asia/Ashgabat,,87
+1218667,Mary,Mary,37.59378,61.83031,TM,TKM,Turkmenistan,114680,False,PPLA,Asia/Ashgabat,,223
+601594,Türkmenbaşy,Tuerkmenbasy,40.02216,52.95517,TM,TKM,Turkmenistan,91745,False,PPL,Asia/Ashgabat,,5
+161616,Balkanabat,Balkanabat,39.51075,54.36713,TM,TKM,Turkmenistan,87822,False,PPLA,Asia/Ashgabat,,11
+1219762,Bayramaly,Bayramaly,37.61852,62.16715,TM,TKM,Turkmenistan,70376,False,PPL,Asia/Ashgabat,,239
+1218239,Tejen,Tejen,37.38338,60.50545,TM,TKM,Turkmenistan,67488,False,PPL,Asia/Ashgabat,,190
+13526673,Arkadag,Arkadag,38.07127,58.06562,TM,TKM,Turkmenistan,40524,False,PPL,Asia/Ashgabat,,229
+162099,Abadan,Abadan,38.05415,58.19721,TM,TKM,Turkmenistan,39481,False,PPL,Asia/Ashgabat,,228
+1645457,Dili,Dili,-8.55861,125.57361,TL,TLS,Timor-Leste,150000,True,PPLC,Asia/Dili,,3
+1636670,Maliana,Maliana,-8.99167,125.21972,TL,TLS,Timor-Leste,22000,False,PPLA,Asia/Dili,,253
+1626459,Suai,Suai,-9.31286,125.25648,TL,TLS,Timor-Leste,21539,False,PPLA,Asia/Dili,,73
+1637730,Likisá,Likisa,-8.5875,125.34194,TL,TLS,Timor-Leste,19000,False,PPLA,Asia/Dili,,23
+1651816,Aileu,Aileu,-8.72806,125.56639,TL,TLS,Timor-Leste,17356,False,PPLA,Asia/Dili,913,926
+1937274,Lospalos,Lospalos,-8.52167,126.99833,TL,TLS,Timor-Leste,17186,False,PPLA,Asia/Dili,,391
+1635826,Maubara,Maubara,-8.61194,125.20611,TL,TLS,Timor-Leste,16300,False,PPL,Asia/Dili,,21
+1649539,Baukau,Baukau,-8.47572,126.45633,TL,TLS,Timor-Leste,16000,False,PPLA,Asia/Dili,,442
+1943235,Venilale,Venilale,-8.64306,126.37833,TL,TLS,Timor-Leste,16000,False,PPL,Asia/Dili,,834
+4032402,Nuku‘alofa,Nuku'alofa,-21.13683,-175.20114,TO,TON,Tonga,22400,True,PPLC,Pacific/Tongatapu,,1
+3574810,Chaguanas,Chaguanas,10.51667,-61.41667,TT,TTO,Trinidad and Tobago,67433,False,PPLA,America/Port_of_Spain,,18
+3574116,Mon Repos,Mon Repos,10.27979,-61.4459,TT,TTO,Trinidad and Tobago,56380,False,PPL,America/Port_of_Spain,,37
+3573738,San Fernando,San Fernando,10.27969,-61.46835,TT,TTO,Trinidad and Tobago,55419,False,PPLA,America/Port_of_Spain,,28
+3573890,Port of Spain,Port of Spain,10.66668,-61.51889,TT,TTO,Trinidad and Tobago,49031,True,PPLC,America/Port_of_Spain,,21
+3573840,Rio Claro,Rio Claro,10.30594,-61.17556,TT,TTO,Trinidad and Tobago,35650,False,PPLA,America/Port_of_Spain,,45
+3575051,Arima,Arima,10.63737,-61.28228,TT,TTO,Trinidad and Tobago,35000,False,PPLA,America/Port_of_Spain,,62
+3574194,Marabella,Marabella,10.30618,-61.44671,TT,TTO,Trinidad and Tobago,26700,False,PPL,America/Port_of_Spain,,7
+3574636,Diego Martin,Diego Martin,10.72081,-61.56616,TT,TTO,Trinidad and Tobago,25370,False,PPLA,America/Port_of_Spain,,61
+3574309,Laventille,Laventille,10.64917,-61.49889,TT,TTO,Trinidad and Tobago,21000,False,PPLA,America/Port_of_Spain,,28
+3573899,Point Fortin,Point Fortin,10.17411,-61.68407,TT,TTO,Trinidad and Tobago,19056,False,PPLA,America/Port_of_Spain,,12
+2464470,Tunis,Tunis,36.81897,10.16579,TN,TUN,Tunisia,693210,True,PPLC,Africa/Tunis,,23
+2467454,Sfax,Sfax,34.74056,10.76028,TN,TUN,Tunisia,280566,False,PPLA,Africa/Tunis,,8
+2464915,Sousse,Sousse,35.82539,10.63699,TN,TUN,Tunisia,221715,False,PPLA,Africa/Tunis,,24
+2473449,Kairouan,Kairouan,35.6781,10.09633,TN,TUN,Tunisia,139070,False,PPLA,Africa/Tunis,,65
+2472706,Bizerte,Bizerte,37.27442,9.87391,TN,TUN,Tunisia,138430,False,PPLA,Africa/Tunis,,5
+2464960,Sukrah,Sukrah,36.87744,10.2468,TN,TUN,Tunisia,129693,False,PPL,Africa/Tunis,,9
+2473247,Aryanah,Aryanah,36.86012,10.19337,TN,TUN,Tunisia,114486,False,PPLA,Africa/Tunis,,11
+2468369,Gabès,Gabes,33.88146,10.0982,TN,TUN,Tunisia,110075,False,PPLA,Africa/Tunis,,9
+2473164,Sejoumi,Sejoumi,36.75583,10.11833,TN,TUN,Tunisia,109672,False,PPL,Africa/Tunis,,12
+11204413,El Mourouj,El Mourouj,36.71364,10.2096,TN,TUN,Tunisia,104538,False,PPL,Africa/Tunis,,20
+745044,Istanbul,Istanbul,41.01384,28.94966,TR,TUR,Turkey,15701602,False,PPLA,Europe/Istanbul,,39
+323786,Ankara,Ankara,39.91987,32.85427,TR,TUR,Turkey,3517182,True,PPLC,Europe/Istanbul,850,874
+750269,Bursa,Bursa,40.19559,29.06013,TR,TUR,Turkey,3101833,False,PPLA,Europe/Istanbul,,155
+311046,İzmir,Izmir,38.41273,27.13838,TR,TUR,Turkey,2938292,False,PPLA,Europe/Istanbul,,122
+314830,Gaziantep,Gaziantep,37.05944,37.3825,TR,TUR,Turkey,2130432,False,PPLA,Europe/Istanbul,,842
+325363,Adana,Adana,36.98615,35.32531,TR,TUR,Turkey,1816750,False,PPLA,Europe/Istanbul,,30
+316541,Diyarbakır,Diyarbakir,37.91363,40.21721,TR,TUR,Turkey,1791373,False,PPLA,Europe/Istanbul,,674
+308464,Kayseri,Kayseri,38.73222,35.48528,TR,TUR,Turkey,1434357,False,PPLA,Europe/Istanbul,,1054
+306571,Konya,Konya,37.87135,32.48464,TR,TUR,Turkey,1433861,False,PPLA,Europe/Istanbul,,1030
+323777,Antalya,Antalya,36.90812,30.69556,TR,TUR,Turkey,1344000,False,PPLA,Europe/Istanbul,,61
+2110394,Funafuti,Funafuti,-8.52425,179.19417,TV,TUV,Tuvalu,6320,True,PPLC,Pacific/Funafuti,,7
+1668341,Taipei,Taipei,25.05306,121.52639,TW,TWN,Taiwan,7871900,True,PPLC,Asia/Taipei,,5
+12908892,New Taipei City,New Taipei City,25.06199,121.45703,TW,TWN,Taiwan,4004367,False,PPL,Asia/Taipei,,4
+1668399,Taichung,Taichung,24.1469,120.6839,TW,TWN,Taiwan,2850285,False,PPLA2,Asia/Taipei,,91
+1673820,Kaohsiung,Kaohsiung,22.61626,120.31333,TW,TWN,Taiwan,2737660,False,PPLA,Asia/Taipei,,9
+1668355,Tainan,Tainan,22.99083,120.21333,TW,TWN,Taiwan,1856642,False,PPLA2,Asia/Taipei,,26
+1670029,Banqiao,Banqiao,25.01427,121.46719,TW,TWN,Taiwan,551221,False,PPLA2,Asia/Taipei,,12
+1667905,Taoyuan,Taoyuan,24.9896,121.3187,TW,TWN,Taiwan,475798,False,PPLA2,Asia/Taipei,,103
+1675151,Hsinchu,Hsinchu,24.80361,120.96861,TW,TWN,Taiwan,453536,False,PPLA2,Asia/Taipei,,22
+6696918,Taoyuan City,Taoyuan City,24.99368,121.29696,TW,TWN,Taiwan,402014,False,PPL,Asia/Taipei,,103
+1678228,Keelung,Keelung,25.13089,121.74094,TW,TWN,Taiwan,362487,False,PPLA2,Asia/Taipei,,19
+160263,Dar es Salaam,Dar es Salaam,-6.82349,39.26951,TZ,TZA,Tanzania,5383728,False,PPLA,Africa/Dar_es_Salaam,,24
+152224,Mwanza,Mwanza,-2.51667,32.9,TZ,TZA,Tanzania,1104521,False,PPLA,Africa/Dar_es_Salaam,,1144
+160196,Dodoma,Dodoma,-6.17221,35.73947,TZ,TZA,Tanzania,765179,True,PPLC,Africa/Dar_es_Salaam,,1125
+148730,Zanzibar,Zanzibar,-6.16394,39.19793,TZ,TZA,Tanzania,709809,False,PPLA,Africa/Dar_es_Salaam,,14
+161325,Arusha,Arusha,-3.36667,36.68333,TZ,TZA,Tanzania,617631,False,PPLA,Africa/Dar_es_Salaam,,1415
+154380,Mbeya,Mbeya,-8.9,33.45,TZ,TZA,Tanzania,541603,False,PPLA,Africa/Dar_es_Salaam,,1697
+153220,Morogoro,Morogoro,-6.82102,37.66122,TZ,TZA,Tanzania,471409,False,PPLA,Africa/Dar_es_Salaam,,504
+158597,Kahama,Kahama,-3.83333,32.6,TZ,TZA,Tanzania,453654,False,PPL,Africa/Dar_es_Salaam,,1249
+149606,Tanga,Tanga,-5.06893,39.09875,TZ,TZA,Tanzania,393429,False,PPLA,Africa/Dar_es_Salaam,,22
+159908,Geita,Geita,-2.8725,32.2325,TZ,TZA,Tanzania,318006,False,PPLA,Africa/Dar_es_Salaam,,1268
+232422,Kampala,Kampala,0.31628,32.58219,UG,UGA,Uganda,1680600,True,PPLC,Africa/Kampala,,1223
+10943053,Nansana,Nansana,0.36389,32.52861,UG,UGA,Uganda,532800,False,PPL,Africa/Kampala,,1218
+231165,Kira,Kira,0.4,32.63333,UG,UGA,Uganda,462900,False,PPL,Africa/Kampala,,1168
+234179,Bunamwaya,Bunamwaya,0.25344,32.55723,UG,UGA,Uganda,413400,False,PPL,Africa/Kampala,,1203
+10858926,Kyengera,Kyengera,0.29517,32.50159,UG,UGA,Uganda,285400,False,PPL,Africa/Kampala,,1176
+229268,Mbarara,Mbarara,-0.60467,30.64851,UG,UGA,Uganda,221300,False,PPLA,Africa/Kampala,,1422
+232110,Kasangati,Kasangati,0.43803,32.60246,UG,UGA,Uganda,207800,False,PPL,Africa/Kampala,,1182
+228853,Mukono,Mukono,0.35333,32.75528,UG,UGA,Uganda,191300,False,PPLA2,Africa/Kampala,,1188
+227812,Njeru,Njeru,0.44166,33.17917,UG,UGA,Uganda,178800,False,PPL,Africa/Kampala,,1152
+233346,Gulu,Gulu,2.77457,32.29899,UG,UGA,Uganda,177400,False,PPLA,Africa/Kampala,,1104
+703448,Kyiv,Kyiv,50.45466,30.5238,UA,UKR,Ukraine,2797553,True,PPLC,Europe/Kyiv,,187
+706483,Kharkiv,Kharkiv,49.98177,36.25475,UA,UKR,Ukraine,1433886,False,PPLA,Europe/Kyiv,,128
+698740,Odesa,Odesa,46.48572,30.74383,UA,UKR,Ukraine,1015826,False,PPLA,Europe/Kyiv,50,34
+709930,Dnipro,Dnipro,48.46664,35.04066,UA,UKR,Ukraine,968502,False,PPLA,Europe/Kyiv,120,61
+709717,Donetsk,Donetsk,48.023,37.80224,UA,UKR,Ukraine,901645,False,PPLA,Europe/Kyiv,,223
+702550,Lviv,Lviv,49.83826,24.02324,UA,UKR,Ukraine,717273,False,PPLA,Europe/Kyiv,,284
+687700,Zaporizhzhya,Zaporizhzhya,47.85167,35.11714,UA,UKR,Ukraine,710052,False,PPLA,Europe/Kyiv,105,63
+703845,Kryvyy Rih,Kryvyy Rih,47.90572,33.39404,UA,UKR,Ukraine,603904,False,PPLA2,Europe/Kyiv,84,95
+694423,Sevastopol,Sevastopol,44.60795,33.52134,UA,UKR,Ukraine,547820,False,PPLA,Europe/Simferopol,50,35
+700569,Mykolayiv,Mykolayiv,46.97625,31.99296,UA,UKR,Ukraine,470011,False,PPLA,Europe/Kyiv,42,23
+786714,Pristina,Pristina,42.67272,21.16688,XK,UNK,Kosovo,550000,True,PPLC,Europe/Belgrade,,597
+786712,Prizren,Prizren,42.21389,20.73972,XK,UNK,Kosovo,171464,False,PPLA,Europe/Belgrade,,413
+789225,Mitrovicë,Mitrovice,42.88333,20.86667,XK,UNK,Kosovo,107045,False,PPLA,Europe/Belgrade,,509
+791646,Gjakovë,Gjakove,42.38028,20.43083,XK,UNK,Kosovo,94158,False,PPLA,Europe/Belgrade,,362
+785238,Suva Reka,Suva Reka,42.35861,20.825,XK,UNK,Kosovo,72229,False,PPLA2,Europe/Belgrade,,387
+784759,Ferizaj,Ferizaj,42.37056,21.15528,XK,UNK,Kosovo,59504,False,PPLA,Europe/Belgrade,,582
+790701,Glogovac,Glogovac,42.62833,20.89389,XK,UNK,Kosovo,58579,False,PPLA2,Europe/Belgrade,,584
+790674,Gjilan,Gjilan,42.46045,21.46986,XK,UNK,Kosovo,51912,False,PPLA,Europe/Belgrade,,513
+791580,Deçan,Decan,42.54018,20.28793,XK,UNK,Kosovo,50500,False,PPLA2,Europe/Belgrade,612,611
+787157,Pejë,Peje,42.65913,20.28828,XK,UNK,Kosovo,48962,False,PPLA,Europe/Belgrade,550,518
+3441575,Montevideo,Montevideo,-34.90328,-56.18816,UY,URY,Uruguay,1270737,True,PPLC,America/Montevideo,,34
+3440714,Salto,Salto,-31.38811,-57.95983,UY,URY,Uruguay,99823,False,PPLA,America/Montevideo,,52
+3441243,Paysandú,Paysandu,-32.3171,-58.08072,UY,URY,Uruguay,73249,False,PPLA,America/Montevideo,,44
+3442057,Las Piedras,Las Piedras,-34.7302,-56.21915,UY,URY,Uruguay,69682,False,PPL,America/Montevideo,,72
+3440781,Rivera,Rivera,-30.90534,-55.55076,UY,URY,Uruguay,64631,False,PPLA,America/Montevideo,,194
+3441894,Maldonado,Maldonado,-34.89791,-54.95021,UY,URY,Uruguay,55478,False,PPLA,America/Montevideo,,41
+3440034,Tacuarembó,Tacuarembo,-31.71882,-55.97925,UY,URY,Uruguay,51854,False,PPLA,America/Montevideo,,123
+3441702,Melo,Melo,-32.3682,-54.16409,UY,URY,Uruguay,51023,False,PPLA,America/Montevideo,,102
+3441684,Mercedes,Mercedes,-33.2524,-58.03047,UY,URY,Uruguay,42359,False,PPLA,America/Montevideo,,29
+3443758,Artigas,Artigas,-30.40431,-56.46926,UY,URY,Uruguay,41909,False,PPLA,America/Montevideo,,151
+5128581,New York City,New York City,40.71427,-74.00597,US,USA,United States,8804190,False,PPL,America/New_York,10,57
+5368361,Los Angeles,Los Angeles,34.05223,-118.24368,US,USA,United States,3820914,False,PPLA2,America/Los_Angeles,89,96
+5110302,Brooklyn,Brooklyn,40.6501,-73.94958,US,USA,United States,2736074,False,PPLA2,America/New_York,15,18
+4887398,Chicago,Chicago,41.85003,-87.65005,US,USA,United States,2664452,False,PPLA2,America/Chicago,179,180
+5133273,Queens,Queens,40.68149,-73.83652,US,USA,United States,2316841,False,PPLA2,America/New_York,12,13
+4699066,Houston,Houston,29.76328,-95.36327,US,USA,United States,2314157,False,PPLA2,America/Chicago,12,30
+5308655,Phoenix,Phoenix,33.44838,-112.07404,US,USA,United States,1650070,False,PPLA,America/Phoenix,331,366
+4560349,Philadelphia,Philadelphia,39.95238,-75.16362,US,USA,United States,1573916,False,PPLA2,America/New_York,12,8
+4726206,San Antonio,San Antonio,29.42412,-98.49363,US,USA,United States,1526656,False,PPLA2,America/Chicago,198,202
+5125771,Manhattan,Manhattan,40.78343,-73.96625,US,USA,United States,1487536,False,PPLA2,America/New_York,35,38
+5391811,San Diego,San Diego,32.71571,-117.16472,US,USA,United States,1404452,False,PPLA2,America/Los_Angeles,20,20
+5110266,The Bronx,The Bronx,40.84985,-73.86641,US,USA,United States,1385108,False,PPLA2,America/New_York,23,19
+4684888,Dallas,Dallas,32.78306,-96.80667,US,USA,United States,1326087,False,PPLA2,America/Chicago,128,139
+4160021,Jacksonville,Jacksonville,30.33218,-81.65565,US,USA,United States,1009833,False,PPLA2,America/New_York,5,12
+4691930,Fort Worth,Fort Worth,32.72541,-97.32085,US,USA,United States,1008106,False,PPLA2,America/Chicago,199,203
+4140963,Washington,Washington,38.89511,-77.03637,US,USA,United States,689545,True,PPLC,America/New_York,7,6
+1512569,Tashkent,Tashkent,41.26465,69.21627,UZ,UZB,Uzbekistan,1978028,True,PPLC,Asia/Tashkent,,424
+1514588,Andijon,Andijon,40.78338,72.35067,UZ,UZB,Uzbekistan,747800,False,PPLA,Asia/Tashkent,,497
+1513157,Namangan,Namangan,40.9983,71.67257,UZ,UZB,Uzbekistan,713220,False,PPLA,Asia/Tashkent,,442
+1216265,Samarkand,Samarkand,39.65456,66.96445,UZ,UZB,Uzbekistan,595200,False,PPLA,Asia/Samarkand,,703
+1512296,Yunusobod,Yunusobod,41.37139,69.27944,UZ,UZB,Uzbekistan,352000,False,PPLX,Asia/Tashkent,,460
+601294,Nukus,Nukus,42.45861,59.60576,UZ,UZB,Uzbekistan,332500,False,PPLA,Asia/Samarkand,,67
+1514019,Fergana,Fergana,40.38421,71.78432,UZ,UZB,Uzbekistan,299200,False,PPLA,Asia/Tashkent,,580
+1217662,Bukhara,Bukhara,39.77026,64.43069,UZ,UZB,Uzbekistan,280187,False,PPLA,Asia/Samarkand,,220
+1216311,Qarshi,Qarshi,38.86056,65.78905,UZ,UZB,Uzbekistan,278300,False,PPLA,Asia/Samarkand,374,383
+1514230,Chilanzar,Chilanzar,41.28194,69.18111,UZ,UZB,Uzbekistan,260700,False,PPLX,Asia/Tashkent,,413
+6691831,Vatican City,Vatican City,41.90268,12.45414,VA,VAT,Vatican City,829,True,PPLC,Europe/Vatican,55,61
+3577887,Kingstown,Kingstown,13.15527,-61.22742,VC,VCT,Saint Vincent and the Grenadines,24518,True,PPLC,America/St_Vincent,,9
+3748746,Calliaqua,Calliaqua,13.12867,-61.19178,VC,VCT,Saint Vincent and the Grenadines,24205,False,PPL,America/St_Vincent,,18
+3646738,Caracas,Caracas,10.48801,-66.87919,VE,VEN,Venezuela,3000000,True,PPLC,America/Caracas,,887
+3633009,Maracaibo,Maracaibo,10.64232,-71.61089,VE,VEN,Venezuela,1752602,False,PPLA,America/Caracas,,-9999
+3625549,Valencia,Valencia,10.16153,-68.00044,VE,VEN,Venezuela,1619470,False,PPLA,America/Caracas,,547
+3648522,Barquisimeto,Barquisimeto,10.0647,-69.35703,VE,VEN,Venezuela,1240714,False,PPLA,America/Caracas,,606
+3645528,Ciudad Guayana,Ciudad Guayana,8.35122,-62.64102,VE,VEN,Venezuela,978202,False,PPLA2,America/Caracas,,103
+3648559,Barcelona,Barcelona,10.1384,-64.68769,VE,VEN,Venezuela,815141,False,PPLA,America/Caracas,,3
+3778045,Maturín,Maturin,9.74569,-63.18323,VE,VEN,Venezuela,647459,False,PPLA,America/Caracas,,71
+3632998,Maracay,Maracay,10.24972,-67.59475,VE,VEN,Venezuela,464700,False,PPLA,America/Caracas,,553
+3645532,Ciudad Bolívar,Ciudad Bolivar,8.12366,-63.54694,VE,VEN,Venezuela,412619,False,PPLA,America/Caracas,,73
+3644768,Cumaná,Cumana,10.4639,-64.17859,VE,VEN,Venezuela,405626,False,PPLA,America/Caracas,,19
+3577430,Road Town,Road Town,18.42693,-64.62079,VG,VGB,British Virgin Islands,8449,True,PPLC,America/Tortola,9,9
+4796512,Saint Croix,Saint Croix,17.72751,-64.74698,VI,VIR,United States Virgin Islands,50601,False,PPLA,America/St_Thomas,87,42
+4795467,Charlotte Amalie,Charlotte Amalie,18.3419,-64.9307,VI,VIR,United States Virgin Islands,20000,True,PPLC,America/St_Thomas,6,10
+1566083,Ho Chi Minh City,Ho Chi Minh City,10.82302,106.62965,VN,VNM,Vietnam,14002598,False,PPL,Asia/Ho_Chi_Minh,,7
+1581130,Hanoi,Hanoi,21.0245,105.84117,VN,VNM,Vietnam,8053663,True,PPLC,Asia/Bangkok,,10
+1581298,Haiphong,Haiphong,20.86481,106.68345,VN,VNM,Vietnam,2625200,False,PPLA,Asia/Bangkok,,12
+1586203,Cần Thơ,Can Tho,10.03711,105.78825,VN,VNM,Vietnam,1507187,False,PPLA,Asia/Ho_Chi_Minh,,3
+1580240,Huế,Hue,16.4619,107.59546,VN,VNM,Vietnam,1380000,False,PPLA,Asia/Bangkok,,8
+1583992,Da Nang,Da Nang,16.06778,108.22083,VN,VNM,Vietnam,1276000,False,PPLA,Asia/Ho_Chi_Minh,,11
+1587923,Biên Hòa,Bien Hoa,10.94469,106.82432,VN,VNM,Vietnam,1272235,False,PPLA,Asia/Ho_Chi_Minh,,6
+1566166,Thanh Hóa,Thanh Hoa,19.8,105.76667,VN,VNM,Vietnam,850000,False,PPLA,Asia/Bangkok,,5
+1562798,Vinh,Vinh,18.67337,105.69232,VN,VNM,Vietnam,790000,False,PPLA,Asia/Bangkok,,12
+12382296,Thuận An,Thuan An,10.9239,106.71428,VN,VNM,Vietnam,588616,False,PPLA2,Asia/Ho_Chi_Minh,,24
+2135171,Port-Vila,Port-Vila,-17.73648,168.31366,VU,VUT,Vanuatu,35901,True,PPLC,Pacific/Efate,,10
+4034821,Mata-Utu,Mata-Utu,-13.28163,-176.17453,WF,WLF,Wallis and Futuna,1200,True,PPLC,Pacific/Wallis,,15
+4035413,Apia,Apia,-13.83333,-171.76666,WS,WSM,Samoa,40407,True,PPLC,Pacific/Apia,,9
+71137,Sanaa,Sanaa,15.35452,44.20646,YE,YEM,Yemen,1937451,True,PPLC,Asia/Aden,,2253
+415189,Aden,Aden,12.77957,45.03852,YE,YEM,Yemen,1079670,False,PPLA,Asia/Aden,,7
+70225,Taiz,Taiz,13.57952,44.02091,YE,YEM,Yemen,940600,False,PPLA,Asia/Aden,1400,1316
+74477,Ibb,Ibb,13.96667,44.18333,YE,YEM,Yemen,771514,False,PPLA,Asia/Aden,,1931
+79415,Al Ḩudaydah,Al Hudaydah,14.79781,42.95452,YE,YEM,Yemen,734699,False,PPLA,Asia/Aden,,10
+78754,Mukalla,Mukalla,14.54248,49.12424,YE,YEM,Yemen,594951,False,PPLA,Asia/Aden,,39
+76184,Dhamār,Dhamar,14.54274,44.40514,YE,YEM,Yemen,160114,False,PPLA,Asia/Aden,,2421
+78428,‘Amrān,'Amran,15.6594,43.94385,YE,YEM,Yemen,90792,False,PPLA,Asia/Aden,,2239
+70979,Sayyān,Sayyan,15.17177,44.32442,YE,YEM,Yemen,69404,False,PPLA2,Asia/Aden,,2482
+69500,Zabīd,Zabid,14.1951,43.31518,YE,YEM,Yemen,52590,False,PPLA2,Asia/Aden,,114
+993800,Johannesburg,Johannesburg,-26.20227,28.04363,ZA,ZAF,South Africa,9418183,False,PPLA,Africa/Johannesburg,,1767
+3369157,Cape Town,Cape Town,-33.92584,18.42322,ZA,ZAF,South Africa,4772846,False,PPLA,Africa/Johannesburg,,25
+1007311,Durban,Durban,-29.8579,31.0292,ZA,ZAF,South Africa,3338026,False,PPLA2,Africa/Johannesburg,,21
+964137,Pretoria,Pretoria,-25.74486,28.18783,ZA,ZAF,South Africa,2112693,True,PPLC,Africa/Johannesburg,,1332
+953781,Soweto,Soweto,-26.26781,27.85849,ZA,ZAF,South Africa,1695047,False,PPL,Africa/Johannesburg,,1632
+964420,Gqeberha,Gqeberha,-33.96109,25.61494,ZA,ZAF,South Africa,1050078,False,PPLA2,Africa/Johannesburg,,61
+954013,Soshanguve,Soshanguve,-25.47288,28.09919,ZA,ZAF,South Africa,872309,False,PPL,Africa/Johannesburg,,1179
+965301,Pietermaritzburg,Pietermaritzburg,-29.61679,30.39278,ZA,ZAF,South Africa,839327,False,PPLA,Africa/Johannesburg,,636
+1004866,Evaton,Evaton,-26.53333,27.85,ZA,ZAF,South Africa,725468,False,PPL,Africa/Johannesburg,,1513
+1020098,Benoni,Benoni,-26.18848,28.32078,ZA,ZAF,South Africa,605344,False,PPL,Africa/Johannesburg,,1641
+909137,Lusaka,Lusaka,-15.40669,28.28713,ZM,ZMB,Zambia,2212301,True,PPLC,Africa/Lusaka,,1277
+911148,Kitwe,Kitwe,-12.80243,28.21323,ZM,ZMB,Zambia,665961,False,PPL,Africa/Lusaka,,1224
+901344,Ndola,Ndola,-12.95867,28.63659,ZM,ZMB,Zambia,627503,False,PPLA,Africa/Lusaka,,1307
+918702,Chipata,Chipata,-13.63333,32.65,ZM,ZMB,Zambia,327059,False,PPLA,Africa/Lusaka,,1147
+897045,Solwezi,Solwezi,-12.1688,26.38938,ZM,ZMB,Zambia,301370,False,PPLA,Africa/Lusaka,,1381
+916095,Kabwe,Kabwe,-14.4469,28.44644,ZM,ZMB,Zambia,288598,False,PPLA,Africa/Lusaka,,1191
+919009,Chingola,Chingola,-12.52897,27.88382,ZM,ZMB,Zambia,256560,False,PPLA2,Africa/Lusaka,,1363
+909863,Luanshya,Luanshya,-13.13667,28.41661,ZM,ZMB,Zambia,193293,False,PPL,Africa/Lusaka,,1238
+912764,Kasama,Kasama,-10.21289,31.18084,ZM,ZMB,Zambia,179636,False,PPLA,Africa/Lusaka,,1394
+910111,Livingstone,Livingstone,-17.84194,25.85425,ZM,ZMB,Zambia,178361,False,PPLA2,Africa/Lusaka,,969
+890299,Harare,Harare,-17.82772,31.05337,ZW,ZWE,Zimbabwe,1542813,True,PPLC,Africa/Harare,,1494
+894701,Bulawayo,Bulawayo,-20.15,28.58333,ZW,ZWE,Zimbabwe,665952,False,PPLA,Africa/Harare,,1348
+1106542,Chitungwiza,Chitungwiza,-18.01274,31.07555,ZW,ZWE,Zimbabwe,371246,False,PPL,Africa/Harare,,1435
+884979,Mutare,Mutare,-18.9707,32.67086,ZW,ZWE,Zimbabwe,224802,False,PPLA,Africa/Harare,,1116
+1085510,Epworth,Epworth,-17.89,31.1475,ZW,ZWE,Zimbabwe,206368,False,PPLX,Africa/Harare,,1508
+890422,Gweru,Gweru,-19.45,29.81667,ZW,ZWE,Zimbabwe,158200,False,PPLA,Africa/Harare,,1412
+888710,Kwekwe,Kwekwe,-18.92809,29.81486,ZW,ZWE,Zimbabwe,119863,False,PPL,Africa/Harare,,1203
+889453,Kadoma,Kadoma,-18.33328,29.91534,ZW,ZWE,Zimbabwe,117381,False,PPL,Africa/Harare,,1176
+882009,Ruwa,Ruwa,-17.88972,31.24472,ZW,ZWE,Zimbabwe,94083,False,PPL,Africa/Harare,,1562
+893697,Chinhoyi,Chinhoyi,-17.36667,30.2,ZW,ZWE,Zimbabwe,90800,False,PPLA,Africa/Harare,,1153

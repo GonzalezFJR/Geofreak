@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}GeoFreak — Mapa interactivo{% endblock %}
+
+{% block extra_head %}
+<style>
+    body { overflow: hidden; }
+    .footer { display: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="map-page">
+    <div id="map"></div>
+
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Cargando mapa del mundo…</div>
+    </div>
+
+    <!-- Country modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <img id="modal-flag" class="modal-flag" src="" alt="">
+                <div>
+                    <div class="modal-country-name" id="modal-name"></div>
+                    <div class="modal-country-official" id="modal-official"></div>
+                </div>
+                <button class="modal-close" id="modal-close">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/map.js"></script>
+{% endblock %}

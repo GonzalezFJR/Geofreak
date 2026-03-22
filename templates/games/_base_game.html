@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/games.css">
+{% endblock %}
+
+{% block content %}
+<div class="game-page">
+
+    <!-- ─── Settings overlay ──────────────────────────────── -->
+    <div class="game-settings-overlay" id="settings-overlay">
+        <div class="game-settings-card">
+            <div class="game-settings-icon">{{ game.icon }}</div>
+            <h2>{{ game.name }}</h2>
+            <p class="game-settings-desc">{{ game.description }}</p>
+
+            <div class="settings-form">
+                {% if game.has_continent_filter %}
+                <div class="setting-group">
+                    <label>Continente</label>
+                    <select id="setting-continent">
+                        <option value="all">🌍 Todos</option>
+                        <option value="europe">🇪🇺 Europa</option>
+                        <option value="asia">🌏 Asia</option>
+                        <option value="africa">🌍 África</option>
+                        <option value="america">🌎 América</option>
+                        <option value="oceania">🌊 Oceanía</option>
+                    </select>
+                </div>
+                {% endif %}
+
+                <div class="setting-group">
+                    <label>Tiempo máximo</label>
+                    <select id="setting-time">
+                        <option value="300">5 minutos</option>
+                        <option value="600" selected>10 minutos</option>
+                        <option value="900">15 minutos</option>
+                        <option value="1800">30 minutos</option>
+                        <option value="0">Sin límite</option>
+                    </select>
+                </div>
+
+                {% block extra_settings %}{% endblock %}
+            </div>
+
+            <button class="btn btn-primary game-start-btn" onclick="GeoGame.start()">
+                ▶️ Comenzar
+            </button>
+        </div>
+    </div>
+
+    <!-- ─── HUD ───────────────────────────────────────────── -->
+    <div class="game-hud" id="game-hud" style="display:none">
+        <div class="hud-timer" id="hud-timer">⏱️ 10:00</div>
+        <div class="hud-score">
+            ✅ <span id="hud-correct">0</span> / <span id="hud-total">0</span>
+        </div>
+        <button class="hud-quit" onclick="GeoGame.quit()">✕ Salir</button>
+    </div>
+
+    <!-- ─── Game area ─────────────────────────────────────── -->
+    <div class="game-area" id="game-area" style="display:none">
+        {% block game_area %}{% endblock %}
+    </div>
+
+    <!-- ─── Results overlay ───────────────────────────────── -->
+    <div class="game-results-overlay" id="results-overlay" style="display:none">
+        <div class="game-results-card">
+            <div class="results-icon">🏆</div>
+            <h2>¡Fin del juego!</h2>
+            <div class="results-stats">
+                <div class="result-stat">
+                    <div class="result-stat-value" id="result-correct">0</div>
+                    <div class="result-stat-label">Aciertos</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="result-total">0</div>
+                    <div class="result-stat-label">Total</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="result-pct">0%</div>
+                    <div class="result-stat-label">Porcentaje</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-stat-value" id="result-time">0:00</div>
+                    <div class="result-stat-label">Tiempo</div>
+                </div>
+            </div>
+            <div class="results-actions">
+                <button class="btn btn-primary" onclick="location.reload()">🔄 Jugar otra vez</button>
+                <a href="/games" class="btn-outline-dark">🎮 Otros juegos</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>var GAME_CONFIG = {{ game_json | safe }};</script>
+<script src="/static/js/games/common.js"></script>
+{% block game_scripts %}{% endblock %}
+{% endblock %}
