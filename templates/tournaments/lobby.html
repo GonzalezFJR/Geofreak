@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('trn.lobby_title', lang) }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/tournaments.css">
+{% endblock %}
+
+{% block content %}
+<section class="trn-lobby">
+    <div class="container">
+        <h1>{{ t('trn.lobby_title', lang) }}</h1>
+        <p class="section-desc">{{ t('trn.lobby_subtitle', lang) }}</p>
+
+        {% if not user %}
+        <div class="trn-auth-notice">
+            <p>{{ t('trn.login_required', lang) }}</p>
+            <a href="/login" class="btn btn-primary">{{ t('nav.login', lang) }}</a>
+        </div>
+        {% else %}
+
+        <!-- Create tournament -->
+        <div class="trn-create-section">
+            <h2>{{ t('trn.create_title', lang) }}</h2>
+            <div class="trn-create-form">
+                <div class="setting-group">
+                    <label>{{ t('trn.num_rounds', lang) }}</label>
+                    <select id="trn-rounds">
+                        <option value="3">3</option>
+                        <option value="5" selected>5</option>
+                        <option value="7">7</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>{{ t('game.nquestions', lang) }}</label>
+                    <select id="trn-questions">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>{{ t('game.continent', lang) }}</label>
+                    <select id="trn-continent">
+                        <option value="all">{{ t('game.all', lang) }}</option>
+                        <option value="europe">{{ t('game.europe', lang) }}</option>
+                        <option value="asia">{{ t('game.asia', lang) }}</option>
+                        <option value="africa">{{ t('game.africa', lang) }}</option>
+                        <option value="america">{{ t('game.america', lang) }}</option>
+                        <option value="oceania">{{ t('game.oceania', lang) }}</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>{{ t('trn.game_types', lang) }}</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="trn-type-ordering" checked> {{ t('duel.ordering', lang) }}
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="trn-type-comparison" checked> {{ t('duel.comparison', lang) }}
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="btn-create-trn">{{ t('trn.create_btn', lang) }}</button>
+            </div>
+        </div>
+
+        <!-- Waiting tournaments -->
+        <div class="trn-waiting-section">
+            <h2>{{ t('trn.available_title', lang) }}</h2>
+            <div class="trn-list" id="trn-list">
+                <div class="trn-list-empty" id="trn-list-empty" style="display:none">
+                    {{ t('trn.no_tournaments', lang) }}
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if user %}
+<script>
+window.TRN_T = {
+    ordering: "{{ t('duel.ordering', lang) }}",
+    comparison: "{{ t('duel.comparison', lang) }}",
+    join: "{{ t('trn.join_btn', lang) }}",
+    rounds: "{{ t('trn.rounds_label', lang) }}",
+    players: "{{ t('trn.players_label', lang) }}",
+    by: "{{ t('duel.created_by', lang) }}",
+    creating: "{{ t('trn.creating', lang) }}",
+    joining: "{{ t('trn.joining', lang) }}"
+};
+</script>
+<script src="/static/js/tournaments/lobby.js"></script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('duel.results_title', lang) }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/duels.css">
+{% endblock %}
+
+{% block content %}
+<section class="duel-play">
+    <div class="container">
+        <div class="duel-results-overlay" style="display:flex">
+            <div class="duel-results-card">
+                {% set scores = duel.get('current_scores', {}) %}
+                {% set players = duel.get('players', []) %}
+                {% set usernames = duel.get('player_usernames', {}) %}
+                {% set my_score = scores.get(user.user_id, 0)|int %}
+                {% set other_id = '' %}
+                {% for pid in players %}
+                    {% if pid != user.user_id %}
+                        {% set other_id = pid %}
+                    {% endif %}
+                {% endfor %}
+                {% set other_score = scores.get(other_id, 0)|int if other_id else 0 %}
+
+                {% if my_score > other_score %}
+                <div class="results-icon">🏆</div>
+                <h2>{{ t('duel.you_win', lang) }}</h2>
+                {% elif my_score < other_score %}
+                <div class="results-icon">😞</div>
+                <h2>{{ t('duel.you_lose', lang) }}</h2>
+                {% else %}
+                <div class="results-icon">🤝</div>
+                <h2>{{ t('duel.draw', lang) }}</h2>
+                {% endif %}
+
+                <div class="duel-final-scores">
+                    {% for pid in players %}
+                    <div class="final-score-row {% if pid == user.user_id %}is-you{% endif %}">
+                        <span class="final-score-name">
+                            {% if pid == user.user_id %}{{ t('duel.you', lang) }}{% else %}{{ usernames.get(pid, '?') }}{% endif %}
+                        </span>
+                        <span class="final-score-value">{{ scores.get(pid, 0)|int }} {{ t('duel.points', lang) }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="duel-results-actions">
+                    <a href="/duels" class="btn btn-primary">{{ t('duel.back_lobby', lang) }}</a>
+                    <a href="/games" class="btn btn-outline">{{ t('game.others', lang) }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,498 @@
+/* ============================================================
+   GeoFreak — Tournaments Stylesheet
+   Lobby, play view with multi-round, scoreboard, results.
+   ============================================================ */
+
+/* ─── Lobby ────────────────────────────────────────────────── */
+.trn-lobby .container,
+.trn-play .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px 60px;
+}
+
+.trn-lobby h1 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+}
+
+.trn-lobby .section-desc {
+    color: var(--gray-500);
+    margin-bottom: 32px;
+}
+
+.trn-auth-notice {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+.trn-auth-notice p { margin-bottom: 16px; color: var(--gray-600); }
+
+/* Create section */
+.trn-create-section {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 32px;
+}
+.trn-create-section h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.trn-create-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    align-items: end;
+}
+
+.trn-create-form .setting-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    margin-bottom: 6px;
+}
+
+.trn-create-form select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    background: var(--white);
+    color: var(--gray-800);
+    cursor: pointer;
+}
+.trn-create-form select:focus { outline: none; border-color: var(--blue-500); }
+
+.checkbox-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: var(--gray-700);
+    cursor: pointer;
+}
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--blue-500);
+}
+
+#btn-create-trn {
+    align-self: end;
+    white-space: nowrap;
+}
+
+/* Waiting list */
+.trn-waiting-section {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+}
+.trn-waiting-section h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.trn-list-empty {
+    text-align: center;
+    padding: 24px;
+    color: var(--gray-500);
+    font-size: 0.95rem;
+}
+
+.trn-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+}
+.trn-card:hover { border-color: var(--blue-500); }
+
+.trn-card-info { display: flex; flex-direction: column; gap: 4px; }
+.trn-card-rounds { font-weight: 700; color: var(--gray-800); }
+.trn-card-meta { font-size: 0.85rem; color: var(--gray-500); }
+.trn-card-creator { font-size: 0.82rem; color: var(--gray-400); }
+
+/* ─── Play — Waiting Room ──────────────────────────────────── */
+.trn-waiting-room {
+    text-align: center;
+    padding: 40px 24px;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+.trn-waiting-room h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+}
+
+.trn-share-info {
+    color: var(--gray-500);
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+.trn-share-box {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.trn-player-list {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+.trn-player-chip {
+    padding: 8px 16px;
+    background: var(--blue-500);
+    color: white;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.trn-wait-msg {
+    color: var(--gray-500);
+    font-style: italic;
+    margin-top: 16px;
+}
+
+.btn-danger {
+    background: #ef5350;
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 12px;
+}
+.btn-danger:hover { background: #d32f2f; }
+
+/* ─── Play — Game Area ─────────────────────────────────────── */
+.trn-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.trn-round-badge {
+    padding: 8px 20px;
+    background: var(--blue-500);
+    color: white;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.trn-game-type-badge {
+    padding: 8px 16px;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Scoreboard */
+.trn-scoreboard {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+}
+
+.sb-header {
+    display: grid;
+    grid-template-columns: 1fr 60px 60px;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 6px;
+}
+.sb-header span:not(:first-child) { text-align: center; }
+
+.sb-row {
+    display: grid;
+    grid-template-columns: 1fr 60px 60px;
+    gap: 8px;
+    padding: 8px 0;
+    align-items: center;
+}
+.sb-row.sb-you { font-weight: 700; color: var(--blue-600); }
+
+.sb-name { font-weight: 600; }
+.sb-round-score,
+.sb-total-score {
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.sb-total-score { color: var(--gray-900); }
+
+/* Round transition */
+.trn-round-transition {
+    text-align: center;
+    padding: 40px 24px;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+.trn-round-transition h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--gray-900);
+}
+
+.round-score-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    margin-bottom: 6px;
+    background: var(--gray-50);
+    border-radius: var(--radius-sm);
+}
+.round-score-row.is-you { background: rgba(26, 115, 232, 0.08); font-weight: 700; }
+
+.trn-next-round-msg {
+    margin-top: 16px;
+    font-weight: 600;
+    color: var(--blue-500);
+}
+
+/* Question area */
+.trn-question-area {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+}
+
+.trn-question-counter {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--gray-400);
+    margin-bottom: 8px;
+}
+
+.trn-question-prompt {
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 600;
+    font-family: var(--font-display);
+    color: var(--gray-800);
+    margin-bottom: 24px;
+}
+
+/* Reuse ordering/comparison from duels */
+.trn-ordering-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.trn-ordering-items .ordering-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    cursor: grab;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+}
+.trn-ordering-items .ordering-item:active { cursor: grabbing; }
+.trn-ordering-items .ordering-item.dragging { opacity: 0.5; border-color: var(--blue-500); }
+.trn-ordering-items .ordering-handle { color: var(--gray-400); font-size: 1.1rem; cursor: grab; }
+.trn-ordering-items .ordering-flag { font-size: 1.5rem; }
+.trn-ordering-items .ordering-name { flex: 1; font-weight: 500; color: var(--gray-800); }
+
+#btn-trn-confirm-order { display: block; margin: 0 auto 16px; }
+
+.trn-comparison-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.trn-comparison-cards .cmp-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 32px 16px;
+    background: var(--gray-50);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.trn-comparison-cards .cmp-card:hover {
+    border-color: var(--blue-500);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+.trn-comparison-cards .cmp-flag { font-size: 2.5rem; }
+.trn-comparison-cards .cmp-name { font-weight: 600; color: var(--gray-800); font-size: 1.05rem; text-align: center; }
+
+/* Feedback */
+.trn-feedback {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    margin-top: 12px;
+}
+.trn-feedback-correct { color: #2e7d32; background: rgba(76, 175, 80, 0.1); }
+.trn-feedback-wrong { color: #c62828; background: rgba(239, 83, 80, 0.1); }
+.trn-feedback-info { color: var(--blue-600); background: rgba(26, 115, 232, 0.08); }
+
+/* ─── Results ──────────────────────────────────────────────── */
+.trn-results-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+}
+
+.trn-results-card {
+    text-align: center;
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    padding: 48px 40px;
+    box-shadow: var(--shadow-lg);
+    max-width: 520px;
+    width: 100%;
+}
+.trn-results-card .results-icon { font-size: 3.5rem; margin-bottom: 12px; }
+.trn-results-card h2 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--gray-900);
+    margin-bottom: 16px;
+}
+.trn-results-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--gray-600);
+    margin-bottom: 16px;
+}
+
+.trn-final-standings { margin-bottom: 28px; }
+
+.standing-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    background: var(--gray-50);
+}
+.standing-row.is-you {
+    background: rgba(26, 115, 232, 0.08);
+    border: 2px solid rgba(26, 115, 232, 0.2);
+}
+
+.standing-medal { font-size: 1.3rem; min-width: 32px; }
+.standing-name { flex: 1; font-weight: 600; color: var(--gray-700); text-align: left; }
+.standing-score { font-family: var(--font-display); font-weight: 700; color: var(--gray-900); font-size: 1.05rem; }
+
+.trn-results-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.trn-results-actions .btn-outline {
+    color: var(--gray-700);
+    border-color: var(--gray-300);
+}
+.trn-results-actions .btn-outline:hover {
+    border-color: var(--gray-500);
+    background: var(--gray-100);
+}
+
+/* ─── Responsive ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .trn-create-form { grid-template-columns: 1fr 1fr; }
+    .trn-scoreboard { padding: 12px 16px; }
+}
+
+@media (max-width: 640px) {
+    .trn-lobby .container,
+    .trn-play .container {
+        padding: 24px 16px 40px;
+    }
+    .trn-lobby h1 { font-size: 1.5rem; }
+    .trn-create-form { grid-template-columns: 1fr; }
+    #btn-create-trn { width: 100%; justify-content: center; }
+
+    .trn-card {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    .trn-card .btn-join { width: 100%; justify-content: center; }
+
+    .trn-header { flex-direction: column; gap: 8px; }
+
+    .sb-header,
+    .sb-row { grid-template-columns: 1fr 50px 50px; }
+
+    .trn-question-area { padding: 20px 16px; }
+    .trn-comparison-cards { grid-template-columns: 1fr; }
+
+    .trn-results-card { padding: 32px 20px; margin: 0 8px; }
+    .trn-results-card h2 { font-size: 1.4rem; }
+
+    .trn-share-box { flex-direction: column; align-items: center; }
+}
+
+@media (max-width: 400px) {
+    .trn-lobby h1 { font-size: 1.3rem; }
+    .trn-comparison-cards .cmp-flag { font-size: 2rem; }
+    .trn-comparison-cards .cmp-name { font-size: 0.9rem; }
+}

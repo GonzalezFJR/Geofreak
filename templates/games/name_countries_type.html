@@ -5,8 +5,8 @@
 {% block game_area %}
 <div class="map-game-container">
     <div class="map-game-input-bar" id="game-input-bar">
-        <input type="text" id="answer-input" placeholder="Escribe el nombre de un país…" autocomplete="off">
-        <button class="btn-reveal-map-bar" onclick="MapGame.reveal()">👁️ Desvelar</button>
+        <input type="text" id="answer-input" placeholder="{{ t('mg.ph_type_country', lang) }}" autocomplete="off">
+        <button class="btn-reveal-map-bar" onclick="MapGame.reveal()">{{ t('quiz.reveal', lang) }}</button>
         <div class="input-feedback" id="input-feedback"></div>
     </div>
     <div id="game-map" class="game-map"></div>

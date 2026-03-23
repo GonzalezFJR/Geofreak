@@ -7,8 +7,8 @@
 {% block content %}
 <section class="games-dashboard">
     <div class="dashboard-header">
-        <h1>🎮 Juegos geográficos</h1>
-        <p>Pon a prueba tus conocimientos del mundo</p>
+        <h1>{{ t('dash.title', lang) }}</h1>
+        <p>{{ t('dash.subtitle', lang) }}</p>
     </div>
 
     <div class="games-grid">
@@ -16,9 +16,9 @@
         {% if game.enabled %}
         <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
             <div class="game-card-icon">{{ game.icon }}</div>
-            <h3>{{ game.name }}</h3>
-            <p>{{ game.description }}</p>
-            <div class="game-card-play">Jugar →</div>
+            <h3>{{ game_field(game, 'name', lang) }}</h3>
+            <p>{{ game_field(game, 'description', lang) }}</p>
+            <div class="game-card-play">{{ t('dash.play', lang) }}</div>
         </a>
         {% endif %}
         {% endfor %}

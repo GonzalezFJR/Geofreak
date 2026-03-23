@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ lang|default('es') }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,10 +27,23 @@
                 <img src="/static/img/logo.svg" alt="GeoFreak" class="nav-logo">
                 <span class="nav-title">Geo<span class="accent">Freak</span></span>
             </a>
-            <div class="nav-links">
-                <a href="/" class="nav-link">Inicio</a>
-                <a href="/map" class="nav-link">Mapa</a>
-                <a href="/games" class="nav-link">Juegos</a>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-links" id="nav-links">
+                <a href="/" class="nav-link">{{ t('nav.home', lang) }}</a>
+                <a href="/map" class="nav-link">{{ t('nav.map', lang) }}</a>
+                <a href="/games" class="nav-link">{{ t('nav.games', lang) }}</a>
+                <a href="/ranking" class="nav-link">{{ t('nav.ranking', lang) }}</a>
+                {% if user %}
+                <a href="/duels" class="nav-link">{{ t('nav.duels', lang) }}</a>
+                <a href="/tournaments" class="nav-link">{{ t('nav.tournaments', lang) }}</a>
+                <a href="/friends" class="nav-link nav-friends" id="nav-friends">{{ t('soc.friends', lang) }}</a>
+                <a href="/profile" class="nav-link">{{ user.username }}</a>
+                {% else %}
+                <a href="/login" class="nav-link">{{ t('nav.login', lang) }}</a>
+                {% endif %}
+                <a href="/set-lang/{{ 'en' if lang == 'es' else 'es' }}" class="nav-link nav-lang">{{ t('lang.switch_label', lang) }}</a>
             </div>
         </div>
     </nav>
@@ -43,12 +56,44 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <p>&copy; 2026 GeoFreak — Explora el mundo jugando 🌍</p>
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <img src="/static/img/logo.svg" alt="">
+                        <span>Geo<span class="accent">Freak</span></span>
+                    </div>
+                    <p class="footer-slogan">{{ t('footer.slogan', lang) }}</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/map">{{ t('footer.map', lang) }}</a>
+                    <a href="/games">{{ t('footer.games', lang) }}</a>
+                    <a href="/ranking">{{ t('footer.ranking', lang) }}</a>
+                </div>
+            </div>
+            <p class="footer-bottom">{{ t('footer.text', lang) }}</p>
         </div>
     </footer>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- i18n globals for JS -->
+    <script>window.LANG='{{ lang|default("es") }}';window.T={{ t_js(lang|default("es")) | safe }};</script>
+    <script>
+    (function(){var btn=document.getElementById('nav-hamburger'),links=document.getElementById('nav-links');
+    if(btn)btn.addEventListener('click',function(){links.classList.toggle('open');btn.classList.toggle('open');});})();
+    </script>
+    {% if user %}
+    <script>
+    (function(){
+        fetch('/api/friends/pending-count').then(r=>r.json()).then(d=>{
+            if(d.count>0){
+                var el=document.getElementById('nav-friends');
+                if(el) el.innerHTML=el.textContent+' <span class="nav-badge">'+d.count+'</span>';
+            }
+        }).catch(function(){});
+    })();
+    </script>
+    {% endif %}
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>

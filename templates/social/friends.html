@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('soc.friends_title', lang) }} — GeoFreak{% endblock %}
+
+{% block extra_head %}
+<style>
+/* ── Friends page layout ──────────────────────────── */
+.friends-page {
+    padding: 100px 24px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.friends-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+.friends-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 6px;
+}
+.friends-header p {
+    color: var(--gray-500);
+    font-size: 1.05rem;
+}
+
+/* ── Search bar ───────────────────────────────────── */
+.friend-search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.friend-search input {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-color 0.2s;
+}
+.friend-search input:focus {
+    border-color: var(--blue-500);
+}
+.friend-search button {
+    padding: 10px 20px;
+    background: var(--blue-500);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.friend-search button:hover { background: var(--blue-600); }
+
+/* ── Search results dropdown ──────────────────────── */
+.search-results {
+    max-width: 500px;
+    margin: -20px auto 24px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    display: none;
+}
+.search-results.active { display: block; }
+.search-result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--gray-100);
+}
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item .sr-name {
+    font-weight: 600;
+    color: var(--gray-800);
+}
+.sr-actions .btn-sm {
+    padding: 5px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-add {
+    background: var(--green-500);
+    color: white;
+}
+.btn-add:hover { background: var(--green-600); }
+.btn-add:disabled { background: var(--gray-300); color: var(--gray-500); cursor: default; }
+.btn-sm-outline {
+    background: transparent;
+    border: 1.5px solid var(--gray-300);
+    color: var(--gray-600);
+}
+
+/* ── Tabs ─────────────────────────────────────────── */
+.friends-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.ftab {
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--gray-600);
+    background: var(--gray-100);
+    border: 1.5px solid var(--gray-200);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.ftab:hover { border-color: var(--blue-500); color: var(--blue-600); }
+.ftab.active { background: var(--blue-500); color: white; border-color: var(--blue-500); }
+.ftab .badge {
+    display: inline-block;
+    background: #ef4444;
+    color: white;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    padding: 1px 7px;
+    margin-left: 6px;
+    font-weight: 700;
+}
+
+/* ── Friend card ──────────────────────────────────── */
+.friend-list { display: flex; flex-direction: column; gap: 10px; }
+.friend-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    transition: all 0.2s;
+}
+.friend-card:hover { box-shadow: var(--shadow-sm); border-color: var(--blue-500); }
+.fc-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--blue-500);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.fc-info { flex: 1; min-width: 0; }
+.fc-name {
+    font-weight: 600;
+    color: var(--gray-800);
+    font-size: 0.95rem;
+}
+.fc-name a { color: inherit; }
+.fc-name a:hover { color: var(--blue-600); }
+.fc-meta {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    margin-top: 2px;
+}
+.fc-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.btn-danger {
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 5px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-danger:hover { background: #fecaca; }
+.btn-accept {
+    background: var(--green-500);
+    color: white;
+    border: none;
+    padding: 5px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-accept:hover { background: var(--green-600); }
+
+/* ── Empty state ──────────────────────────────────── */
+.friends-empty {
+    text-align: center;
+    padding: 50px 24px;
+    color: var(--gray-400);
+    font-size: 1rem;
+}
+.friends-empty span { font-size: 2rem; display: block; margin-bottom: 10px; }
+
+/* ── Tab panels ───────────────────────────────────── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 640px) {
+    .friends-page { padding: 80px 12px 40px; }
+    .friend-card { flex-wrap: wrap; padding: 12px 14px; }
+    .fc-actions { width: 100%; justify-content: flex-end; margin-top: 8px; }
+    .friend-search { flex-direction: column; }
+    .friend-search button { width: 100%; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="friends-page">
+    <div class="friends-header">
+        <h1>{{ t('soc.friends_title', lang) }}</h1>
+        <p>{{ t('soc.friends_subtitle', lang) }}</p>
+    </div>
+
+    <!-- Search -->
+    <div class="friend-search">
+        <input type="text" id="user-search" placeholder="{{ t('soc.search_users', lang) }}" autocomplete="off">
+        <button id="search-btn">{{ t('soc.search_btn', lang) }}</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+
+    <!-- Tabs -->
+    <div class="friends-tabs">
+        <div class="ftab active" data-tab="friends">
+            {{ t('soc.my_friends', lang) }} ({{ friends | length }})
+        </div>
+        <div class="ftab" data-tab="received">
+            {{ t('soc.pending_received', lang) }}
+            {% if pending_in | length > 0 %}
+            <span class="badge">{{ pending_in | length }}</span>
+            {% endif %}
+        </div>
+        <div class="ftab" data-tab="sent">
+            {{ t('soc.pending_sent', lang) }} ({{ pending_out | length }})
+        </div>
+    </div>
+
+    <!-- Friends list -->
+    <div class="tab-panel active" id="panel-friends">
+        {% if friends %}
+        <div class="friend-list">
+            {% for f in friends %}
+            <div class="friend-card" id="fc-{{ f.friend_user_id }}">
+                <div class="fc-avatar">{{ f.username[0] | upper }}</div>
+                <div class="fc-info">
+                    <div class="fc-name"><a href="/user/{{ f.username }}">{{ f.username }}</a></div>
+                    <div class="fc-meta">{{ t('soc.member_since', lang) }} {{ f.friend_created_at[:10] }}</div>
+                </div>
+                <div class="fc-actions">
+                    <button class="btn-danger" onclick="friendAction('remove','{{ f.friend_user_id }}','fc-{{ f.friend_user_id }}')">{{ t('soc.remove_friend', lang) }}</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="friends-empty">
+            <span>👥</span>
+            {{ t('soc.no_friends', lang) }}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Pending received -->
+    <div class="tab-panel" id="panel-received">
+        {% if pending_in %}
+        <div class="friend-list">
+            {% for f in pending_in %}
+            <div class="friend-card" id="pr-{{ f.friend_user_id }}">
+                <div class="fc-avatar" style="background: var(--green-500);">{{ f.username[0] | upper }}</div>
+                <div class="fc-info">
+                    <div class="fc-name"><a href="/user/{{ f.username }}">{{ f.username }}</a></div>
+                    <div class="fc-meta">{{ f.created_at[:10] }}</div>
+                </div>
+                <div class="fc-actions">
+                    <button class="btn-accept" onclick="friendAction('accept','{{ f.friend_user_id }}','pr-{{ f.friend_user_id }}')">{{ t('soc.accept', lang) }}</button>
+                    <button class="btn-danger" onclick="friendAction('reject','{{ f.friend_user_id }}','pr-{{ f.friend_user_id }}')">{{ t('soc.reject', lang) }}</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="friends-empty">
+            <span>📭</span>
+            {{ t('soc.no_pending', lang) }}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Pending sent -->
+    <div class="tab-panel" id="panel-sent">
+        {% if pending_out %}
+        <div class="friend-list">
+            {% for f in pending_out %}
+            <div class="friend-card" id="ps-{{ f.friend_user_id }}">
+                <div class="fc-avatar" style="background: var(--gray-400);">{{ f.username[0] | upper }}</div>
+                <div class="fc-info">
+                    <div class="fc-name">{{ f.username }}</div>
+                    <div class="fc-meta">{{ f.created_at[:10] }}</div>
+                </div>
+                <div class="fc-actions">
+                    <button class="btn-danger" onclick="friendAction('reject','{{ f.friend_user_id }}','ps-{{ f.friend_user_id }}')">{{ t('soc.cancel', lang) }}</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="friends-empty">
+            <span>📤</span>
+            {{ t('soc.no_pending', lang) }}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function(){
+    const T_ADD = {{ t('soc.add_friend', lang) | tojson }};
+    const T_SENT = {{ t('soc.request_sent', lang) | tojson }};
+    const T_ALREADY = {{ t('soc.already_friends', lang) | tojson }};
+    const T_EXISTS = {{ t('soc.request_exists', lang) | tojson }};
+    const T_NO_RESULTS = {{ t('soc.no_results', lang) | tojson }};
+
+    /* ── Tabs ──────────────────────────────────────── */
+    document.querySelectorAll('.ftab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+        });
+    });
+
+    /* ── Search ────────────────────────────────────── */
+    const searchInput = document.getElementById('user-search');
+    const searchBtn = document.getElementById('search-btn');
+    const resultsDiv = document.getElementById('search-results');
+
+    async function doSearch() {
+        const q = searchInput.value.trim();
+        if (q.length < 2) { resultsDiv.classList.remove('active'); return; }
+        try {
+            const resp = await fetch('/api/users/search?q=' + encodeURIComponent(q));
+            const data = await resp.json();
+            if (!data.results || data.results.length === 0) {
+                resultsDiv.innerHTML = '<div class="search-result-item"><span class="sr-name">' + T_NO_RESULTS + '</span></div>';
+            } else {
+                resultsDiv.innerHTML = data.results.map(u =>
+                    '<div class="search-result-item">' +
+                    '<a href="/user/' + u.username + '" class="sr-name">' + u.username + '</a>' +
+                    '<div class="sr-actions"><button class="btn-sm btn-add" onclick="sendRequest(\'' + u.user_id + '\', this)">' + T_ADD + '</button></div>' +
+                    '</div>'
+                ).join('');
+            }
+            resultsDiv.classList.add('active');
+        } catch(e) { console.error(e); }
+    }
+
+    searchBtn.addEventListener('click', doSearch);
+    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+    /* Close search results when clicking outside */
+    document.addEventListener('click', e => {
+        if (!resultsDiv.contains(e.target) && e.target !== searchInput && e.target !== searchBtn) {
+            resultsDiv.classList.remove('active');
+        }
+    });
+
+    /* ── Send request ──────────────────────────────── */
+    window.sendRequest = async function(userId, btn) {
+        btn.disabled = true;
+        try {
+            const resp = await fetch('/api/friends/request', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({target_user_id: userId}),
+            });
+            const data = await resp.json();
+            if (data.ok) {
+                btn.textContent = '✓ ' + T_SENT;
+            } else if (data.reason === 'already_friends') {
+                btn.textContent = T_ALREADY;
+            } else if (data.reason === 'request_exists') {
+                btn.textContent = T_EXISTS;
+            }
+        } catch(e) { console.error(e); btn.disabled = false; }
+    };
+
+    /* ── Friend actions (accept/reject/remove) ─────── */
+    window.friendAction = async function(action, userId, cardId) {
+        try {
+            const resp = await fetch('/api/friends/' + action, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({target_user_id: userId}),
+            });
+            const data = await resp.json();
+            if (data.ok || resp.ok) {
+                const card = document.getElementById(cardId);
+                if (card) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateX(30px)';
+                    card.style.transition = 'all 0.3s';
+                    setTimeout(() => card.remove(), 300);
+                }
+            }
+        } catch(e) { console.error(e); }
+    };
+})();
+</script>
+{% endblock %}

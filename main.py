@@ -13,6 +13,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from core.config import get_settings  # noqa: E402
+
 
 def create_app():
     """Create and configure the FastAPI application."""
@@ -20,10 +22,12 @@ def create_app():
     from fastapi.staticfiles import StaticFiles
     from starlette.middleware.sessions import SessionMiddleware
 
-    from routers import pages, api, games, admin
+    from routers import pages, api, games, admin, auth, social, duels, tournaments
+
+    settings = get_settings()
 
     app = FastAPI(
-        title=os.getenv("APP_NAME", "GeoFreak"),
+        title=settings.app_name,
         description="Plataforma de juegos y exploración geográfica",
         version="0.1.0",
     )
@@ -31,7 +35,7 @@ def create_app():
     # Session middleware (for admin auth)
     app.add_middleware(
         SessionMiddleware,
-        secret_key=os.getenv("SECRET_KEY", "geofreak-dev-secret-change-me"),
+        secret_key=settings.secret_key,
     )
 
     # Static files
@@ -39,10 +43,25 @@ def create_app():
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
     # Routers
+    app.include_router(auth.router)
     app.include_router(pages.router)
     app.include_router(api.router, prefix="/api")
     app.include_router(games.router)
+    app.include_router(social.router)
+    app.include_router(duels.router)
+    app.include_router(tournaments.router)
     app.include_router(admin.router)
+
+    # Flush analytics buffer on shutdown
+    from contextlib import asynccontextmanager
+    from services.analytics import flush as flush_analytics
+
+    @asynccontextmanager
+    async def lifespan(app):
+        yield
+        flush_analytics()
+
+    app.router.lifespan_context = lifespan
 
     return app
 
@@ -63,11 +82,9 @@ def run_local():
     """Run locally with uvicorn."""
     import uvicorn
 
-    host = os.getenv("APP_HOST", "0.0.0.0")
-    port = int(os.getenv("APP_PORT", 8000))
-    debug = os.getenv("APP_DEBUG", "true").lower() == "true"
-    print(f"🌍 GeoFreak running at http://{host}:{port}")
-    uvicorn.run("main:app", host=host, port=port, reload=debug)
+    settings = get_settings()
+    print(f"🌍 GeoFreak running at http://{settings.app_host}:{settings.app_port}")
+    uvicorn.run("main:app", host=settings.app_host, port=settings.app_port, reload=settings.app_debug)
 
 
 if __name__ == "__main__":

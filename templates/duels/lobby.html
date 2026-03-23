@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('duel.lobby_title', lang) }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/duels.css">
+{% endblock %}
+
+{% block content %}
+<section class="duel-lobby">
+    <div class="container">
+        <h1>{{ t('duel.lobby_title', lang) }}</h1>
+        <p class="section-desc">{{ t('duel.lobby_subtitle', lang) }}</p>
+
+        {% if not user %}
+        <div class="duel-auth-notice">
+            <p>{{ t('duel.login_required', lang) }}</p>
+            <a href="/login" class="btn btn-primary">{{ t('nav.login', lang) }}</a>
+        </div>
+        {% else %}
+
+        <!-- Create duel -->
+        <div class="duel-create-section">
+            <h2>{{ t('duel.create_title', lang) }}</h2>
+            <div class="duel-create-form">
+                <div class="setting-group">
+                    <label>{{ t('duel.game_type', lang) }}</label>
+                    <select id="duel-game-type">
+                        <option value="ordering">{{ t('duel.ordering', lang) }}</option>
+                        <option value="comparison">{{ t('duel.comparison', lang) }}</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>{{ t('game.continent', lang) }}</label>
+                    <select id="duel-continent">
+                        <option value="all">{{ t('game.all', lang) }}</option>
+                        <option value="europe">{{ t('game.europe', lang) }}</option>
+                        <option value="asia">{{ t('game.asia', lang) }}</option>
+                        <option value="africa">{{ t('game.africa', lang) }}</option>
+                        <option value="america">{{ t('game.america', lang) }}</option>
+                        <option value="oceania">{{ t('game.oceania', lang) }}</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>{{ t('game.nquestions', lang) }}</label>
+                    <select id="duel-num-questions">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="btn-create-duel">{{ t('duel.create_btn', lang) }}</button>
+            </div>
+        </div>
+
+        <!-- Waiting duels -->
+        <div class="duel-waiting-section">
+            <h2>{{ t('duel.available_title', lang) }}</h2>
+            <div class="duel-list" id="duel-list">
+                <div class="duel-list-loading" id="duel-list-loading" style="display:none">
+                    {{ t('duel.loading', lang) }}
+                </div>
+                <div class="duel-list-empty" id="duel-list-empty" style="display:none">
+                    {{ t('duel.no_duels', lang) }}
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if user %}
+<script>
+window.DUEL_TRANSLATIONS = {
+    ordering: "{{ t('duel.ordering', lang) }}",
+    comparison: "{{ t('duel.comparison', lang) }}",
+    join: "{{ t('duel.join_btn', lang) }}",
+    questions: "{{ t('game.nquestions', lang) }}",
+    by: "{{ t('duel.created_by', lang) }}",
+    creating: "{{ t('duel.creating', lang) }}",
+    joining: "{{ t('duel.joining', lang) }}"
+};
+</script>
+<script src="/static/js/duels/lobby.js"></script>
+{% endif %}
+{% endblock %}

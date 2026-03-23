@@ -18,7 +18,7 @@
 
     // ─── Tile layers ────────────────────────────────────────
     const tileLayers = {
-        "Plano": L.tileLayer(
+        [T['mapjs.layer_flat'] || 'Light']: L.tileLayer(
             "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
             {
                 attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://osm.org/">OSM</a>',
@@ -26,21 +26,21 @@
                 maxZoom: 20,
             }
         ),
-        "Estándar": L.tileLayer(
+        [T['mapjs.layer_standard'] || 'Standard']: L.tileLayer(
             "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             {
                 attribution: '&copy; <a href="https://openstreetmap.org/">OpenStreetMap</a>',
                 maxZoom: 19,
             }
         ),
-        "Satélite": L.tileLayer(
+        [T['mapjs.layer_satellite'] || 'Satellite']: L.tileLayer(
             "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
             {
                 attribution: '&copy; <a href="https://www.esri.com/">Esri</a>',
                 maxZoom: 18,
             }
         ),
-        "Oscuro": L.tileLayer(
+        [T['mapjs.layer_dark'] || 'Dark']: L.tileLayer(
             "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
             {
                 attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
@@ -50,7 +50,7 @@
         ),
     };
 
-    tileLayers["Plano"].addTo(map);
+    tileLayers[T['mapjs.layer_flat'] || 'Light'].addTo(map);
 
     // ─── City layers (by zoom level) ────────────────────────
     // Layer groups for different city tiers
@@ -64,11 +64,11 @@
 
     // Overlay control labels
     const overlays = {
-        "⭐ Capitales": cityLayers.capitals,
-        "🔴 Megaciudades (5M+)": cityLayers.megacities,
-        "🟠 Ciudades grandes (1M+)": cityLayers.large,
-        "🟡 Ciudades medianas (500K+)": cityLayers.medium,
-        "⚪ Otras ciudades": cityLayers.small,
+        [T['mapjs.capitals'] || '⭐ Capitals']: cityLayers.capitals,
+        [T['mapjs.megacities'] || '🔴 Megacities (5M+)']: cityLayers.megacities,
+        [T['mapjs.large_cities'] || '🟠 Large cities (1M+)']: cityLayers.large,
+        [T['mapjs.medium_cities'] || '🟡 Medium cities (500K+)']: cityLayers.medium,
+        [T['mapjs.other_cities'] || '⚪ Other cities']: cityLayers.small,
     };
 
     // Add layer control
@@ -84,18 +84,20 @@
         if (n === "" || n === null || n === undefined) return "—";
         const num = Number(n);
         if (isNaN(num)) return n;
+        var locale = window.LANG === 'en' ? 'en-US' : 'es-ES';
         if (num >= 1e12) return (num / 1e12).toFixed(2) + " T";
         if (num >= 1e9) return (num / 1e9).toFixed(2) + " B";
         if (num >= 1e6) return (num / 1e6).toFixed(2) + " M";
-        if (num >= 1e3) return num.toLocaleString("es-ES");
+        if (num >= 1e3) return num.toLocaleString(locale);
         return String(num);
     }
 
     function formatPop(n) {
         if (!n || n <= 0) return "";
-        if (n >= 1e6) return (n / 1e6).toFixed(1) + "M hab.";
-        if (n >= 1e3) return Math.round(n / 1e3) + "K hab.";
-        return n + " hab.";
+        var u = T['mapjs.inhabitants'] || 'inhab.';
+        if (n >= 1e6) return (n / 1e6).toFixed(1) + "M " + u;
+        if (n >= 1e3) return Math.round(n / 1e3) + "K " + u;
+        return n + " " + u;
     }
 
     function flagUrl(iso3) {
@@ -246,72 +248,74 @@
                 ? JSON.parse(c.top_cities) : c.top_cities;
             if (Array.isArray(topCities) && topCities.length > 0) {
                 citiesHtml = '<div class="modal-section">' +
-                    '<div class="modal-section-title">🏙️ Ciudades principales</div>' +
+                    '<div class="modal-section-title">' + (T['mapjs.top_cities'] || '🏙️ Top cities') + '</div>' +
                     '<div class="modal-grid">';
                 topCities.forEach(function (city) {
                     var badge = city.is_capital ? ' <span style="color:var(--blue-500);font-size:0.75rem;">⭐</span>' : '';
                     citiesHtml += item(
                         city.name + badge,
-                        formatNumber(city.population) + " hab."
+                        formatNumber(city.population) + " " + (T['mapjs.inhabitants'] || 'inhab.')
                     );
                 });
                 citiesHtml += '</div></div>';
             }
         } catch (e) { /* ignore */ }
 
+        var _t = function(k) { return T[k] || k; };
+
         return '<div class="modal-section">' +
-            '<div class="modal-section-title">🌍 General</div>' +
+            '<div class="modal-section-title">' + _t('mapjs.section_general') + '</div>' +
             '<div class="modal-grid">' +
-            item("Capital", c.capital) +
-            item("Región", c.region) +
-            item("Subregión", c.subregion) +
-            item("Continente", c.continent) +
-            item("Latitud / Longitud", c.lat && c.lon ? Number(c.lat).toFixed(2) + "° / " + Number(c.lon).toFixed(2) + "°" : "") +
-            item("Zona horaria", c.timezones) +
+            item(_t("mapjs.capital"), c.capital) +
+            item(_t("mapjs.region"), c.region) +
+            item(_t("mapjs.subregion"), c.subregion) +
+            item(_t("mapjs.continent"), c.continent) +
+            item(_t("mapjs.lat_lon"), c.lat && c.lon ? Number(c.lat).toFixed(2) + "° / " + Number(c.lon).toFixed(2) + "°" : "") +
+            item(_t("mapjs.timezone"), c.timezones) +
             item("ISO", c.iso_a2 + " / " + c.iso_a3) +
-            item("Dominio", c.tld) +
+            item(_t("mapjs.domain"), c.tld) +
             '</div></div>' +
 
             '<div class="modal-section">' +
-            '<div class="modal-section-title">👥 Población</div>' +
+            '<div class="modal-section-title">' + _t('mapjs.section_population') + '</div>' +
             '<div class="modal-grid">' +
-            item("Población", formatNumber(c.population)) +
-            item("Superficie", c.area_km2 ? formatNumber(c.area_km2) + " km²" : "") +
-            item("Densidad", c.density_per_km2 ? Number(c.density_per_km2).toFixed(1) + " hab/km²" : "") +
-            item("Tasa natalidad", c.birth_rate ? Number(c.birth_rate).toFixed(1) + " ‰" : "") +
-            item("% Inmigrantes", c.immigrant_pct ? Number(c.immigrant_pct).toFixed(1) + "%" : "") +
-            item("Esperanza de vida", c.life_expectancy ? Number(c.life_expectancy).toFixed(1) + " años" : "") +
-            item("Población urbana", c.urban_population_pct ? Number(c.urban_population_pct).toFixed(1) + "%" : "") +
-            item("Alfabetización", c.literacy_rate ? Number(c.literacy_rate).toFixed(1) + "%" : "") +
+            item(_t("mapjs.population"), formatNumber(c.population)) +
+            item(_t("mapjs.area"), c.area_km2 ? formatNumber(c.area_km2) + " km²" : "") +
+            item(_t("mapjs.density"), c.density_per_km2 ? Number(c.density_per_km2).toFixed(1) + " hab/km²" : "") +
+            item(_t("mapjs.birth_rate"), c.birth_rate ? Number(c.birth_rate).toFixed(1) + " ‰" : "") +
+            item(_t("mapjs.immigrant_pct"), c.immigrant_pct ? Number(c.immigrant_pct).toFixed(1) + "%" : "") +
+            item(_t("mapjs.life_expectancy"), c.life_expectancy ? Number(c.life_expectancy).toFixed(1) + (window.LANG === 'en' ? ' years' : ' años') : "") +
+            item(_t("mapjs.urban_pop"), c.urban_population_pct ? Number(c.urban_population_pct).toFixed(1) + "%" : "") +
+            item(_t("mapjs.literacy"), c.literacy_rate ? Number(c.literacy_rate).toFixed(1) + "%" : "") +
             '</div></div>' +
 
             citiesHtml +
 
             '<div class="modal-section">' +
-            '<div class="modal-section-title">💰 Economía</div>' +
+            '<div class="modal-section-title">' + _t('mapjs.section_economy') + '</div>' +
             '<div class="modal-grid">' +
-            item("PIB", c.gdp_usd ? "$" + formatNumber(c.gdp_usd) : "") +
-            item("PIB per cápita", c.gdp_per_capita_usd ? "$" + formatNumber(c.gdp_per_capita_usd) : "") +
-            item("Índice de Gini", c.gini || "") +
-            item("IDH", c.hdi || "") +
-            item("Moneda", c.currency_name ? c.currency_name + " (" + c.currency_code + ")" : "") +
+            item(_t("mapjs.gdp"), c.gdp_usd ? "$" + formatNumber(c.gdp_usd) : "") +
+            item(_t("mapjs.gdp_per_capita"), c.gdp_per_capita_usd ? "$" + formatNumber(c.gdp_per_capita_usd) : "") +
+            item(_t("mapjs.gini"), c.gini || "") +
+            item(_t("mapjs.hdi"), c.hdi || "") +
+            item(_t("mapjs.currency"), c.currency_name ? c.currency_name + " (" + c.currency_code + ")" : "") +
             '</div></div>' +
 
             '<div class="modal-section">' +
-            '<div class="modal-section-title">🗣️ Idiomas y cultura</div>' +
+            '<div class="modal-section-title">' + _t('mapjs.section_languages') + '</div>' +
             '<div class="modal-grid">' +
-            item("Lengua principal", c.main_language) +
-            item("Lengua secundaria", c.secondary_language) +
-            item("Idiomas oficiales", languages) +
-            item("Lado de conducción", c.car_side) +
-            item("Inicio de semana", c.start_of_week) +
+            item(_t("mapjs.main_language"), c.main_language) +
+            item(_t("mapjs.secondary_language"), c.secondary_language) +
+            item(_t("mapjs.official_languages"), languages) +
+            item(_t("mapjs.car_side"), c.car_side) +
+            item(_t("mapjs.start_of_week"), c.start_of_week) +
             '</div></div>' +
 
             '<div class="modal-section">' +
-            '<div class="modal-section-title">🔗 Enlaces</div>' +
+            '<div class="modal-section-title">' + _t('mapjs.section_links') + '</div>' +
             '<div class="modal-grid">' +
-            (c.google_maps ? '<div class="modal-item"><a href="' + c.google_maps + '" target="_blank" style="color:var(--blue-500);">📍 Google Maps</a></div>' : '') +
-            (c.osm_maps ? '<div class="modal-item"><a href="' + c.osm_maps + '" target="_blank" style="color:var(--blue-500);">🗺️ OpenStreetMap</a></div>' : '') +
+            (c.google_maps ? '<div class="modal-item"><a href="' + c.google_maps + '" target="_blank" rel="noopener" style="color:var(--blue-500);">' + _t('mapjs.google_maps') + '</a></div>' : '') +
+            (c.osm_maps ? '<div class="modal-item"><a href="' + c.osm_maps + '" target="_blank" rel="noopener" style="color:var(--blue-500);">' + _t('mapjs.osm') + '</a></div>' : '') +
             '</div></div>';
     }
 
@@ -348,7 +352,7 @@
     function cityTooltipHtml(city) {
         return '<div class="city-tooltip-content">' +
             '<div class="ct-name">' + city.name +
-            (city.is_capital ? '<span class="ct-badge">CAPITAL</span>' : '') +
+            (city.is_capital ? '<span class="ct-badge">' + (T['mapjs.capital_badge'] || 'CAPITAL') + '</span>' : '') +
             '</div>' +
             '<div class="ct-country">' + city.country + '</div>' +
             (city.population > 0 ? '<div class="ct-pop">' + formatPop(city.population) + '</div>' : '') +

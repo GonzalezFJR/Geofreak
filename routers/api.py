@@ -1,14 +1,25 @@
-"""JSON API endpoints for datasets."""
+"""JSON API endpoints for datasets, quizzes, and match results."""
 
 import json
 import os
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
+from core.auth import get_current_user, get_optional_user
 from services.dataset import DatasetService
 from services.geodata import GeodataService
+from services.quiz import (
+    generate_ordering_set,
+    generate_comparison_set,
+    get_available_stats,
+)
+from services.matches import create_match, finish_match, save_match_player
+from services.user_stats import record_match_result, get_user_stats, ensure_user_stats
+from services.analytics import track
+from services.leaderboards import get_leaderboard, get_user_position, rebuild_all_leaderboards, GAME_TYPES
 
 router = APIRouter(tags=["api"])
 
@@ -82,3 +93,165 @@ async def get_country_cities(iso_code: str):
     if not cities:
         raise HTTPException(status_code=404, detail="No cities found for this country")
     return cities
+
+
+# ── Quiz endpoints ───────────────────────────────────────────────────────────
+
+@router.get("/quiz/stats")
+async def quiz_stats():
+    """Return available stats for quiz games."""
+    return get_available_stats()
+
+
+@router.get("/quiz/ordering")
+async def quiz_ordering(
+    num: int = Query(10, ge=1, le=20),
+    continent: Optional[str] = Query(None),
+):
+    """Generate a set of ordering questions."""
+    questions = generate_ordering_set(num_questions=num, continent=continent)
+    if not questions:
+        raise HTTPException(status_code=400, detail="Not enough data for quiz")
+    return {"questions": questions}
+
+
+@router.get("/quiz/comparison")
+async def quiz_comparison(
+    num: int = Query(10, ge=1, le=30),
+    continent: Optional[str] = Query(None),
+):
+    """Generate a set of comparison questions."""
+    questions = generate_comparison_set(num_questions=num, continent=continent)
+    if not questions:
+        raise HTTPException(status_code=400, detail="Not enough data for quiz")
+    return {"questions": questions}
+
+
+# ── Match result saving ──────────────────────────────────────────────────────
+
+class MatchResultPayload(BaseModel):
+    game_type: str
+    mode: str = "solo"
+    score: int
+    total: int
+    accuracy: float
+    time_ms: int
+    config: dict = {}
+
+
+@router.post("/matches/result")
+async def save_match_result(
+    payload: MatchResultPayload,
+    user: Optional[dict] = Depends(get_optional_user),
+):
+    """Save a completed match result. Works for logged-in users; anonymous gets a response but nothing persisted."""
+    if not user:
+        return {"saved": False, "message": "Not logged in"}
+
+    # Create match
+    match = create_match(
+        mode=payload.mode,
+        game_type=payload.game_type,
+        config=payload.config,
+        total_players=1,
+    )
+
+    # Finish it immediately (solo mode)
+    won = payload.total > 0 and (payload.score / payload.total) >= 0.5
+    finish_match(
+        match_id=match["match_id"],
+        winner_id=user["user_id"] if won else "",
+        duration_ms=payload.time_ms,
+    )
+
+    # Save player result
+    save_match_player(
+        match_id=match["match_id"],
+        user_id=user["user_id"],
+        score=payload.score,
+        rank=1,
+        answers_summary=payload.config,
+        accuracy=payload.accuracy,
+        time_spent_ms=payload.time_ms,
+    )
+
+    # Update aggregated stats
+    stats = record_match_result(
+        user_id=user["user_id"],
+        game_type=payload.game_type,
+        score=payload.score,
+        total=payload.total,
+        accuracy=payload.accuracy,
+        time_ms=payload.time_ms,
+        won=won,
+    )
+
+    track("match_finished", {
+        "user_id": user["user_id"], "match_id": match["match_id"],
+        "game_type": payload.game_type, "mode": payload.mode,
+        "score": payload.score, "total": payload.total,
+    })
+
+    return {
+        "saved": True,
+        "match_id": match["match_id"],
+        "total_matches": int(stats.get("total_matches", 0)),
+    }
+
+
+@router.get("/user/stats")
+async def api_user_stats(user: dict = Depends(get_current_user)):
+    """Return the current user's aggregated stats."""
+    stats = ensure_user_stats(user["user_id"])
+    return stats
+
+
+# ── Leaderboard endpoints ────────────────────────────────────────────────────
+
+@router.get("/leaderboards/global")
+async def api_global_leaderboard(
+    metric: str = Query("rating", regex="^(rating|total_matches|best_streak)$"),
+    user: Optional[dict] = Depends(get_optional_user),
+):
+    """Global leaderboard by metric."""
+    lb = get_leaderboard("global", "all", metric)
+    result = {
+        "leaderboard": lb["entries"] if lb else [],
+        "metric": metric,
+        "updated_at": lb["updated_at"] if lb else None,
+    }
+    if user:
+        pos = get_user_position(user["user_id"], "global", "all", metric)
+        result["user_position"] = pos
+    return result
+
+
+@router.get("/leaderboards/game/{game_type}")
+async def api_game_leaderboard(
+    game_type: str,
+    user: Optional[dict] = Depends(get_optional_user),
+):
+    """Per-game leaderboard (best score)."""
+    if game_type not in GAME_TYPES:
+        raise HTTPException(status_code=404, detail="Unknown game type")
+    lb = get_leaderboard("game", game_type, "best_score")
+    result = {
+        "leaderboard": lb["entries"] if lb else [],
+        "game_type": game_type,
+        "updated_at": lb["updated_at"] if lb else None,
+    }
+    if user:
+        pos = get_user_position(user["user_id"], "game", game_type, "best_score")
+        result["user_position"] = pos
+    return result
+
+
+@router.get("/leaderboards/top10")
+async def api_top10(user: Optional[dict] = Depends(get_optional_user)):
+    """Quick top-10 global by rating — for landing page widget."""
+    lb = get_leaderboard("global", "all", "rating")
+    entries = (lb["entries"] if lb else [])[:10]
+    result = {"leaderboard": entries}
+    if user:
+        result["user_position"] = get_user_position(user["user_id"])
+    return result

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}{{ profile.username }} — GeoFreak{% endblock %}
+
+{% block extra_head %}
+<style>
+.pub-profile {
+    padding: 100px 24px 60px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.pub-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+.pub-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--blue-500);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.pub-info h1 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 4px;
+}
+.pub-info p {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    margin: 0;
+}
+.pub-action {
+    margin-left: auto;
+}
+.pub-action .btn-friend {
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-friend.add { background: var(--green-500); color: white; }
+.btn-friend.add:hover { background: var(--green-600); }
+.btn-friend.pending { background: var(--gray-200); color: var(--gray-500); cursor: default; }
+.btn-friend.accepted { background: var(--blue-500); color: white; }
+.btn-friend.remove { background: #fee2e2; color: #dc2626; }
+.btn-friend.remove:hover { background: #fecaca; }
+
+/* Stats grid */
+.pub-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+}
+.pub-stat {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    text-align: center;
+}
+.pub-stat .ps-value {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--blue-600);
+}
+.pub-stat .ps-label {
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+    .pub-profile { padding: 80px 12px 40px; }
+    .pub-header { flex-wrap: wrap; }
+    .pub-action { width: 100%; margin-left: 0; margin-top: 12px; }
+    .pub-action .btn-friend { width: 100%; text-align: center; }
+    .pub-avatar { width: 60px; height: 60px; font-size: 1.5rem; }
+    .pub-stats { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="pub-profile">
+    <div class="pub-header">
+        <div class="pub-avatar">{{ profile.username[0] | upper }}</div>
+        <div class="pub-info">
+            <h1>{{ profile.username }}</h1>
+            <p>{{ t('soc.member_since', lang) }} {{ profile.created_at[:10] }}</p>
+        </div>
+        {% if user and user.user_id != profile.user_id %}
+        <div class="pub-action">
+            {% if friendship_status == 'accepted' %}
+            <button class="btn-friend remove" id="friend-btn"
+                    onclick="doFriendAction('remove')">{{ t('soc.remove_friend', lang) }}</button>
+            {% elif friendship_status == 'pending_sent' %}
+            <button class="btn-friend pending" disabled>{{ t('soc.request_sent', lang) }}</button>
+            {% elif friendship_status == 'pending_received' %}
+            <button class="btn-friend add" id="friend-btn"
+                    onclick="doFriendAction('accept')">{{ t('soc.accept', lang) }}</button>
+            {% else %}
+            <button class="btn-friend add" id="friend-btn"
+                    onclick="doFriendAction('request')">{{ t('soc.add_friend', lang) }}</button>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="pub-stats">
+        <div class="pub-stat">
+            <div class="ps-value">{{ stats.total_matches | default(0) }}</div>
+            <div class="ps-label">{{ t('prof.matches', lang) }}</div>
+        </div>
+        <div class="pub-stat">
+            <div class="ps-value">{{ stats.total_wins | default(0) }}</div>
+            <div class="ps-label">{{ t('prof.wins', lang) }}</div>
+        </div>
+        <div class="pub-stat">
+            <div class="ps-value">{{ stats.best_streak | default(0) if stats.best_streak | default(0) > 0 else '—' }}</div>
+            <div class="ps-label">{{ t('prof.streak', lang) }}</div>
+        </div>
+        <div class="pub-stat">
+            <div class="ps-value">{{ stats.rating | default(1000) }}</div>
+            <div class="ps-label">{{ t('prof.rating', lang) }}</div>
+        </div>
+        <div class="pub-stat">
+            <div class="ps-value">{{ friends_count }}</div>
+            <div class="ps-label">{{ t('prof.friends_count', lang) }}</div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if user and user.user_id != profile.user_id %}
+<script>
+async function doFriendAction(action) {
+    const btn = document.getElementById('friend-btn');
+    if (!btn) return;
+    btn.disabled = true;
+    try {
+        const resp = await fetch('/api/friends/' + action, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({target_user_id: '{{ profile.user_id }}'}),
+        });
+        const data = await resp.json();
+        if (data.ok || resp.ok) {
+            if (action === 'request') {
+                btn.textContent = '{{ t("soc.request_sent", lang) }}';
+                btn.className = 'btn-friend pending';
+            } else if (action === 'accept') {
+                btn.textContent = '{{ t("soc.remove_friend", lang) }}';
+                btn.className = 'btn-friend remove';
+                btn.onclick = function(){ doFriendAction('remove'); };
+            } else if (action === 'remove') {
+                btn.textContent = '{{ t("soc.add_friend", lang) }}';
+                btn.className = 'btn-friend add';
+                btn.onclick = function(){ doFriendAction('request'); };
+            }
+            btn.disabled = false;
+        }
+    } catch(e) { console.error(e); btn.disabled = false; }
+}
+</script>
+{% endif %}
+{% endblock %}

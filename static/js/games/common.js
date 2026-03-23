@@ -397,6 +397,32 @@ var GeoGame = {
         document.querySelector('.results-icon').textContent = icon;
 
         document.getElementById('results-overlay').style.display = 'flex';
+
+        // Save result to backend (if game_type is known)
+        this._saveResult(elapsed);
+    },
+
+    /** Save match result to backend. Called automatically by endGame. */
+    _saveResult: function (elapsedSec) {
+        var gameType = GAME_CONFIG && GAME_CONFIG.id ? GAME_CONFIG.id : '';
+        if (!gameType) return;
+        // ordering & comparison games save their own results
+        if (gameType === 'ordering' || gameType === 'comparison') return;
+
+        var payload = {
+            game_type: gameType,
+            mode: 'solo',
+            score: this.correct,
+            total: this.total,
+            accuracy: this.total > 0 ? this.correct / this.total : 0,
+            time_ms: elapsedSec * 1000,
+            config: { continent: this.settings.continent || 'all' }
+        };
+        fetch('/api/matches/result', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        }).catch(function () {});
     },
 
     quit: function () {

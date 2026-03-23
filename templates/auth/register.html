@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('auth.register_title', lang) }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/pages.css">
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <h2>{{ t('auth.register_h', lang) | safe }}</h2>
+        {% if error %}
+        <div class="auth-error">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="/register">
+            <input type="text" name="username" placeholder="{{ t('auth.username_ph', lang) }}" required
+                   autocomplete="username" minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+">
+            <p class="auth-hint">{{ t('auth.user_hint', lang) }}</p>
+            <input type="email" name="email" placeholder="{{ t('auth.email', lang) }}" required autocomplete="email">
+            <input type="password" name="password" placeholder="{{ t('auth.password', lang) }}" required
+                   autocomplete="new-password" minlength="8">
+            <p class="auth-hint">{{ t('auth.pass_hint', lang) }}</p>
+            <input type="password" name="password2" placeholder="{{ t('auth.password2_ph', lang) }}" required
+                   autocomplete="new-password" minlength="8">
+            <button type="submit">{{ t('auth.register_btn', lang) }}</button>
+        </form>
+        <div class="auth-footer">
+            {{ t('auth.has_account', lang) }} <a href="/login">{{ t('auth.login_link', lang) }}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

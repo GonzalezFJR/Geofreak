@@ -173,10 +173,10 @@ var MapGame = (function () {
         if (target === 'capital') {
             var cData = countriesData[iso3];
             if (pcountry) pcountry.textContent = cData ? cData.name : '';
-            if (ptxt)     ptxt.textContent = '¿Capital?';
+            if (ptxt)     ptxt.textContent = T['mg.what_capital'] || '¿Capital?';
         } else {
             if (pcountry) pcountry.textContent = '';
-            if (ptxt)     ptxt.textContent = '¿Qué país es?';
+            if (ptxt)     ptxt.textContent = T['mg.what_country'] || 'What country is this?';
         }
 
         var input = document.getElementById('answer-input');
@@ -262,7 +262,7 @@ var MapGame = (function () {
             el.textContent = label;
         } else if (!ok) {
             el.className = 'input-feedback wrong';
-            el.textContent = '❌ No coincide';
+            el.textContent = T['js.no_match'] || '❌ No match';
         }
         clearTimeout(el._timer);
         el._timer = setTimeout(function () {
@@ -328,7 +328,7 @@ var MapGame = (function () {
         var el = document.getElementById('input-feedback');
         if (el) {
             el.className = 'input-feedback wrong';
-            el.textContent = '👁️ ' + label;
+            el.textContent = (T['js.revealed'] || '👁️ {name}').replace('{name}', label);
             clearTimeout(el._timer);
             el._timer = setTimeout(function () {
                 el.className = 'input-feedback';

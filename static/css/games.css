@@ -1047,3 +1047,179 @@
     overflow: hidden;
     height: 100vh;
 }
+
+/* ============================================================
+   Ordering Game
+   ============================================================ */
+.ordering-container {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+.ordering-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.ordering-progress {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+}
+
+.ordering-prompt {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    font-family: var(--font-display);
+}
+
+.ordering-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.ordering-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    cursor: grab;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+}
+
+.ordering-item:active { cursor: grabbing; }
+.ordering-item.dragging { opacity: 0.5; border-color: var(--blue-500); }
+.ordering-item.correct { border-color: #4caf50; background: rgba(76, 175, 80, 0.08); }
+.ordering-item.wrong { border-color: #ef5350; background: rgba(239, 83, 80, 0.08); }
+
+.ordering-handle {
+    color: var(--gray-400);
+    font-size: 1.1rem;
+    cursor: grab;
+}
+
+.ordering-flag { font-size: 1.5rem; }
+
+.ordering-name {
+    flex: 1;
+    font-weight: 500;
+    color: var(--gray-800);
+}
+
+.ordering-value {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    font-weight: 600;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.ordering-actions { text-align: center; margin-bottom: 16px; }
+
+.ordering-feedback {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    min-height: 1.5em;
+    transition: color 0.2s;
+}
+.ordering-feedback.correct { color: #4caf50; }
+.ordering-feedback.wrong { color: #ef5350; }
+
+/* ============================================================
+   Comparison Game
+   ============================================================ */
+.comparison-container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+.comparison-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.comparison-progress {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+}
+
+.comparison-prompt {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    font-family: var(--font-display);
+}
+
+.comparison-cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.comparison-card {
+    flex: 1;
+    min-width: 200px;
+    max-width: 280px;
+    padding: 32px 24px;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg, 12px);
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.comparison-card:hover {
+    border-color: var(--blue-500);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.comparison-card.correct {
+    border-color: #4caf50;
+    background: rgba(76, 175, 80, 0.08);
+}
+.comparison-card.wrong {
+    border-color: #ef5350;
+    background: rgba(239, 83, 80, 0.08);
+}
+
+.comparison-flag { font-size: 3rem; margin-bottom: 12px; }
+
+.comparison-name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 8px;
+}
+
+.comparison-value {
+    display: none;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--blue-600, #1565c0);
+    margin-top: 8px;
+    font-family: var(--font-display);
+}
+
+.comparison-feedback {
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
+    min-height: 1.5em;
+}
+.comparison-feedback.correct { color: #4caf50; }
+.comparison-feedback.wrong { color: #ef5350; }

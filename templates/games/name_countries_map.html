@@ -6,8 +6,8 @@
 <div class="map-game-container">
     <div class="map-game-prompt" id="game-prompt" style="display:none">
         <span class="prompt-country" id="prompt-country"></span>
-        <span class="prompt-label" id="prompt-text">¿Qué país es?</span>
-        <input type="text" id="answer-input" placeholder="Nombre del país…" autocomplete="off">
+        <span class="prompt-label" id="prompt-text">{{ t('mg.what_country', lang) }}</span>
+        <input type="text" id="answer-input" placeholder="{{ t('mg.ph_country', lang) }}" autocomplete="off">
         <button class="btn-reveal-map" onclick="MapGame.reveal()">👁️</button>
     </div>
     <div id="game-map" class="game-map"></div>

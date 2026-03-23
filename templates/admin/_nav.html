@@ -1,0 +1,19 @@
+<!-- Admin sub-navigation tabs -->
+<nav class="admin-nav">
+    <a href="/admin" class="admin-tab {{ 'active' if section == 'games' }}">
+        <span class="admin-tab-icon">🎮</span>
+        {{ t('adm.tab_games', lang) }}
+    </a>
+    <a href="/admin/users" class="admin-tab {{ 'active' if section == 'users' }}">
+        <span class="admin-tab-icon">👥</span>
+        {{ t('adm.tab_users', lang) }}
+    </a>
+    <a href="/admin/analytics" class="admin-tab {{ 'active' if section == 'analytics' }}">
+        <span class="admin-tab-icon">📊</span>
+        {{ t('adm.tab_analytics', lang) }}
+    </a>
+    <a href="/admin/datasets" class="admin-tab {{ 'active' if section == 'datasets' }}">
+        <span class="admin-tab-icon">📁</span>
+        {{ t('adm.tab_datasets', lang) }}
+    </a>
+</nav>

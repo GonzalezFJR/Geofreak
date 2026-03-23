@@ -77,11 +77,11 @@ var QuizGame = (function () {
         if (acceptable.has(normalised)) {
             GeoGame.addCorrect();
             input.className = 'correct';
-            showFeedback('correct', '✅ ¡Correcto! ' + country.name);
+            showFeedback('correct', (T['js.correct_name'] || '✅ Correct! {name}').replace('{name}', country.name));
             setTimeout(function () { currentIdx++; showNext(); }, 800);
         } else {
             input.className = 'wrong';
-            showFeedback('wrong', '❌ Incorrecto, intenta de nuevo');
+            showFeedback('wrong', T['js.wrong_retry'] || '❌ Wrong, try again');
             setTimeout(function () { input.className = ''; }, 400);
             input.select();
         }
@@ -89,7 +89,7 @@ var QuizGame = (function () {
 
     function skip() {
         var country = queue[currentIdx];
-        showFeedback('skipped', '⏭️ Era: ' + country.name);
+        showFeedback('skipped', (T['js.skipped'] || '⏭️ It was: {name}').replace('{name}', country.name));
         setTimeout(function () { currentIdx++; showNext(); }, 1200);
     }
 
@@ -98,7 +98,7 @@ var QuizGame = (function () {
         var input = document.getElementById('answer-input');
         input.value = country.name;
         input.className = 'wrong';
-        showFeedback('wrong', '👁️ ' + country.name);
+        showFeedback('wrong', (T['js.revealed'] || '👁️ {name}').replace('{name}', country.name));
         // Count as seen but NOT correct (it's a fail)
         setTimeout(function () { currentIdx++; showNext(); }, 1500);
     }

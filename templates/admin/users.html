@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/admin.css">
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="admin-header">
+        <div>
+            <h1>{{ t('adm.title', lang) }}</h1>
+            <p class="admin-subtitle">{{ t('adm.users_subtitle', lang) }}</p>
+        </div>
+        <a href="/admin/logout" class="admin-logout">{{ t('adm.logout', lang) }}</a>
+    </div>
+
+    {% include "admin/_nav.html" %}
+
+    <div class="admin-section">
+        <div class="admin-section-header">
+            <h2 class="admin-section-title">{{ t('adm.users_title', lang) }} ({{ users | length }})</h2>
+        </div>
+
+        {% if users %}
+        <div class="analytics-table-wrap">
+            <table class="analytics-table users-table">
+                <thead>
+                    <tr>
+                        <th>{{ t('adm.users_username', lang) }}</th>
+                        <th>{{ t('adm.users_email', lang) }}</th>
+                        <th>{{ t('adm.users_status', lang) }}</th>
+                        <th>{{ t('adm.users_plan', lang) }}</th>
+                        <th>{{ t('adm.users_created', lang) }}</th>
+                        <th>{{ t('adm.users_actions', lang) }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for u in users %}
+                    <tr class="{{ 'disabled-row' if u.status == 'disabled' }}">
+                        <td class="username-cell">
+                            <strong>{{ u.username }}</strong>
+                            <span class="user-id-hint">{{ u.user_id[:8] }}…</span>
+                        </td>
+                        <td>{{ u.email }}</td>
+                        <td>
+                            <span class="status-badge {{ u.status }}">{{ u.status }}</span>
+                        </td>
+                        <td>{{ u.plan | default('free') }}</td>
+                        <td class="ts">{{ u.created_at[:10] if u.created_at else '—' }}</td>
+                        <td>
+                            <form method="post" action="/admin/users/{{ u.user_id }}/status" class="inline-form">
+                                {% if u.status == 'active' %}
+                                <input type="hidden" name="status" value="disabled">
+                                <button type="submit" class="btn-sm btn-danger" onclick="return confirm('{{ t('adm.users_confirm_disable', lang) }}')">
+                                    {{ t('adm.users_disable', lang) }}
+                                </button>
+                                {% else %}
+                                <input type="hidden" name="status" value="active">
+                                <button type="submit" class="btn-sm btn-success">
+                                    {{ t('adm.users_enable', lang) }}
+                                </button>
+                                {% endif %}
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-msg">{{ t('adm.users_empty', lang) }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/admin.css">
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="admin-header">
+        <div>
+            <h1>{{ t('adm.title', lang) }}</h1>
+            <p class="admin-subtitle">{{ t('adm.datasets_subtitle', lang) }}</p>
+        </div>
+        <a href="/admin/logout" class="admin-logout">{{ t('adm.logout', lang) }}</a>
+    </div>
+
+    {% include "admin/_nav.html" %}
+
+    <!-- Overview cards -->
+    <div class="analytics-cards">
+        <div class="analytics-card">
+            <div class="analytics-card-value">{{ datasets | length }}</div>
+            <div class="analytics-card-label">{{ t('adm.ds_files', lang) }}</div>
+        </div>
+        <div class="analytics-card">
+            <div class="analytics-card-value">{{ geojson_count }}</div>
+            <div class="analytics-card-label">{{ t('adm.ds_geojson', lang) }}</div>
+        </div>
+        <div class="analytics-card">
+            <div class="analytics-card-value">{{ geojson_size_human }}</div>
+            <div class="analytics-card-label">{{ t('adm.ds_geojson_size', lang) }}</div>
+        </div>
+        <div class="analytics-card">
+            <div class="analytics-card-value">{{ images_count }}</div>
+            <div class="analytics-card-label">{{ t('adm.ds_images', lang) }}</div>
+        </div>
+    </div>
+
+    <!-- Data files -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">{{ t('adm.ds_data_files', lang) }}</h2>
+        {% if datasets %}
+        <div class="analytics-table-wrap">
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>{{ t('adm.ds_filename', lang) }}</th>
+                        <th>{{ t('adm.ds_type', lang) }}</th>
+                        <th>{{ t('adm.ds_size', lang) }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for d in datasets %}
+                    <tr>
+                        <td><code>{{ d.name }}</code></td>
+                        <td><span class="type-badge">{{ d.type }}</span></td>
+                        <td class="num">{{ d.size_human }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-msg">{{ t('adm.ds_empty', lang) }}</p>
+        {% endif %}
+    </div>
+
+    <!-- GeoJSON summary -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">{{ t('adm.ds_geojson_title', lang) }}</h2>
+        <p class="section-info">
+            {{ t('adm.ds_geojson_desc', lang) | format(count=geojson_count, size=geojson_size_human) }}
+        </p>
+    </div>
+</div>
+{% endblock %}

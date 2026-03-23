@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('lb.title', lang) }} — GeoFreak{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/pages.css">
+{% endblock %}
+
+{% block content %}
+<section class="ranking-page">
+    <div class="ranking-header">
+        <h1>{{ t('lb.title', lang) }}</h1>
+        <p>{{ t('lb.subtitle', lang) }}</p>
+    </div>
+
+    <!-- Tabs: Global / By Game -->
+    <div class="ranking-tabs">
+        <a href="/ranking?tab=global&metric={{ metric }}"
+           class="ranking-tab {{ 'active' if tab == 'global' }}">
+            {{ t('lb.global', lang) }}
+        </a>
+        <a href="/ranking?tab=game&game={{ game_types[0] }}"
+           class="ranking-tab {{ 'active' if tab == 'game' }}">
+            {{ t('lb.by_game', lang) }}
+        </a>
+    </div>
+
+    {% if tab == 'global' %}
+    <!-- Metric selector -->
+    <div class="ranking-metrics">
+        {% for m in ['rating', 'total_matches', 'best_streak'] %}
+        <a href="/ranking?tab=global&metric={{ m }}"
+           class="metric-btn {{ 'active' if metric == m }}">
+            {{ t('lb.' + m, lang) }}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if tab == 'game' %}
+    <!-- Game type selector -->
+    <div class="ranking-game-select">
+        {% for gt in game_types %}
+        <a href="/ranking?tab=game&game={{ gt }}"
+           class="game-btn {{ 'active' if game_type == gt }}">
+            {{ gt | replace('-', ' ') | title }}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- User position banner -->
+    {% if user and user_position %}
+    <div class="your-position">
+        <span class="pos-label">{{ t('lb.your_pos', lang) }}</span>
+        <span class="pos-value">#{{ user_position }}</span>
+    </div>
+    {% elif user %}
+    <div class="your-position" style="background: var(--gray-500);">
+        <span class="pos-label">{{ t('lb.your_pos', lang) }}</span>
+        <span class="pos-value">{{ t('lb.not_ranked', lang) }}</span>
+    </div>
+    {% endif %}
+
+    <!-- Leaderboard table -->
+    {% if entries %}
+    <table class="ranking-table">
+        <thead>
+            <tr>
+                <th>{{ t('lb.rank', lang) }}</th>
+                <th>{{ t('lb.player', lang) }}</th>
+                <th>{{ t('lb.value', lang) }}</th>
+                {% if tab == 'game' %}
+                <th>{{ t('lb.matches', lang) }}</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in entries %}
+            <tr>
+                <td class="rank-cell {{ 'gold' if e.rank == 1 else ('silver' if e.rank == 2 else ('bronze' if e.rank == 3 else '')) }}">
+                    {% if e.rank == 1 %}🥇{% elif e.rank == 2 %}🥈{% elif e.rank == 3 %}🥉{% else %}{{ e.rank }}{% endif %}
+                </td>
+                <td>{{ e.username }}</td>
+                <td class="value-cell">{{ e.value | int }}</td>
+                {% if tab == 'game' %}
+                <td>{{ e.matches | default(0) | int }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if updated_at %}
+    <p class="ranking-meta">{{ t('lb.updated', lang) }}: {{ updated_at[:16] | replace('T', ' ') }}</p>
+    {% endif %}
+
+    {% else %}
+    <div class="ranking-empty">
+        <span>🏆</span>
+        {{ t('lb.empty', lang) }}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,20 +1,20 @@
 {% extends "base.html" %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/games.css">
+<link rel="stylesheet" href="/static/css/admin.css">
 {% endblock %}
 
 {% block content %}
 <div class="login-page">
     <div class="login-card">
-        <h2>🔐 Acceso de administrador</h2>
+        <h2>{{ t('adm.login_h', lang) }}</h2>
         {% if error %}
         <div class="login-error">{{ error }}</div>
         {% endif %}
         <form method="post" action="/admin/login">
-            <input type="text" name="username" placeholder="Usuario" required autocomplete="username">
-            <input type="password" name="password" placeholder="Contraseña" required autocomplete="current-password">
-            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;">Entrar</button>
+            <input type="text" name="username" placeholder="{{ t('adm.user', lang) }}" required autocomplete="username">
+            <input type="password" name="password" placeholder="{{ t('adm.pass', lang) }}" required autocomplete="current-password">
+            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;">{{ t('adm.login_btn', lang) }}</button>
         </form>
     </div>
 </div>

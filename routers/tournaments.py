@@ -1,0 +1,451 @@
+"""Tournaments router — REST endpoints + WebSocket for multi-round PvP."""
+
+from __future__ import annotations
+
+from typing import Optional
+
+from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from pydantic import BaseModel
+
+from core.auth import get_current_user, get_optional_user
+from core.i18n import get_lang, t
+from core.templates import templates
+from core.websocket_manager import tournament_manager as ws_mgr
+from services.auth import decode_token
+from services.matches import create_match, finish_match, save_match_player
+from services.tournaments import (
+    advance_round,
+    all_round_players_finished,
+    cancel_tournament,
+    create_round,
+    create_tournament,
+    finish_round,
+    finish_tournament,
+    generate_round_questions,
+    get_all_rounds,
+    get_round,
+    get_tournament,
+    get_waiting_tournaments,
+    join_tournament,
+    mark_round_player_finished,
+    pick_round_game_type,
+    start_tournament,
+    update_round_progress,
+    update_scoreboard,
+)
+from services.analytics import track
+from services.user_stats import record_match_result
+from services.users import get_user_by_id
+
+router = APIRouter(tags=["tournaments"])
+
+
+# ── Pages ────────────────────────────────────────────────────────────────────
+
+@router.get("/tournaments")
+async def tournament_lobby_page(request=None, user: Optional[dict] = Depends(get_optional_user)):
+    lang = get_lang(request)
+    waiting = get_waiting_tournaments() if user else []
+    return templates.TemplateResponse("tournaments/lobby.html", {
+        "request": request, "user": user, "lang": lang,
+        "waiting_tournaments": waiting,
+    })
+
+
+@router.get("/tournaments/{tid}")
+async def tournament_page(tid: str, request=None, user: dict = Depends(get_current_user)):
+    lang = get_lang(request)
+    tourn = get_tournament(tid)
+    if not tourn:
+        raise HTTPException(status_code=404, detail="Tournament not found")
+    if user["user_id"] not in tourn.get("players", []):
+        raise HTTPException(status_code=403, detail="Not a participant")
+
+    rounds = get_all_rounds(tid)
+    current_round_data = None
+    cr = int(tourn.get("current_round", 0))
+    if cr > 0:
+        current_round_data = get_round(tid, cr)
+
+    template = "tournaments/play.html"
+    if tourn["status"] == "finished":
+        template = "tournaments/results.html"
+
+    return templates.TemplateResponse(template, {
+        "request": request, "user": user, "lang": lang,
+        "tournament": tourn, "rounds": rounds,
+        "current_round": current_round_data,
+    })
+
+
+# ── REST API ─────────────────────────────────────────────────────────────────
+
+class CreateTournamentPayload(BaseModel):
+    number_of_rounds: int = 5
+    num_questions: int = 10
+    continent: str = "all"
+    game_types: list[str] = ["ordering", "comparison"]
+
+
+@router.post("/api/tournaments/create")
+async def api_create_tournament(payload: CreateTournamentPayload, user: dict = Depends(get_current_user)):
+    if payload.number_of_rounds < 2 or payload.number_of_rounds > 10:
+        raise HTTPException(status_code=400, detail="Rounds must be 2-10")
+    if payload.num_questions < 3 or payload.num_questions > 20:
+        raise HTTPException(status_code=400, detail="Questions must be 3-20")
+    valid_types = {"ordering", "comparison"}
+    if not all(gt in valid_types for gt in payload.game_types):
+        raise HTTPException(status_code=400, detail="Invalid game type")
+
+    config = {
+        "num_questions": payload.num_questions,
+        "continent": payload.continent,
+        "game_types": payload.game_types,
+    }
+    tourn = create_tournament(
+        created_by=user["user_id"],
+        username=user["username"],
+        number_of_rounds=payload.number_of_rounds,
+        config=config,
+    )
+    track("tournament_created", {"tournament_id": tourn["tournament_id"], "user_id": user["user_id"]})
+    return {"tournament_id": tourn["tournament_id"], "status": "waiting"}
+
+
+@router.post("/api/tournaments/{tid}/join")
+async def api_join_tournament(tid: str, user: dict = Depends(get_current_user)):
+    tourn = get_tournament(tid)
+    if not tourn:
+        raise HTTPException(status_code=404, detail="Tournament not found")
+    if tourn["status"] != "waiting":
+        raise HTTPException(status_code=400, detail="Not waiting for players")
+    if user["user_id"] in tourn.get("players", []):
+        raise HTTPException(status_code=400, detail="Already joined")
+
+    updated = join_tournament(tid, user["user_id"], user["username"])
+    if not updated:
+        raise HTTPException(status_code=400, detail="Could not join")
+
+    await ws_mgr.broadcast_all(tid, {
+        "type": "player_joined",
+        "user_id": user["user_id"],
+        "username": user["username"],
+        "players": updated.get("players", []),
+        "player_usernames": updated.get("player_usernames", {}),
+    })
+    track("tournament_joined", {"tournament_id": tid, "user_id": user["user_id"]})
+    return {"tournament_id": tid, "status": "waiting"}
+
+
+@router.post("/api/tournaments/{tid}/start")
+async def api_start_tournament(tid: str, user: dict = Depends(get_current_user)):
+    tourn = get_tournament(tid)
+    if not tourn:
+        raise HTTPException(status_code=404, detail="Tournament not found")
+    if tourn["created_by"] != user["user_id"]:
+        raise HTTPException(status_code=403, detail="Only creator can start")
+    if tourn["status"] != "waiting":
+        raise HTTPException(status_code=400, detail="Already started")
+    if len(tourn.get("players", [])) < 2:
+        raise HTTPException(status_code=400, detail="Need at least 2 players")
+
+    start_tournament(tid)
+    rnd = _create_next_round(tid, 1, tourn)
+
+    await ws_mgr.broadcast_all(tid, {
+        "type": "tournament_started",
+        "round_number": 1,
+        "game_type": rnd["game_type"],
+        "total_rounds": int(tourn.get("number_of_rounds", 5)),
+    })
+    return {"started": True, "round": 1}
+
+
+@router.post("/api/tournaments/{tid}/cancel")
+async def api_cancel_tournament(tid: str, user: dict = Depends(get_current_user)):
+    tourn = get_tournament(tid)
+    if not tourn:
+        raise HTTPException(status_code=404, detail="Tournament not found")
+    if tourn["created_by"] != user["user_id"]:
+        raise HTTPException(status_code=403, detail="Only creator can cancel")
+    cancel_tournament(tid)
+    await ws_mgr.broadcast_all(tid, {"type": "tournament_cancelled"})
+    return {"cancelled": True}
+
+
+@router.get("/api/tournaments/waiting")
+async def api_waiting_tournaments(user: dict = Depends(get_current_user)):
+    tournaments = get_waiting_tournaments()
+    return [
+        {
+            "tournament_id": t["tournament_id"],
+            "config": t.get("config", {}),
+            "created_by": t["created_by"],
+            "creator_username": t.get("player_usernames", {}).get(t["created_by"], "?"),
+            "number_of_rounds": int(t.get("number_of_rounds", 5)),
+            "player_count": len(t.get("players", [])),
+            "created_at": t["created_at"],
+        }
+        for t in tournaments
+        if t["created_by"] != user["user_id"]
+    ]
+
+
+@router.get("/api/tournaments/{tid}")
+async def api_get_tournament(tid: str, user: dict = Depends(get_current_user)):
+    tourn = get_tournament(tid)
+    if not tourn:
+        raise HTTPException(status_code=404, detail="Tournament not found")
+    return _safe_tournament(tourn)
+
+
+@router.get("/api/tournaments/{tid}/round/{round_num}/questions")
+async def api_round_questions(tid: str, round_num: int, user: dict = Depends(get_current_user)):
+    tourn = get_tournament(tid)
+    if not tourn:
+        raise HTTPException(status_code=404, detail="Tournament not found")
+    if user["user_id"] not in tourn.get("players", []):
+        raise HTTPException(status_code=403, detail="Not a participant")
+
+    rnd = get_round(tid, round_num)
+    if not rnd:
+        raise HTTPException(status_code=404, detail="Round not found")
+    if rnd["status"] != "active":
+        raise HTTPException(status_code=400, detail="Round not active")
+
+    questions = rnd.get("questions", [])
+    game_type = rnd.get("game_type", "ordering")
+
+    if game_type == "ordering":
+        safe_q = [
+            {"stat": q["stat"], "stat_info": q["stat_info"], "ascending": q["ascending"], "countries": q["countries"]}
+            for q in questions
+        ]
+    else:
+        safe_q = [
+            {"stat": q["stat"], "stat_info": q["stat_info"], "countries": q["countries"]}
+            for q in questions
+        ]
+    return {"questions": safe_q, "game_type": game_type, "round_number": round_num}
+
+
+class TournamentAnswerPayload(BaseModel):
+    round_number: int
+    question_index: int
+    answer: str | list[str]
+
+
+@router.post("/api/tournaments/{tid}/answer")
+async def api_tournament_answer(tid: str, payload: TournamentAnswerPayload, user: dict = Depends(get_current_user)):
+    tourn = get_tournament(tid)
+    if not tourn:
+        raise HTTPException(status_code=404, detail="Tournament not found")
+    if tourn["status"] != "active":
+        raise HTTPException(status_code=400, detail="Tournament not active")
+    if user["user_id"] not in tourn.get("players", []):
+        raise HTTPException(status_code=403, detail="Not a participant")
+
+    rnd = get_round(tid, payload.round_number)
+    if not rnd or rnd["status"] != "active":
+        raise HTTPException(status_code=400, detail="Round not active")
+
+    questions = rnd.get("questions", [])
+    qi = payload.question_index
+    if qi < 0 or qi >= len(questions):
+        raise HTTPException(status_code=400, detail="Invalid question index")
+
+    q = questions[qi]
+    game_type = rnd.get("game_type", "ordering")
+    correct = False
+
+    if game_type == "ordering":
+        correct = payload.answer == q.get("correct_order", [])
+    else:
+        correct = payload.answer == q.get("correct_iso", "")
+
+    current_score = int(rnd.get("round_scores", {}).get(user["user_id"], 0))
+    if correct:
+        current_score += 1
+
+    update_round_progress(tid, payload.round_number, user["user_id"], qi + 1, current_score)
+
+    feedback = {"correct": correct, "question_index": qi}
+    if game_type == "ordering":
+        feedback["correct_order"] = q.get("correct_order", [])
+        feedback["correct_values"] = q.get("correct_values", {})
+    else:
+        feedback["correct_iso"] = q.get("correct_iso", "")
+        feedback["values"] = q.get("values", {})
+
+    # Broadcast opponent progress
+    await ws_mgr.broadcast(tid, {
+        "type": "opponent_progress",
+        "user_id": user["user_id"],
+        "round_number": payload.round_number,
+        "question_index": qi + 1,
+        "score": current_score,
+    }, exclude=user["user_id"])
+
+    is_last = (qi + 1) >= len(questions)
+    if is_last:
+        mark_round_player_finished(tid, payload.round_number, user["user_id"], current_score)
+        update_scoreboard(tid, user["user_id"], current_score)
+
+        rnd_updated = get_round(tid, payload.round_number)
+        players = tourn.get("players", [])
+
+        if rnd_updated and all_round_players_finished(rnd_updated, players):
+            finish_round(tid, payload.round_number)
+            tourn_updated = get_tournament(tid)
+            total_rounds = int(tourn.get("number_of_rounds", 5))
+            next_round = payload.round_number + 1
+
+            if next_round > total_rounds:
+                # Tournament finished
+                finish_tournament(tid)
+                await _persist_tournament_results(tourn_updated)
+                track("tournament_finished", {"tournament_id": tid, "scoreboard": _int_map(tourn_updated.get("scoreboard", {}))})
+                await ws_mgr.broadcast_all(tid, {
+                    "type": "tournament_finished",
+                    "scoreboard": _int_map(tourn_updated.get("scoreboard", {})),
+                    "player_usernames": tourn_updated.get("player_usernames", {}),
+                })
+            else:
+                # Start next round
+                advance_round(tid, next_round)
+                track("tournament_round_finished", {"tournament_id": tid, "round": payload.round_number})
+                new_rnd = _create_next_round(tid, next_round, tourn_updated)
+                await ws_mgr.broadcast_all(tid, {
+                    "type": "round_finished",
+                    "round_number": payload.round_number,
+                    "round_scores": _int_map(rnd_updated.get("round_scores", {})),
+                    "scoreboard": _int_map(tourn_updated.get("scoreboard", {})),
+                    "next_round": next_round,
+                    "next_game_type": new_rnd["game_type"],
+                })
+        else:
+            await ws_mgr.broadcast(tid, {
+                "type": "player_round_finished",
+                "user_id": user["user_id"],
+                "round_number": payload.round_number,
+                "score": current_score,
+            }, exclude=user["user_id"])
+
+    feedback["is_last"] = is_last
+    feedback["current_score"] = current_score
+    feedback["total_answered"] = qi + 1
+    return feedback
+
+
+# ── WebSocket ────────────────────────────────────────────────────────────────
+
+@router.websocket("/ws/tournament/{tid}")
+async def tournament_websocket(websocket: WebSocket, tid: str):
+    token = websocket.cookies.get("access_token")
+    if not token:
+        await websocket.close(code=4001)
+        return
+    payload = decode_token(token)
+    if not payload or payload.get("type") != "access":
+        await websocket.close(code=4001)
+        return
+    user = get_user_by_id(payload["sub"])
+    if not user:
+        await websocket.close(code=4001)
+        return
+
+    uid = user["user_id"]
+    tourn = get_tournament(tid)
+    if not tourn or uid not in tourn.get("players", []):
+        await websocket.close(code=4003)
+        return
+
+    await ws_mgr.connect(tid, uid, websocket)
+    await ws_mgr.broadcast(tid, {
+        "type": "user_connected",
+        "user_id": uid,
+        "username": user.get("username", ""),
+        "connected_users": ws_mgr.get_connected_users(tid),
+    }, exclude=uid)
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+            if data == "ping":
+                await websocket.send_json({"type": "pong"})
+    except WebSocketDisconnect:
+        ws_mgr.disconnect(tid, uid)
+        await ws_mgr.broadcast(tid, {
+            "type": "user_disconnected",
+            "user_id": uid,
+            "connected_users": ws_mgr.get_connected_users(tid),
+        })
+
+
+# ── Helpers ──────────────────────────────────────────────────────────────────
+
+def _int_map(m: dict) -> dict:
+    return {k: int(v) for k, v in m.items()}
+
+
+def _safe_tournament(tourn: dict) -> dict:
+    return {
+        "tournament_id": tourn["tournament_id"],
+        "status": tourn["status"],
+        "number_of_rounds": int(tourn.get("number_of_rounds", 5)),
+        "current_round": int(tourn.get("current_round", 0)),
+        "config": tourn.get("config", {}),
+        "players": tourn.get("players", []),
+        "player_usernames": tourn.get("player_usernames", {}),
+        "scoreboard": _int_map(tourn.get("scoreboard", {})),
+        "created_by": tourn["created_by"],
+    }
+
+
+def _create_next_round(tid: str, round_number: int, tourn: dict) -> dict:
+    config = tourn.get("config", {})
+    game_type = pick_round_game_type(config)
+    questions = generate_round_questions(game_type, config)
+    players = tourn.get("players", [])
+    return create_round(tid, round_number, game_type, config, questions, players)
+
+
+async def _persist_tournament_results(tourn: dict) -> None:
+    """Create match records per round and update user_stats."""
+    players = tourn.get("players", [])
+    scoreboard = tourn.get("scoreboard", {})
+    config = tourn.get("config", {})
+    tid = tourn["tournament_id"]
+
+    sorted_players = sorted(players, key=lambda p: int(scoreboard.get(p, 0)), reverse=True)
+    winner_id = sorted_players[0] if sorted_players else ""
+
+    # One aggregate match for the tournament
+    match = create_match(
+        mode="tournament_round",
+        game_type="tournament",
+        config=config,
+        total_players=len(players),
+    )
+    finish_match(match_id=match["match_id"], winner_id=winner_id)
+
+    total_rounds = int(tourn.get("number_of_rounds", 5))
+    for rank, pid in enumerate(sorted_players, 1):
+        total_score = int(scoreboard.get(pid, 0))
+        accuracy = (total_score / (total_rounds * int(config.get("num_questions", 10))) * 100) if total_rounds > 0 else 0
+        save_match_player(
+            match_id=match["match_id"],
+            user_id=pid,
+            score=total_score,
+            rank=rank,
+            accuracy=accuracy,
+        )
+        record_match_result(
+            user_id=pid,
+            game_type="tournament",
+            score=total_score,
+            total=total_rounds * int(config.get("num_questions", 10)),
+            accuracy=accuracy,
+            time_ms=0,
+            won=(pid == winner_id),
+        )

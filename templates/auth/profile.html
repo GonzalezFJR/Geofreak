@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('prof.title', lang) }} — {{ user.username }} — GeoFreak{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/pages.css">
+{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <!-- Header -->
+    <div class="profile-header">
+        <div class="profile-avatar">{{ user.username[0]|upper }}</div>
+        <div class="profile-info">
+            <h1>{{ user.username }}</h1>
+            <p>{{ user.email }} · {{ t('prof.since', lang) }} {{ user.created_at[:10] }}</p>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="profile-stats">
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total_matches|default(0) }}</div>
+            <div class="stat-label">{{ t('prof.matches', lang) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total_wins|default(0) }}</div>
+            <div class="stat-label">{{ t('prof.wins', lang) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.best_streak|default(0) if stats.best_streak|default(0) > 0 else '—' }}</div>
+            <div class="stat-label">{{ t('prof.streak', lang) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.rating|default(1000) }}</div>
+            <div class="stat-label">{{ t('prof.rating', lang) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ friends_count }}</div>
+            <div class="stat-label">{{ t('prof.friends_count', lang) }}</div>
+            <a href="/friends">{{ t('prof.see_friends', lang) }}</a>
+        </div>
+    </div>
+
+    <!-- Account details -->
+    <div class="profile-section">
+        <h2>{{ t('prof.account', lang) }}</h2>
+        <div class="profile-detail">
+            <span class="label">{{ t('prof.user', lang) }}</span>
+            <span>{{ user.username }}</span>
+        </div>
+        <div class="profile-detail">
+            <span class="label">{{ t('prof.email', lang) }}</span>
+            <span>{{ user.email }}</span>
+        </div>
+        <div class="profile-detail">
+            <span class="label">{{ t('prof.plan', lang) }}</span>
+            <span>{{ user.plan | capitalize }}</span>
+        </div>
+        <div class="profile-detail">
+            <span class="label">{{ t('prof.lang', lang) }}</span>
+            <span>{{ user.language | upper }}</span>
+        </div>
+    </div>
+
+    <!-- Match history -->
+    <div class="profile-section">
+        <h2>{{ t('prof.history', lang) }}</h2>
+        {% if recent_matches %}
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>{{ t('prof.game', lang) }}</th>
+                    <th>{{ t('prof.score', lang) }}</th>
+                    <th>{{ t('prof.accuracy', lang) }}</th>
+                    <th>{{ t('prof.date', lang) }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in recent_matches %}
+                <tr>
+                    <td>{{ m.game_type | replace('-', ' ') | title }}</td>
+                    <td class="ht-score">{{ m.score }}</td>
+                    <td>{{ "%.0f" | format(m.accuracy | float * 100) }}%</td>
+                    <td>{{ m.date[:10] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="history-empty">{{ t('prof.no_history', lang) }}</div>
+        {% endif %}
+    </div>
+
+    <div class="profile-actions">
+        <a href="/games" class="btn-accent">{{ t('prof.play', lang) }}</a>
+        <a href="/friends" class="prof-btn-outline">{{ t('prof.see_friends', lang) }}</a>
+        <a href="/logout" class="prof-btn-outline">{{ t('prof.logout', lang) }}</a>
+    </div>
+</div>
+{% endblock %}

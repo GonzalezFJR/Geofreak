@@ -15,7 +15,7 @@
 
 {% block extra_settings %}
 <div class="setting-group">
-    <label>Número de preguntas</label>
+    <label>{{ t('game.nquestions', lang) }}</label>
     <select id="setting-max-items">
         <option value="10">10</option>
         <option value="20">20</option>
@@ -29,13 +29,13 @@
 {% block game_area %}
 <div class="quiz-container">
     <div class="quiz-progress">
-        Contorno <span id="q-current">1</span> de <span id="q-total">?</span>
+        {{ t('quiz.outline', lang) }} <span id="q-current">1</span> {{ t('quiz.of', lang) }} <span id="q-total">?</span>
     </div>
     <div class="quiz-display" id="quiz-display"></div>
     <div class="quiz-input-area">
-        <input type="text" id="answer-input" placeholder="Nombre del país…" autocomplete="off">
-        <button class="btn-skip" onclick="QuizGame.skip()">Saltar ⏭️</button>
-        <button class="btn-reveal" onclick="QuizGame.reveal()">👁️ Desvelar</button>
+        <input type="text" id="answer-input" placeholder="{{ t('quiz.placeholder', lang) }}" autocomplete="off">
+        <button class="btn-skip" onclick="QuizGame.skip()">{{ t('quiz.skip', lang) }}</button>
+        <button class="btn-reveal" onclick="QuizGame.reveal()">{{ t('quiz.reveal', lang) }}</button>
     </div>
     <div class="quiz-feedback" id="quiz-feedback"></div>
 </div>
@@ -85,7 +85,7 @@
                     _outlineMap.fitBounds(_outlineLayer.getBounds(), { padding: [20, 20] });
                 })
                 .catch(function () {
-                    el.innerHTML = '<div style="padding:40px;color:#94a3b8;">🗺️ Sin contorno</div>';
+                    el.innerHTML = '<div style="padding:40px;color:#94a3b8;">' + (T['quiz.no_outline'] || '🗺️ No outline') + '</div>';
                 });
         },
         getAnswers: function (country) {

@@ -9,3 +9,9 @@ requests==2.32.3
 Pillow==11.1.0
 cairosvg==2.7.1
 itsdangerous==2.2.0
+pydantic-settings==2.7.1
+boto3==1.36.14
+boto3-stubs[dynamodb,s3]==1.36.14
+PyJWT==2.10.1
+bcrypt==4.2.1
+websockets==14.2

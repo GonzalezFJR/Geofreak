@@ -11,32 +11,32 @@
     <div class="game-settings-overlay" id="settings-overlay">
         <div class="game-settings-card">
             <div class="game-settings-icon">{{ game.icon }}</div>
-            <h2>{{ game.name }}</h2>
-            <p class="game-settings-desc">{{ game.description }}</p>
+            <h2>{{ game_field(game, 'name', lang) }}</h2>
+            <p class="game-settings-desc">{{ game_field(game, 'description', lang) }}</p>
 
             <div class="settings-form">
                 {% if game.has_continent_filter %}
                 <div class="setting-group">
-                    <label>Continente</label>
+                    <label>{{ t('game.continent', lang) }}</label>
                     <select id="setting-continent">
-                        <option value="all">🌍 Todos</option>
-                        <option value="europe">🇪🇺 Europa</option>
-                        <option value="asia">🌏 Asia</option>
-                        <option value="africa">🌍 África</option>
-                        <option value="america">🌎 América</option>
-                        <option value="oceania">🌊 Oceanía</option>
+                        <option value="all">{{ t('game.all', lang) }}</option>
+                        <option value="europe">{{ t('game.europe', lang) }}</option>
+                        <option value="asia">{{ t('game.asia', lang) }}</option>
+                        <option value="africa">{{ t('game.africa', lang) }}</option>
+                        <option value="america">{{ t('game.america', lang) }}</option>
+                        <option value="oceania">{{ t('game.oceania', lang) }}</option>
                     </select>
                 </div>
                 {% endif %}
 
                 <div class="setting-group">
-                    <label>Tiempo máximo</label>
+                    <label>{{ t('game.time_limit', lang) }}</label>
                     <select id="setting-time">
-                        <option value="300">5 minutos</option>
-                        <option value="600" selected>10 minutos</option>
-                        <option value="900">15 minutos</option>
-                        <option value="1800">30 minutos</option>
-                        <option value="0">Sin límite</option>
+                        <option value="300">{{ t('game.5min', lang) }}</option>
+                        <option value="600" selected>{{ t('game.10min', lang) }}</option>
+                        <option value="900">{{ t('game.15min', lang) }}</option>
+                        <option value="1800">{{ t('game.30min', lang) }}</option>
+                        <option value="0">{{ t('game.nolimit', lang) }}</option>
                     </select>
                 </div>
 
@@ -44,7 +44,7 @@
             </div>
 
             <button class="btn btn-primary game-start-btn" onclick="GeoGame.start()">
-                ▶️ Comenzar
+                {{ t('game.start', lang) }}
             </button>
         </div>
     </div>
@@ -55,7 +55,7 @@
         <div class="hud-score">
             ✅ <span id="hud-correct">0</span> / <span id="hud-total">0</span>
         </div>
-        <button class="hud-quit" onclick="GeoGame.quit()">✕ Salir</button>
+        <button class="hud-quit" onclick="GeoGame.quit()">{{ t('game.quit', lang) }}</button>
     </div>
 
     <!-- ─── Game area ─────────────────────────────────────── -->
@@ -67,28 +67,28 @@
     <div class="game-results-overlay" id="results-overlay" style="display:none">
         <div class="game-results-card">
             <div class="results-icon">🏆</div>
-            <h2>¡Fin del juego!</h2>
+            <h2>{{ t('game.end', lang) }}</h2>
             <div class="results-stats">
                 <div class="result-stat">
                     <div class="result-stat-value" id="result-correct">0</div>
-                    <div class="result-stat-label">Aciertos</div>
+                    <div class="result-stat-label">{{ t('game.correct', lang) }}</div>
                 </div>
                 <div class="result-stat">
                     <div class="result-stat-value" id="result-total">0</div>
-                    <div class="result-stat-label">Total</div>
+                    <div class="result-stat-label">{{ t('game.total', lang) }}</div>
                 </div>
                 <div class="result-stat">
                     <div class="result-stat-value" id="result-pct">0%</div>
-                    <div class="result-stat-label">Porcentaje</div>
+                    <div class="result-stat-label">{{ t('game.pct', lang) }}</div>
                 </div>
                 <div class="result-stat">
                     <div class="result-stat-value" id="result-time">0:00</div>
-                    <div class="result-stat-label">Tiempo</div>
+                    <div class="result-stat-label">{{ t('game.time', lang) }}</div>
                 </div>
             </div>
             <div class="results-actions">
-                <button class="btn btn-primary" onclick="location.reload()">🔄 Jugar otra vez</button>
-                <a href="/games" class="btn-outline-dark">🎮 Otros juegos</a>
+                <button class="btn btn-primary" onclick="location.reload()">{{ t('game.replay', lang) }}</button>
+                <a href="/games" class="btn-outline-dark">{{ t('game.others', lang) }}</a>
             </div>
         </div>
     </div>

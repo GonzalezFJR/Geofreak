@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('duel.play_title', lang) }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/duels.css">
+{% endblock %}
+
+{% block content %}
+<section class="duel-play">
+    <div class="container">
+
+        <!-- Waiting for opponent -->
+        <div class="duel-waiting-opponent" id="duel-waiting" {% if duel.status == 'active' %}style="display:none"{% endif %}>
+            <div class="waiting-spinner"></div>
+            <h2>{{ t('duel.waiting_opponent', lang) }}</h2>
+            <p class="duel-share-info">{{ t('duel.share_link', lang) }}</p>
+            <div class="duel-share-box">
+                <input type="text" id="share-url" readonly value="" class="share-url-input">
+                <button class="btn btn-outline" id="btn-copy-url">{{ t('duel.copy_link', lang) }}</button>
+            </div>
+            <button class="btn btn-danger" id="btn-cancel-duel">{{ t('soc.cancel', lang) }}</button>
+        </div>
+
+        <!-- Game area -->
+        <div class="duel-game-area" id="duel-game" {% if duel.status != 'active' %}style="display:none"{% endif %}>
+
+            <!-- Scoreboard -->
+            <div class="duel-scoreboard" id="duel-scoreboard">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Question area -->
+            <div class="duel-question-area" id="duel-question-area">
+                <div class="duel-question-counter">
+                    <span id="dq-current">1</span> / <span id="dq-total">10</span>
+                </div>
+                <div class="duel-question-prompt" id="duel-prompt"></div>
+
+                <!-- Ordering: sortable items -->
+                <div class="duel-ordering-items" id="duel-ordering-items" style="display:none"></div>
+                <button class="btn btn-primary" id="btn-duel-confirm-order" style="display:none">
+                    {{ t('ord.confirm', lang) }}
+                </button>
+
+                <!-- Comparison: two cards -->
+                <div class="duel-comparison-cards" id="duel-comparison-cards" style="display:none"></div>
+
+                <!-- Feedback -->
+                <div class="duel-feedback" id="duel-feedback" style="display:none"></div>
+            </div>
+        </div>
+
+        <!-- Results overlay -->
+        <div class="duel-results-overlay" id="duel-results" style="display:none">
+            <div class="duel-results-card">
+                <div class="results-icon" id="duel-result-icon">🏆</div>
+                <h2 id="duel-result-title"></h2>
+                <div class="duel-final-scores" id="duel-final-scores"></div>
+                <div class="duel-results-actions">
+                    <a href="/duels" class="btn btn-primary">{{ t('duel.back_lobby', lang) }}</a>
+                    <a href="/games" class="btn btn-outline">{{ t('game.others', lang) }}</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+window.DUEL_ID = "{{ duel.duel_id }}";
+window.DUEL_STATUS = "{{ duel.status }}";
+window.DUEL_GAME_TYPE = "{{ duel.game_type }}";
+window.USER_ID = "{{ user.user_id }}";
+window.USER_NAME = "{{ user.username }}";
+window.DUEL_T = {
+    you: "{{ t('duel.you', lang) }}",
+    opponent: "{{ t('duel.opponent', lang) }}",
+    win: "{{ t('duel.you_win', lang) }}",
+    lose: "{{ t('duel.you_lose', lang) }}",
+    draw: "{{ t('duel.draw', lang) }}",
+    waiting_opponent: "{{ t('duel.waiting_opponent', lang) }}",
+    q_of: "{{ t('quiz.of', lang) }}",
+    cancelled: "{{ t('duel.cancelled', lang) }}",
+    disconnected: "{{ t('duel.opponent_disconnected', lang) }}",
+    connected: "{{ t('duel.opponent_connected', lang) }}",
+    finished: "{{ t('duel.opponent_finished', lang) }}",
+    confirm_order: "{{ t('ord.confirm', lang) }}",
+    correct: "{{ t('duel.answer_correct', lang) }}",
+    wrong: "{{ t('duel.answer_wrong', lang) }}",
+    point: "{{ t('duel.point', lang) }}",
+    points: "{{ t('duel.points', lang) }}",
+    back_lobby: "{{ t('duel.back_lobby', lang) }}",
+    prompt_asc: "{{ t('duel.ord_asc', lang) }}",
+    prompt_desc: "{{ t('duel.ord_desc', lang) }}",
+    cmp_prompt: "{{ t('duel.cmp_prompt', lang) }}",
+    stat_label_key: "{{ 'label_es' if lang == 'es' else 'label_en' }}"
+};
+</script>
+<script src="/static/js/duels/play.js"></script>
+{% endblock %}

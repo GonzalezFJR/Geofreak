@@ -3,7 +3,9 @@
     {
       "id": "flags",
       "name": "Adivinar banderas",
+      "name_en": "Guess the flag",
       "description": "¿Reconoces las banderas del mundo? Identifica cada bandera que aparece.",
+      "description_en": "Can you recognise the world's flags? Identify each flag that appears.",
       "icon": "🏳️",
       "color": "#4caf50",
       "type": "quiz",
@@ -14,7 +16,9 @@
     {
       "id": "outline",
       "name": "Adivinar por contorno",
+      "name_en": "Guess by outline",
       "description": "¿Reconoces un país solo por su silueta? Identifica cada contorno.",
+      "description_en": "Can you recognise a country just by its outline? Identify each silhouette.",
       "icon": "🗺️",
       "color": "#1a73e8",
       "type": "quiz",
@@ -25,7 +29,9 @@
     {
       "id": "name-countries-map",
       "name": "Nombrar países (mapa)",
+      "name_en": "Name countries (map)",
       "description": "Haz click en cada país del mapa e intenta escribir su nombre.",
+      "description_en": "Click on each country on the map and try to type its name.",
       "icon": "🌍",
       "color": "#ff9800",
       "type": "map",
@@ -36,7 +42,9 @@
     {
       "id": "name-countries-type",
       "name": "Nombrar países (escribir)",
+      "name_en": "Name countries (type)",
       "description": "Escribe nombres de países y observa cómo se iluminan en el mapa.",
+      "description_en": "Type country names and watch them light up on the map.",
       "icon": "⌨️",
       "color": "#9c27b0",
       "type": "map",
@@ -47,7 +55,9 @@
     {
       "id": "name-capitals-map",
       "name": "Nombrar capitales (mapa)",
+      "name_en": "Name capitals (map)",
       "description": "Haz click en cada país y escribe el nombre de su capital.",
+      "description_en": "Click on each country and type the name of its capital.",
       "icon": "🏛️",
       "color": "#f44336",
       "type": "map",
@@ -58,11 +68,39 @@
     {
       "id": "name-capitals-type",
       "name": "Nombrar capitales (escribir)",
+      "name_en": "Name capitals (type)",
       "description": "Escribe capitales del mundo y observa cómo se iluminan los países.",
+      "description_en": "Type world capitals and watch the countries light up.",
       "icon": "✍️",
       "color": "#009688",
       "type": "map",
       "defaults": { "time_limit": 600 },
+      "has_continent_filter": true,
+      "enabled": true
+    },
+    {
+      "id": "ordering",
+      "name": "Ordenar países",
+      "name_en": "Sort countries",
+      "description": "Ordena 5 países según una característica: población, PIB, superficie…",
+      "description_en": "Sort 5 countries by a statistic: population, GDP, area…",
+      "icon": "📊",
+      "color": "#e65100",
+      "type": "solo",
+      "defaults": { "time_limit": 600, "max_items": 10 },
+      "has_continent_filter": true,
+      "enabled": true
+    },
+    {
+      "id": "comparison",
+      "name": "¿Cuál tiene más?",
+      "name_en": "Which has more?",
+      "description": "Dos países, una estadística. ¿Cuál tiene más? Pon a prueba tu intuición.",
+      "description_en": "Two countries, one statistic. Which has more? Test your intuition.",
+      "icon": "⚖️",
+      "color": "#6a1b9a",
+      "type": "solo",
+      "defaults": { "time_limit": 600, "max_items": 10 },
       "has_continent_filter": true,
       "enabled": true
     }

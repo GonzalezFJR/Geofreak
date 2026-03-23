@@ -1,0 +1,486 @@
+ARQUITECTURA BASE PROPUESTA — WEB DE JUEGOS DE GEOGRAFÍA
+
+1. OBJETIVO
+Arquitectura inicial para una web de juegos de geografía con:
+- juego individual
+- perfiles de usuario
+- estadísticas
+- tests tipo quiz
+- rankings
+- duelos y torneos
+- base preparada para evolución posterior
+- soporte en dos idiomas: inglés y español
+
+2. STACK PRINCIPAL
+- Frontend web
+- Backend Python con FastAPI
+- Despliegue inicial en AWS EC2
+- Una única instancia de backend
+- DynamoDB como base de datos principal operativa
+- S3 para almacenamiento de objetos, assets y eventos analíticos
+- WebSockets para duelos
+- Sin Redis / ElastiCache en esta fase (sí en la fase 2, pero por ahora nada de esto)
+
+3. COMPONENTES
+3.1 Frontend
+- cliente web
+- consume API REST del backend
+- consume WebSockets para duelos / torneos
+- usa cookies técnicas para sesión/autenticación
+- usa almacenamiento local sólo para preferencias no sensibles y caché ligera de cliente
+- inglés y español
+
+3.2 Backend FastAPI
+Responsabilidades:
+- autenticación y autorización
+- gestión de usuarios y perfiles
+- gestión de amigos, invitaciones, partidas y torneos
+- lógica de juegos
+- cálculo de puntuaciones
+- actualización de estadísticas agregadas
+- exposición de API REST
+- WebSockets para duelos y torneos
+- generación y consulta de leaderboards
+- registro de eventos analíticos en S3
+
+3.3 AWS EC2
+- ejecución del backend FastAPI
+- uso de Nginx como reverse proxy
+- despliegue inicial monoinstancia
+- sin dependencia de almacenamiento persistente local para datos críticos
+
+4. DYNAMODB
+Uso:
+- almacenamiento operativo principal del producto
+- lectura/escritura de entidades de negocio
+- estadísticas agregadas por usuario y por juego
+- metadatos persistentes de partidas y torneos
+
+Tablas / bases en DynamoDB (todas ellas con el prefijo "geofreak_"):
+
+4.1 users
+Guardar:
+- user_id
+- username
+- email
+- password_hash o proveedor_auth
+- created_at
+- updated_at
+- plan
+- status
+- country
+- language
+- settings básicas
+
+4.2 user_stats
+Guardar estadísticas agregadas por usuario:
+- user_id
+- total_matches
+- total_wins
+- total_losses
+- total_tournaments
+- best_streak
+- rating / elo
+- stats por modo
+- stats por tipo de juego
+- best_scores
+- best_times
+- updated_at
+
+4.3 matches
+Guardar partida finalizada:
+- match_id
+- mode (solo, duel, tournament_round, test)
+- game_type
+- created_at
+- finished_at
+- status
+- config resumida
+- winner_id o resultado global
+- total_players
+- duration_ms
+
+4.4 match_players
+Guardar resultado por jugador dentro de una partida:
+- match_id
+- user_id
+- score
+- rank
+- answers_summary
+- accuracy
+- time_spent_ms
+- rating_delta
+
+4.5 duels
+Guardar duelos PvP semi-asíncronos:
+- duel_id
+- match_id compartido
+- created_by
+- created_at
+- expires_at
+- status
+- game_type
+- config
+- question_set_id o referencia al set de preguntas
+- current_scores
+- current_progress
+- players
+- last_activity_at
+
+Definición de modo duelo:
+- partidas “same questions, same match, no strict timer”
+- dos o más jugadores
+- todos comparten el mismo match_id
+- persistencia en DynamoDB
+- actualización en cliente vía WebSockets
+- backend único mantiene las conexiones WebSocket
+- DynamoDB actúa como fuente de verdad persistente
+
+4.6 tournaments
+Guardar metadatos persistentes del torneo:
+- tournament_id
+- created_by
+- created_at
+- expires_at
+- status
+- format
+- number_of_rounds
+- selected_games
+- config
+- current_round
+- scoreboard resumido
+- players
+- last_activity_at
+
+Definición de torneo:
+- conjunto de N pruebas para 2 o más jugadores
+- persistencia de puntuaciones acumuladas
+- estado persistente en DynamoDB
+
+4.7 tournament_rounds
+Guardar rondas de torneo:
+- tournament_id
+- round_id
+- game_type
+- config
+- started_at
+- finished_at
+- round_results
+
+4.8 friendships
+Guardar relaciones sociales:
+- user_id
+- friend_user_id
+- status
+- created_at
+
+4.9 invites
+Guardar invitaciones:
+- invite_id
+- type (friend, duel, tournament)
+- created_by
+- target_user_id o invite_code
+- status
+- created_at
+- expires_at
+
+4.10 leaderboards_cache
+Guardar rankings materializados:
+- leaderboard_id
+- scope
+- period
+- game_type
+- entries
+- updated_at
+
+Resumen de bases DynamoDB a crear:
+- users
+- user_stats
+- matches
+- match_players
+- duels
+- tournaments
+- tournament_rounds
+- friendships
+- invites
+- leaderboards_cache
+
+5. S3
+Uso:
+- almacenamiento de objetos y datasets
+- assets estáticos pesados
+- eventos de analítica
+- datasets versionados
+
+Guardar en S3:
+
+5.1 Assets visuales
+- banderas
+- imágenes auxiliares
+- iconos grandes
+- miniaturas si existen
+
+5.2 Datos geográficos
+- GeoJSON de países
+- GeoJSON de regiones
+- GeoJSON de provincias / estados / áreas
+- otros shapes
+
+5.3 Datasets de juego
+- CSV fuente para estadísticas
+- JSON normalizados derivados
+- datasets versionados de países, ciudades, capitales, indicadores
+
+5.4 Analítica
+- logs de eventos
+- exports de eventos de juego
+- eventos de uso y retención
+- eventos de funnel
+- estadísticas históricas derivadas si se desean conservar fuera de DynamoDB
+
+6. COOKIES Y ALMACENAMIENTO LOCAL
+6.1 Cookies
+Usar sólo para:
+- sesión/autenticación
+- refresh/session token si aplica
+- preferencia de consentimiento
+- preferencias técnicas estrictamente necesarias
+
+No usar cookies para:
+- publicidad
+- perfilado publicitario
+- tracking comercial innecesario
+
+6.2 localStorage / sessionStorage
+Usar sólo para:
+- tema visual
+- idioma
+- preferencias de interfaz
+- estado UI no sensible
+- caché ligera de cliente
+
+No guardar en localStorage:
+- passwords
+- tokens sensibles si se evita
+- datos críticos de autorización
+- datos privados de usuario que deban estar sólo en servidor
+
+7. ANALÍTICA Y ESTADÍSTICAS
+Separar dos capas:
+
+7.1 Estadística operativa de producto
+Guardar en DynamoDB:
+- estadísticas agregadas por usuario
+- estadísticas agregadas por juego
+- contadores operativos
+- resultados de partidas, duelos y torneos
+
+7.2 Analítica de eventos
+Guardar en S3:
+- match_started
+- match_finished
+- duel_created
+- duel_joined
+- duel_progress_updated
+- duel_finished
+- question_answered
+- test_completed
+- tournament_created
+- tournament_joined
+- tournament_round_started
+- tournament_round_finished
+- tournament_finished
+- user_registered
+- session_started
+- daily_challenge_started
+- daily_challenge_completed
+- premium_conversion
+- invite_opened
+
+Consulta posterior:
+- Athena u otra capa analítica (fase 2)
+- métricas de retención
+- cohortes
+- duración media
+- abandono por modo
+- uso por tipo de juego
+- conversión
+
+Por ahora, dashboard ligero desde web de administración.
+
+
+8. ESTADO DE PARTIDA Y CADUCIDAD
+8.1 Duelos
+- persistencia en DynamoDB
+- actualización en tiempo real vía WebSockets sobre una única instancia
+- caducidad de estado: 8 horas
+- guardar expires_at para expiración lógica
+- guardar estadísticas asociadas en DynamoDB y/o S3
+
+8.2 Torneos
+- persistencia en DynamoDB
+- conjunto de N pruebas para 2 o más jugadores
+- puntuaciones acumuladas persistentes
+- caducidad de estado: 24 horas
+- guardar expires_at para expiración lógica
+- guardar estadísticas asociadas en DynamoDB y/o S3
+
+9. PARTIDAS ONLINE Y TORNEOS
+9.1 Solo
+- backend genera preguntas/config
+- backend corrige respuestas
+- backend guarda resultado final
+- backend actualiza user_stats
+
+9.2 Duelo / multijugador simple
+- modo: “same questions, same match, no strict timer”
+- dos o más jugadores comparten el mismo match_id
+- backend entrega el mismo set de preguntas
+- cada jugador responde a su ritmo
+- backend guarda progreso y puntuación parcial en DynamoDB
+- clientes reciben actualizaciones vía WebSockets
+- backend calcula resultado final y actualiza estadísticas
+
+9.3 Torneos
+- conjunto de N pruebas para 2 o más jugadores
+- persistencia base en DynamoDB:
+  - estructura del torneo
+  - jugadores
+  - rondas
+  - puntuaciones acumuladas
+  - estado general
+- backend actualiza clasificación tras cada prueba
+- backend guarda resultados finales y estadísticas derivadas
+
+10. BACKEND — MÓDULOS NECESARIOS
+- auth
+- users
+- friends
+- invites
+- games
+- scoring
+- matches
+- duels
+- tournaments
+- leaderboards
+- stats
+- analytics
+- datasets
+- admin
+- websocket_manager
+
+11. ENDPOINTS / CAPACIDADES NECESARIAS
+- registro
+- login / logout / refresh
+- perfil de usuario
+- amigos e invitaciones
+- crear partida
+- crear duelo
+- unirse a duelo
+- enviar respuestas de duelo
+- suscripción WebSocket a duelo
+- finalizar duelo
+- consultar historial
+- consultar estadísticas
+- crear torneo
+- unirse a torneo
+- iniciar ronda de torneo
+- enviar resultados de ronda
+- ver clasificación
+- daily challenge
+- tests
+- rankings
+- administración de datasets y modos
+
+12. DATASETS
+Fuente inicial:
+- CSV maestro por entidad 
+
+Entidades previstas:
+- países
+- ciudades
+- capitales
+- regiones
+
+Pipeline recomendado:
+- fuente CSV
+- el backend genera JSON normalizados para uso en el juego (por ejemplo, para una nueva partida, nuevo duelo o torneo, o desafíos diarios)
+- exports a JSON listo para backend
+- versión almacenada en S3 -- imprescindible para los CSV maestro, opcional para los JSON perecederos (partidas, duelos, torneos), recomendable para "desafíos diarios".
+
+13. SEGURIDAD
+- hash seguro de contraseñas
+- validación de inputs
+- control de acceso por usuario
+- cookies seguras
+- HTTPS
+- rate limiting si aplica
+- separación entre datos públicos y privados
+- no confiar en estado del cliente para puntuación final
+
+
+14. REGLAS DE DISEÑO
+- no usar filesystem local de EC2 como almacenamiento persistente principal
+- no guardar assets críticos sólo en la instancia
+- usar DynamoDB para persistencia operativa
+- usar S3 para objetos y eventos analíticos
+- usar WebSockets sobre una única instancia para duelos
+- no introducir Redis / ElastiCache en esta fase
+
+15. RESUMEN DE RESPONSABILIDADES
+DynamoDB:
+- usuarios
+- stats agregadas
+- partidas
+- resultados por jugador
+- duelos
+- torneos
+- rondas de torneo
+- amistades
+- invitaciones
+- rankings materializados
+
+S3:
+- GeoJSON
+- banderas e imágenes
+- datasets fuente y normalizados
+- logs/eventos analíticos
+- estadísticas históricas derivadas
+
+Cookies:
+- sesión
+- consentimiento
+- preferencias técnicas
+
+Local storage:
+- tema
+- idioma
+- estado UI no sensible
+
+Backend FastAPI:
+- lógica del producto
+- auth
+- API
+- puntuación
+- persistencia
+- rankings
+- duelos
+- torneos
+- analítica
+- WebSockets
+
+16. DISEÑO INICIAL (con placeholders)
+- Index con (1) desafío diario, (2) botones para los modos de juego "Solo", "Duelo" y "Torneo", (3) botón para juegos "Tests", (4) login/registro "Regístrate para acceder a retos, duelos y mantener tus estadísticas", (5) sección de "Ranking global" con top 10. 
+- Nav bar con en enlaces a las views principales. 
+- Vista de administrador con dashboard de configuración de juegos, dashboard de gestión de usuarios, dashboard de analítica y dashboard de gestión de datasets.
+- Vista de perfil de usuario con estadísticas, historial de partidas, amigos e invitaciones.
+- Templates para cada tipo de juego.
+
+17. JUEGOS PRINCIPALES (para empezar a crear)
+- Pruebas de tipo "solo", "duelo" y "torneo": dos pruebas principales. 1. Orden según característica. Se muestran 5 entidades al azar y se escoge una característica (población, superficie, PIB, etc.) y el jugador debe ordenarlas de mayor a menor o viceversa. 2. Prueba de comparación (entidad 1) vs (entidad 2) en alguna característica al azar. Ejemplo "¿Qué país tiene más población?" y se muestran dos cards. La prueba consiste en 10 preguntas de este estilo. Se reporta una puntuación final. Estas dos pruebas se pueden jugar en modo "solo", en modo "duelo" (cada jugador responde en su PC o móvil, pregunta a pregunta, y se pasa a la siguiente pregunta cuando todos responden, mostrando respuestas correctas, quién acertó y quién falló...). Y en modo "torneo" (conjunto de N pruebas, por ejemplo 5 pruebas, que pueden ser de tipo "ordenar" o "comparación", y se acumula puntuación a lo largo de las pruebas para determinar un ganador final). Habrá más modos de juego en el futuro. De momento, solo esos dos.
+- Pruebas tipo "test": las actuales, con temporizador, de reconocer los países en el mapa, de capitales, de saber las N ciudades más pobladas por continente, o del mundo... Vamos a generar algunos de estos tests. También banderas, etc. Se guardan puntuaciones para el usuario. Se generan rankings con puntuaciones de otros usuarios para cada test.
+
+18. CONSTRUCCIÓN DE LOS DATASETS
+- CSV maestro por entidad.
+- Incluir continente, país, capital, población, superficie, idioma, moneda, indicadores clave, etc.
+- Estadísticas necesarias: PIB, PIB per cápita, población, superficie, densidad, esperanza de vida, índice de desarrollo humano, índice gini, turismo, temperatura media, máxima, mínima... datasets extensos y completos con >50 variables. Filtrado a 12-14 variables "clave" para las pruebas por defecto.

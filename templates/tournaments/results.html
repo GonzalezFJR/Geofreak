@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('trn.results_title', lang) }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/tournaments.css">
+{% endblock %}
+
+{% block content %}
+<section class="trn-play">
+    <div class="container">
+        <div class="trn-results-overlay" style="display:flex">
+            <div class="trn-results-card">
+                {% set sb = tournament.get('scoreboard', {}) %}
+                {% set players = tournament.get('players', []) %}
+                {% set usernames = tournament.get('player_usernames', {}) %}
+
+                {# Sort players by score descending #}
+                {% set sorted_players = players|sort(attribute='__str__', reverse=false) %}
+
+                {% set my_score = sb.get(user.user_id, 0)|int %}
+                {% set max_score = 0 %}
+                {% for pid in players %}
+                    {% if sb.get(pid, 0)|int > max_score %}
+                        {% set max_score = sb.get(pid, 0)|int %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if my_score == max_score and my_score > 0 %}
+                <div class="results-icon">🏆</div>
+                <h2>{{ t('trn.you_win', lang) }}</h2>
+                {% elif my_score == max_score %}
+                <div class="results-icon">🤝</div>
+                <h2>{{ t('duel.draw', lang) }}</h2>
+                {% else %}
+                <div class="results-icon">🎖️</div>
+                <h2>{{ t('trn.you_lose', lang) }}</h2>
+                {% endif %}
+
+                <h3>{{ t('trn.final_standings', lang) }}</h3>
+                <div class="trn-final-standings">
+                    {% for pid in players|sort(attribute='__str__') %}
+                    <div class="standing-row {% if pid == user.user_id %}is-you{% endif %}">
+                        <span class="standing-name">
+                            {% if pid == user.user_id %}{{ t('duel.you', lang) }}{% else %}{{ usernames.get(pid, '?') }}{% endif %}
+                        </span>
+                        <span class="standing-score">{{ sb.get(pid, 0)|int }} {{ t('duel.points', lang) }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="trn-results-actions">
+                    <a href="/tournaments" class="btn btn-primary">{{ t('trn.back_lobby', lang) }}</a>
+                    <a href="/games" class="btn btn-outline">{{ t('game.others', lang) }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

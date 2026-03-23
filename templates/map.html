@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}GeoFreak — Mapa interactivo{% endblock %}
+{% block title %}{{ t('map.title', lang) }}{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -16,7 +16,7 @@
     <!-- Loading overlay -->
     <div class="loading-overlay" id="loading">
         <div class="spinner"></div>
-        <div class="loading-text">Cargando mapa del mundo…</div>
+        <div class="loading-text">{{ t('map.loading', lang) }}</div>
     </div>
 
     <!-- Country modal -->

@@ -1,22 +1,24 @@
 {% extends "base.html" %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/games.css">
+<link rel="stylesheet" href="/static/css/admin.css">
 {% endblock %}
 
 {% block content %}
 <div class="admin-dashboard">
     <div class="admin-header">
         <div>
-            <h1>⚙️ Panel de administración</h1>
-            <p class="admin-subtitle">Editar nombres, descripciones y ajustes por defecto de los juegos</p>
+            <h1>{{ t('adm.title', lang) }}</h1>
+            <p class="admin-subtitle">{{ t('adm.subtitle', lang) }}</p>
         </div>
-        <a href="/admin/logout" class="admin-logout">Cerrar sesión →</a>
+        <a href="/admin/logout" class="admin-logout">{{ t('adm.logout', lang) }}</a>
     </div>
+
+    {% include "admin/_nav.html" %}
 
     {% if saved %}
     <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:12px 16px;margin-bottom:20px;color:#2e7d32;font-weight:600;">
-        ✅ Cambios guardados correctamente
+        {{ t('adm.saved', lang) }}
     </div>
     {% endif %}
 
@@ -26,38 +28,38 @@
 
         <div class="form-row">
             <div>
-                <label style="font-size:0.75rem;color:#64748b;">Nombre</label>
+                <label style="font-size:0.75rem;color:#64748b;">{{ t('adm.name', lang) }}</label>
                 <input type="text" name="name" value="{{ game.name }}">
             </div>
         </div>
 
         <div class="form-row">
             <div>
-                <label style="font-size:0.75rem;color:#64748b;">Descripción</label>
+                <label style="font-size:0.75rem;color:#64748b;">{{ t('adm.desc', lang) }}</label>
                 <textarea name="description">{{ game.description }}</textarea>
             </div>
         </div>
 
         <div class="form-row">
             <div>
-                <label style="font-size:0.75rem;color:#64748b;">Tiempo por defecto (seg)</label>
+                <label style="font-size:0.75rem;color:#64748b;">{{ t('adm.def_time', lang) }}</label>
                 <select name="time_limit">
-                    <option value="300" {{ 'selected' if game.defaults.time_limit == 300 }}>5 min</option>
-                    <option value="600" {{ 'selected' if game.defaults.time_limit == 600 }}>10 min</option>
-                    <option value="900" {{ 'selected' if game.defaults.time_limit == 900 }}>15 min</option>
-                    <option value="1800" {{ 'selected' if game.defaults.time_limit == 1800 }}>30 min</option>
-                    <option value="0" {{ 'selected' if game.defaults.time_limit == 0 }}>Sin límite</option>
+                    <option value="300" {{ 'selected' if game.defaults.time_limit == 300 }}>{{ t('adm.5m', lang) }}</option>
+                    <option value="600" {{ 'selected' if game.defaults.time_limit == 600 }}>{{ t('adm.10m', lang) }}</option>
+                    <option value="900" {{ 'selected' if game.defaults.time_limit == 900 }}>{{ t('adm.15m', lang) }}</option>
+                    <option value="1800" {{ 'selected' if game.defaults.time_limit == 1800 }}>{{ t('adm.30m', lang) }}</option>
+                    <option value="0" {{ 'selected' if game.defaults.time_limit == 0 }}>{{ t('adm.nolimit', lang) }}</option>
                 </select>
             </div>
             {% if game.type == "quiz" %}
             <div>
-                <label style="font-size:0.75rem;color:#64748b;">Preguntas por defecto</label>
+                <label style="font-size:0.75rem;color:#64748b;">{{ t('adm.def_q', lang) }}</label>
                 <input type="number" name="max_items" value="{{ game.defaults.max_items }}" min="0" max="250">
             </div>
             {% endif %}
         </div>
 
-        <button type="submit" class="btn-save">💾 Guardar</button>
+        <button type="submit" class="btn-save">{{ t('adm.save', lang) }}</button>
     </form>
     {% endfor %}
 </div>
