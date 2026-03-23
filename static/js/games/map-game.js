@@ -50,9 +50,10 @@ var MapGame = (function () {
 
             // Filter by continent
             var filtered = GeoUtils.filterByContinent(countries, settings.continent);
-            // For capital games, only include countries with a known capital
+            // Only sovereign countries (exclude territories)
             filtered = filtered.filter(function (c) {
                 if (!c.iso_a3 || !c.name) return false;
+                if (c.entity_type && c.entity_type !== 'country') return false;
                 if (target === 'capital') return c.capital && c.capital.length > 0;
                 return true;
             });
@@ -172,7 +173,7 @@ var MapGame = (function () {
 
         if (target === 'capital') {
             var cData = countriesData[iso3];
-            if (pcountry) pcountry.textContent = cData ? cData.name : '';
+            if (pcountry) pcountry.textContent = cData ? GeoUtils.getLocalName(cData) : '';
             if (ptxt)     ptxt.textContent = T['mg.what_capital'] || '¿Capital?';
         } else {
             if (pcountry) pcountry.textContent = '';
@@ -256,8 +257,8 @@ var MapGame = (function () {
         if (!el) return;
         if (ok && country) {
             var label = target === 'capital'
-                ? '✅ ' + country.capital + ' → ' + country.name
-                : '✅ ' + country.name;
+                ? '✅ ' + GeoUtils.getLocalCapital(country) + ' → ' + GeoUtils.getLocalName(country)
+                : '✅ ' + GeoUtils.getLocalName(country);
             el.className = 'input-feedback correct';
             el.textContent = label;
         } else if (!ok) {
@@ -290,7 +291,7 @@ var MapGame = (function () {
         var c = countriesData[selectedIso];
         if (!c) return;
 
-        var answer = target === 'capital' ? c.capital : c.name;
+        var answer = target === 'capital' ? GeoUtils.getLocalCapital(c) : GeoUtils.getLocalName(c);
         var input = document.getElementById('answer-input');
         input.value = answer;
         markFailed(selectedIso);
@@ -298,7 +299,7 @@ var MapGame = (function () {
         // Show tooltip on the country
         var layer = countryLayers[selectedIso];
         if (layer) {
-            var label = target === 'capital' ? c.capital : c.name;
+            var label = target === 'capital' ? GeoUtils.getLocalCapital(c) : GeoUtils.getLocalName(c);
             layer.bindTooltip(label, { permanent: true, className: 'reveal-tooltip', direction: 'center' }).openTooltip();
         }
 
@@ -323,7 +324,7 @@ var MapGame = (function () {
 
         markFailed(iso3);
 
-        var label = target === 'capital' ? (c.capital + ' → ' + c.name) : c.name;
+        var label = target === 'capital' ? (GeoUtils.getLocalCapital(c) + ' → ' + GeoUtils.getLocalName(c)) : GeoUtils.getLocalName(c);
         showTypeFeedback(false);
         var el = document.getElementById('input-feedback');
         if (el) {
@@ -339,7 +340,7 @@ var MapGame = (function () {
         // Show tooltip on the country
         var layer = countryLayers[iso3];
         if (layer) {
-            layer.bindTooltip(target === 'capital' ? c.capital : c.name, { permanent: true, className: 'reveal-tooltip', direction: 'center' }).openTooltip();
+            layer.bindTooltip(target === 'capital' ? GeoUtils.getLocalCapital(c) : GeoUtils.getLocalName(c), { permanent: true, className: 'reveal-tooltip', direction: 'center' }).openTooltip();
         }
 
         checkComplete();

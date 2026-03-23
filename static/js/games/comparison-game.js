@@ -44,12 +44,13 @@ var ComparisonGame = (function () {
         container.innerHTML = '';
 
         q.countries.forEach(function (c) {
+            var displayName = (window.LANG === 'es' && c.name_es) ? c.name_es : c.name;
             var card = document.createElement('div');
             card.className = 'comparison-card';
             card.setAttribute('data-iso', c.iso_a3);
             card.innerHTML =
                 '<div class="comparison-flag">' + (c.flag_emoji || '🏳️') + '</div>' +
-                '<div class="comparison-name">' + c.name + '</div>' +
+                '<div class="comparison-name">' + displayName + '</div>' +
                 '<div class="comparison-value" id="val-' + c.iso_a3 + '"></div>';
             card.addEventListener('click', function () {
                 pick(c.iso_a3);

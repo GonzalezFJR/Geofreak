@@ -1048,6 +1048,45 @@
     height: 100vh;
 }
 
+/* Hide footer when a game page is active */
+.game-page ~ .footer,
+body:has(.game-page) .footer {
+    display: none !important;
+}
+
+/* Mobile games: minimal navbar, full-screen game */
+@media (max-width: 640px) {
+    body:has(.game-page) .navbar {
+        height: 40px;
+        padding: 0 8px;
+    }
+    body:has(.game-page) .nav-links {
+        display: none;
+    }
+    body:has(.game-page) .nav-hamburger {
+        display: none;
+    }
+    body:has(.game-page) .game-hud {
+        top: 40px;
+        padding: 4px 8px;
+        gap: 8px;
+        font-size: 0.78rem;
+    }
+    body:has(.game-page) .game-area {
+        padding-top: calc(40px + 30px);
+        height: 100vh;
+    }
+    body:has(.game-page) .quiz-container {
+        height: calc(100vh - 40px - 30px);
+    }
+    body:has(.game-page) .map-game-container {
+        height: calc(100vh - 40px - 30px);
+    }
+    body:has(.game-page) .game-settings-overlay {
+        min-height: calc(100vh - 40px);
+    }
+}
+
 /* ============================================================
    Ordering Game
    ============================================================ */

@@ -8,6 +8,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from core.auth import get_optional_user
 from core.i18n import get_lang, SUPPORTED_LANGS
 from core.templates import templates
+from services.games import GamesService
 from services.leaderboards import (
     get_leaderboard,
     get_user_position,
@@ -15,6 +16,11 @@ from services.leaderboards import (
 )
 
 router = APIRouter()
+_games_svc = GamesService()
+
+# Game types shown in each selection page
+_PLAY_TYPES = {"solo"}             # ordering + comparison
+_QUIZZ_TYPES = {"quiz", "map"}    # flags, outline, name-*
 
 
 @router.get("/", response_class=HTMLResponse)
@@ -70,6 +76,31 @@ async def ranking_page(
         "tab": tab, "metric": metric, "game_type": game or "",
         "entries": entries, "updated_at": updated_at,
         "user_position": user_pos, "game_types": GAME_TYPES,
+    })
+
+
+@router.get("/play/{mode}", response_class=HTMLResponse)
+async def play_select(request: Request, mode: str, user=Depends(get_optional_user)):
+    if mode not in ("solo", "duel", "tournament"):
+        mode = "solo"
+    lang = get_lang(request)
+    games = [g.copy() for g in _games_svc.get_games() if g.get("type") in _PLAY_TYPES and g.get("enabled")]
+    href_prefix = {"solo": "/games/", "duel": "/duels?game=", "tournament": "/tournaments?game="}
+    for g in games:
+        g["_href"] = href_prefix[mode] + g["id"]
+    return templates.TemplateResponse("games/select.html", {
+        "request": request, "user": user, "lang": lang, "mode": mode, "games": games,
+    })
+
+
+@router.get("/quizz", response_class=HTMLResponse)
+async def quizz_select(request: Request, user=Depends(get_optional_user)):
+    lang = get_lang(request)
+    games = [g.copy() for g in _games_svc.get_games() if g.get("type") in _QUIZZ_TYPES and g.get("enabled")]
+    for g in games:
+        g["_href"] = "/games/" + g["id"]
+    return templates.TemplateResponse("games/select.html", {
+        "request": request, "user": user, "lang": lang, "mode": "quizz", "games": games,
     })
 
 

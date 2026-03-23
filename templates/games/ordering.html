@@ -1,16 +1,5 @@
 {% extends "games/_base_game.html" %}
 
-{% block extra_settings %}
-<div class="setting-group">
-    <label>{{ t('game.nquestions', lang) }}</label>
-    <select id="setting-max-items">
-        <option value="5">5</option>
-        <option value="10" selected>10</option>
-        <option value="15">15</option>
-    </select>
-</div>
-{% endblock %}
-
 {% block game_area %}
 <div class="ordering-container" id="ordering-container">
     <div class="ordering-header">

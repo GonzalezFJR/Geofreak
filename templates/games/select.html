@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/pages.css">
+{% endblock %}
+
+{% block content %}
+<section class="select-page">
+    <div class="select-header">
+        <h1>{{ t('sel.title_' + mode, lang) }}</h1>
+        <p>{{ t('sel.subtitle_' + mode, lang) }}</p>
+    </div>
+
+    <div class="select-grid">
+        {% for game in games %}
+        {% if game.enabled %}
+        <a href="{{ game._href }}" class="select-card" style="--card-accent: {{ game.color }}">
+            <div class="select-card-icon">{{ game.icon }}</div>
+            <h3>{{ game_field(game, 'name', lang) }}</h3>
+            <p>{{ game_field(game, 'description', lang) }}</p>
+            <span class="select-card-btn">{{ t('sel.play', lang) }}</span>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

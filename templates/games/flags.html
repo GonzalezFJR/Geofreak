@@ -1,18 +1,5 @@
 {% extends "games/_base_game.html" %}
 
-{% block extra_settings %}
-<div class="setting-group">
-    <label>{{ t('game.nquestions', lang) }}</label>
-    <select id="setting-max-items">
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="30" selected>30</option>
-        <option value="50">50</option>
-        <option value="0">Todas</option>
-    </select>
-</div>
-{% endblock %}
-
 {% block game_area %}
 <div class="quiz-container">
     <div class="quiz-progress">

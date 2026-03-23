@@ -32,9 +32,11 @@ var QuizGame = (function () {
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 var filtered = GeoUtils.filterByContinent(data, settings.continent);
-                // Keep only countries with population (skip territories where needed)
+                // Only sovereign countries (exclude territories)
                 filtered = filtered.filter(function (c) {
-                    return c.iso_a3 && c.name;
+                    if (!c.iso_a3 || !c.name) return false;
+                    if (c.entity_type && c.entity_type !== 'country') return false;
+                    return true;
                 });
                 GeoUtils.shuffle(filtered);
                 var max = settings.maxItems || 0;

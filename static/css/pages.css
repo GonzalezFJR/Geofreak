@@ -594,6 +594,197 @@
 .mode-tournament h3 { color: #e68a00; }
 .mode-tests:hover { border-color: var(--green-500); }
 .mode-tests h3 { color: var(--green-600); }
+.mode-quizz:hover { border-color: var(--green-500); }
+.mode-quizz h3 { color: var(--green-600); }
+
+/* ============================================================
+   Landing — Header
+   ============================================================ */
+.landing-header {
+    padding: 100px 24px 40px;
+    text-align: center;
+    background: linear-gradient(135deg, #0a2540 0%, #0c2d5a 50%, #0a3d6b 100%);
+}
+.landing-brand {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: var(--white);
+    margin: 0 0 8px;
+}
+.landing-brand .accent { color: var(--green-400); }
+.landing-tagline {
+    color: rgba(255,255,255,0.65);
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+/* ============================================================
+   Landing — Daily Challenge
+   ============================================================ */
+.daily-section {
+    padding: 60px 24px 40px;
+    background: var(--white);
+}
+.section-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+.section-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(76,175,80,0.1);
+    color: var(--green-600);
+    margin-bottom: 10px;
+}
+.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 6px;
+}
+.section-desc {
+    color: var(--gray-500);
+    font-size: 0.95rem;
+    margin: 0;
+}
+.daily-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 20px 28px;
+    border-radius: var(--radius-lg);
+    background: var(--gray-50);
+    border: 1.5px solid var(--gray-200);
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+.daily-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--green-400);
+}
+.daily-icon {
+    font-size: 2.4rem;
+    flex-shrink: 0;
+}
+.daily-info p {
+    color: var(--gray-600);
+    font-size: 0.95rem;
+    margin: 0 0 10px;
+    line-height: 1.5;
+}
+.daily-btn {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: var(--green-500);
+    color: var(--white);
+    transition: background 0.2s;
+}
+.daily-card:hover .daily-btn {
+    background: var(--green-600);
+}
+
+/* ============================================================
+   Game Selection Page (select.html)
+   ============================================================ */
+.select-page {
+    min-height: calc(100vh - 64px);
+    padding: 100px 24px 60px;
+    background: linear-gradient(135deg, var(--gray-50) 0%, #e8edf5 100%);
+}
+.select-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.select-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 8px;
+}
+.select-header p {
+    color: var(--gray-500);
+    font-size: 1rem;
+    margin: 0;
+}
+.select-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.select-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px 28px;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+.select-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--card-accent, var(--blue-500));
+}
+.select-card-icon {
+    font-size: 2.6rem;
+    margin-bottom: 14px;
+}
+.select-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 8px;
+}
+.select-card p {
+    color: var(--gray-500);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0 0 18px;
+    flex: 1;
+}
+.select-card-btn {
+    display: inline-block;
+    padding: 8px 28px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    background: var(--card-accent, var(--blue-500));
+    color: var(--white);
+    transition: filter 0.2s;
+}
+.select-card:hover .select-card-btn {
+    filter: brightness(0.9);
+}
+
+@media (max-width: 640px) {
+    .landing-header { padding: 80px 16px 30px; }
+    .daily-section { padding: 40px 12px 30px; }
+    .daily-card { padding: 16px 18px; gap: 14px; }
+    .daily-icon { font-size: 1.8rem; }
+    .select-page { padding: 80px 12px 40px; }
+    .select-grid { grid-template-columns: 1fr; gap: 16px; }
+    .select-card { padding: 24px 18px 22px; }
+}
 
 /* ============================================================
    Landing — Signup CTA (non-logged users)

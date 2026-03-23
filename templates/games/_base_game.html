@@ -7,41 +7,12 @@
 {% block content %}
 <div class="game-page">
 
-    <!-- ─── Settings overlay ──────────────────────────────── -->
+    <!-- ─── Start overlay ────────────────────────────────── -->
     <div class="game-settings-overlay" id="settings-overlay">
         <div class="game-settings-card">
             <div class="game-settings-icon">{{ game.icon }}</div>
             <h2>{{ game_field(game, 'name', lang) }}</h2>
             <p class="game-settings-desc">{{ game_field(game, 'description', lang) }}</p>
-
-            <div class="settings-form">
-                {% if game.has_continent_filter %}
-                <div class="setting-group">
-                    <label>{{ t('game.continent', lang) }}</label>
-                    <select id="setting-continent">
-                        <option value="all">{{ t('game.all', lang) }}</option>
-                        <option value="europe">{{ t('game.europe', lang) }}</option>
-                        <option value="asia">{{ t('game.asia', lang) }}</option>
-                        <option value="africa">{{ t('game.africa', lang) }}</option>
-                        <option value="america">{{ t('game.america', lang) }}</option>
-                        <option value="oceania">{{ t('game.oceania', lang) }}</option>
-                    </select>
-                </div>
-                {% endif %}
-
-                <div class="setting-group">
-                    <label>{{ t('game.time_limit', lang) }}</label>
-                    <select id="setting-time">
-                        <option value="300">{{ t('game.5min', lang) }}</option>
-                        <option value="600" selected>{{ t('game.10min', lang) }}</option>
-                        <option value="900">{{ t('game.15min', lang) }}</option>
-                        <option value="1800">{{ t('game.30min', lang) }}</option>
-                        <option value="0">{{ t('game.nolimit', lang) }}</option>
-                    </select>
-                </div>
-
-                {% block extra_settings %}{% endblock %}
-            </div>
 
             <button class="btn btn-primary game-start-btn" onclick="GeoGame.start()">
                 {{ t('game.start', lang) }}

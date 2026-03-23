@@ -52,9 +52,22 @@ var GeoUtils = {
      * Build a Set of normalised acceptable answers for a country.
      * Includes common name, official name, and hard-coded aliases.
      */
+    /** Get the localised display name for a country. */
+    getLocalName: function (country) {
+        if (window.LANG === 'es' && country.name_es) return country.name_es;
+        return country.name;
+    },
+
+    /** Get the localised capital name for a country. */
+    getLocalCapital: function (country) {
+        if (window.LANG === 'es' && country.capital_es) return country.capital_es;
+        return country.capital;
+    },
+
     getCountryNames: function (country) {
         var names = new Set();
         if (country.name) names.add(GeoUtils.normalize(country.name));
+        if (country.name_es) names.add(GeoUtils.normalize(country.name_es));
         if (country.name_official) names.add(GeoUtils.normalize(country.name_official));
         // Aliases
         var aliases = COUNTRY_ALIASES[country.iso_a3];
@@ -66,7 +79,9 @@ var GeoUtils = {
             ['republic of ', 'the ', 'kingdom of ', 'state of ',
              'federation of ', 'commonwealth of ', 'democratic republic of the ',
              'democratic republic of ', 'people\'s republic of ',
-             'united republic of '].forEach(function (p) {
+             'united republic of ', 'republica de ', 'republica del ',
+             'republica democratica de ', 'republica democratica del ',
+             'reino de ', 'estado de ', 'estados '].forEach(function (p) {
                 if (n.indexOf(p) === 0) names.add(n.slice(p.length));
             });
         });
@@ -80,6 +95,7 @@ var GeoUtils = {
     getCapitalNames: function (country) {
         var names = new Set();
         if (country.capital) names.add(GeoUtils.normalize(country.capital));
+        if (country.capital_es) names.add(GeoUtils.normalize(country.capital_es));
         var aliases = CAPITAL_ALIASES[country.iso_a3];
         if (aliases) {
             aliases.forEach(function (a) { names.add(GeoUtils.normalize(a)); });
@@ -312,17 +328,12 @@ var GeoGame = {
 
     /** Called when user clicks "Comenzar" */
     start: function () {
-        var s = {};
-        var el;
-
-        el = document.getElementById('setting-continent');
-        s.continent = el ? el.value : 'all';
-
-        el = document.getElementById('setting-time');
-        s.timeLimit = el ? parseInt(el.value) : 600;
-
-        el = document.getElementById('setting-max-items');
-        s.maxItems = el ? parseInt(el.value) : 0;
+        var defaults = (GAME_CONFIG && GAME_CONFIG.defaults) ? GAME_CONFIG.defaults : {};
+        var s = {
+            continent: 'all',
+            timeLimit: defaults.time_limit || 600,
+            maxItems: defaults.max_items || 0,
+        };
 
         this.settings = s;
         this.correct = 0;

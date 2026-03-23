@@ -28,10 +28,15 @@ STAT_KEYS = list(QUIZ_STATS.keys())
 
 
 def _get_valid_countries(stat: str, continent: Optional[str] = None) -> list[dict]:
-    """Return countries that have a valid numeric value for the given stat."""
+    """Return countries that have a valid numeric value for the given stat.
+    Excludes territories (entity_type != 'country')."""
     df = _ds.get_countries()
     if df.empty:
         return []
+
+    # Filter only sovereign countries
+    if "entity_type" in df.columns:
+        df = df[df["entity_type"] == "country"]
 
     # Filter continent
     if continent and continent != "all":
@@ -62,6 +67,7 @@ def _get_valid_countries(stat: str, continent: Optional[str] = None) -> list[dic
         records.append({
             "iso_a3": row["iso_a3"],
             "name": row["name"],
+            "name_es": row.get("name_es", row["name"]),
             "flag_emoji": row.get("flag_emoji", ""),
             "continent": row.get("continent", ""),
             "stat_value": val,
@@ -100,7 +106,7 @@ def generate_ordering_question(
     correct_order = [c["iso_a3"] for c in sorted_sample]
 
     # Shuffle for the player
-    display = [{"iso_a3": c["iso_a3"], "name": c["name"], "flag_emoji": c["flag_emoji"]} for c in sample]
+    display = [{"iso_a3": c["iso_a3"], "name": c["name"], "name_es": c["name_es"], "flag_emoji": c["flag_emoji"]} for c in sample]
     random.shuffle(display)
 
     return {
@@ -142,7 +148,7 @@ def generate_comparison_question(
         "stat": stat,
         "stat_info": QUIZ_STATS[stat],
         "countries": [
-            {"iso_a3": c["iso_a3"], "name": c["name"], "flag_emoji": c["flag_emoji"]}
+            {"iso_a3": c["iso_a3"], "name": c["name"], "name_es": c["name_es"], "flag_emoji": c["flag_emoji"]}
             for c in pair
         ],
         "correct_iso": pair[0]["iso_a3"],

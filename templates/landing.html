@@ -4,98 +4,30 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="/static/css/pages.css">
-<style>
-    .navbar { background: transparent; border-bottom: none; }
-    .nav-title { color: white; }
-</style>
 {% endblock %}
 
 {% block content %}
-<!-- Hero -->
-<section class="hero">
-    <img src="/static/img/logo.svg" alt="" class="hero-bg-globe">
-    <div class="hero-content">
-        <img src="/static/img/logo.svg" alt="GeoFreak" class="hero-logo">
-        <h1 class="hero-title">
-            Geo<span class="accent">Freak</span>
-        </h1>
-        <p class="hero-subtitle">
-            {{ t('landing.subtitle', lang) | safe }}
-        </p>
-        <div class="hero-actions">
-            <a href="/map" class="btn btn-primary">
-                {{ t('landing.cta_map', lang) }}
-            </a>
-            <a href="#features" class="btn btn-outline">
-                {{ t('landing.cta_more', lang) }}
-            </a>
-        </div>
+<!-- Header -->
+<section class="landing-header">
+    <div class="landing-header-inner">
+        <h1 class="landing-brand">Geo<span class="accent">Freak</span></h1>
+        <p class="landing-tagline">{{ t('landing.subtitle', lang) }}</p>
     </div>
 </section>
 
-<!-- Stats -->
-<section class="stats-section">
-    <div class="stats-grid">
-        <div class="stat-item">
-            <div class="stat-number">250</div>
-            <div class="stat-label">{{ t('landing.stat_countries', lang) }}</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">7</div>
-            <div class="stat-label">{{ t('landing.stat_continents', lang) }}</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">30+</div>
-            <div class="stat-label">{{ t('landing.stat_data', lang) }}</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">∞</div>
-            <div class="stat-label">{{ t('landing.stat_fun', lang) }}</div>
-        </div>
-    </div>
-</section>
-
-<!-- Features -->
-<section class="features-section" id="features">
+<!-- Daily Challenge -->
+<section class="daily-section">
     <div class="section-header">
-        <span class="section-badge">{{ t('landing.features_badge', lang) }}</span>
-        <h2 class="section-title">{{ t('landing.features_title', lang) }}</h2>
-        <p class="section-desc">
-            {{ t('landing.features_desc', lang) }}
-        </p>
+        <span class="section-badge">{{ t('landing.daily_badge', lang) }}</span>
+        <h2 class="section-title">{{ t('landing.daily_title', lang) }}</h2>
     </div>
-    <div class="features-grid">
-        <div class="feature-card">
-            <div class="feature-icon blue">🌍</div>
-            <h3 class="feature-title">{{ t('landing.f_outline_t', lang) }}</h3>
-            <p class="feature-desc">{{ t('landing.f_outline_d', lang) }}</p>
+    <a href="/games/comparison" class="daily-card">
+        <span class="daily-icon">⚖️</span>
+        <div class="daily-info">
+            <p>{{ t('landing.daily_desc', lang) }}</p>
+            <span class="daily-btn">{{ t('landing.daily_btn', lang) }}</span>
         </div>
-        <div class="feature-card">
-            <div class="feature-icon green">🏳️</div>
-            <h3 class="feature-title">{{ t('landing.f_flags_t', lang) }}</h3>
-            <p class="feature-desc">{{ t('landing.f_flags_d', lang) }}</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon orange">📊</div>
-            <h3 class="feature-title">{{ t('landing.f_stats_t', lang) }}</h3>
-            <p class="feature-desc">{{ t('landing.f_stats_d', lang) }}</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon purple">📍</div>
-            <h3 class="feature-title">{{ t('landing.f_map_t', lang) }}</h3>
-            <p class="feature-desc">{{ t('landing.f_map_d', lang) }}</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon red">🏙️</div>
-            <h3 class="feature-title">{{ t('landing.f_capitals_t', lang) }}</h3>
-            <p class="feature-desc">{{ t('landing.f_capitals_d', lang) }}</p>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon teal">🗺️</div>
-            <h3 class="feature-title">{{ t('landing.f_explorer_t', lang) }}</h3>
-            <p class="feature-desc">{{ t('landing.f_explorer_d', lang) }}</p>
-        </div>
-    </div>
+    </a>
 </section>
 
 <!-- Game Modes -->
@@ -106,25 +38,25 @@
         <p class="section-desc">{{ t('landing.modes_desc', lang) }}</p>
     </div>
     <div class="modes-grid">
-        <a href="/games" class="mode-card mode-solo">
+        <a href="/play/solo" class="mode-card mode-solo">
             <span class="mode-icon">🎯</span>
             <h3>{{ t('landing.mode_solo', lang) }}</h3>
             <p>{{ t('landing.mode_solo_d', lang) }}</p>
         </a>
-        <a href="/duels" class="mode-card mode-duel">
+        <a href="/play/duel" class="mode-card mode-duel">
             <span class="mode-icon">⚔️</span>
             <h3>{{ t('landing.mode_duel', lang) }}</h3>
             <p>{{ t('landing.mode_duel_d', lang) }}</p>
         </a>
-        <a href="/tournaments" class="mode-card mode-tournament">
+        <a href="/play/tournament" class="mode-card mode-tournament">
             <span class="mode-icon">🏆</span>
             <h3>{{ t('landing.mode_tournament', lang) }}</h3>
             <p>{{ t('landing.mode_tournament_d', lang) }}</p>
         </a>
-        <a href="/games" class="mode-card mode-tests">
+        <a href="/quizz" class="mode-card mode-quizz">
             <span class="mode-icon">📝</span>
-            <h3>{{ t('landing.mode_tests', lang) }}</h3>
-            <p>{{ t('landing.mode_tests_d', lang) }}</p>
+            <h3>{{ t('landing.mode_quizz', lang) }}</h3>
+            <p>{{ t('landing.mode_quizz_d', lang) }}</p>
         </a>
     </div>
 </section>
@@ -185,6 +117,6 @@
 <section class="cta-section">
     <h2 class="cta-title">{{ t('landing.cta_title', lang) }}</h2>
     <p class="cta-desc">{{ t('landing.cta_desc', lang) }}</p>
-    <a href="/map" class="btn btn-primary">{{ t('landing.cta_open', lang) }}</a>
+    <a href="/play/solo" class="btn btn-primary">{{ t('landing.cta_open', lang) }}</a>
 </section>
 {% endblock %}
