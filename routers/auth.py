@@ -120,11 +120,18 @@ async def login(
     email: str = Form(...),
     password: str = Form(...),
 ):
+    lang = get_lang(request)
+
+    # Check admin credentials first
+    settings = get_settings()
+    if settings.admin_user and email == settings.admin_user and password == settings.admin_pass:
+        request.session["authenticated"] = True
+        return RedirectResponse("/admin", status_code=303)
+
     # Try email first, then username
     user = get_user_by_email(email)
     if not user:
         user = get_user_by_username(email)
-    lang = get_lang(request)
     if not user or not verify_password(password, user.get("password_hash", "")):
         return templates.TemplateResponse(
             "auth/login.html",

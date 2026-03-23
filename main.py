@@ -52,6 +52,27 @@ def create_app():
     app.include_router(tournaments.router)
     app.include_router(admin.router)
 
+    # Custom 404 handler
+    from fastapi import Request
+    from core.i18n import get_lang
+    from core.templates import templates as tpl
+
+    @app.exception_handler(404)
+    async def not_found_handler(request: Request, exc):
+        lang = get_lang(request)
+        user = None
+        try:
+            token = request.cookies.get("access_token")
+            if token:
+                from core.auth import _user_from_token
+                user = _user_from_token(token)
+        except Exception:
+            pass
+        return tpl.TemplateResponse(
+            "404.html", {"request": request, "lang": lang, "user": user},
+            status_code=404,
+        )
+
     # Flush analytics buffer on shutdown
     from contextlib import asynccontextmanager
     from services.analytics import flush as flush_analytics

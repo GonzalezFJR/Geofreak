@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/pages.css">
+{% endblock %}
+{% block title %}404 — GeoFreak{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card" style="text-align:center;">
+        <h1 style="font-size:3rem;margin-bottom:8px;color:var(--blue-700);">404</h1>
+        <h2 class="auth-title">{{ t('err.404_title', lang) }}</h2>
+        <p style="color:var(--gray-500);margin:12px 0 24px;">{{ t('err.404_text', lang) }}</p>
+        <a href="/" class="auth-btn">{{ t('err.back_home', lang) }}</a>
+    </div>
+</section>
+{% endblock %}

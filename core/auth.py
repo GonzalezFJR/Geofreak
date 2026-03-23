@@ -22,12 +22,13 @@ def _user_from_token(token: Optional[str]) -> Optional[dict]:
 
 
 async def get_current_user(access_token: Optional[str] = Cookie(None)) -> dict:
-    """Require an authenticated user (raises 401 otherwise)."""
+    """Require an authenticated user (redirects to /login otherwise)."""
     user = _user_from_token(access_token)
     if user is None:
+        from fastapi.responses import RedirectResponse
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+            headers={"Location": "/login"},
         )
     return user
 

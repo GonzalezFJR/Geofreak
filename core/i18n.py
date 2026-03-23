@@ -392,6 +392,11 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "trn.place_2": "\ud83e\udd48 2\u00ba",
         "trn.place_3": "\ud83e\udd49 3\u00ba",
 
+        # 404
+        "err.404_title": "Página no encontrada",
+        "err.404_text": "La página que buscas no existe o ha sido movida.",
+        "err.back_home": "Volver al inicio",
+
         # Language
         "lang.switch_label": "EN",
     },
@@ -776,6 +781,11 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "trn.place_1": "\ud83e\udd47 1st",
         "trn.place_2": "\ud83e\udd48 2nd",
         "trn.place_3": "\ud83e\udd49 3rd",
+
+        # 404
+        "err.404_title": "Page not found",
+        "err.404_text": "The page you're looking for doesn't exist or has been moved.",
+        "err.back_home": "Back to home",
 
         # Language
         "lang.switch_label": "ES",
