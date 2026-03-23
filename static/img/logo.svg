@@ -8,25 +8,70 @@
       <stop offset="0%" style="stop-color:#4caf50;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#2e7d32;stop-opacity:1" />
     </linearGradient>
+    <clipPath id="globe-clip">
+      <circle cx="100" cy="90" r="75" />
+    </clipPath>
   </defs>
   <!-- Globe background -->
   <circle cx="100" cy="90" r="75" fill="url(#globe-grad)" />
-  <!-- Simplified continent shapes -->
-  <!-- Americas -->
-  <path d="M60,40 Q55,55 50,65 Q48,75 52,85 Q50,95 45,105 Q42,115 48,120 Q55,125 55,135 L58,140 Q62,135 60,125 Q65,115 70,110 Q72,100 68,90 Q70,80 72,70 Q75,60 70,50 Q65,42 60,40Z" fill="url(#land-grad)" opacity="0.9"/>
-  <!-- Europe/Africa -->
-  <path d="M95,35 Q100,40 108,42 Q115,45 118,55 Q120,65 115,75 Q112,85 108,95 Q105,105 108,115 Q110,125 105,135 Q100,140 95,135 Q90,125 92,115 Q88,105 90,95 Q92,85 95,75 Q92,65 90,55 Q88,45 95,35Z" fill="url(#land-grad)" opacity="0.9"/>
-  <!-- Asia -->
-  <path d="M120,38 Q130,35 140,40 Q148,48 150,58 Q148,68 142,75 Q138,80 140,88 Q135,92 128,88 Q122,82 118,75 Q115,65 118,55 Q120,48 120,38Z" fill="url(#land-grad)" opacity="0.9"/>
-  <!-- Australia -->
-  <path d="M138,100 Q145,98 150,102 Q155,108 152,115 Q148,118 142,116 Q138,112 136,106 Q136,102 138,100Z" fill="url(#land-grad)" opacity="0.9"/>
+  <!-- "G" continent shape clipped to globe -->
+  <g clip-path="url(#globe-clip)">
+    <!-- G-shaped continent with irregular coastline -->
+    <path d="
+      M 135,44
+      C 130,32 118,24 104,22
+      C 96,21 88,23 82,26
+      C 76,30 68,32 62,38
+      C 55,46 49,56 46,68
+      C 43,78 42,90 44,100
+      C 46,110 50,118 56,126
+      C 62,133 70,140 80,144
+      C 88,147 96,148 104,146
+      C 112,144 118,140 124,134
+      C 130,128 134,122 138,116
+      C 140,112 141,106 140,100
+      L 139,96
+      L 112,97
+      C 108,97 106,95 107,92
+      C 108,89 110,88 114,88
+      L 148,86
+      C 152,86 155,88 155,92
+      L 156,112
+      C 156,120 153,130 146,138
+      C 138,148 126,156 110,158
+      C 94,160 78,156 66,146
+      C 54,136 44,124 38,108
+      C 32,92 30,74 34,58
+      C 38,42 46,30 58,22
+      C 70,14 84,10 100,12
+      C 114,14 126,20 136,30
+      C 142,36 144,40 148,38
+      C 150,42 148,46 144,48
+      C 140,50 137,48 135,44
+      Z
+    " fill="url(#land-grad)" opacity="0.92"/>
+    <!-- Coastal irregularities — peninsulas & bays -->
+    <path d="M58,36 C54,34 50,38 52,42 C54,44 58,42 58,36Z" fill="url(#land-grad)" opacity="0.85"/>
+    <path d="M44,72 C40,70 37,74 38,78 C40,80 44,78 44,72Z" fill="url(#land-grad)" opacity="0.8"/>
+    <path d="M80,146 C78,150 82,154 86,152 C88,150 86,146 80,146Z" fill="url(#land-grad)" opacity="0.8"/>
+    <path d="M126,132 C130,136 134,134 132,130 C130,128 126,128 126,132Z" fill="url(#land-grad)" opacity="0.75"/>
+    <path d="M140,98 C144,96 146,100 144,104 C142,106 138,102 140,98Z" fill="url(#land-grad)" opacity="0.7"/>
+    <!-- Small islands -->
+    <ellipse cx="56" cy="50" rx="5" ry="3.5" transform="rotate(-20 56 50)" fill="url(#land-grad)" opacity="0.6"/>
+    <circle cx="150" cy="72" r="4" fill="url(#land-grad)" opacity="0.5"/>
+    <ellipse cx="68" cy="148" rx="4" ry="3" transform="rotate(15 68 148)" fill="url(#land-grad)" opacity="0.5"/>
+    <circle cx="38" cy="92" r="3" fill="url(#land-grad)" opacity="0.4"/>
+    <ellipse cx="148" cy="56" rx="3" ry="2" transform="rotate(-30 148 56)" fill="url(#land-grad)" opacity="0.45"/>
+  </g>
   <!-- Grid lines -->
-  <ellipse cx="100" cy="90" rx="75" ry="30" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
-  <ellipse cx="100" cy="90" rx="75" ry="55" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
-  <line x1="100" y1="15" x2="100" y2="165" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
-  <ellipse cx="100" cy="90" rx="30" ry="75" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+  <ellipse cx="100" cy="90" rx="75" ry="30" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+  <ellipse cx="100" cy="90" rx="75" ry="55" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+  <line x1="100" y1="15" x2="100" y2="165" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+  <ellipse cx="100" cy="90" rx="30" ry="75" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/>
   <!-- Globe shine -->
-  <circle cx="78" cy="60" r="20" fill="rgba(255,255,255,0.12)" />
+  <circle cx="72" cy="55" r="22" fill="rgba(255,255,255,0.10)" />
+  <!-- Globe rim -->
+  <circle cx="100" cy="90" r="75" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
   <!-- Text -->
   <text x="100" y="188" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="26" font-weight="800" fill="#1a73e8" letter-spacing="1">
     <tspan>Geo</tspan><tspan fill="#4caf50">Freak</tspan>
