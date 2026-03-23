@@ -4,6 +4,110 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="/static/css/pages.css">
+<style>
+/* Daily challenge hero card */
+.daily-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 36px 40px;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, #0d47a1 0%, #1565c0 50%, #1976d2 100%);
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(13, 71, 161, 0.3);
+}
+.daily-hero:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(13, 71, 161, 0.4);
+}
+.daily-hero-text h2 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+.daily-hero-text p {
+    opacity: 0.8;
+    font-size: 0.95rem;
+    margin: 0 0 16px;
+    line-height: 1.5;
+}
+.daily-hero-btn {
+    display: inline-block;
+    padding: 10px 28px;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.2);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    transition: background 0.2s;
+}
+.daily-hero:hover .daily-hero-btn { background: rgba(255,255,255,0.3); }
+.daily-hero svg { flex-shrink: 0; }
+
+/* Animated world map SVG */
+@keyframes glow1 { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.7; } }
+@keyframes glow2 { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.65; } }
+@keyframes glow3 { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.6; } }
+.glow-a { animation: glow1 3s ease-in-out infinite; }
+.glow-b { animation: glow2 3s ease-in-out 1s infinite; }
+.glow-c { animation: glow3 3s ease-in-out 2s infinite; }
+
+/* GeoQuiz section */
+.quiz-section {
+    padding: 60px 24px;
+    background: var(--white);
+}
+.quiz-card {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 36px;
+    border-radius: var(--radius-xl);
+    border: 1.5px solid var(--gray-200);
+    background: var(--gray-50);
+}
+.quiz-card-text { flex: 1; }
+.quiz-card-text h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--green-600);
+    margin: 0 0 10px;
+}
+.quiz-card-text p {
+    color: var(--gray-600);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 18px;
+}
+.quiz-btn {
+    display: inline-block;
+    padding: 10px 28px;
+    border-radius: 50px;
+    background: var(--green-500);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.quiz-btn:hover { background: var(--green-600); transform: translateY(-1px); }
+.quiz-card-icon { font-size: 3rem; flex-shrink: 0; }
+
+@media (max-width: 640px) {
+    .daily-hero { flex-direction: column; padding: 28px 20px; gap: 20px; text-align: center; }
+    .daily-hero svg { width: 140px; height: 90px; }
+    .modes-grid { grid-template-columns: 1fr !important; }
+    .quiz-card { flex-direction: column; text-align: center; padding: 28px 20px; }
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -18,14 +122,37 @@
 <!-- Daily Challenge -->
 <section class="daily-section">
     <div class="section-header">
-        <span class="section-badge">{{ t('landing.daily_badge', lang) }}</span>
         <h2 class="section-title">{{ t('landing.daily_title', lang) }}</h2>
     </div>
-    <a href="/games/comparison" class="daily-card">
-        <span class="daily-icon">⚖️</span>
-        <div class="daily-info">
+    <a href="/games/comparison" class="daily-hero">
+        <svg width="180" height="110" viewBox="0 0 180 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Simplified world map continents -->
+            <!-- North America -->
+            <path d="M25 20 L35 15 L45 18 L50 28 L45 40 L38 48 L30 45 L22 35 Z" fill="#64b5f6" opacity="0.25" class="glow-a"/>
+            <!-- South America -->
+            <path d="M42 55 L50 50 L55 58 L52 72 L48 82 L40 78 L38 65 Z" fill="#64b5f6" opacity="0.25" class="glow-b"/>
+            <!-- Europe -->
+            <path d="M82 15 L95 12 L100 18 L97 28 L88 30 L82 25 Z" fill="#64b5f6" opacity="0.25" class="glow-c"/>
+            <!-- Africa -->
+            <path d="M85 35 L98 32 L105 45 L100 65 L92 72 L82 60 L80 45 Z" fill="#64b5f6" opacity="0.25" class="glow-a"/>
+            <!-- Asia -->
+            <path d="M105 10 L130 8 L145 18 L150 35 L142 45 L125 48 L110 40 L105 28 Z" fill="#64b5f6" opacity="0.25" class="glow-b"/>
+            <!-- Oceania -->
+            <path d="M140 60 L155 55 L165 62 L160 72 L148 75 L140 68 Z" fill="#64b5f6" opacity="0.25" class="glow-c"/>
+            <!-- Highlight dots (countries lighting up) -->
+            <circle cx="38" cy="30" r="3" fill="#4fc3f7" class="glow-b"/>
+            <circle cx="92" cy="22" r="3" fill="#4fc3f7" class="glow-c"/>
+            <circle cx="130" cy="25" r="3" fill="#4fc3f7" class="glow-a"/>
+            <circle cx="92" cy="52" r="3" fill="#4fc3f7" class="glow-b"/>
+            <circle cx="48" cy="65" r="3" fill="#4fc3f7" class="glow-a"/>
+            <circle cx="152" cy="65" r="3" fill="#4fc3f7" class="glow-c"/>
+            <!-- Equator line -->
+            <line x1="10" y1="55" x2="170" y2="55" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" stroke-dasharray="4,4"/>
+        </svg>
+        <div class="daily-hero-text">
+            <h2>{{ t('landing.daily_title', lang) }}</h2>
             <p>{{ t('landing.daily_desc', lang) }}</p>
-            <span class="daily-btn">{{ t('landing.daily_btn', lang) }}</span>
+            <span class="daily-hero-btn">{{ t('landing.daily_btn', lang) }}</span>
         </div>
     </a>
 </section>
@@ -33,11 +160,10 @@
 <!-- Game Modes -->
 <section class="modes-section">
     <div class="section-header">
-        <span class="section-badge">{{ t('landing.modes_badge', lang) }}</span>
         <h2 class="section-title">{{ t('landing.modes_title', lang) }}</h2>
         <p class="section-desc">{{ t('landing.modes_desc', lang) }}</p>
     </div>
-    <div class="modes-grid">
+    <div class="modes-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 720px;">
         <a href="/play/solo" class="mode-card mode-solo">
             <span class="mode-icon">🎯</span>
             <h3>{{ t('landing.mode_solo', lang) }}</h3>
@@ -53,51 +179,20 @@
             <h3>{{ t('landing.mode_tournament', lang) }}</h3>
             <p>{{ t('landing.mode_tournament_d', lang) }}</p>
         </a>
-        <a href="/quizz" class="mode-card mode-quizz">
-            <span class="mode-icon">📝</span>
-            <h3>{{ t('landing.mode_quizz', lang) }}</h3>
-            <p>{{ t('landing.mode_quizz_d', lang) }}</p>
-        </a>
     </div>
 </section>
 
-{% if top10 %}
-<!-- Top 10 Global Ranking -->
-<section class="top10-section">
-    <div class="section-header">
-        <span class="section-badge">Ranking</span>
-        <h2 class="section-title">{{ t('lb.top10_title', lang) }}</h2>
-    </div>
-    <div class="top10-wrapper">
-        <table class="top10-table">
-            <thead>
-                <tr>
-                    <th>{{ t('lb.rank', lang) }}</th>
-                    <th>{{ t('lb.player', lang) }}</th>
-                    <th>{{ t('lb.rating', lang) }}</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for e in top10 %}
-                <tr>
-                    <td class="t10-rank {{ 'gold' if e.rank == 1 else ('silver' if e.rank == 2 else ('bronze' if e.rank == 3 else '')) }}">
-                        {% if e.rank == 1 %}🥇{% elif e.rank == 2 %}🥈{% elif e.rank == 3 %}🥉{% else %}{{ e.rank }}{% endif %}
-                    </td>
-                    <td>{{ e.username }}</td>
-                    <td class="t10-value">{{ e.value | int }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {% if user_position %}
-        <p class="top10-you">{{ t('lb.your_pos', lang) }}: <strong>#{{ user_position }}</strong></p>
-        {% endif %}
-        <a href="/ranking" class="btn btn-outline btn-outline-dark" style="margin-top: 20px;">
-            {{ t('lb.top10_cta', lang) }}
-        </a>
+<!-- GeoQuiz -->
+<section class="quiz-section">
+    <div class="quiz-card">
+        <span class="quiz-card-icon">📝</span>
+        <div class="quiz-card-text">
+            <h2>GeoQuiz</h2>
+            <p>{{ t('landing.quiz_desc', lang) }}</p>
+            <a href="/quizz" class="quiz-btn">{{ t('landing.quiz_btn', lang) }}</a>
+        </div>
     </div>
 </section>
-{% endif %}
 
 {% if not user %}
 <!-- Signup CTA for non-logged users -->
@@ -112,11 +207,4 @@
     </div>
 </section>
 {% endif %}
-
-<!-- CTA -->
-<section class="cta-section">
-    <h2 class="cta-title">{{ t('landing.cta_title', lang) }}</h2>
-    <p class="cta-desc">{{ t('landing.cta_desc', lang) }}</p>
-    <a href="/play/solo" class="btn btn-primary">{{ t('landing.cta_open', lang) }}</a>
-</section>
 {% endblock %}

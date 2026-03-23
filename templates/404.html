@@ -1,16 +1,103 @@
 {% extends "base.html" %}
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/pages.css">
+<style>
+.page-404 {
+    min-height: calc(100vh - 64px - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    background: linear-gradient(180deg, var(--gray-50) 0%, #e0ecf8 100%);
+}
+.page-404-inner {
+    text-align: center;
+    max-width: 480px;
+}
+.page-404 svg { margin: 0 auto 24px; display: block; }
+.page-404 h1 {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--blue-700);
+    margin-bottom: 8px;
+}
+.page-404 p {
+    color: var(--gray-500);
+    font-size: 1.05rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+.page-404 a {
+    display: inline-block;
+    padding: 12px 32px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+    transition: all 0.2s;
+}
+.page-404 a:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(26, 115, 232, 0.4); }
+
+/* Water drop ripple animation */
+@keyframes dropFall {
+    0% { transform: translateY(-30px); opacity: 0; }
+    40% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(2px) scaleY(0.8); opacity: 1; }
+    60% { transform: translateY(-4px); opacity: 0.6; }
+    70% { opacity: 0; }
+    100% { opacity: 0; }
+}
+@keyframes ripple1 {
+    0%, 50% { r: 0; opacity: 0; }
+    55% { r: 2; opacity: 0.7; }
+    100% { r: 50; opacity: 0; }
+}
+@keyframes ripple2 {
+    0%, 58% { r: 0; opacity: 0; }
+    63% { r: 2; opacity: 0.6; }
+    100% { r: 45; opacity: 0; }
+}
+@keyframes ripple3 {
+    0%, 66% { r: 0; opacity: 0; }
+    71% { r: 2; opacity: 0.5; }
+    100% { r: 38; opacity: 0; }
+}
+.drop-anim { animation: dropFall 3s ease-in-out infinite; transform-origin: center bottom; }
+.ripple1 { animation: ripple1 3s ease-out infinite; }
+.ripple2 { animation: ripple2 3s ease-out infinite; }
+.ripple3 { animation: ripple3 3s ease-out infinite; }
+</style>
 {% endblock %}
 {% block title %}404 — GeoFreak{% endblock %}
 
 {% block content %}
-<section class="auth-section">
-    <div class="auth-card" style="text-align:center;">
-        <h1 style="font-size:3rem;margin-bottom:8px;color:var(--blue-700);">404</h1>
-        <h2 class="auth-title">{{ t('err.404_title', lang) }}</h2>
-        <p style="color:var(--gray-500);margin:12px 0 24px;">{{ t('err.404_text', lang) }}</p>
-        <a href="/" class="auth-btn">{{ t('err.back_home', lang) }}</a>
+<section class="page-404">
+    <div class="page-404-inner">
+        <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Water surface line -->
+            <ellipse cx="90" cy="130" rx="70" ry="6" fill="#d0e4f7" opacity="0.5"/>
+            <!-- Ripples -->
+            <circle class="ripple1" cx="90" cy="130" r="0" fill="none" stroke="#1a73e8" stroke-width="1.5" opacity="0"/>
+            <circle class="ripple2" cx="90" cy="130" r="0" fill="none" stroke="#1a73e8" stroke-width="1.2" opacity="0"/>
+            <circle class="ripple3" cx="90" cy="130" r="0" fill="none" stroke="#1a73e8" stroke-width="1" opacity="0"/>
+            <!-- Water drop -->
+            <g class="drop-anim">
+                <path d="M90 62 C90 62, 74 90, 74 104 C74 113, 81 120, 90 120 C99 120, 106 113, 106 104 C106 90, 90 62, 90 62Z" fill="url(#dropGrad)"/>
+                <ellipse cx="84" cy="100" rx="4" ry="6" fill="white" opacity="0.4" transform="rotate(-15 84 100)"/>
+            </g>
+            <!-- Gradient def -->
+            <defs>
+                <linearGradient id="dropGrad" x1="90" y1="62" x2="90" y2="120" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#64b5f6"/>
+                    <stop offset="100%" stop-color="#1565c0"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <h1>{{ t('err.404_title', lang) }}</h1>
+        <p>{{ t('err.404_text', lang) }}</p>
+        <a href="/">{{ t('err.back_home', lang) }}</a>
     </div>
 </section>
 {% endblock %}

@@ -26,15 +26,8 @@ _QUIZZ_TYPES = {"quiz", "map"}    # flags, outline, name-*
 @router.get("/", response_class=HTMLResponse)
 async def landing(request: Request, user=Depends(get_optional_user)):
     lang = get_lang(request)
-    # Fetch top-10 for the landing widget
-    lb = get_leaderboard("global", "all", "rating")
-    top10 = (lb["entries"] if lb else [])[:10]
-    user_pos = None
-    if user and lb:
-        user_pos = get_user_position(user["user_id"])
     return templates.TemplateResponse("landing.html", {
         "request": request, "user": user, "lang": lang,
-        "top10": top10, "user_position": user_pos,
     })
 
 

@@ -42,7 +42,23 @@
                 {% else %}
                 <a href="/login" class="nav-link">{{ t('nav.login', lang) }}</a>
                 {% endif %}
-                <a href="/set-lang/{{ 'en' if lang == 'es' else 'es' }}" class="nav-link nav-lang">{{ t('lang.switch_label', lang) }}</a>
+                <div class="nav-lang-wrap" id="nav-lang-wrap">
+                    <button class="nav-link nav-lang" id="nav-lang-btn" type="button" aria-label="Language">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <ellipse cx="12" cy="12" rx="4" ry="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                        </svg>
+                        <span>{{ lang|upper }}</span>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <a href="/set-lang/es" class="lang-opt {{ 'active' if lang=='es' }}">🇪🇸 Español</a>
+                        <a href="/set-lang/en" class="lang-opt {{ 'active' if lang=='en' }}">🇬🇧 English</a>
+                        <a href="/set-lang/fr" class="lang-opt {{ 'active' if lang=='fr' }}">🇫🇷 Français</a>
+                        <a href="/set-lang/it" class="lang-opt {{ 'active' if lang=='it' }}">🇮🇹 Italiano</a>
+                        <a href="/set-lang/ru" class="lang-opt {{ 'active' if lang=='ru' }}">🇷🇺 Русский</a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -78,7 +94,12 @@
     <script>window.LANG='{{ lang|default("es") }}';window.T={{ t_js(lang|default("es")) | safe }};</script>
     <script>
     (function(){var btn=document.getElementById('nav-hamburger'),links=document.getElementById('nav-links');
-    if(btn)btn.addEventListener('click',function(){links.classList.toggle('open');btn.classList.toggle('open');});})();
+    if(btn)btn.addEventListener('click',function(){links.classList.toggle('open');btn.classList.toggle('open');});
+    // Language dropdown
+    var lb=document.getElementById('nav-lang-btn'),ld=document.getElementById('lang-dropdown');
+    if(lb)lb.addEventListener('click',function(e){e.stopPropagation();ld.classList.toggle('open');});
+    document.addEventListener('click',function(){if(ld)ld.classList.remove('open');});
+    })();
     </script>
     {% if user %}
     <script>
