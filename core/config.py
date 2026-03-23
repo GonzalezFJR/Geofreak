@@ -39,6 +39,17 @@ class Settings(BaseSettings):
     s3_bucket_name: str = "geofreak-assets"
     s3_endpoint_url: Optional[str] = None
 
+    # SMTP
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from: str = ""
+    mail_to: str = ""
+
+    # Public URL (for email links)
+    base_url: str = "https://geofreak.net"
+
     # Docker (read from .env but only used by docker-compose)
     docker_container_name: str = "geofreak-app"
     docker_image_name: str = "geofreak"

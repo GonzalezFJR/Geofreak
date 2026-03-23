@@ -105,6 +105,62 @@
     padding-left: 2px;
 }
 
+.auth-forgot {
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: -4px;
+}
+.auth-forgot a {
+    color: var(--gray-400);
+    font-size: 0.82rem;
+    text-decoration: none;
+}
+.auth-forgot a:hover {
+    color: var(--blue-500);
+    text-decoration: underline;
+}
+
+.auth-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #16a34a;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.profile-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+.profile-form input {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    font-family: var(--font-sans);
+}
+.profile-form input:focus {
+    outline: none;
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+.profile-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.88rem;
+    white-space: nowrap;
+}
+
 .auth-footer {
     text-align: center;
     margin-top: 20px;
@@ -848,8 +904,9 @@
     margin-bottom: 6px;
 }
 .footer-brand img {
-    width: 28px;
-    height: 28px;
+    width: 28px !important;
+    height: 28px !important;
+    display: inline-block !important;
 }
 .footer-slogan {
     color: var(--gray-400);

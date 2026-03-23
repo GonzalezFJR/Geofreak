@@ -41,3 +41,26 @@ def decode_token(token: str) -> dict | None:
         return jwt.decode(token, settings.secret_key, algorithms=[settings.jwt_algorithm])
     except jwt.PyJWTError:
         return None
+
+
+# ── Single-use tokens (email confirm, password reset, email change) ──────────
+
+def create_email_confirm_token(user_id: str) -> str:
+    settings = get_settings()
+    expire = datetime.now(timezone.utc) + timedelta(hours=24)
+    payload = {"sub": user_id, "exp": expire, "type": "email_confirm"}
+    return jwt.encode(payload, settings.secret_key, algorithm=settings.jwt_algorithm)
+
+
+def create_password_reset_token(user_id: str) -> str:
+    settings = get_settings()
+    expire = datetime.now(timezone.utc) + timedelta(hours=1)
+    payload = {"sub": user_id, "exp": expire, "type": "password_reset"}
+    return jwt.encode(payload, settings.secret_key, algorithm=settings.jwt_algorithm)
+
+
+def create_email_change_token(user_id: str, new_email: str) -> str:
+    settings = get_settings()
+    expire = datetime.now(timezone.utc) + timedelta(hours=24)
+    payload = {"sub": user_id, "exp": expire, "type": "email_change", "new_email": new_email}
+    return jwt.encode(payload, settings.secret_key, algorithm=settings.jwt_algorithm)

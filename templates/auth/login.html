@@ -14,10 +14,13 @@
         <div class="auth-error">{{ error }}</div>
         {% endif %}
         <form method="post" action="/login">
-            <input type="email" name="email" placeholder="{{ t('auth.email', lang) }}" required autocomplete="email">
+            <input type="text" name="email" placeholder="{{ t('auth.email_or_user', lang) }}" required autocomplete="username">
             <input type="password" name="password" placeholder="{{ t('auth.password', lang) }}" required autocomplete="current-password">
             <button type="submit">{{ t('auth.login_btn', lang) }}</button>
         </form>
+        <div class="auth-forgot">
+            <a href="/forgot-password">{{ t('auth.forgot', lang) }}</a>
+        </div>
         <div class="auth-footer">
             {{ t('auth.no_account', lang) }} <a href="/register">{{ t('auth.register_link', lang) }}</a>
         </div>

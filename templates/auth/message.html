@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/pages.css">
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card" style="text-align:center;">
+        <h2>{{ t(title, lang) | safe }}</h2>
+        <p style="color:var(--gray-600);line-height:1.6;margin:16px 0 24px;">{{ t(message, lang) }}</p>
+        <a href="/login" class="btn btn-primary" style="display:inline-block;width:100%;padding:13px;text-decoration:none;">{{ t('auth.login_btn', lang) }}</a>
+    </div>
+</div>
+{% endblock %}

@@ -11,9 +11,26 @@
         <p>{{ t('dash.subtitle', lang) }}</p>
     </div>
 
+    <!-- GeoFreak Games (Solo/Duel/Tournament type) -->
+    <h2 class="dashboard-category">{{ t('dash.cat_geofreak', lang) }}</h2>
     <div class="games-grid">
         {% for game in games %}
-        {% if game.enabled %}
+        {% if game.enabled and game.type == 'solo' %}
+        <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
+            <div class="game-card-icon">{{ game.icon }}</div>
+            <h3>{{ game_field(game, 'name', lang) }}</h3>
+            <p>{{ game_field(game, 'description', lang) }}</p>
+            <div class="game-card-play">{{ t('dash.play', lang) }}</div>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Quiz Games -->
+    <h2 class="dashboard-category">{{ t('dash.cat_quiz', lang) }}</h2>
+    <div class="games-grid">
+        {% for game in games %}
+        {% if game.enabled and game.type in ['quiz', 'map'] %}
         <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
             <div class="game-card-icon">{{ game.icon }}</div>
             <h3>{{ game_field(game, 'name', lang) }}</h3>

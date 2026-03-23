@@ -1,4 +1,4 @@
-"""Auth routes — register, login, logout, me."""
+"""Auth routes — register, login, logout, me, email confirm, password reset."""
 
 import re
 
@@ -12,14 +12,21 @@ from core.templates import templates
 from services.auth import (
     create_access_token,
     create_refresh_token,
+    create_email_confirm_token,
+    create_password_reset_token,
+    create_email_change_token,
+    decode_token,
     hash_password,
     verify_password,
 )
 from services.users import (
     create_user,
     get_user_by_email,
+    get_user_by_id,
     get_user_by_username,
+    update_user,
 )
+from services.email import send_welcome, send_password_reset, send_email_change_confirm
 from services.analytics import track
 from services.user_stats import ensure_user_stats
 from services.friendships import get_friends
@@ -56,12 +63,12 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
     friends_list = get_friends(user["user_id"])
     friends_count = len(friends_list)
 
-    # Recent matches from stats_by_game (last matches stored inline)
-    recent_matches = _build_recent_matches(stats)
+    # Best scores per game type
+    best_scores = _build_best_scores(stats)
 
     return templates.TemplateResponse("auth/profile.html", {
         "request": request, "user": user, "stats": stats, "lang": lang,
-        "friends_count": friends_count, "recent_matches": recent_matches,
+        "friends_count": friends_count, "best_scores": best_scores,
     })
 
 
@@ -96,6 +103,11 @@ async def register(
     user = create_user(username, email, hash_password(password))
     track("user_registered", {"user_id": user["user_id"], "username": username})
 
+    # Send welcome email with confirmation link
+    token = create_email_confirm_token(user["user_id"])
+    confirm_url = f"{get_settings().base_url}/confirm-email?token={token}"
+    send_welcome(email, username, confirm_url, lang)
+
     # Issue tokens
     response = RedirectResponse("/profile", status_code=303)
     _set_auth_cookies(response, user["user_id"])
@@ -108,12 +120,15 @@ async def login(
     email: str = Form(...),
     password: str = Form(...),
 ):
+    # Try email first, then username
     user = get_user_by_email(email)
+    if not user:
+        user = get_user_by_username(email)
     lang = get_lang(request)
     if not user or not verify_password(password, user.get("password_hash", "")):
         return templates.TemplateResponse(
             "auth/login.html",
-            {"request": request, "error": "Email o contraseña incorrectos." if lang == "es" else "Wrong email or password.", "lang": lang},
+            {"request": request, "error": "Credenciales incorrectas." if lang == "es" else "Wrong credentials.", "lang": lang},
         )
     if user.get("status") != "active":
         return templates.TemplateResponse(
@@ -133,6 +148,167 @@ async def logout():
     response.delete_cookie("access_token")
     response.delete_cookie("refresh_token")
     return response
+
+
+# ── Email confirmation ───────────────────────────────────────────────────────
+
+@router.get("/confirm-email", response_class=HTMLResponse)
+async def confirm_email(request: Request, token: str = ""):
+    lang = get_lang(request)
+    payload = decode_token(token)
+    if not payload or payload.get("type") != "email_confirm":
+        return templates.TemplateResponse("auth/message.html", {
+            "request": request, "lang": lang,
+            "title": "auth.confirm_fail_title",
+            "message": "auth.confirm_fail",
+        })
+    user = get_user_by_id(payload["sub"])
+    if user:
+        update_user(user["user_id"], {"email_verified": True})
+    return templates.TemplateResponse("auth/message.html", {
+        "request": request, "lang": lang,
+        "title": "auth.confirm_ok_title",
+        "message": "auth.confirm_ok",
+    })
+
+
+# ── Password recovery ───────────────────────────────────────────────────────
+
+@router.get("/forgot-password", response_class=HTMLResponse)
+async def forgot_password_page(request: Request, user=Depends(get_optional_user)):
+    if user:
+        return RedirectResponse("/profile", status_code=303)
+    lang = get_lang(request)
+    return templates.TemplateResponse("auth/forgot_password.html", {
+        "request": request, "lang": lang, "sent": False, "error": "",
+    })
+
+
+@router.post("/forgot-password")
+async def forgot_password(request: Request, email: str = Form(...)):
+    lang = get_lang(request)
+    user = get_user_by_email(email)
+    if user:
+        token = create_password_reset_token(user["user_id"])
+        url = f"{get_settings().base_url}/reset-password?token={token}"
+        send_password_reset(user["email"], user["username"], url, lang)
+    # Always show "sent" to avoid user enumeration
+    return templates.TemplateResponse("auth/forgot_password.html", {
+        "request": request, "lang": lang, "sent": True, "error": "",
+    })
+
+
+@router.get("/reset-password", response_class=HTMLResponse)
+async def reset_password_page(request: Request, token: str = ""):
+    lang = get_lang(request)
+    payload = decode_token(token)
+    if not payload or payload.get("type") != "password_reset":
+        return templates.TemplateResponse("auth/message.html", {
+            "request": request, "lang": lang,
+            "title": "auth.reset_fail_title",
+            "message": "auth.reset_fail",
+        })
+    return templates.TemplateResponse("auth/reset_password.html", {
+        "request": request, "lang": lang, "token": token, "error": "",
+    })
+
+
+@router.post("/reset-password")
+async def reset_password(
+    request: Request,
+    token: str = Form(...),
+    password: str = Form(...),
+    password2: str = Form(...),
+):
+    lang = get_lang(request)
+    payload = decode_token(token)
+    if not payload or payload.get("type") != "password_reset":
+        return templates.TemplateResponse("auth/message.html", {
+            "request": request, "lang": lang,
+            "title": "auth.reset_fail_title",
+            "message": "auth.reset_fail",
+        })
+    if len(password) < 8:
+        return templates.TemplateResponse("auth/reset_password.html", {
+            "request": request, "lang": lang, "token": token,
+            "error": "La contraseña debe tener al menos 8 caracteres." if lang == "es" else "Password must be at least 8 characters.",
+        })
+    if password != password2:
+        return templates.TemplateResponse("auth/reset_password.html", {
+            "request": request, "lang": lang, "token": token,
+            "error": "Las contraseñas no coinciden." if lang == "es" else "Passwords do not match.",
+        })
+    update_user(payload["sub"], {"password_hash": hash_password(password)})
+    return templates.TemplateResponse("auth/message.html", {
+        "request": request, "lang": lang,
+        "title": "auth.reset_ok_title",
+        "message": "auth.reset_ok",
+    })
+
+
+# ── Profile: change password ────────────────────────────────────────────────
+
+@router.post("/profile/change-password")
+async def change_password(
+    request: Request,
+    current_password: str = Form(...),
+    new_password: str = Form(...),
+    new_password2: str = Form(...),
+    user=Depends(get_current_user),
+):
+    lang = get_lang(request)
+    if not verify_password(current_password, user.get("password_hash", "")):
+        return RedirectResponse(f"/profile?pw_error=wrong_pw", status_code=303)
+    if len(new_password) < 8:
+        return RedirectResponse(f"/profile?pw_error=too_short", status_code=303)
+    if new_password != new_password2:
+        return RedirectResponse(f"/profile?pw_error=mismatch", status_code=303)
+    update_user(user["user_id"], {"password_hash": hash_password(new_password)})
+    return RedirectResponse("/profile?pw_ok=1", status_code=303)
+
+
+# ── Profile: change email ───────────────────────────────────────────────────
+
+@router.post("/profile/change-email")
+async def change_email(
+    request: Request,
+    new_email: str = Form(...),
+    user=Depends(get_current_user),
+):
+    lang = get_lang(request)
+    if not EMAIL_RE.match(new_email):
+        return RedirectResponse("/profile?em_error=invalid", status_code=303)
+    if get_user_by_email(new_email):
+        return RedirectResponse("/profile?em_error=taken", status_code=303)
+    token = create_email_change_token(user["user_id"], new_email)
+    url = f"{get_settings().base_url}/confirm-email-change?token={token}"
+    send_email_change_confirm(new_email, user["username"], url, lang)
+    return RedirectResponse("/profile?em_sent=1", status_code=303)
+
+
+@router.get("/confirm-email-change", response_class=HTMLResponse)
+async def confirm_email_change(request: Request, token: str = ""):
+    lang = get_lang(request)
+    payload = decode_token(token)
+    if not payload or payload.get("type") != "email_change" or not payload.get("new_email"):
+        return templates.TemplateResponse("auth/message.html", {
+            "request": request, "lang": lang,
+            "title": "auth.confirm_fail_title",
+            "message": "auth.confirm_fail",
+        })
+    new_email = payload["new_email"]
+    if get_user_by_email(new_email):
+        return templates.TemplateResponse("auth/message.html", {
+            "request": request, "lang": lang,
+            "title": "auth.confirm_fail_title",
+            "message": "auth.email_taken",
+        })
+    update_user(payload["sub"], {"email": new_email.lower(), "email_verified": True})
+    return templates.TemplateResponse("auth/message.html", {
+        "request": request, "lang": lang,
+        "title": "auth.email_changed_title",
+        "message": "auth.email_changed",
+    })
 
 
 # ── API (JSON) ───────────────────────────────────────────────────────────────
@@ -172,23 +348,18 @@ def _render_register(request: Request, error: str, lang: str = "es"):
     )
 
 
-def _build_recent_matches(stats: dict) -> list[dict]:
-    """Build a list of recent matches from stats_by_game + recent_matches."""
-    # recent_matches stored in user_stats if available
-    stored = stats.get("recent_matches")
-    if stored and isinstance(stored, list):
-        return stored[:20]
-
-    # Fallback: synthesize from stats_by_game (one entry per game played)
+def _build_best_scores(stats: dict) -> list[dict]:
+    """Build a list of best scores per game type from stats_by_game."""
     result = []
     by_game = stats.get("stats_by_game") or {}
     for game_type, gs in by_game.items():
         if int(gs.get("matches", 0)) > 0:
             result.append({
                 "game_type": game_type,
-                "score": int(gs.get("best_score", 0)),
-                "accuracy": float(gs.get("total_accuracy", 0)),
-                "date": stats.get("updated_at", ""),
+                "best_score": int(gs.get("best_score", 0)),
+                "best_accuracy": float(gs.get("best_accuracy", gs.get("total_accuracy", 0))),
+                "best_time": gs.get("best_time", ""),
+                "matches": int(gs.get("matches", 0)),
             })
-    result.sort(key=lambda m: m.get("date", ""), reverse=True)
-    return result[:20]
+    result.sort(key=lambda m: m.get("best_score", 0), reverse=True)
+    return result

@@ -587,6 +587,16 @@
     font-size: 1.05rem;
 }
 
+.dashboard-category {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    max-width: 1100px;
+    margin: 32px auto 16px;
+    padding: 0 24px;
+}
+
 .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
