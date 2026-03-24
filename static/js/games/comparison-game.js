@@ -16,7 +16,8 @@ var ComparisonGame = (function () {
     function loadData(settings) {
         var num = settings.maxItems || 10;
         var continent = settings.continent || 'all';
-        fetch('/api/quiz/comparison?num=' + num + '&continent=' + continent)
+        var difficulty = settings.difficulty || 'normal';
+        fetch('/api/quiz/comparison?num=' + num + '&continent=' + continent + '&difficulty=' + difficulty)
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 questions = data.questions || [];

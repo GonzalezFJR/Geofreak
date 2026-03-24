@@ -133,6 +133,97 @@
         {% endif %}
     </div>
 
+    <!-- CSV Summary -->
+    {% if csv_summary %}
+    <div class="admin-section">
+        <h2 class="admin-section-title">{{ t('adm.ds_csv_summary', lang) }}</h2>
+        <div class="csv-summary-cards">
+            <div class="csv-stat-card">
+                <span class="csv-stat-value">{{ csv_summary.rows }}</span>
+                <span class="csv-stat-label">{{ t('adm.ds_csv_rows', lang) }}</span>
+            </div>
+            <div class="csv-stat-card">
+                <span class="csv-stat-value">{{ csv_summary.cols }}</span>
+                <span class="csv-stat-label">{{ t('adm.ds_csv_cols', lang) }}</span>
+            </div>
+            <div class="csv-stat-card">
+                <span class="csv-stat-value">{{ csv_summary.numeric_stats | length }}</span>
+                <span class="csv-stat-label">{{ t('adm.ds_csv_numeric', lang) }}</span>
+            </div>
+        </div>
+
+        {% if csv_summary.numeric_stats %}
+        <div class="var-table-scroll" style="max-height:300px;margin-top:16px;">
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>{{ t('adm.ds_csv_column', lang) }}</th>
+                        <th class="num">Min</th>
+                        <th class="num">Max</th>
+                        <th class="num">{{ t('adm.ds_csv_mean', lang) }}</th>
+                        <th class="num">{{ t('adm.ds_csv_count', lang) }}</th>
+                        <th class="num">Nulls</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for col, stats in csv_summary.numeric_stats.items() %}
+                    <tr>
+                        <td><code>{{ col }}</code></td>
+                        <td class="num">{{ "%.2f" | format(stats.min) }}</td>
+                        <td class="num">{{ "%.2f" | format(stats.max) }}</td>
+                        <td class="num">{{ "%.2f" | format(stats.mean) }}</td>
+                        <td class="num">{{ stats.count }}</td>
+                        <td class="num">{{ stats.nulls }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if csv_summary.primary_keys %}
+        <div style="margin-top:16px;">
+            <h3 class="admin-section-title" style="font-size:0.95rem;margin-bottom:8px;">
+                {{ t('adm.ds_csv_entities', lang) }} ({{ csv_summary.primary_keys | length }})
+                <button class="btn-sm btn-outline" onclick="document.getElementById('pk-modal').style.display='flex'" style="margin-left:8px;">
+                    {{ t('adm.ds_csv_browse', lang) }}
+                </button>
+            </h3>
+            <div class="pk-preview">
+                {% for pk in csv_summary.primary_keys[:12] %}
+                <span class="type-badge">{{ pk }}</span>
+                {% endfor %}
+                {% if csv_summary.primary_keys | length > 12 %}
+                <span class="type-badge" style="opacity:0.5;">+{{ csv_summary.primary_keys | length - 12 }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Modal for browsing all primary keys -->
+        <div id="pk-modal" class="pk-modal-overlay" onclick="if(event.target===this)this.style.display='none'">
+            <div class="pk-modal">
+                <div class="pk-modal-header">
+                    <h3>{{ t('adm.ds_csv_entities', lang) }} ({{ csv_summary.primary_keys | length }})</h3>
+                    <button onclick="document.getElementById('pk-modal').style.display='none'" class="pk-modal-close">✕</button>
+                </div>
+                <div class="pk-modal-body">
+                    {% set per_col = (csv_summary.primary_keys | length / 3 + 0.9) | int %}
+                    <div class="pk-modal-columns">
+                        {% for col_idx in range(3) %}
+                        <div class="pk-modal-col">
+                            {% for pk in csv_summary.primary_keys[col_idx * per_col : (col_idx + 1) * per_col] %}
+                            <div class="pk-item">{{ pk }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
     <!-- GeoJSON summary -->
     <div class="admin-section">
         <h2 class="admin-section-title">{{ t('adm.ds_geojson_title', lang) }}</h2>

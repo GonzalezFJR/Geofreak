@@ -1,5 +1,6 @@
 """Admin routes — login, game config, users, analytics, datasets."""
 
+import csv
 import os
 
 from fastapi import APIRouter, Request, Form, HTTPException, Query
@@ -240,6 +241,14 @@ async def admin_datasets(request: Request, dataset: str = Query("countries")):
     variables = get_all_variables(dataset)
     sources = get_sources()
 
+    # CSV summary
+    csv_summary = None
+    csv_file = current_ds.get("csv")
+    if csv_file:
+        csv_path = os.path.join(DATA_DIR, csv_file)
+        if os.path.isfile(csv_path):
+            csv_summary = _build_csv_summary(csv_path, current_ds)
+
     # Dataset list for selector
     dataset_list = []
     for ds_id, ds_info in all_datasets.items():
@@ -259,6 +268,7 @@ async def admin_datasets(request: Request, dataset: str = Query("countries")):
         "sources": sources,
         "current_dataset": dataset,
         "dataset_list": dataset_list,
+        "csv_summary": csv_summary,
     })
 
 
@@ -281,6 +291,55 @@ async def admin_download_file(request: Request, filename: str):
     if not os.path.isfile(fpath):
         raise HTTPException(status_code=404, detail="File not found")
     return FileResponse(fpath, filename=safe_name)
+
+
+def _build_csv_summary(csv_path: str, ds_config: dict) -> dict:
+    """Build a summary of the CSV file: rows, cols, numeric stats, and primary key values."""
+    with open(csv_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        rows = list(reader)
+
+    if not rows:
+        return {"rows": 0, "cols": 0, "columns": [], "numeric_stats": {}, "primary_keys": []}
+
+    columns = list(rows[0].keys())
+    name_field = ds_config.get("name_es_field") or ds_config.get("name_field") or columns[0]
+
+    # Primary key values (entity names)
+    primary_keys = []
+    for row in rows:
+        val = row.get(name_field, "")
+        if val:
+            primary_keys.append(val)
+
+    # Numeric stats for numeric columns
+    numeric_stats = {}
+    for col in columns:
+        vals = []
+        for row in rows:
+            try:
+                v = row.get(col, "")
+                if v not in ("", None):
+                    vals.append(float(v))
+            except (ValueError, TypeError):
+                continue
+        if len(vals) >= 2:
+            vals.sort()
+            numeric_stats[col] = {
+                "count": len(vals),
+                "min": vals[0],
+                "max": vals[-1],
+                "mean": sum(vals) / len(vals),
+                "nulls": len(rows) - len(vals),
+            }
+
+    return {
+        "rows": len(rows),
+        "cols": len(columns),
+        "columns": columns,
+        "numeric_stats": numeric_stats,
+        "primary_keys": primary_keys,
+    }
 
 
 def _human_size(size_bytes: int) -> str:

@@ -1,0 +1,81 @@
+code,name,name_es,name_ru,admin_type,admin_type_es,federal_district,capital,lat,lon,population,area_km2,density_per_km2,grp_usd,grp_per_capita_usd,unemployment_rate,median_age,elevation_max_m,elevation_min_m,avg_elevation_m,avg_temperature_c,annual_precipitation_mm,life_expectancy,num_cities
+AD,Adygea,Adiguesia,Адыгея,republic,república,Southern,Maykop,44.61,40.10,496934,7792,63.8,2400000000,4830,8.2,40.5,3238,20,250,10.8,700,73.5,2
+AL,Altai Republic,República de Altái,Алтай,republic,república,Siberian,Gorno-Altaysk,50.71,86.01,210926,92903,2.3,1200000000,5690,12.5,34.2,4506,170,1800,-1.0,500,70.5,1
+ALT,Altai Krai,Krai de Altái,Алтайский край,krai,krai,Siberian,Barnaul,53.35,83.75,2296353,167996,13.7,10500000000,4570,6.8,41.2,2490,79,320,2.5,440,72.0,12
+AMU,Amur Oblast,Óblast de Amur,Амурская область,oblast,óblast,Far Eastern,Blagoveshchensk,50.25,127.98,773602,361908,2.1,4500000000,5820,5.2,39.8,2312,-3,350,-0.5,560,69.5,9
+ARK,Arkhangelsk Oblast,Óblast de Arjángelsk,Архангельская область,oblast,óblast,Northwestern,Arkhangelsk,63.55,41.52,1127568,589913,1.9,8200000000,7270,6.5,41.5,551,-1,80,-1.5,530,72.0,14
+AST,Astrakhan Oblast,Óblast de Astracán,Астраханская область,oblast,óblast,Southern,Astrakhan,46.35,48.03,1017514,49024,20.8,5500000000,5410,7.8,39.0,150,-28,10,10.5,220,73.0,6
+BA,Bashkortostan,Baskortostán,Башкортостан,republic,república,Volga,Ufa,54.74,55.97,4091422,142947,28.6,24000000000,5870,5.0,39.5,1640,62,350,2.8,500,72.5,21
+BEL,Belgorod Oblast,Óblast de Bélgorod,Белгородская область,oblast,óblast,Central,Belgorod,50.60,36.59,1547418,27134,57.0,10500000000,6790,4.0,42.5,277,100,190,6.5,550,73.5,11
+BRY,Bryansk Oblast,Óblast de Briansk,Брянская область,oblast,óblast,Central,Bryansk,53.25,34.37,1192491,34857,34.2,5200000000,4360,4.5,43.5,290,120,200,5.5,610,71.5,16
+BU,Buryatia,Buriatia,Бурятия,republic,república,Far Eastern,Ulan-Ude,51.83,107.59,985431,351334,2.8,4200000000,4260,10.0,34.0,3491,456,900,-1.5,400,70.0,6
+CE,Chechnya,Chechenia,Чечня,republic,república,North Caucasian,Grozny,43.32,45.68,1510824,15647,96.6,3500000000,2320,15.0,27.5,4493,55,500,10.5,500,74.5,5
+CHE,Chelyabinsk Oblast,Óblast de Cheliábinsk,Челябинская область,oblast,óblast,Ural,Chelyabinsk,55.16,61.40,3442810,88529,38.9,18500000000,5370,5.5,40.5,1589,102,400,2.0,430,72.0,30
+CHU,Chukotka,Chukotka,Чукотка,autonomous_okrug,distrito autónomo,Far Eastern,Anadyr,66.00,169.50,47490,721481,0.1,1200000000,25270,3.5,36.0,1843,-5,500,-7.0,320,65.0,3
+CU,Chuvashia,Chuvasia,Чувашия,republic,república,Volga,Cheboksary,56.15,47.25,1207875,18343,65.8,4000000000,3310,5.2,41.0,287,38,160,3.5,530,72.5,9
+DA,Dagestan,Daguestán,Дагестан,republic,república,North Caucasian,Makhachkala,42.98,47.50,3182054,50270,63.3,7500000000,2360,14.5,29.5,4466,-28,900,11.5,430,77.5,10
+IN,Ingushetia,Ingusetia,Ингушетия,republic,república,North Caucasian,Magas,43.17,44.81,510824,3628,140.8,800000000,1570,27.0,28.0,4451,200,600,9.0,540,80.0,4
+IRK,Irkutsk Oblast,Óblast de Irkutsk,Иркутская область,oblast,óblast,Siberian,Irkutsk,52.29,104.30,2391193,774846,3.1,19000000000,7950,6.5,38.0,3072,420,700,-1.0,470,69.5,22
+IVA,Ivanovo Oblast,Óblast de Ivánovo,Ивановская область,oblast,óblast,Central,Ivanovo,57.00,41.00,985855,21437,46.0,3200000000,3250,4.8,44.5,195,75,140,3.5,600,71.0,17
+Jewish,Jewish Autonomous Oblast,Óblast Autónomo Hebreo,Еврейская АО,autonomous_oblast,óblast autónomo,Far Eastern,Birobidzhan,48.79,132.92,156000,36271,4.3,700000000,4490,6.0,39.5,1242,-2,300,0.5,610,68.5,2
+KB,Kabardino-Balkaria,Kabardino-Balkaria,Кабардино-Балкария,republic,república,North Caucasian,Nalchik,43.49,43.62,904200,12470,72.5,2000000000,2210,10.5,35.0,5642,170,1100,8.5,600,75.5,8
+KGD,Kaliningrad Oblast,Óblast de Kaliningrado,Калининградская область,oblast,óblast,Northwestern,Kaliningrad,54.71,20.51,1018624,15125,67.3,7500000000,7360,5.0,40.8,242,0,60,7.5,800,73.0,22
+KLU,Kaluga Oblast,Óblast de Kaluga,Калужская область,oblast,óblast,Central,Kaluga,54.53,36.27,1011564,29777,34.0,6500000000,6430,3.5,43.5,275,110,190,4.5,630,72.0,24
+KAM,Kamchatka Krai,Krai de Kamchatka,Камчатский край,krai,krai,Far Eastern,Petropavlovsk-Kamchatsky,53.01,158.65,311667,464275,0.7,3000000000,9630,4.5,37.5,4750,-3,800,-0.5,700,69.5,3
+KC,Karachay-Cherkessia,Karacháevo-Cherkesia,Карачаево-Черкесия,republic,república,North Caucasian,Cherkessk,43.90,41.79,465563,14277,32.6,900000000,1930,13.0,36.5,5642,450,1200,7.5,650,74.5,4
+KR,Karelia,Carelia,Карелия,republic,república,Northwestern,Petrozavodsk,63.80,33.20,614064,180520,3.4,4500000000,7330,7.8,42.5,577,0,150,1.5,600,71.5,13
+KEM,Kemerovo Oblast,Óblast de Kémerovo,Кемеровская область,oblast,óblast,Siberian,Kemerovo,54.35,87.18,2633446,95725,27.5,15500000000,5890,5.8,40.0,2178,105,400,1.0,520,69.5,20
+KHA,Khabarovsk Krai,Krai de Jabárovsk,Хабаровский край,krai,krai,Far Eastern,Khabarovsk,48.48,135.08,1301127,787633,1.7,9000000000,6920,4.5,39.5,2933,-1,400,-0.8,580,69.5,7
+KHM,Khanty-Mansi Autonomous Okrug,Janti-Mansi,Ханты-Мансийский АО,autonomous_okrug,distrito autónomo,Ural,Khanty-Mansiysk,61.00,69.00,1674676,534801,3.1,62000000000,37020,3.0,35.0,1895,8,200,-2.5,530,73.0,16
+KIR,Kirov Oblast,Óblast de Kírov,Кировская область,oblast,óblast,Volga,Kirov,58.60,49.66,1262402,120374,10.5,4500000000,3560,5.5,43.0,337,50,170,1.8,590,72.0,18
+KO,Komi Republic,República de Komi,Коми,republic,república,Northwestern,Syktyvkar,62.00,54.00,820473,416774,2.0,7500000000,9140,7.2,41.5,1896,20,250,-2.0,560,71.0,10
+KOS,Kostroma Oblast,Óblast de Kostromá,Костромская область,oblast,óblast,Central,Kostroma,58.55,43.95,628854,60211,10.4,2000000000,3180,5.5,44.5,292,70,150,2.5,590,71.5,12
+KDA,Krasnodar Krai,Krai de Krasnodar,Краснодарский край,krai,krai,Southern,Krasnodar,45.04,38.97,5828276,75485,77.2,35000000000,6010,5.0,40.8,3346,0,350,12.0,700,74.0,26
+KYA,Krasnoyarsk Krai,Krai de Krasnoyarsk,Красноярский край,krai,krai,Siberian,Krasnoyarsk,56.01,92.85,2855899,2366797,1.2,33000000000,11560,4.8,38.0,3003,-1,450,-4.0,420,71.0,23
+KGN,Kurgan Oblast,Óblast de Kurgán,Курганская область,oblast,óblast,Ural,Kurgan,55.45,65.33,818570,71488,11.4,2500000000,3050,6.8,42.0,407,60,180,1.5,400,71.0,9
+KRS,Kursk Oblast,Óblast de Kursk,Курская область,oblast,óblast,Central,Kursk,51.73,36.19,1104016,29997,36.8,5500000000,4980,4.0,43.0,275,130,200,5.5,580,72.0,10
+LEN,Leningrad Oblast,Óblast de Leningrado,Ленинградская область,oblast,óblast,Northwestern,Gatchina,60.05,30.42,1892711,83908,22.6,14000000000,7400,3.5,41.0,168,0,80,4.0,650,73.0,31
+LIP,Lipetsk Oblast,Óblast de Lípetsk,Липецкая область,oblast,óblast,Central,Lipetsk,52.61,39.59,1139371,24047,47.4,7000000000,6140,3.8,43.0,262,85,170,5.5,530,72.5,8
+MAG,Magadan Oblast,Óblast de Magadán,Магаданская область,oblast,óblast,Far Eastern,Magadan,59.57,150.80,139034,462464,0.3,2000000000,14390,4.5,40.0,2574,-3,600,-5.0,420,68.5,2
+ME,Mari El,Mari-El,Марий Эл,republic,república,Volga,Yoshkar-Ola,56.63,47.87,680380,23375,29.1,1800000000,2650,5.2,40.5,280,42,150,3.0,520,72.0,4
+MO,Mordovia,Mordovia,Мордовия,republic,república,Volga,Saransk,54.19,45.18,790197,26128,30.2,2300000000,2910,4.5,42.5,324,90,180,4.0,500,73.0,7
+MOW,Moscow,Moscú (ciudad),Москва,federal_city,ciudad federal,Central,Moscow,55.76,37.62,12655050,2561,4941.5,420000000000,33190,2.5,41.0,255,112,160,5.8,700,78.0,1
+MOS,Moscow Oblast,Óblast de Moscú,Московская область,oblast,óblast,Central,Krasnogorsk,55.80,37.10,7690863,44329,173.5,55000000000,7150,3.0,41.5,310,100,180,4.8,650,74.0,73
+MUR,Murmansk Oblast,Óblast de Múrmansk,Мурманская область,oblast,óblast,Northwestern,Murmansk,68.97,33.08,732864,144902,5.1,6500000000,8870,6.0,40.5,1201,0,250,-0.5,500,71.5,16
+NIZ,Nizhny Novgorod Oblast,Óblast de Nizhni Nóvgorod,Нижегородская область,oblast,óblast,Volga,Nizhny Novgorod,56.33,44.00,3202036,76624,41.8,18000000000,5620,4.0,43.5,366,60,170,4.0,550,72.5,28
+NGR,Novgorod Oblast,Óblast de Nóvgorod,Новгородская область,oblast,óblast,Northwestern,Veliky Novgorod,58.52,31.28,596457,55300,10.8,2500000000,4190,5.5,44.0,296,10,100,4.0,620,70.5,10
+NVS,Novosibirsk Oblast,Óblast de Novosibirsk,Новосибирская область,oblast,óblast,Siberian,Novosibirsk,55.03,82.92,2798170,177756,15.7,17000000000,6080,5.0,39.0,494,80,200,0.5,450,72.0,14
+OMS,Omsk Oblast,Óblast de Omsk,Омская область,oblast,óblast,Siberian,Omsk,54.99,73.37,1903675,141140,13.5,9500000000,4990,5.5,39.5,150,55,110,0.5,400,71.5,6
+ORE,Orenburg Oblast,Óblast de Orenburgo,Оренбургская область,oblast,óblast,Volga,Orenburg,51.77,55.10,1956835,123702,15.8,11000000000,5620,4.5,40.5,1668,35,300,4.5,380,72.0,12
+ORL,Oryol Oblast,Óblast de Oriol,Орловская область,oblast,óblast,Central,Oryol,52.97,36.06,733498,24652,29.8,2800000000,3820,4.5,44.0,285,110,195,5.0,570,71.5,7
+PNZ,Penza Oblast,Óblast de Penza,Пензенская область,oblast,óblast,Volga,Penza,53.20,45.00,1290898,43352,29.8,4200000000,3250,4.2,43.5,342,90,200,4.5,520,73.0,11
+PER,Perm Krai,Krai de Perm,Пермский край,krai,krai,Volga,Perm,58.01,56.25,2599260,160236,16.2,15500000000,5960,5.0,40.0,1469,60,300,1.5,550,71.5,25
+PRI,Primorsky Krai,Krai de Primorie,Приморский край,krai,krai,Far Eastern,Vladivostok,43.12,131.87,1877811,164673,11.4,10000000000,5320,5.5,40.0,1855,-1,400,3.5,750,70.5,12
+PSK,Pskov Oblast,Óblast de Pskov,Псковская область,oblast,óblast,Northwestern,Pskov,57.82,28.33,626115,55399,11.3,2000000000,3190,6.5,45.5,339,3,100,4.5,620,70.0,14
+ROS,Rostov Oblast,Óblast de Rostov,Ростовская область,oblast,óblast,Southern,Rostov-on-Don,47.24,39.71,4197821,100967,41.6,19000000000,4530,5.5,41.5,254,-5,110,9.0,470,73.0,23
+RYA,Ryazan Oblast,Óblast de Riazán,Рязанская область,oblast,óblast,Central,Ryazan,54.63,39.70,1105842,39605,27.9,4000000000,3620,4.0,44.5,236,70,150,4.5,560,72.0,12
+SPE,Saint Petersburg,San Petersburgo,Санкт-Петербург,federal_city,ciudad federal,Northwestern,Saint Petersburg,59.93,30.32,5384342,1439,3741.7,95000000000,17640,2.8,41.0,176,0,20,5.0,680,76.0,1
+SAK,Sakhalin Oblast,Óblast de Sajalín,Сахалинская область,oblast,óblast,Far Eastern,Yuzhno-Sakhalinsk,50.90,142.74,485621,87101,5.6,8000000000,16470,5.0,40.0,1609,-1,350,0.0,700,70.0,9
+SAM,Samara Oblast,Óblast de Samara,Самарская область,oblast,óblast,Volga,Samara,53.20,50.15,3179532,53565,59.4,20000000000,6290,3.5,42.0,381,15,130,5.0,480,72.5,11
+SAR,Saratov Oblast,Óblast de Sarátov,Саратовская область,oblast,óblast,Volga,Saratov,51.53,46.03,2421822,101240,23.9,9500000000,3920,5.0,42.5,369,3,150,6.0,430,72.5,18
+SA,Sakha (Yakutia),Sajá (Yakutia),Саха (Якутия),republic,república,Far Eastern,Yakutsk,62.03,129.73,995686,3083523,0.3,12000000000,12050,7.0,34.0,3147,-7,400,-10.5,260,70.5,13
+SE,North Ossetia-Alania,Osetia del Norte-Alania,Северная Осетия,republic,república,North Caucasian,Vladikavkaz,43.05,44.67,696837,7987,87.2,1800000000,2580,12.0,37.5,5033,250,1200,8.5,650,74.5,6
+SMO,Smolensk Oblast,Óblast de Smolensk,Смоленская область,oblast,óblast,Central,Smolensk,54.78,32.05,921127,49779,18.5,3500000000,3800,5.0,44.5,319,130,210,4.5,640,71.0,15
+STA,Stavropol Krai,Krai de Stávropol,Ставропольский край,krai,krai,North Caucasian,Stavropol,45.04,43.97,2792796,66160,42.2,9000000000,3220,5.5,39.5,5642,100,600,9.5,550,74.0,19
+SVE,Sverdlovsk Oblast,Óblast de Sverdlovsk,Свердловская область,oblast,óblast,Ural,Yekaterinburg,56.84,60.60,4310681,194307,22.2,27000000000,6260,4.5,40.0,1569,45,350,1.5,490,71.5,47
+TAM,Tambov Oblast,Óblast de Tambov,Тамбовская область,oblast,óblast,Central,Tambov,52.72,41.43,1006748,34462,29.2,3500000000,3470,3.8,45.0,223,90,160,5.5,530,73.0,8
+TA,Tatarstan,Tartaristán,Татарстан,republic,república,Volga,Kazan,55.80,49.07,3902888,67847,57.5,30000000000,7690,3.2,40.0,381,35,170,3.5,500,74.5,22
+TOM,Tomsk Oblast,Óblast de Tomsk,Томская область,oblast,óblast,Siberian,Tomsk,56.49,84.97,1077442,314391,3.4,7000000000,6500,5.8,38.0,1003,25,150,-0.5,500,72.0,6
+TUL,Tula Oblast,Óblast de Tula,Тульская область,oblast,óblast,Central,Tula,54.19,37.62,1468972,25679,57.2,6500000000,4420,3.5,45.0,293,105,200,5.0,590,71.5,21
+TY,Tuva,Tuvá,Тыва,republic,república,Siberian,Kyzyl,51.72,94.45,330368,168604,2.0,800000000,2420,18.5,28.0,3976,550,1200,-4.5,320,66.0,5
+TVE,Tver Oblast,Óblast de Tver,Тверская область,oblast,óblast,Central,Tver,56.86,35.92,1245619,84201,14.8,4500000000,3610,5.0,44.5,346,75,180,3.5,600,71.0,23
+TYU,Tyumen Oblast,Óblast de Tiumén,Тюменская область,oblast,óblast,Ural,Tyumen,57.15,65.53,1537416,160122,9.6,8000000000,5200,5.0,37.0,286,25,120,0.5,460,72.5,5
+UD,Udmurtia,Udmurtia,Удмуртия,republic,república,Volga,Izhevsk,56.85,53.21,1494219,42061,35.5,6000000000,4010,4.8,40.0,321,50,170,2.0,530,72.0,6
+ULY,Ulyanovsk Oblast,Óblast de Uliánovsk,Ульяновская область,oblast,óblast,Volga,Ulyanovsk,54.32,48.39,1218900,37181,32.8,4000000000,3280,4.5,42.5,363,50,180,4.0,480,72.0,6
+VLA,Vladimir Oblast,Óblast de Vladímir,Владимирская область,oblast,óblast,Central,Vladimir,56.13,40.41,1358416,29084,46.7,5000000000,3680,4.0,44.0,271,85,170,4.0,580,71.5,22
+VGG,Volgograd Oblast,Óblast de Volgogrado,Волгоградская область,oblast,óblast,Southern,Volgograd,48.71,44.50,2491751,112877,22.1,9500000000,3810,5.5,42.0,358,-15,100,7.5,380,73.0,19
+VLG,Vologda Oblast,Óblast de Vólogda,Вологодская область,oblast,óblast,Northwestern,Vologda,59.22,39.88,1160445,144527,8.0,5500000000,4740,6.0,43.0,563,70,170,2.0,580,72.0,15
+VOR,Voronezh Oblast,Óblast de Vorónezh,Воронежская область,oblast,óblast,Central,Voronezh,51.67,39.21,2305608,52216,44.2,11000000000,4770,4.0,43.5,268,70,170,6.0,530,73.0,15
+YAN,Yamalo-Nenets Autonomous Okrug,Yamalo-Nenets,Ямало-Ненецкий АО,autonomous_okrug,distrito autónomo,Ural,Salekhard,66.53,66.61,510490,769250,0.7,32000000000,62680,2.5,33.0,1895,-5,200,-7.5,430,72.5,8
+YAR,Yaroslavl Oblast,Óblast de Yaroslavl,Ярославская область,oblast,óblast,Central,Yaroslavl,57.63,39.87,1253389,36177,34.6,5500000000,4390,4.5,44.0,294,75,150,3.5,590,72.0,11
+ZAB,Zabaykalsky Krai,Krai de Transbaikalia,Забайкальский край,krai,krai,Far Eastern,Chita,52.03,113.50,1059657,431892,2.5,3500000000,3300,9.0,36.0,3072,450,800,-3.0,400,69.5,10

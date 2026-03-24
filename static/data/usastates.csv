@@ -1,6 +1,6 @@
 code,name,name_es,capital,lat,lon,population,area_km2,density_per_km2,gdp_usd,gdp_per_capita_usd,median_income_usd,unemployment_rate,elevation_max_m,elevation_min_m,avg_temperature_c,annual_precipitation_mm,life_expectancy
 AL,Alabama,Alabama,Montgomery,32.806671,-86.79113,5024279,135767,37.0,271828000000,54119,56929,2.8,735,0,17.1,1400,75.4
-AK,Alaska,Alaska,Juneau,63.588753,-154.493062,733391,1723337,0.4,55942000000,76279,77640,4.4,6190,-2,−2.3,850,78.2
+AK,Alaska,Alaska,Juneau,63.588753,-154.493062,733391,1723337,0.4,55942000000,76279,77640,4.4,6190,-2,-2.3,850,78.2
 AZ,Arizona,Arizona,Phoenix,34.048928,-111.093731,7151502,295234,24.2,442020000000,61810,65913,3.7,3851,21,21.7,330,78.3
 AR,Arkansas,Arkansas,Little Rock,35.20105,-91.831833,3011524,137732,21.9,151876000000,50427,52123,3.5,839,17,15.8,1270,75.9
 CA,California,California,Sacramento,36.778261,-119.417932,39538223,423967,93.3,3598103000000,91001,84907,4.2,4421,-86,15.6,560,81.0

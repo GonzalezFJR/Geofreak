@@ -109,11 +109,49 @@ def _get_valid_countries(stat: str, continent: Optional[str] = None) -> list[dic
     return records
 
 
+def _pick_by_difficulty(
+    reference_value: float,
+    candidates: list[dict],
+    difficulty: str,
+) -> Optional[dict]:
+    """Pick a country from *candidates* relative to *reference_value* using difficulty rules.
+
+    Difficulty percentile bands (by distance to reference):
+        easy       → farthest 75 %
+        normal     → any (random)
+        hard       → closest 50 %
+        very_hard  → closest 25 %
+        extreme    → closest 10 %
+    """
+    if not candidates:
+        return None
+    if difficulty == "normal":
+        return random.choice(candidates)
+
+    ranked = sorted(candidates, key=lambda c: abs(c["stat_value"] - reference_value))
+    n = len(ranked)
+
+    if difficulty == "easy":
+        start = max(1, int(n * 0.25))
+        pool = ranked[start:]
+    elif difficulty == "hard":
+        pool = ranked[: max(1, int(n * 0.50))]
+    elif difficulty == "very_hard":
+        pool = ranked[: max(1, int(n * 0.25))]
+    elif difficulty == "extreme":
+        pool = ranked[: max(1, int(n * 0.10))]
+    else:
+        pool = ranked
+
+    return random.choice(pool) if pool else random.choice(candidates)
+
+
 def generate_ordering_question(
     stat: Optional[str] = None,
     continent: Optional[str] = None,
     count: int = 5,
     ascending: Optional[bool] = None,
+    difficulty: str = "normal",
 ) -> Optional[dict]:
     """Generate one ordering question: sort N countries by a stat.
 
@@ -137,7 +175,28 @@ def generate_ordering_question(
     if len(countries) < count:
         return None
 
-    sample = random.sample(countries, count)
+    # Difficulty-aware sequential selection
+    chosen_isos: set[str] = set()
+    sample: list[dict] = []
+
+    first = random.choice(countries)
+    sample.append(first)
+    chosen_isos.add(first["iso_a3"])
+
+    for _ in range(count - 1):
+        prev = sample[-1]
+        pool = [c for c in countries if c["iso_a3"] not in chosen_isos]
+        if not pool:
+            break
+        pick = _pick_by_difficulty(prev["stat_value"], pool, difficulty)
+        if pick is None:
+            break
+        sample.append(pick)
+        chosen_isos.add(pick["iso_a3"])
+
+    if len(sample) < count:
+        return None
+
     sorted_sample = sorted(sample, key=lambda c: c["stat_value"], reverse=not ascending)
     correct_order = [c["iso_a3"] for c in sorted_sample]
 
@@ -158,6 +217,7 @@ def generate_ordering_question(
 def generate_comparison_question(
     stat: Optional[str] = None,
     continent: Optional[str] = None,
+    difficulty: str = "normal",
 ) -> Optional[dict]:
     """Generate one comparison question: which of 2 countries has a higher stat?
 
@@ -179,7 +239,16 @@ def generate_comparison_question(
     if len(countries) < 2:
         return None
 
-    pair = random.sample(countries, 2)
+    first = random.choice(countries)
+    pool = [c for c in countries if c["iso_a3"] != first["iso_a3"]]
+    if not pool:
+        return None
+
+    second = _pick_by_difficulty(first["stat_value"], pool, difficulty)
+    if second is None:
+        return None
+
+    pair = [first, second]
     pair.sort(key=lambda c: c["stat_value"], reverse=True)
 
     return {
@@ -197,6 +266,7 @@ def generate_comparison_question(
 def generate_ordering_set(
     num_questions: int = 10,
     continent: Optional[str] = None,
+    difficulty: str = "normal",
 ) -> list[dict]:
     """Generate a full set of ordering questions with varied stats."""
     stat_keys = STAT_KEYS_FUNC()
@@ -210,7 +280,7 @@ def generate_ordering_set(
         attempts = 0
         while q is None and attempts < len(stat_keys):
             stat = used_stats.pop() if used_stats else random.choice(stat_keys)
-            q = generate_ordering_question(stat=stat, continent=continent)
+            q = generate_ordering_question(stat=stat, continent=continent, difficulty=difficulty)
             attempts += 1
         if q:
             questions.append(q)
@@ -220,6 +290,7 @@ def generate_ordering_set(
 def generate_comparison_set(
     num_questions: int = 10,
     continent: Optional[str] = None,
+    difficulty: str = "normal",
 ) -> list[dict]:
     """Generate a full set of comparison questions with varied stats."""
     stat_keys = STAT_KEYS_FUNC()
@@ -233,7 +304,7 @@ def generate_comparison_set(
         attempts = 0
         while q is None and attempts < len(stat_keys):
             stat = used_stats.pop() if used_stats else random.choice(stat_keys)
-            q = generate_comparison_question(stat=stat, continent=continent)
+            q = generate_comparison_question(stat=stat, continent=continent, difficulty=difficulty)
             attempts += 1
         if q:
             questions.append(q)

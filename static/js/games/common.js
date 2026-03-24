@@ -360,7 +360,20 @@ var GeoGame = {
             continent: 'all',
             timeLimit: defaults.time_limit || 600,
             maxItems: defaults.max_items || 0,
+            difficulty: 'normal',
         };
+
+        // Read difficulty selector
+        var activeBtn = document.querySelector('#difficulty-selector .diff-btn.active');
+        if (activeBtn) {
+            s.difficulty = activeBtn.getAttribute('data-diff') || 'normal';
+        }
+
+        // Read countdown toggle
+        var countdownEl = document.getElementById('countdown-toggle');
+        if (countdownEl && !countdownEl.checked) {
+            s.timeLimit = 0;
+        }
 
         this.settings = s;
         this.correct = 0;
@@ -485,6 +498,17 @@ var GeoGame = {
         this.endGame();
     },
 };
+
+/* ── Difficulty selector button binding ────────────────────── */
+(function () {
+    var btns = document.querySelectorAll('#difficulty-selector .diff-btn');
+    btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            btns.forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+        });
+    });
+})();
 
 /* ── Tooltip for stat descriptions (shared) ────────────────────── */
 function toggleTooltip(el) {
