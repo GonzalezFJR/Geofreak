@@ -13,6 +13,7 @@ var MapGame = (function () {
     var correctSet    = null; // Set<iso3>
     var failedSet     = null; // Set<iso3> — revealed (wrong)
     var selectedIso   = null;
+    var activeTooltipLayer = null; // layer with open name tooltip
     var mode, target;
 
     /* ── Answers lookup ────────────────────────────────────── */
@@ -99,10 +100,11 @@ var MapGame = (function () {
             hideSpinner();
             GeoGame.startTimer();
 
-            // Focus input in type mode
+            // Focus input in type mode; disable reveal until selection
             if (mode === 'type') {
                 var inp = document.getElementById('answer-input');
                 if (inp) inp.focus();
+                updateRevealButton();
             }
         });
     }
@@ -130,12 +132,13 @@ var MapGame = (function () {
                 if (!iso3 || iso3 === '-99') return;
                 countryLayers[iso3] = layer;
 
-                if (mode === 'click') {
-                    layer.on('click', function () { onClickCountry(iso3); });
-                }
+                layer.on('click', function (e) {
+                    L.DomEvent.stopPropagation(e);
+                    onClickCountry(iso3);
+                });
 
                 layer.on('mouseover', function () {
-                    if (targetSet.has(iso3) && !correctSet.has(iso3)) {
+                    if (targetSet.has(iso3) && !correctSet.has(iso3) && !failedSet.has(iso3)) {
                         layer.setStyle({ fillOpacity: 0.5 });
                     }
                 });
@@ -144,6 +147,17 @@ var MapGame = (function () {
                 });
             },
         }).addTo(map);
+
+        // Click on empty map area clears tooltip and selection in type mode
+        map.on('click', function () {
+            closeActiveTooltip();
+            if (mode === 'type' && selectedIso) {
+                var prev = selectedIso;
+                selectedIso = null;
+                refreshStyle(prev);
+                updateRevealButton();
+            }
+        });
     }
 
     /* ── Styling ───────────────────────────────────────────── */
@@ -173,9 +187,51 @@ var MapGame = (function () {
         }
     }
 
-    /* ── Click mode ────────────────────────────────────────── */
+    /* ── Tooltip helpers ────────────────────────────────────── */
+    function closeActiveTooltip() {
+        if (activeTooltipLayer) {
+            activeTooltipLayer.closeTooltip();
+            activeTooltipLayer.unbindTooltip();
+            activeTooltipLayer = null;
+        }
+    }
+
+    function showNameTooltip(iso3) {
+        closeActiveTooltip();
+        var c = countriesData[iso3];
+        var layer = countryLayers[iso3];
+        if (!c || !layer) return;
+        var label = target === 'capital'
+            ? GeoUtils.getLocalCapital(c) + ' — ' + GeoUtils.getLocalName(c)
+            : GeoUtils.getLocalName(c);
+        layer.bindTooltip(label, { permanent: true, className: 'reveal-tooltip', direction: 'center' }).openTooltip();
+        activeTooltipLayer = layer;
+    }
+
+    /* ── Reveal button state (type mode) ───────────────────── */
+    function updateRevealButton() {
+        if (mode !== 'type') return;
+        var btn = document.querySelector('.btn-reveal-map-bar');
+        if (btn) {
+            btn.disabled = !selectedIso;
+        }
+    }
+
+    /* ── Click on country ──────────────────────────────────── */
     function onClickCountry(iso3) {
-        if (!targetSet.has(iso3) || correctSet.has(iso3) || failedSet.has(iso3)) return;
+        // If the country is already resolved, show/hide its name
+        if (correctSet.has(iso3) || failedSet.has(iso3)) {
+            if (activeTooltipLayer === countryLayers[iso3]) {
+                closeActiveTooltip();
+            } else {
+                showNameTooltip(iso3);
+            }
+            return;
+        }
+
+        if (!targetSet.has(iso3)) return;
+
+        closeActiveTooltip();
 
         // Deselect previous
         if (selectedIso && selectedIso !== iso3) refreshStyle(selectedIso);
@@ -183,24 +239,29 @@ var MapGame = (function () {
         selectedIso = iso3;
         refreshStyle(iso3);
 
-        var prompt = document.getElementById('game-prompt');
-        prompt.style.display = 'flex';
+        if (mode === 'click') {
+            var prompt = document.getElementById('game-prompt');
+            prompt.style.display = 'flex';
 
-        var ptxt = document.getElementById('prompt-text');
-        var pcountry = document.getElementById('prompt-country');
+            var ptxt = document.getElementById('prompt-text');
+            var pcountry = document.getElementById('prompt-country');
 
-        if (target === 'capital') {
-            var cData = countriesData[iso3];
-            if (pcountry) pcountry.textContent = cData ? GeoUtils.getLocalName(cData) : '';
-            if (ptxt)     ptxt.textContent = T['mg.what_capital'] || '¿Capital?';
+            if (target === 'capital') {
+                var cData = countriesData[iso3];
+                if (pcountry) pcountry.textContent = cData ? GeoUtils.getLocalName(cData) : '';
+                if (ptxt)     ptxt.textContent = T['mg.what_capital'] || '¿Capital?';
+            } else {
+                if (pcountry) pcountry.textContent = '';
+                if (ptxt)     ptxt.textContent = T['mg.what_country'] || 'What country is this?';
+            }
+
+            var input = document.getElementById('answer-input');
+            input.value = '';
+            input.focus();
         } else {
-            if (pcountry) pcountry.textContent = '';
-            if (ptxt)     ptxt.textContent = T['mg.what_country'] || 'What country is this?';
+            // Type mode: just highlight, enable reveal
+            updateRevealButton();
         }
-
-        var input = document.getElementById('answer-input');
-        input.value = '';
-        input.focus();
     }
 
     /* ── Submit answer ─────────────────────────────────────── */
@@ -241,6 +302,11 @@ var MapGame = (function () {
         var iso3 = answerIndex[answer];
         if (iso3 && targetSet.has(iso3) && !correctSet.has(iso3) && !failedSet.has(iso3)) {
             markCorrect(iso3);
+            // If the answered country was the selected one, clear selection
+            if (selectedIso === iso3) {
+                selectedIso = null;
+                updateRevealButton();
+            }
             flashInput(input, true);
             input.value = '';
             input.focus();
@@ -314,15 +380,12 @@ var MapGame = (function () {
         input.value = answer;
         markFailed(selectedIso);
 
-        // Show tooltip on the country
-        var layer = countryLayers[selectedIso];
-        if (layer) {
-            var label = target === 'capital' ? GeoUtils.getLocalCapital(c) : GeoUtils.getLocalName(c);
-            layer.bindTooltip(label, { permanent: true, className: 'reveal-tooltip', direction: 'center' }).openTooltip();
-        }
+        // Briefly show tooltip, then remove
+        showNameTooltip(selectedIso);
 
         var prompt = document.getElementById('game-prompt');
         setTimeout(function () {
+            closeActiveTooltip();
             prompt.style.display = 'none';
             selectedIso = null;
             checkComplete();
@@ -330,20 +393,15 @@ var MapGame = (function () {
     }
 
     function revealType() {
-        // Reveal a random remaining country
-        var remaining = [];
-        targetIsos.forEach(function (iso) {
-            if (!correctSet.has(iso) && !failedSet.has(iso)) remaining.push(iso);
-        });
-        if (remaining.length === 0) return;
-        var iso3 = remaining[Math.floor(Math.random() * remaining.length)];
+        // Require a selected country
+        if (!selectedIso) return;
+        var iso3 = selectedIso;
         var c = countriesData[iso3];
         if (!c) return;
 
         markFailed(iso3);
 
         var label = target === 'capital' ? (GeoUtils.getLocalCapital(c) + ' → ' + GeoUtils.getLocalName(c)) : GeoUtils.getLocalName(c);
-        showTypeFeedback(false);
         var el = document.getElementById('input-feedback');
         if (el) {
             el.className = 'input-feedback wrong';
@@ -355,11 +413,11 @@ var MapGame = (function () {
             }, 2000);
         }
 
-        // Show tooltip on the country
-        var layer = countryLayers[iso3];
-        if (layer) {
-            layer.bindTooltip(target === 'capital' ? GeoUtils.getLocalCapital(c) : GeoUtils.getLocalName(c), { permanent: true, className: 'reveal-tooltip', direction: 'center' }).openTooltip();
-        }
+        // Briefly show tooltip, then remove
+        showNameTooltip(iso3);
+        selectedIso = null;
+        updateRevealButton();
+        setTimeout(function () { closeActiveTooltip(); }, 1500);
 
         checkComplete();
     }

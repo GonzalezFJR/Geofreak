@@ -13,6 +13,7 @@ var GeoStatsGame = (function () {
     var chart = null;
     var totalScore = 0;
     var resolved = false;
+    var bestDistPct = Infinity;   // closest wrong guess (% of stat range)
 
     /* ── Name → ISO reverse map ──────────────────────────── */
     var nameToIso = null;
@@ -85,6 +86,7 @@ var GeoStatsGame = (function () {
         currentAttempts = 0;
         guessedIsos = {};
         resolved = false;
+        bestDistPct = Infinity;
 
         document.getElementById('q-current').textContent = currentIdx + 1;
         document.getElementById('q-total').textContent = questions.length;
@@ -256,7 +258,7 @@ var GeoStatsGame = (function () {
     }
 
     function onCorrect(q) {
-        var score = computeScore(currentAttempts);
+        var score = 10;
         totalScore += score;
         GeoGame.addCorrect();
 
@@ -282,6 +284,13 @@ var GeoStatsGame = (function () {
         var guessIndex = q.positions[iso];
         var cName = getDisplayName(iso);
         var cFlag = (countriesLookup[iso] || {}).flag_emoji || '';
+
+        // Track proximity to target
+        var range = q.curve[q.curve.length - 1] - q.curve[0];
+        if (range > 0) {
+            var dist = Math.abs(q.curve[guessIndex] - q.curve[q.target_index]) / range;
+            if (dist < bestDistPct) bestDistPct = dist;
+        }
 
         // Add red line
         var ann = chart.options.plugins.annotation.annotations;
@@ -312,9 +321,12 @@ var GeoStatsGame = (function () {
             ann.targetLine.borderDash = [];
             chart.update();
 
+            var proxScore = proximityScore(bestDistPct);
+            totalScore += proxScore;
+
             var msg = (T['gs.answer'] || 'The answer was: {name}')
                 .replace('{name}', tFlag + ' ' + tName) +
-                '  —  ' + (T['gs.score'] || 'Score') + ': 0/10';
+                '  —  ' + (T['gs.score'] || 'Score') + ': ' + proxScore + '/10';
             showFeedback('wrong', msg);
             endQuestion();
         } else {
@@ -323,9 +335,10 @@ var GeoStatsGame = (function () {
         }
     }
 
-    function computeScore(attempts) {
-        // 1→10, 2→8, 3→6, 4→4, 5→2
-        return Math.max(0, 10 - (attempts - 1) * 2);
+    function proximityScore(distPct) {
+        // >30% of stat range → 0, 0%→9, linear in between
+        if (distPct >= 0.3) return 0;
+        return Math.round(9 * (1 - distPct / 0.3));
     }
 
     function endQuestion() {

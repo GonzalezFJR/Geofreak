@@ -446,6 +446,14 @@
     background: #ffebee;
 }
 
+.btn-reveal-map-bar:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    border-color: #ccc;
+    color: #999;
+    background: rgba(255,255,255,0.7);
+}
+
 /* Reveal tooltip on map */
 .reveal-tooltip {
     background: #c62828 !important;
@@ -1253,9 +1261,28 @@ body:has(.game-page) {
     }
     body:has(.game-page) .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     body:has(.game-page) .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-    /* Nav overlay — allow it to open from hamburger */
+    /* Nav overlay — dark, clean overlay for game pages */
+    body:has(.game-page) .nav-links {
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(16px);
+    }
     body:has(.game-page) .nav-links.open {
         display: flex;
+    }
+    body:has(.game-page) .nav-links .nav-link {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+        padding: 14px 32px;
+        border-radius: 8px;
+        transition: background 0.15s;
+    }
+    body:has(.game-page) .nav-links .nav-link:hover,
+    body:has(.game-page) .nav-links .nav-link:active {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+    body:has(.game-page) .nav-links .nav-logout {
+        color: #ef5350 !important;
     }
     /* HUD & game area sizing */
     body:has(.game-page) .game-hud {
@@ -1276,6 +1303,38 @@ body:has(.game-page) {
     }
     body:has(.game-page) .game-settings-overlay {
         min-height: calc(100vh - 40px);
+    }
+    /* GeoStats mobile fit */
+    body:has(.game-page) .geostats-container {
+        height: calc(100vh - 40px - 30px);
+        padding: 8px 10px 6px;
+    }
+    body:has(.game-page) .geostats-header {
+        margin-bottom: 4px;
+    }
+    body:has(.game-page) .geostats-prompt {
+        font-size: 0.9rem;
+    }
+    body:has(.game-page) .geostats-chart-wrapper {
+        padding: 8px;
+        margin-bottom: 6px;
+    }
+    body:has(.game-page) .geostats-input-area {
+        margin-bottom: 4px;
+    }
+    body:has(.game-page) .geostats-input-area input {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+    body:has(.game-page) .geostats-status {
+        margin-bottom: 2px;
+    }
+    body:has(.game-page) .geostats-feedback {
+        font-size: 0.82rem;
+        min-height: 1.2em;
+    }
+    body:has(.game-page) .geostats-actions {
+        padding-bottom: 2px;
     }
 }
 
