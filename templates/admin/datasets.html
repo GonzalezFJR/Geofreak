@@ -16,6 +16,17 @@
 
     {% include "admin/_nav.html" %}
 
+    <!-- Dataset selector -->
+    <div class="dataset-selector">
+        {% for ds in dataset_list %}
+        <a href="/admin/datasets?dataset={{ ds.id }}"
+           class="dataset-tab {{ 'active' if ds.id == current_dataset }}">
+            {% if ds.id == 'countries' %}🌍{% elif ds.id == 'cities' %}🏙️{% elif ds.id == 'usastates' %}🇺🇸{% endif %}
+            {{ ds.label_es if lang == 'es' else ds.label_en }}
+        </a>
+        {% endfor %}
+    </div>
+
     <!-- Overview cards -->
     <div class="analytics-cards">
         <div class="analytics-card">
@@ -41,7 +52,7 @@
         <h2 class="admin-section-title">{{ t('adm.ds_vars_title', lang) }}</h2>
         <p class="section-info">{{ t('adm.ds_vars_desc', lang) }}</p>
 
-        <div class="analytics-table-wrap" style="margin-top: 16px;">
+        <div class="var-table-scroll">
             <table class="analytics-table var-table">
                 <thead>
                     <tr>
@@ -75,6 +86,7 @@
                         <td class="switch-col">
                             <form method="post" action="/admin/datasets/variables/{{ v.key }}/toggle" class="inline-form">
                                 <input type="hidden" name="enabled" value="{{ '0' if v.enabled else '1' }}">
+                                <input type="hidden" name="dataset" value="{{ current_dataset }}">
                                 <label class="switch">
                                     <input type="checkbox" {{ 'checked' if v.enabled }} onchange="this.form.submit()">
                                     <span class="switch-slider"></span>
@@ -99,6 +111,7 @@
                         <th>{{ t('adm.ds_filename', lang) }}</th>
                         <th>{{ t('adm.ds_type', lang) }}</th>
                         <th>{{ t('adm.ds_size', lang) }}</th>
+                        <th style="width:80px;text-align:center;">{{ t('adm.ds_download', lang) }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,6 +120,9 @@
                         <td><code>{{ d.name }}</code></td>
                         <td><span class="type-badge">{{ d.type }}</span></td>
                         <td class="num">{{ d.size_human }}</td>
+                        <td style="text-align:center;">
+                            <a href="/admin/datasets/download/{{ d.name }}" class="btn-download" title="Download">⬇</a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -135,8 +151,10 @@
                 <h4><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.name }}</a></h4>
                 <p>{{ s['description_es'] if lang == 'es' else s.get('description_' + lang, s['description_en']) }}</p>
                 <div class="source-vars">
-                    {% for vk in s.variables %}
-                    <span class="type-badge">{{ vk }}</span>
+                    {% for v in variables %}
+                        {% if v.source == s.id %}
+                        <span class="type-badge">{{ v.key }}</span>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

@@ -89,12 +89,10 @@
         <h3><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.name }}</a></h3>
         <p>{{ s['description_es'] if lang == 'es' else s.get('description_' + lang, s['description_en']) }}</p>
         <div class="source-vars-list">
-            {% for vk in s.variables %}
-                {% for v in variables %}
-                    {% if v.key == vk %}
-                    <span class="source-var-tag">{{ v['label_es'] if lang == 'es' else v.get('label_' + lang, v['label_en']) }}</span>
-                    {% endif %}
-                {% endfor %}
+            {% for v in variables %}
+                {% if v.source == s.id %}
+                <span class="source-var-tag">{{ v['label_es'] if lang == 'es' else v.get('label_' + lang, v['label_en']) }}</span>
+                {% endif %}
             {% endfor %}
         </div>
         <div class="source-url">{{ s.url }}</div>

@@ -3,14 +3,14 @@
 import os
 
 from fastapi import APIRouter, Request, Form, HTTPException, Query
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 
 from core.config import get_settings
 from core.i18n import get_lang
 from core.templates import templates
 from services.analytics import get_counters, get_recent_events, count_s3_events_today, list_s3_event_files
 from services.games import GamesService
-from services.quiz import get_all_variables, get_sources, toggle_variable, reload_var_config
+from services.quiz import get_all_variables, get_datasets, get_sources, toggle_variable, reload_var_config
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -84,13 +84,22 @@ async def update_game(request: Request, game_id: str):
             val = form.get(key, "")
             if val:
                 updates[key] = val
-    defaults = {}
-    if form.get("time_limit"):
+    # Build defaults — merge with existing to preserve unset fields
+    game = games_service.get_game(game_id)
+    defaults = dict(game.get("defaults", {})) if game else {}
+    if form.get("time_limit") is not None:
         defaults["time_limit"] = int(form.get("time_limit", 600))
     if form.get("max_items"):
-        defaults["max_items"] = int(form.get("max_items", 30))
-    if defaults:
-        updates["defaults"] = defaults
+        defaults["max_items"] = int(form.get("max_items", 10))
+    if form.get("default_difficulty"):
+        val = form.get("default_difficulty", "normal")
+        if val in ("easy", "normal", "hard", "very_hard", "extreme"):
+            defaults["default_difficulty"] = val
+    if form.get("default_countdown"):
+        val = form.get("default_countdown", "auto")
+        if val in ("auto", "on", "off"):
+            defaults["default_countdown"] = val
+    updates["defaults"] = defaults
     games_service.update_game(game_id, updates)
     return RedirectResponse("/admin", status_code=303)
 
@@ -160,43 +169,85 @@ async def admin_analytics(request: Request):
 # ── Datasets ─────────────────────────────────────────────────────────────────
 
 @router.get("/datasets", response_class=HTMLResponse)
-async def admin_datasets(request: Request):
+async def admin_datasets(request: Request, dataset: str = Query("countries")):
     if not is_authenticated(request):
         return RedirectResponse("/admin/login", status_code=303)
     lang = get_lang(request)
 
+    all_datasets = get_datasets()
+    # Validate dataset param
+    if dataset not in all_datasets:
+        dataset = "countries"
+
+    current_ds = all_datasets[dataset]
+
+    # Files in static/data for this dataset
     datasets_info = []
-    for fname in sorted(os.listdir(DATA_DIR)):
-        fpath = os.path.join(DATA_DIR, fname)
+    csv_file = current_ds.get("csv")
+    if csv_file:
+        fpath = os.path.join(DATA_DIR, csv_file)
         if os.path.isfile(fpath):
             size = os.path.getsize(fpath)
             datasets_info.append({
-                "name": fname,
+                "name": csv_file,
                 "size": size,
                 "size_human": _human_size(size),
-                "type": os.path.splitext(fname)[1].lstrip(".").upper() or "FILE",
+                "type": os.path.splitext(csv_file)[1].lstrip(".").upper(),
             })
+    # Add config file
+    config_path = os.path.join(DATA_DIR, "variable_config.json")
+    if os.path.isfile(config_path):
+        size = os.path.getsize(config_path)
+        datasets_info.append({
+            "name": "variable_config.json",
+            "size": size,
+            "size_human": _human_size(size),
+            "type": "JSON",
+        })
+    # Add contents.json if exists
+    contents_path = os.path.join(DATA_DIR, "contents.json")
+    if os.path.isfile(contents_path):
+        size = os.path.getsize(contents_path)
+        datasets_info.append({
+            "name": "contents.json",
+            "size": size,
+            "size_human": _human_size(size),
+            "type": "JSON",
+        })
 
-    # GeoJSON count
-    geojson_dir = os.path.join(DATA_DIR, "geojson")
+    # GeoJSON for this dataset
+    geojson_dir_name = current_ds.get("geojson_dir")
     geojson_count = 0
     geojson_size = 0
-    if os.path.isdir(geojson_dir):
-        for f in os.listdir(geojson_dir):
-            fp = os.path.join(geojson_dir, f)
-            if os.path.isfile(fp):
-                geojson_count += 1
-                geojson_size += os.path.getsize(fp)
+    if geojson_dir_name:
+        geojson_dir = os.path.join(DATA_DIR, geojson_dir_name)
+        if os.path.isdir(geojson_dir):
+            for f in os.listdir(geojson_dir):
+                fp = os.path.join(geojson_dir, f)
+                if os.path.isfile(fp):
+                    geojson_count += 1
+                    geojson_size += os.path.getsize(fp)
 
-    # Images counts
-    images_dir = os.path.join(DATA_DIR, "images")
+    # Images for this dataset
+    images_dir_name = current_ds.get("images_dir")
     images_count = 0
-    if os.path.isdir(images_dir):
-        images_count = len([f for f in os.listdir(images_dir) if os.path.isfile(os.path.join(images_dir, f))])
+    if images_dir_name:
+        images_dir = os.path.join(DATA_DIR, images_dir_name)
+        if os.path.isdir(images_dir):
+            images_count = len([f for f in os.listdir(images_dir) if os.path.isfile(os.path.join(images_dir, f))])
 
-    # Variables config
-    variables = get_all_variables()
+    # Variables for this dataset
+    variables = get_all_variables(dataset)
     sources = get_sources()
+
+    # Dataset list for selector
+    dataset_list = []
+    for ds_id, ds_info in all_datasets.items():
+        dataset_list.append({
+            "id": ds_id,
+            "label_es": ds_info.get("label_es", ds_id),
+            "label_en": ds_info.get("label_en", ds_id),
+        })
 
     return templates.TemplateResponse("admin/datasets.html", {
         "request": request, "lang": lang, "section": "datasets",
@@ -206,6 +257,8 @@ async def admin_datasets(request: Request):
         "images_count": images_count,
         "variables": variables,
         "sources": sources,
+        "current_dataset": dataset,
+        "dataset_list": dataset_list,
     })
 
 
@@ -214,8 +267,20 @@ async def admin_toggle_variable(request: Request, var_key: str):
     _require_auth(request)
     form = await request.form()
     enabled = form.get("enabled") == "1"
-    toggle_variable(var_key, enabled)
-    return RedirectResponse("/admin/datasets", status_code=303)
+    dataset_id = form.get("dataset", "countries")
+    toggle_variable(var_key, enabled, dataset_id)
+    return RedirectResponse(f"/admin/datasets?dataset={dataset_id}", status_code=303)
+
+
+@router.get("/datasets/download/{filename}")
+async def admin_download_file(request: Request, filename: str):
+    _require_auth(request)
+    # Security: only allow files directly in DATA_DIR (no path traversal)
+    safe_name = os.path.basename(filename)
+    fpath = os.path.join(DATA_DIR, safe_name)
+    if not os.path.isfile(fpath):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(fpath, filename=safe_name)
 
 
 def _human_size(size_bytes: int) -> str:

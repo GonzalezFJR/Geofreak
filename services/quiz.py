@@ -33,11 +33,12 @@ def reload_var_config():
     _var_config_cache = None
 
 
-def _build_quiz_stats() -> dict[str, dict]:
+def _build_quiz_stats(dataset_id: str = "countries") -> dict[str, dict]:
     """Build QUIZ_STATS dict from enabled variables in variable_config.json."""
     cfg = _load_var_config()
+    ds = cfg.get("datasets", {}).get(dataset_id, {})
     stats: dict[str, dict] = {}
-    for v in cfg["variables"]:
+    for v in ds.get("variables", []):
         if v.get("enabled"):
             stats[v["key"]] = {
                 "label_es": v["label_es"],
@@ -244,22 +245,38 @@ def get_available_stats() -> dict:
     return get_quiz_stats()
 
 
-def get_all_variables() -> list[dict]:
-    """Return all variable definitions (enabled and disabled)."""
+def get_all_variables(dataset_id: str | None = None) -> list[dict]:
+    """Return all variable definitions (enabled and disabled).
+    If dataset_id is None, return variables for all datasets as a flat list.
+    """
     cfg = _load_var_config()
-    return cfg["variables"]
+    if dataset_id:
+        ds = cfg.get("datasets", {}).get(dataset_id, {})
+        return ds.get("variables", [])
+    # Flatten all datasets
+    all_vars = []
+    for ds in cfg.get("datasets", {}).values():
+        all_vars.extend(ds.get("variables", []))
+    return all_vars
+
+
+def get_datasets() -> dict:
+    """Return datasets metadata (without full variable details)."""
+    cfg = _load_var_config()
+    return cfg.get("datasets", {})
 
 
 def get_sources() -> list[dict]:
     """Return all data sources."""
     cfg = _load_var_config()
-    return cfg["sources"]
+    return cfg.get("sources", [])
 
 
-def toggle_variable(key: str, enabled: bool):
+def toggle_variable(key: str, enabled: bool, dataset_id: str = "countries"):
     """Enable or disable a variable and save to config."""
     cfg = _load_var_config()
-    for v in cfg["variables"]:
+    ds = cfg.get("datasets", {}).get(dataset_id, {})
+    for v in ds.get("variables", []):
         if v["key"] == key:
             v["enabled"] = enabled
             break

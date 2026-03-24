@@ -14,6 +14,40 @@
             <h2>{{ game_field(game, 'name', lang) }}</h2>
             <p class="game-settings-desc">{{ game_field(game, 'description', lang) }}</p>
 
+            {% if game.type == 'solo' %}
+            <!-- Difficulty selector (only for GeoFreak games) -->
+            {% set def_diff = game.defaults.default_difficulty|default('normal') %}
+            <div class="game-setting-group">
+                <label class="game-setting-label">{{ t('game.difficulty', lang) }}</label>
+                <div class="difficulty-selector" id="difficulty-selector">
+                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'easy' }}" data-diff="easy">{{ t('game.diff_easy', lang) }}</button>
+                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'normal' }}" data-diff="normal">{{ t('game.diff_normal', lang) }}</button>
+                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'hard' }}" data-diff="hard">{{ t('game.diff_hard', lang) }}</button>
+                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'very_hard' }}" data-diff="very_hard">{{ t('game.diff_very_hard', lang) }}</button>
+                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'extreme' }}" data-diff="extreme">{{ t('game.diff_extreme', lang) }}</button>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Countdown toggle -->
+            {% set def_cd = game.defaults.default_countdown|default('auto') %}
+            {% if def_cd == 'on' %}
+                {% set cd_checked = true %}
+            {% elif def_cd == 'off' %}
+                {% set cd_checked = false %}
+            {% else %}
+                {# auto: on for quiz/map, off for solo #}
+                {% set cd_checked = game.type != 'solo' %}
+            {% endif %}
+            <div class="game-setting-group">
+                <label class="game-setting-label">{{ t('game.countdown', lang) }}</label>
+                <label class="switch-toggle">
+                    <input type="checkbox" id="countdown-toggle"
+                        {% if cd_checked %}checked{% endif %}>
+                    <span class="switch-slider"></span>
+                </label>
+            </div>
+
             <button class="btn btn-primary game-start-btn" onclick="GeoGame.start()">
                 {{ t('game.start', lang) }}
             </button>

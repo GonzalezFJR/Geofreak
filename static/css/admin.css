@@ -357,6 +357,69 @@
     background: var(--blue-700, #1d4ed8);
 }
 
+/* ── Admin language selector ───────────────────────────────────────────── */
+
+.admin-lang-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    background: var(--gray-50, #f9fafb);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+}
+.admin-lang-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+.admin-lang-btns {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+.admin-lang-btn {
+    padding: 5px 12px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    color: var(--gray-600);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.admin-lang-btn:hover {
+    border-color: var(--blue-400, #60a5fa);
+    color: var(--blue-600);
+}
+.admin-lang-btn.active {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: var(--white);
+}
+
+/* ── Admin defaults section ────────────────────────────────────────────── */
+
+.admin-defaults-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-100);
+}
+.admin-defaults-section h4 {
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin: 0 0 12px;
+}
+
 /* ── Responsive ────────────────────────────────────────────────────────── */
 
 @media (max-width: 900px) {
@@ -394,6 +457,7 @@
         gap: 10px;
     }
     .admin-section { padding: 16px; }
+    .admin-lang-selector { flex-direction: column; align-items: flex-start; gap: 8px; padding: 8px 12px; }
     .analytics-table { font-size: 0.82rem; }
     .analytics-table thead th { padding: 8px 10px; }
     .analytics-table tbody td { padding: 8px 10px; }
@@ -409,6 +473,81 @@
 }
 
 /* ── Toggle switch ─────────────────────────────────────────────────────── */
+
+/* ── Dataset selector tabs ─────────────────────────────────────────────── */
+
+.dataset-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+.dataset-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    text-decoration: none;
+    transition: all 0.15s;
+    cursor: pointer;
+}
+.dataset-tab:hover {
+    background: var(--gray-50);
+    color: var(--gray-900);
+    border-color: var(--gray-300);
+}
+.dataset-tab.active {
+    background: var(--blue-600);
+    color: var(--white);
+    border-color: var(--blue-600);
+    font-weight: 600;
+}
+
+/* ── Scrollable variable table ─────────────────────────────────────────── */
+
+.var-table-scroll {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: auto;
+    margin-top: 16px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+}
+.var-table-scroll .analytics-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--gray-50);
+}
+
+/* ── Download button ───────────────────────────────────────────────────── */
+
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    color: var(--blue-600);
+    background: var(--blue-50, #eff6ff);
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: all 0.15s;
+    cursor: pointer;
+    line-height: 1;
+}
+.btn-download:hover {
+    background: var(--blue-100, #dbeafe);
+    border-color: var(--blue-200, #bfdbfe);
+}
 
 .switch {
     position: relative;

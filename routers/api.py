@@ -107,9 +107,12 @@ async def quiz_stats():
 async def quiz_ordering(
     num: int = Query(10, ge=1, le=20),
     continent: Optional[str] = Query(None),
+    difficulty: str = Query("normal"),
 ):
     """Generate a set of ordering questions."""
-    questions = generate_ordering_set(num_questions=num, continent=continent)
+    if difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
+        difficulty = "normal"
+    questions = generate_ordering_set(num_questions=num, continent=continent, difficulty=difficulty)
     if not questions:
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
     return {"questions": questions}
@@ -119,9 +122,12 @@ async def quiz_ordering(
 async def quiz_comparison(
     num: int = Query(10, ge=1, le=30),
     continent: Optional[str] = Query(None),
+    difficulty: str = Query("normal"),
 ):
     """Generate a set of comparison questions."""
-    questions = generate_comparison_set(num_questions=num, continent=continent)
+    if difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
+        difficulty = "normal"
+    questions = generate_comparison_set(num_questions=num, continent=continent, difficulty=difficulty)
     if not questions:
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
     return {"questions": questions}
