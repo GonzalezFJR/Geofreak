@@ -1216,18 +1216,48 @@ body:has(.game-page) .footer {
     display: none !important;
 }
 
-/* Mobile games: minimal navbar, full-screen game */
+/* Prevent body scroll during games */
+body:has(.game-page) {
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+/* Mobile games: minimal navbar with discreet hamburger */
 @media (max-width: 640px) {
     body:has(.game-page) .navbar {
         height: 40px;
-        padding: 0 8px;
+        padding: 0 10px;
     }
-    body:has(.game-page) .nav-links {
+    /* Hide site name, keep only small logo */
+    body:has(.game-page) .nav-title {
         display: none;
     }
+    body:has(.game-page) .nav-logo {
+        width: 26px !important;
+        height: 26px !important;
+    }
+    /* Discreet hamburger — visible but subdued */
     body:has(.game-page) .nav-hamburger {
-        display: none;
+        display: flex;
+        opacity: 0.4;
+        padding: 4px;
+        transition: opacity 0.2s;
     }
+    body:has(.game-page) .nav-hamburger:active,
+    body:has(.game-page) .nav-hamburger.open {
+        opacity: 1;
+    }
+    body:has(.game-page) .nav-hamburger span {
+        width: 18px;
+        height: 1.5px;
+    }
+    body:has(.game-page) .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    body:has(.game-page) .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    /* Nav overlay — allow it to open from hamburger */
+    body:has(.game-page) .nav-links.open {
+        display: flex;
+    }
+    /* HUD & game area sizing */
     body:has(.game-page) .game-hud {
         top: 40px;
         padding: 4px 8px;

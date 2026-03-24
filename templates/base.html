@@ -85,6 +85,7 @@
     <script>
     (function(){var btn=document.getElementById('nav-hamburger'),links=document.getElementById('nav-links');
     if(btn)btn.addEventListener('click',function(){links.classList.toggle('open');btn.classList.toggle('open');});
+    if(links)links.addEventListener('click',function(e){if(e.target===links){links.classList.remove('open');btn.classList.remove('open');}});
     // Language dropdown (may exist on landing page)
     var lb=document.getElementById('nav-lang-btn'),ld=document.getElementById('lang-dropdown');
     if(lb)lb.addEventListener('click',function(e){e.stopPropagation();ld.classList.toggle('open');});
