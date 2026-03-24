@@ -475,8 +475,8 @@ var GeoGame = {
     _saveResult: function (elapsedSec) {
         var gameType = GAME_CONFIG && GAME_CONFIG.id ? GAME_CONFIG.id : '';
         if (!gameType) return;
-        // ordering & comparison games save their own results
-        if (gameType === 'ordering' || gameType === 'comparison') return;
+        // ordering, comparison & geostats games save their own results
+        if (gameType === 'ordering' || gameType === 'comparison' || gameType === 'geostats') return;
 
         var payload = {
             game_type: gameType,

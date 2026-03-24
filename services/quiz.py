@@ -311,6 +311,98 @@ def generate_comparison_set(
     return questions
 
 
+# ── GeoStats game ────────────────────────────────────────────────────────────
+
+def generate_geostats_question(
+    stat: Optional[str] = None,
+    continent: Optional[str] = None,
+) -> Optional[dict]:
+    """Generate one geostats question: guess a country from its position on a stat curve.
+
+    Returns:
+        {
+            "stat": "population",
+            "stat_info": { ... },
+            "curve": [val0, val1, ...],          # sorted ascending
+            "positions": { "ESP": 45, ... },      # iso -> index in curve
+            "target_iso": "ESP",
+            "target_index": 45,
+        }
+    """
+    quiz_stats = get_quiz_stats()
+    stat_keys = list(quiz_stats.keys())
+    if stat is None:
+        stat = random.choice(stat_keys)
+
+    countries = _get_valid_countries(stat, continent)
+    if len(countries) < 20:
+        return None
+
+    countries.sort(key=lambda c: c["stat_value"])
+    target = random.choice(countries)
+    target_index = countries.index(target)
+
+    curve = [c["stat_value"] for c in countries]
+    positions = {c["iso_a3"]: i for i, c in enumerate(countries)}
+
+    return {
+        "stat": stat,
+        "stat_info": quiz_stats[stat],
+        "curve": curve,
+        "positions": positions,
+        "target_iso": target["iso_a3"],
+        "target_index": target_index,
+    }
+
+
+def generate_geostats_set(
+    num_questions: int = 10,
+    continent: Optional[str] = None,
+    max_attempts: int = 5,
+) -> dict:
+    """Generate a full geostats game with a countries lookup and N questions."""
+    # Build countries lookup once (all sovereign countries)
+    df = _ds.get_countries()
+    if df.empty:
+        return {"countries_lookup": {}, "max_attempts": max_attempts, "questions": []}
+    if "entity_type" in df.columns:
+        df = df[df["entity_type"] == "country"]
+
+    countries_lookup: dict[str, dict] = {}
+    for _, row in df.iterrows():
+        countries_lookup[row["iso_a3"]] = {
+            "name": row.get("name", ""),
+            "name_es": row.get("name_es", row.get("name", "")),
+            "name_fr": row.get("name_fr", ""),
+            "name_it": row.get("name_it", ""),
+            "name_ru": row.get("name_ru", ""),
+            "flag_emoji": row.get("flag_emoji", ""),
+        }
+
+    # Generate questions with varied stats
+    stat_keys = STAT_KEYS_FUNC()
+    questions: list[dict] = []
+    used_stats: list[str] = []
+    for _ in range(num_questions):
+        if not used_stats:
+            used_stats = stat_keys.copy()
+            random.shuffle(used_stats)
+        q = None
+        attempts = 0
+        while q is None and attempts < len(stat_keys):
+            stat = used_stats.pop() if used_stats else random.choice(stat_keys)
+            q = generate_geostats_question(stat=stat, continent=continent)
+            attempts += 1
+        if q:
+            questions.append(q)
+
+    return {
+        "countries_lookup": countries_lookup,
+        "max_attempts": max_attempts,
+        "questions": questions,
+    }
+
+
 def get_available_stats() -> dict:
     """Return stats metadata for the frontend."""
     return get_quiz_stats()

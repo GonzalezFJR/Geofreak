@@ -15,6 +15,7 @@ class GeodataService:
 
     def __init__(self):
         self._all_cache: Optional[dict] = None
+        self._simple_cache: Optional[dict] = None
 
     def get_all_geojson(self) -> dict:
         """Return a combined FeatureCollection from all individual country files."""
@@ -31,7 +32,10 @@ class GeodataService:
         features = []
         if os.path.isdir(GEOJSON_DIR):
             for fname in sorted(os.listdir(GEOJSON_DIR)):
-                if fname.endswith(".geojson") and fname != "all_countries.geojson":
+                if fname.endswith(".geojson") and fname not in (
+                    "all_countries.geojson",
+                    "all_countries_simple.geojson",
+                ):
                     fpath = os.path.join(GEOJSON_DIR, fname)
                     try:
                         with open(fpath, "r", encoding="utf-8") as f:
@@ -45,6 +49,20 @@ class GeodataService:
 
         self._all_cache = {"type": "FeatureCollection", "features": features}
         return self._all_cache
+
+    def get_simple_geojson(self) -> dict:
+        """Return simplified (lightweight) GeoJSON for game maps."""
+        if self._simple_cache is not None:
+            return self._simple_cache
+
+        simple_path = os.path.join(GEOJSON_DIR, "all_countries_simple.geojson")
+        if os.path.exists(simple_path):
+            with open(simple_path, "r", encoding="utf-8") as f:
+                self._simple_cache = json.load(f)
+            return self._simple_cache
+
+        # Fallback to full version
+        return self.get_all_geojson()
 
     def get_country_geojson(self, iso_code: str) -> Optional[dict]:
         """Return GeoJSON for a single country by ISO code."""

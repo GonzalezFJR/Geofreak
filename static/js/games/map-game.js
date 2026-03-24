@@ -54,7 +54,7 @@ var MapGame = (function () {
         showSpinner();
         Promise.all([
             fetch('/api/countries').then(function (r) { return r.json(); }),
-            fetch('/api/geojson/all').then(function (r) { return r.json(); }),
+            fetch('/api/geojson/simple').then(function (r) { return r.json(); }),
         ]).then(function (res) {
             var countries = res[0];
             var geojson   = res[1];

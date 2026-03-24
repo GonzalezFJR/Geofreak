@@ -151,6 +151,26 @@
       "defaults": { "time_limit": 600, "max_items": 10 },
       "has_continent_filter": true,
       "enabled": true
+    },
+    {
+      "id": "geostats",
+      "name": "Adivina el país",
+      "name_en": "Guess the country",
+      "name_fr": "Devine le pays",
+      "name_it": "Indovina il paese",
+      "name_ru": "Угадай страну",
+      "description": "Una curva, una estadística, un país oculto. ¿Puedes adivinar cuál es?",
+      "description_en": "A curve, a statistic, a hidden country. Can you guess which one?",
+      "description_fr": "Une courbe, une statistique, un pays caché. Saurez-vous deviner ?",
+      "description_it": "Una curva, una statistica, un paese nascosto. Riesci a indovinarlo?",
+      "description_ru": "Кривая, статистика, скрытая страна. Угадаете какая?",
+      "icon": "📈",
+      "color": "#00897b",
+      "type": "solo",
+      "has_difficulty": false,
+      "defaults": { "time_limit": 600, "max_items": 10, "max_attempts": 5 },
+      "has_continent_filter": true,
+      "enabled": true
     }
   ]
 }

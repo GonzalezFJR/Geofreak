@@ -14,6 +14,7 @@ from services.geodata import GeodataService
 from services.quiz import (
     generate_ordering_set,
     generate_comparison_set,
+    generate_geostats_set,
     get_available_stats,
 )
 from services.matches import create_match, finish_match, save_match_player
@@ -57,6 +58,13 @@ async def get_country(iso_code: str):
 async def get_all_geojson():
     """Return combined GeoJSON FeatureCollection of all countries."""
     data = geodata_service.get_all_geojson()
+    return JSONResponse(content=data)
+
+
+@router.get("/geojson/simple")
+async def get_simple_geojson():
+    """Return simplified (lightweight) GeoJSON for game maps."""
+    data = geodata_service.get_simple_geojson()
     return JSONResponse(content=data)
 
 
@@ -131,6 +139,18 @@ async def quiz_comparison(
     if not questions:
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
     return {"questions": questions}
+
+
+@router.get("/quiz/geostats")
+async def quiz_geostats(
+    num: int = Query(10, ge=1, le=20),
+    continent: Optional[str] = Query(None),
+):
+    """Generate a set of geostats questions (guess country from stat curve)."""
+    data = generate_geostats_set(num_questions=num, continent=continent)
+    if not data or not data.get("questions"):
+        raise HTTPException(status_code=400, detail="Not enough data for quiz")
+    return data
 
 
 # ── Match result saving ──────────────────────────────────────────────────────

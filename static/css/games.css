@@ -1250,6 +1250,121 @@ body:has(.game-page) .footer {
 }
 
 /* ============================================================
+   GeoStats Game
+   ============================================================ */
+.geostats-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px 16px 8px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 64px - 44px);
+    box-sizing: border-box;
+}
+
+.geostats-header {
+    text-align: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.geostats-progress {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.geostats-prompt {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    font-family: var(--font-display);
+    line-height: 1.4;
+}
+
+.geostats-prompt em {
+    font-style: italic;
+}
+
+.geostats-chart-wrapper {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.geostats-input-area {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+}
+
+.geostats-input-area input {
+    flex: 1;
+    padding: 12px 18px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    font-size: 1.05rem;
+    font-family: var(--font-sans);
+    transition: border-color 0.2s;
+}
+
+.geostats-input-area input:focus {
+    outline: none;
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
+}
+
+.geostats-input-area input:disabled {
+    background: var(--gray-50);
+    color: var(--gray-400);
+}
+
+.geostats-status {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    flex-shrink: 0;
+}
+
+.attempt-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gray-200);
+    display: inline-block;
+    transition: background 0.3s;
+}
+
+.attempt-dot.used {
+    background: #ef5350;
+}
+
+.geostats-feedback {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    min-height: 1.5em;
+    flex-shrink: 0;
+}
+
+.geostats-feedback.correct { color: #4caf50; }
+.geostats-feedback.wrong { color: #ef5350; }
+.geostats-feedback.warning { color: #ff9800; }
+
+.geostats-actions {
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* ============================================================
    Ordering Game
    ============================================================ */
 .ordering-container {

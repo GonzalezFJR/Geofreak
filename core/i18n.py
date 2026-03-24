@@ -145,6 +145,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Comparison
         "cmp.question": "Pregunta",
 
+        # GeoStats
+        "gs.question": "Pregunta",
+        "gs.guess_btn": "Adivinar",
+        "gs.next": "Siguiente ➜",
+        "gs.input_ph": "Escribe un país...",
+
         # Auth
         "auth.login_title": "Iniciar sesión — GeoFreak",
         "auth.login_h": "Iniciar <span class='accent'>sesión</span>",
@@ -588,6 +594,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Comparison
         "cmp.question": "Question",
 
+        # GeoStats
+        "gs.question": "Question",
+        "gs.guess_btn": "Guess",
+        "gs.next": "Next ➜",
+        "gs.input_ph": "Type a country...",
+
         # Auth
         "auth.login_title": "Log in — GeoFreak",
         "auth.login_h": "Log <span class='accent'>in</span>",
@@ -1030,8 +1042,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Comparison
         "cmp.question": "Question",
 
-        # Auth
-        "auth.login_title": "Connexion — GeoFreak",
+        # GeoStats
+        "gs.question": "Question",
+        "gs.guess_btn": "Deviner",
+        "gs.next": "Suivant ➜",
+        "gs.input_ph": "Tapez un pays...",
+
+        # Auth — GeoFreak",
         "auth.login_h": "Se <span class='accent'>connecter</span>",
         "auth.email": "Email",
         "auth.email_or_user": "Email ou nom d'utilisateur",
@@ -1470,6 +1487,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
 
         # Comparison
         "cmp.question": "Domanda",
+
+        # GeoStats
+        "gs.question": "Domanda",
+        "gs.guess_btn": "Indovina",
+        "gs.next": "Avanti ➜",
+        "gs.input_ph": "Scrivi un paese...",
 
         # Auth
         "auth.login_title": "Accedi — GeoFreak",
@@ -1912,6 +1935,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Comparison
         "cmp.question": "Вопрос",
 
+        # GeoStats
+        "gs.question": "Вопрос",
+        "gs.guess_btn": "Угадай",
+        "gs.next": "Далее ➜",
+        "gs.input_ph": "Введите страну...",
+
         # Auth
         "auth.login_title": "Вход — GeoFreak",
         "auth.login_h": "<span class='accent'>Войти</span>",
@@ -2228,6 +2257,9 @@ _JS_KEYS = [
     "ord.prompt_asc", "ord.prompt_desc", "ord.correct", "ord.wrong", "ord.score",
     # Comparison
     "cmp.prompt", "cmp.correct", "cmp.wrong",
+    # GeoStats
+    "gs.prompt", "gs.correct", "gs.wrong", "gs.not_found",
+    "gs.already", "gs.no_data", "gs.answer", "gs.score",
     # Map game
     "mg.what_country", "mg.what_capital",
     # Map viewer
@@ -2260,6 +2292,14 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "cmp.prompt": "¿Qué país tiene mayor <em>{stat}</em>?",
         "cmp.correct": "✅ ¡Correcto!",
         "cmp.wrong": "❌ Incorrecto",
+        "gs.prompt": "La línea azul marca un país en la curva de <em>{stat}</em>. ¿Cuál es?",
+        "gs.correct": "✅ ¡Correcto!",
+        "gs.wrong": "❌ Incorrecto",
+        "gs.not_found": "País no reconocido",
+        "gs.already": "Ya has probado ese país",
+        "gs.no_data": "Sin datos de {name} para esta estadística",
+        "gs.answer": "Era: {name}",
+        "gs.score": "Puntuación",
         "js.correct": "✅ ¡Correcto!",
         "js.correct_name": "✅ ¡Correcto! {name}",
         "js.wrong_retry": "❌ Incorrecto, intenta de nuevo",
@@ -2282,6 +2322,14 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "cmp.prompt": "Which country has a higher <em>{stat}</em>?",
         "cmp.correct": "✅ Correct!",
         "cmp.wrong": "❌ Wrong",
+        "gs.prompt": "The blue line marks a country on the <em>{stat}</em> curve. Which one?",
+        "gs.correct": "✅ Correct!",
+        "gs.wrong": "❌ Wrong",
+        "gs.not_found": "Country not recognized",
+        "gs.already": "Already guessed",
+        "gs.no_data": "No data for {name} on this stat",
+        "gs.answer": "The answer was: {name}",
+        "gs.score": "Score",
         "js.correct": "✅ Correct!",
         "js.correct_name": "✅ Correct! {name}",
         "js.wrong_retry": "❌ Wrong, try again",
@@ -2304,6 +2352,14 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "cmp.prompt": "Quel pays a le plus grand <em>{stat}</em> ?",
         "cmp.correct": "✅ Correct !",
         "cmp.wrong": "❌ Incorrect",
+        "gs.prompt": "La ligne bleue marque un pays sur la courbe de <em>{stat}</em>. Lequel ?",
+        "gs.correct": "✅ Correct !",
+        "gs.wrong": "❌ Incorrect",
+        "gs.not_found": "Pays non reconnu",
+        "gs.already": "Déjà essayé",
+        "gs.no_data": "Pas de données pour {name}",
+        "gs.answer": "C'était : {name}",
+        "gs.score": "Score",
         "js.correct": "✅ Correct !",
         "js.correct_name": "✅ Correct ! {name}",
         "js.wrong_retry": "❌ Incorrect, réessayez",
@@ -2326,6 +2382,14 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "cmp.prompt": "Quale paese ha il <em>{stat}</em> più alto?",
         "cmp.correct": "✅ Corretto!",
         "cmp.wrong": "❌ Sbagliato",
+        "gs.prompt": "La linea blu indica un paese sulla curva di <em>{stat}</em>. Quale?",
+        "gs.correct": "✅ Corretto!",
+        "gs.wrong": "❌ Sbagliato",
+        "gs.not_found": "Paese non riconosciuto",
+        "gs.already": "Già provato",
+        "gs.no_data": "Nessun dato per {name}",
+        "gs.answer": "Era: {name}",
+        "gs.score": "Punteggio",
         "js.correct": "✅ Corretto!",
         "js.correct_name": "✅ Corretto! {name}",
         "js.wrong_retry": "❌ Sbagliato, riprova",
@@ -2348,6 +2412,14 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "cmp.prompt": "У какой страны <em>{stat}</em> больше?",
         "cmp.correct": "✅ Верно!",
         "cmp.wrong": "❌ Неверно",
+        "gs.prompt": "Синяя линия отмечает страну на кривой <em>{stat}</em>. Какая?",
+        "gs.correct": "✅ Верно!",
+        "gs.wrong": "❌ Неверно",
+        "gs.not_found": "Страна не распознана",
+        "gs.already": "Уже пробовали",
+        "gs.no_data": "Нет данных для {name}",
+        "gs.answer": "Это было: {name}",
+        "gs.score": "Балл",
         "js.correct": "✅ Верно!",
         "js.correct_name": "✅ Верно! {name}",
         "js.wrong_retry": "❌ Неверно, попробуйте ещё",

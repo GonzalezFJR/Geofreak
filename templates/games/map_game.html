@@ -1,0 +1,28 @@
+{% extends "games/_base_game.html" %}
+
+{% block game_area %}
+<div class="map-game-container">
+    {% if map_mode == 'click' %}
+    <div class="map-game-prompt" id="game-prompt" style="display:none">
+        <span class="prompt-country" id="prompt-country"></span>
+        <span class="prompt-label" id="prompt-text">{{ t('mg.what_' ~ map_target, lang) }}</span>
+        <input type="text" id="answer-input" placeholder="{{ t('mg.ph_' ~ map_target, lang) }}" autocomplete="off">
+        <button class="btn-reveal-map" onclick="MapGame.reveal()">👁️</button>
+    </div>
+    {% else %}
+    <div class="map-game-input-bar" id="game-input-bar">
+        <input type="text" id="answer-input" placeholder="{{ t('mg.ph_type_' ~ map_target, lang) }}" autocomplete="off">
+        <button class="btn-reveal-map-bar" onclick="MapGame.reveal()">{{ t('quiz.reveal', lang) }}</button>
+        <div class="input-feedback" id="input-feedback"></div>
+    </div>
+    {% endif %}
+    <div id="game-map" class="game-map"></div>
+</div>
+{% endblock %}
+
+{% block game_scripts %}
+<script src="/static/js/games/map-game.js"></script>
+<script>
+    MapGame.init({ mode: '{{ map_mode }}', target: '{{ map_target }}' });
+</script>
+{% endblock %}

@@ -14,7 +14,7 @@
             <h2>{{ game_field(game, 'name', lang) }}</h2>
             <p class="game-settings-desc">{{ game_field(game, 'description', lang) }}</p>
 
-            {% if game.type == 'solo' %}
+            {% if game.type == 'solo' and game.has_difficulty|default(true) %}
             <!-- Difficulty selector (inline dropdown) -->
             {% set def_diff = game.defaults.default_difficulty|default('normal') %}
             <div class="game-setting-group">

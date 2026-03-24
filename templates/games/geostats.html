@@ -1,0 +1,32 @@
+{% extends "games/_base_game.html" %}
+
+{% block game_area %}
+<div class="geostats-container" id="geostats-container">
+    <div class="geostats-header">
+        <div class="geostats-progress">
+            {{ t('gs.question', lang) }} <span id="q-current">1</span> {{ t('quiz.of', lang) }} <span id="q-total">?</span>
+        </div>
+        <div class="geostats-prompt" id="geostats-prompt"></div>
+    </div>
+    <div class="geostats-chart-wrapper">
+        <canvas id="geostats-chart"></canvas>
+    </div>
+    <div class="geostats-input-area">
+        <input type="text" id="geostats-input" placeholder="{{ t('gs.input_ph', lang) }}" autocomplete="off">
+        <button class="btn btn-primary" id="btn-guess" onclick="GeoStatsGame.guess()">{{ t('gs.guess_btn', lang) }}</button>
+    </div>
+    <div class="geostats-status" id="geostats-status"></div>
+    <div class="geostats-feedback" id="geostats-feedback"></div>
+    <div class="geostats-actions">
+        <button class="btn btn-primary" id="btn-gs-next" onclick="GeoStatsGame.next()" style="display:none">{{ t('gs.next', lang) }}</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block game_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0/dist/chartjs-plugin-zoom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+<script src="/static/js/games/geostats-game.js"></script>
+{% endblock %}
