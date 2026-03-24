@@ -233,10 +233,10 @@ var MapGame = (function () {
 
         closeActiveTooltip();
 
-        // Deselect previous
-        if (selectedIso && selectedIso !== iso3) refreshStyle(selectedIso);
-
+        // Deselect previous — update selectedIso FIRST so styleFor evaluates correctly
+        var prevIso = selectedIso;
         selectedIso = iso3;
+        if (prevIso && prevIso !== iso3) refreshStyle(prevIso);
         refreshStyle(iso3);
 
         if (mode === 'click') {
