@@ -123,3 +123,25 @@ def send_email_change_confirm(to: str, username: str, confirm_url: str, lang: st
         <p style="color:#888;font-size:.85rem;">If you didn't request this, just ignore it.</p>
         """
     _send(to, subject, _BASE.format(content=content))
+
+
+def send_contact(name: str, email: str, message: str) -> bool:
+    """Send a contact form message to the site admin."""
+    import html as _html
+    s = get_settings()
+    to = s.mail_to or s.smtp_from or s.smtp_user
+    if not to:
+        log.warning("No MAIL_TO configured — skipping contact email")
+        return False
+    safe_name = _html.escape(name)
+    safe_email = _html.escape(email)
+    safe_msg = _html.escape(message).replace("\n", "<br>")
+    subject = f"[GeoFreak] Contacto de {safe_name}"
+    content = f"""
+    <h2 style="color:#1a73e8;margin-top:0;">Nuevo mensaje de contacto</h2>
+    <p style="color:#333;line-height:1.6;"><strong>Nombre:</strong> {safe_name}</p>
+    <p style="color:#333;line-height:1.6;"><strong>Email:</strong> {safe_email}</p>
+    <p style="color:#333;line-height:1.6;"><strong>Mensaje:</strong></p>
+    <div style="background:#f4f6f8;padding:16px;border-radius:8px;color:#333;line-height:1.6;">{safe_msg}</div>
+    """
+    return _send(to, subject, _BASE.format(content=content))

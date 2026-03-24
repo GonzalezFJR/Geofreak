@@ -48,7 +48,7 @@
     transition: background 0.2s;
 }
 .daily-hero:hover .daily-hero-btn { background: rgba(255,255,255,0.3); }
-.daily-hero svg { flex-shrink: 0; }
+.daily-minimap { flex-shrink: 0; width: 200px; height: 120px; }
 
 /* Animated world map SVG */
 @keyframes glow1 { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.7; } }
@@ -103,7 +103,7 @@
 
 @media (max-width: 640px) {
     .daily-hero { flex-direction: column; padding: 28px 20px; gap: 20px; text-align: center; }
-    .daily-hero svg { width: 140px; height: 90px; }
+    .daily-hero svg { width: 160px; height: 96px; }
     .modes-grid { grid-template-columns: 1fr !important; }
     .quiz-card { flex-direction: column; text-align: center; padding: 28px 20px; }
 }
@@ -121,33 +121,57 @@
 
 <!-- Daily Challenge -->
 <section class="daily-section">
-    <div class="section-header">
-        <h2 class="section-title">{{ t('landing.daily_title', lang) }}</h2>
-    </div>
     <a href="/games/comparison" class="daily-hero">
-        <svg width="180" height="110" viewBox="0 0 180 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Simplified world map continents -->
+        <svg width="200" height="120" viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg" class="daily-minimap">
+            <!-- Realistic world mini-map with country outlines -->
             <!-- North America -->
-            <path d="M25 20 L35 15 L45 18 L50 28 L45 40 L38 48 L30 45 L22 35 Z" fill="#64b5f6" opacity="0.25" class="glow-a"/>
+            <path d="M55 75 L65 60 L80 52 L100 48 L120 42 L145 38 L168 35 L185 40 L205 55 L218 68 L230 80 L240 95 L248 110 L250 130 L242 148 L230 165 L218 178 L200 185 L185 190 L170 200 L155 210 L145 225 L138 218 L130 210 L120 200 L110 195 L100 188 L88 178 L80 165 L72 150 L65 135 L58 120 L52 105 L50 90 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <!-- Greenland -->
+            <path d="M230 28 L260 22 L285 25 L295 35 L290 50 L275 58 L255 55 L240 45 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+            <!-- Central America -->
+            <path d="M145 225 L155 228 L160 240 L165 255 L160 265 L150 260 L142 250 L138 238 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
             <!-- South America -->
-            <path d="M42 55 L50 50 L55 58 L52 72 L48 82 L40 78 L38 65 Z" fill="#64b5f6" opacity="0.25" class="glow-b"/>
+            <path d="M185 270 L210 260 L230 265 L248 280 L260 300 L268 325 L272 350 L268 378 L258 400 L245 420 L228 438 L215 448 L205 445 L198 432 L192 415 L188 395 L182 375 L178 355 L175 335 L172 315 L170 298 L172 282 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
             <!-- Europe -->
-            <path d="M82 15 L95 12 L100 18 L97 28 L88 30 L82 25 Z" fill="#64b5f6" opacity="0.25" class="glow-c"/>
+            <path d="M440 55 L455 48 L472 50 L488 45 L500 48 L510 55 L518 65 L520 78 L515 88 L508 98 L498 108 L488 115 L475 120 L462 122 L448 118 L438 108 L432 95 L430 82 L435 68 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <!-- Scandinavia -->
+            <path d="M460 20 L472 15 L485 18 L492 28 L488 42 L478 48 L465 45 L458 35 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+            <!-- UK / Ireland -->
+            <path d="M420 62 L432 58 L438 65 L435 75 L425 78 L418 72 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+            <!-- Iberian Peninsula -->
+            <path d="M425 108 L445 105 L455 112 L452 125 L438 132 L425 128 L420 118 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
             <!-- Africa -->
-            <path d="M85 35 L98 32 L105 45 L100 65 L92 72 L82 60 L80 45 Z" fill="#64b5f6" opacity="0.25" class="glow-a"/>
-            <!-- Asia -->
-            <path d="M105 10 L130 8 L145 18 L150 35 L142 45 L125 48 L110 40 L105 28 Z" fill="#64b5f6" opacity="0.25" class="glow-b"/>
-            <!-- Oceania -->
-            <path d="M140 60 L155 55 L165 62 L160 72 L148 75 L140 68 Z" fill="#64b5f6" opacity="0.25" class="glow-c"/>
-            <!-- Highlight dots (countries lighting up) -->
-            <circle cx="38" cy="30" r="3" fill="#4fc3f7" class="glow-b"/>
-            <circle cx="92" cy="22" r="3" fill="#4fc3f7" class="glow-c"/>
-            <circle cx="130" cy="25" r="3" fill="#4fc3f7" class="glow-a"/>
-            <circle cx="92" cy="52" r="3" fill="#4fc3f7" class="glow-b"/>
-            <circle cx="48" cy="65" r="3" fill="#4fc3f7" class="glow-a"/>
-            <circle cx="152" cy="65" r="3" fill="#4fc3f7" class="glow-c"/>
+            <path d="M430 155 L455 148 L480 145 L508 148 L530 155 L548 170 L558 190 L565 215 L568 240 L565 268 L558 295 L545 320 L530 340 L512 355 L492 362 L475 358 L460 348 L448 332 L438 312 L432 290 L428 265 L425 238 L422 210 L420 185 L425 168 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <!-- Madagascar -->
+            <path d="M575 310 L582 305 L588 312 L585 328 L578 332 L572 325 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+            <!-- Middle East -->
+            <path d="M540 120 L565 112 L585 118 L595 132 L590 148 L578 158 L560 162 L545 155 L535 142 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <!-- Russia / Central Asia -->
+            <path d="M520 22 L560 18 L605 15 L650 18 L695 22 L735 28 L770 35 L795 42 L810 55 L815 70 L808 85 L795 95 L778 100 L755 98 L730 92 L700 88 L668 85 L638 82 L610 80 L585 78 L560 75 L540 68 L525 55 L518 38 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <!-- China / East Asia -->
+            <path d="M700 95 L728 90 L755 95 L778 105 L798 118 L808 135 L810 155 L802 172 L788 185 L768 192 L748 190 L728 182 L712 170 L700 155 L692 138 L688 120 L692 105 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <!-- India -->
+            <path d="M638 145 L660 138 L678 142 L690 155 L695 172 L692 192 L682 210 L668 225 L652 232 L638 228 L628 215 L622 198 L620 178 L625 160 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <!-- Southeast Asia -->
+            <path d="M740 195 L762 188 L780 195 L790 210 L785 228 L772 238 L755 235 L742 225 L735 212 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <!-- Japan -->
+            <path d="M825 88 L835 82 L845 88 L845 105 L838 115 L828 112 L822 102 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+            <!-- Indonesia -->
+            <path d="M748 258 L775 252 L805 255 L828 262 L845 270 L838 282 L818 285 L792 282 L768 278 L752 272 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+            <!-- Australia -->
+            <path d="M790 338 L825 325 L858 322 L888 328 L910 342 L920 362 L918 385 L908 405 L892 418 L870 425 L845 422 L822 412 L805 398 L795 378 L788 358 Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <!-- New Zealand -->
+            <path d="M935 395 L942 388 L948 395 L948 412 L942 420 L935 415 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
             <!-- Equator line -->
-            <line x1="10" y1="55" x2="170" y2="55" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" stroke-dasharray="4,4"/>
+            <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" stroke-dasharray="8,6"/>
+            <!-- Highlight dots -->
+            <circle cx="200" cy="120" r="5" fill="#4fc3f7" class="glow-b"/>
+            <circle cx="470" cy="80" r="5" fill="#4fc3f7" class="glow-c"/>
+            <circle cx="750" cy="140" r="5" fill="#4fc3f7" class="glow-a"/>
+            <circle cx="500" cy="260" r="5" fill="#4fc3f7" class="glow-b"/>
+            <circle cx="230" cy="350" r="5" fill="#4fc3f7" class="glow-a"/>
+            <circle cx="860" cy="370" r="5" fill="#4fc3f7" class="glow-c"/>
+            <circle cx="655" cy="185" r="5" fill="#4fc3f7" class="glow-b"/>
         </svg>
         <div class="daily-hero-text">
             <h2>{{ t('landing.daily_title', lang) }}</h2>

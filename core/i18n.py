@@ -15,6 +15,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "nav.home": "Inicio",
         "nav.games": "Juegos",
         "nav.login": "Entrar",
+        "nav.logout": "Salir",
         "nav.ranking": "Ranking",
 
         # Footer
@@ -51,6 +52,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.cta_title": "¿Listo para jugar?",
         "landing.cta_desc": "Elige un modo de juego y pon a prueba tus conocimientos.",
         "landing.cta_open": "🎮 Jugar ahora",
+
+        # Contact
+        "contact.title": "Contacto",
+        "contact.subtitle": "¿Tienes alguna pregunta o sugerencia? Escríbenos.",
+        "contact.name": "Nombre",
+        "contact.email": "Email",
+        "contact.message": "Mensaje",
+        "contact.send": "Enviar mensaje",
+        "contact.sent": "¡Mensaje enviado! Te responderemos pronto.",
+        "contact.error": "Error al enviar el mensaje. Inténtalo de nuevo.",
 
         # Game selection
         "sel.title_solo": "Partida Solo",
@@ -408,6 +419,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "nav.home": "Home",
         "nav.games": "Games",
         "nav.login": "Log in",
+        "nav.logout": "Log out",
         "nav.ranking": "Ranking",
 
         # Footer
@@ -444,6 +456,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.cta_title": "Ready to play?",
         "landing.cta_desc": "Choose a game mode and test your knowledge.",
         "landing.cta_open": "🎮 Play now",
+
+        # Contact
+        "contact.title": "Contact",
+        "contact.subtitle": "Have a question or suggestion? Write to us.",
+        "contact.name": "Name",
+        "contact.email": "Email",
+        "contact.message": "Message",
+        "contact.send": "Send message",
+        "contact.sent": "Message sent! We'll get back to you soon.",
+        "contact.error": "Error sending message. Please try again.",
 
         # Game selection
         "sel.title_solo": "Solo Game",
@@ -800,6 +822,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "nav.home": "Accueil",
         "nav.games": "Jeux",
         "nav.login": "Connexion",
+        "nav.logout": "Déconnexion",
         "nav.ranking": "Classement",
 
         # Footer
@@ -836,6 +859,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.cta_title": "Prêt à jouer ?",
         "landing.cta_desc": "Choisissez un mode de jeu et testez vos connaissances.",
         "landing.cta_open": "🎮 Jouer maintenant",
+
+        # Contact
+        "contact.title": "Contact",
+        "contact.subtitle": "Une question ou une suggestion ? Écrivez-nous.",
+        "contact.name": "Nom",
+        "contact.email": "Email",
+        "contact.message": "Message",
+        "contact.send": "Envoyer le message",
+        "contact.sent": "Message envoyé ! Nous vous répondrons bientôt.",
+        "contact.error": "Erreur lors de l'envoi. Veuillez réessayer.",
 
         # Game selection
         "sel.title_solo": "Partie Solo",
@@ -1191,6 +1224,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "nav.home": "Home",
         "nav.games": "Giochi",
         "nav.login": "Accedi",
+        "nav.logout": "Esci",
         "nav.ranking": "Classifica",
 
         # Footer
@@ -1227,6 +1261,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.cta_title": "Pronto a giocare?",
         "landing.cta_desc": "Scegli una modalità e metti alla prova le tue conoscenze.",
         "landing.cta_open": "🎮 Gioca ora",
+
+        # Contact
+        "contact.title": "Contatto",
+        "contact.subtitle": "Hai una domanda o un suggerimento? Scrivici.",
+        "contact.name": "Nome",
+        "contact.email": "Email",
+        "contact.message": "Messaggio",
+        "contact.send": "Invia messaggio",
+        "contact.sent": "Messaggio inviato! Ti risponderemo presto.",
+        "contact.error": "Errore nell'invio. Riprova.",
 
         # Game selection
         "sel.title_solo": "Partita Solo",
@@ -1582,6 +1626,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "nav.home": "Главная",
         "nav.games": "Игры",
         "nav.login": "Войти",
+        "nav.logout": "Выйти",
         "nav.ranking": "Рейтинг",
 
         # Footer
@@ -1618,6 +1663,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.cta_title": "Готов играть?",
         "landing.cta_desc": "Выбери режим и проверь свои знания.",
         "landing.cta_open": "🎮 Играть",
+
+        # Contact
+        "contact.title": "Контакты",
+        "contact.subtitle": "Есть вопрос или предложение? Напишите нам.",
+        "contact.name": "Имя",
+        "contact.email": "Email",
+        "contact.message": "Сообщение",
+        "contact.send": "Отправить сообщение",
+        "contact.sent": "Сообщение отправлено! Мы свяжемся с вами.",
+        "contact.error": "Ошибка отправки. Попробуйте ещё раз.",
 
         # Game selection
         "sel.title_solo": "Одиночная игра",

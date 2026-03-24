@@ -20,6 +20,29 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
+    <!-- Top Bar (language) -->
+    <div class="top-bar">
+        <div class="top-bar-inner">
+            <div class="nav-lang-wrap" id="nav-lang-wrap">
+                <button class="nav-lang" id="nav-lang-btn" type="button" aria-label="Language">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <ellipse cx="12" cy="12" rx="4" ry="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                    </svg>
+                    <span>{{ lang|upper }}</span>
+                </button>
+                <div class="lang-dropdown" id="lang-dropdown">
+                    <a href="/set-lang/es" class="lang-opt {{ 'active' if lang=='es' }}">🇪🇸 Español</a>
+                    <a href="/set-lang/en" class="lang-opt {{ 'active' if lang=='en' }}">🇬🇧 English</a>
+                    <a href="/set-lang/fr" class="lang-opt {{ 'active' if lang=='fr' }}">🇫🇷 Français</a>
+                    <a href="/set-lang/it" class="lang-opt {{ 'active' if lang=='it' }}">🇮🇹 Italiano</a>
+                    <a href="/set-lang/ru" class="lang-opt {{ 'active' if lang=='ru' }}">🇷🇺 Русский</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-container">
@@ -39,26 +62,10 @@
                 <a href="/tournaments" class="nav-link">{{ t('nav.tournaments', lang) }}</a>
                 <a href="/friends" class="nav-link nav-friends" id="nav-friends">{{ t('soc.friends', lang) }}</a>
                 <a href="/profile" class="nav-link">{{ user.username }}</a>
+                <a href="/logout" class="nav-link nav-logout">{{ t('nav.logout', lang) }}</a>
                 {% else %}
                 <a href="/login" class="nav-link">{{ t('nav.login', lang) }}</a>
                 {% endif %}
-                <div class="nav-lang-wrap" id="nav-lang-wrap">
-                    <button class="nav-link nav-lang" id="nav-lang-btn" type="button" aria-label="Language">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-                            <ellipse cx="12" cy="12" rx="4" ry="10"/>
-                            <line x1="2" y1="12" x2="22" y2="12"/>
-                        </svg>
-                        <span>{{ lang|upper }}</span>
-                    </button>
-                    <div class="lang-dropdown" id="lang-dropdown">
-                        <a href="/set-lang/es" class="lang-opt {{ 'active' if lang=='es' }}">🇪🇸 Español</a>
-                        <a href="/set-lang/en" class="lang-opt {{ 'active' if lang=='en' }}">🇬🇧 English</a>
-                        <a href="/set-lang/fr" class="lang-opt {{ 'active' if lang=='fr' }}">🇫🇷 Français</a>
-                        <a href="/set-lang/it" class="lang-opt {{ 'active' if lang=='it' }}">🇮🇹 Italiano</a>
-                        <a href="/set-lang/ru" class="lang-opt {{ 'active' if lang=='ru' }}">🇷🇺 Русский</a>
-                    </div>
-                </div>
             </div>
         </div>
     </nav>
@@ -82,6 +89,7 @@
                 <div class="footer-links">
                     <a href="/games">{{ t('footer.games', lang) }}</a>
                     <a href="/ranking">{{ t('footer.ranking', lang) }}</a>
+                    <a href="/contact">{{ t('footer.contact', lang) }}</a>
                 </div>
             </div>
             <p class="footer-bottom">{{ t('footer.text', lang) }}</p>

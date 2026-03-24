@@ -5,11 +5,11 @@
 /* ─── Auth pages (login / register) ────────────────────────── */
 
 .auth-page {
-    min-height: calc(100vh - 64px);
+    min-height: calc(100vh - 96px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 100px 24px 60px;
+    padding: 132px 24px 60px;
     background: linear-gradient(135deg, var(--gray-50) 0%, #e8edf5 100%);
 }
 
@@ -180,7 +180,7 @@
 
 .profile-page {
     min-height: 70vh;
-    padding: 100px 24px 60px;
+    padding: 132px 24px 60px;
     max-width: 760px;
     margin: 0 auto;
 }
@@ -345,7 +345,7 @@
 /* ─── Ranking page ─────────────────────────────────────────── */
 
 .ranking-page {
-    padding: 100px 24px 60px;
+    padding: 132px 24px 60px;
     max-width: 900px;
     margin: 0 auto;
 }
@@ -657,7 +657,7 @@
    Landing — Header
    ============================================================ */
 .landing-header {
-    padding: 100px 24px 40px;
+    padding: 132px 24px 40px;
     text-align: center;
     background: linear-gradient(135deg, #0a2540 0%, #0c2d5a 50%, #0a3d6b 100%);
 }
@@ -756,8 +756,8 @@
    Game Selection Page (select.html)
    ============================================================ */
 .select-page {
-    min-height: calc(100vh - 64px);
-    padding: 100px 24px 60px;
+    min-height: calc(100vh - 96px);
+    padding: 132px 24px 60px;
     background: linear-gradient(135deg, var(--gray-50) 0%, #e8edf5 100%);
 }
 .select-header {
@@ -833,11 +833,11 @@
 }
 
 @media (max-width: 640px) {
-    .landing-header { padding: 80px 16px 30px; }
+    .landing-header { padding: 112px 16px 30px; }
     .daily-section { padding: 40px 12px 30px; }
     .daily-card { padding: 16px 18px; gap: 14px; }
     .daily-icon { font-size: 1.8rem; }
-    .select-page { padding: 80px 12px 40px; }
+    .select-page { padding: 112px 12px 40px; }
     .select-grid { grid-template-columns: 1fr; gap: 16px; }
     .select-card { padding: 24px 18px 22px; }
 }

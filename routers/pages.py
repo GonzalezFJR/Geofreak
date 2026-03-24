@@ -1,13 +1,15 @@
 """HTML page routes."""
 
+import logging
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, Form, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from core.auth import get_optional_user
 from core.i18n import get_lang, SUPPORTED_LANGS
 from core.templates import templates
+from services.email import send_contact
 from services.games import GamesService
 from services.leaderboards import (
     get_leaderboard,
@@ -15,6 +17,7 @@ from services.leaderboards import (
     GAME_TYPES,
 )
 
+log = logging.getLogger(__name__)
 router = APIRouter()
 _games_svc = GamesService()
 
@@ -94,6 +97,31 @@ async def quizz_select(request: Request, user=Depends(get_optional_user)):
         g["_href"] = "/games/" + g["id"]
     return templates.TemplateResponse("games/select.html", {
         "request": request, "user": user, "lang": lang, "mode": "quizz", "games": games,
+    })
+
+
+@router.get("/contact", response_class=HTMLResponse)
+async def contact_page(request: Request, user=Depends(get_optional_user)):
+    lang = get_lang(request)
+    return templates.TemplateResponse("contact.html", {
+        "request": request, "user": user, "lang": lang,
+        "sent": False, "error": False,
+    })
+
+
+@router.post("/contact", response_class=HTMLResponse)
+async def contact_submit(
+    request: Request,
+    name: str = Form(..., max_length=100),
+    email: str = Form(..., max_length=200),
+    message: str = Form(..., max_length=2000),
+    user=Depends(get_optional_user),
+):
+    lang = get_lang(request)
+    ok = send_contact(name, email, message)
+    return templates.TemplateResponse("contact.html", {
+        "request": request, "user": user, "lang": lang,
+        "sent": ok, "error": not ok,
     })
 
 

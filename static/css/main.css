@@ -62,10 +62,52 @@ img {
     height: auto;
 }
 
+/* ─── Top Bar (language switcher) ──────────────────────────── */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1100;
+    background: var(--gray-900);
+    height: 32px;
+}
+.top-bar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+.top-bar .nav-lang-wrap { position: relative; }
+.top-bar .nav-lang {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--gray-400);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.top-bar .nav-lang svg { width: 14px; height: 14px; flex-shrink: 0; stroke: var(--gray-400); }
+.top-bar .nav-lang:hover { color: var(--white); }
+.top-bar .nav-lang:hover svg { stroke: var(--white); }
+.top-bar .lang-dropdown {
+    top: calc(100% + 4px);
+    right: 0;
+}
+
 /* ─── Navbar ───────────────────────────────────────────────── */
 .navbar {
     position: fixed;
-    top: 0;
+    top: 32px;
     left: 0;
     right: 0;
     z-index: 1000;
@@ -182,6 +224,16 @@ img {
     background: var(--blue-500);
     color: white;
     font-weight: 600;
+}
+
+/* ─── Logout button (red) ──────────────────────────── */
+.nav-logout {
+    color: #ef4444 !important;
+    font-weight: 600;
+}
+.nav-logout:hover {
+    background: #fef2f2 !important;
+    color: #dc2626 !important;
 }
 
 /* ─── Nav badge (pending friend requests) ──────────── */
@@ -532,7 +584,7 @@ img {
 
 /* ─── Map Page ─────────────────────────────────────────────── */
 .map-page {
-    padding-top: 64px;
+    padding-top: 96px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -769,7 +821,7 @@ img {
 /* ─── Loading ──────────────────────────────────────────────── */
 .loading-overlay {
     position: fixed;
-    top: 64px;
+    top: 96px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -844,10 +896,6 @@ img {
     .nav-links .nav-link {
         font-size: 1.2rem;
         padding: 12px 28px;
-    }
-    .nav-links .nav-lang {
-        font-size: 1rem;
-        padding: 8px 24px;
     }
 
     .nav-container { height: 56px; }
