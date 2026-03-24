@@ -102,7 +102,7 @@ img {
 /* ─── Navbar ───────────────────────────────────────────────── */
 .navbar {
     position: fixed;
-    top: 0;
+    top: 32px;
     left: 0;
     right: 0;
     z-index: 1000;
@@ -110,7 +110,7 @@ img {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--gray-200);
-    transition: all 0.3s ease;
+    transition: top 0.25s ease, background 0.3s ease;
 }
 
 .nav-container {
@@ -579,7 +579,7 @@ img {
 
 /* ─── Map Page ─────────────────────────────────────────────── */
 .map-page {
-    padding-top: 64px;
+    padding-top: 96px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -816,7 +816,7 @@ img {
 /* ─── Loading ──────────────────────────────────────────────── */
 .loading-overlay {
     position: fixed;
-    top: 64px;
+    top: 96px;
     left: 0;
     right: 0;
     bottom: 0;

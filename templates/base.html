@@ -107,6 +107,9 @@
     var lb=document.getElementById('nav-lang-btn'),ld=document.getElementById('lang-dropdown');
     if(lb)lb.addEventListener('click',function(e){e.stopPropagation();ld.classList.toggle('open');});
     document.addEventListener('click',function(){if(ld)ld.classList.remove('open');});
+    // Navbar scroll: stick to top once top-bar scrolls out
+    var nb=document.querySelector('.navbar');
+    if(nb){window.addEventListener('scroll',function(){nb.style.top=window.scrollY>=32?'0':'32px';},{passive:true});}
     })();
     </script>
     {% if user %}
