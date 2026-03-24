@@ -15,16 +15,23 @@
             <p class="game-settings-desc">{{ game_field(game, 'description', lang) }}</p>
 
             {% if game.type == 'solo' %}
-            <!-- Difficulty selector (only for GeoFreak games) -->
+            <!-- Difficulty selector (inline dropdown) -->
             {% set def_diff = game.defaults.default_difficulty|default('normal') %}
             <div class="game-setting-group">
-                <label class="game-setting-label">{{ t('game.difficulty', lang) }}</label>
-                <div class="difficulty-selector" id="difficulty-selector">
-                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'easy' }}" data-diff="easy">{{ t('game.diff_easy', lang) }}</button>
-                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'normal' }}" data-diff="normal">{{ t('game.diff_normal', lang) }}</button>
-                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'hard' }}" data-diff="hard">{{ t('game.diff_hard', lang) }}</button>
-                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'very_hard' }}" data-diff="very_hard">{{ t('game.diff_very_hard', lang) }}</button>
-                    <button type="button" class="diff-btn {{ 'active' if def_diff == 'extreme' }}" data-diff="extreme">{{ t('game.diff_extreme', lang) }}</button>
+                <label class="game-setting-label">{{ t('game.difficulty', lang) }}:</label>
+                <div class="diff-dropdown" id="difficulty-selector">
+                    <button type="button" class="diff-dropdown-toggle" id="diff-toggle">
+                        <span id="diff-label">{{ t('game.diff_' ~ def_diff, lang) }}</span>
+                        <span class="diff-arrow">▾</span>
+                    </button>
+                    <input type="hidden" id="diff-value" value="{{ def_diff }}">
+                    <ul class="diff-dropdown-menu" id="diff-menu">
+                        <li data-diff="easy" {% if def_diff == 'easy' %}class="selected"{% endif %}>{{ t('game.diff_easy', lang) }}</li>
+                        <li data-diff="normal" {% if def_diff == 'normal' %}class="selected"{% endif %}>{{ t('game.diff_normal', lang) }}</li>
+                        <li data-diff="hard" {% if def_diff == 'hard' %}class="selected"{% endif %}>{{ t('game.diff_hard', lang) }}</li>
+                        <li data-diff="very_hard" {% if def_diff == 'very_hard' %}class="selected"{% endif %}>{{ t('game.diff_very_hard', lang) }}</li>
+                        <li data-diff="extreme" {% if def_diff == 'extreme' %}class="selected"{% endif %}>{{ t('game.diff_extreme', lang) }}</li>
+                    </ul>
                 </div>
             </div>
             {% endif %}

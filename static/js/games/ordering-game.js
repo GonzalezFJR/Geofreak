@@ -7,6 +7,7 @@ var OrderingGame = (function () {
     var questions = [];
     var currentIdx = 0;
     var dragSrcEl = null;
+    var totalScore = 0;
 
     function init() {
         GeoGame.init({ onStart: loadData });
@@ -22,6 +23,7 @@ var OrderingGame = (function () {
             .then(function (data) {
                 questions = data.questions || [];
                 currentIdx = 0;
+                totalScore = 0;
                 GeoGame.setTotal(questions.length);
                 showQuestion();
             });
@@ -39,32 +41,33 @@ var OrderingGame = (function () {
 
         var labelKey = T['stat.label_key'] || 'label_es';
         var descKey = labelKey.replace('label_', 'description_');
-        var statLabel = q.stat_info[labelKey];
+        var statLabel = q.stat_info[labelKey].toLowerCase();
         var statDesc = q.stat_info[descKey] || '';
 
         var direction = q.ascending
-            ? (T['ord.prompt_asc'] || 'Sort by <strong>{stat}</strong> ↑').replace('{stat}', statLabel)
-            : (T['ord.prompt_desc'] || 'Sort by <strong>{stat}</strong> ↓').replace('{stat}', statLabel);
+            ? (T['ord.prompt_asc'] || 'Sort by <em>{stat}</em> ↑').replace('{stat}', statLabel)
+            : (T['ord.prompt_desc'] || 'Sort by <em>{stat}</em> ↓').replace('{stat}', statLabel);
 
         var promptEl = document.getElementById('ordering-prompt');
         promptEl.innerHTML = direction;
 
         // Add description tooltip to stat name in prompt
         if (statDesc) {
-            var strong = promptEl.querySelector('strong');
-            if (strong) {
-                strong.classList.add('stat-tooltip-trigger');
-                strong.setAttribute('data-tooltip', statDesc);
-                strong.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    toggleTooltip(this);
-                });
+            var em = promptEl.querySelector('em');
+            if (em) {
+                em.classList.add('stat-tooltip-trigger');
+                em.setAttribute('data-tooltip', statDesc);
+                bindTooltipTrigger(em);
+                flashTooltip(em);
             }
         }
 
         renderItems(q.countries);
         clearFeedback();
         document.getElementById('btn-confirm').disabled = false;
+        document.getElementById('btn-confirm').style.display = '';
+        var nextBtn = document.getElementById('btn-next');
+        if (nextBtn) nextBtn.style.display = 'none';
     }
 
     function renderItems(countries) {
@@ -76,6 +79,7 @@ var OrderingGame = (function () {
             el.setAttribute('draggable', 'true');
             el.setAttribute('data-iso', c.iso_a3);
             el.innerHTML =
+                '<span class="ordering-rank">' + (i + 1) + '</span>' +
                 '<span class="ordering-handle">☰</span>' +
                 '<span class="ordering-flag">' + (c.flag_emoji || '🏳️') + '</span>' +
                 '<span class="ordering-name">' + GeoUtils.getLocalName(c) + '</span>';
@@ -128,6 +132,7 @@ var OrderingGame = (function () {
     function handleDragEnd() {
         this.classList.remove('dragging');
         dragSrcEl = null;
+        updateRanks();
     }
 
     function closestItem(el) {
@@ -171,7 +176,37 @@ var OrderingGame = (function () {
         if (touchItem) {
             touchItem.classList.remove('dragging');
             touchItem = null;
+            updateRanks();
         }
+    }
+
+    function updateRanks() {
+        var items = document.querySelectorAll('#ordering-items .ordering-item');
+        items.forEach(function (el, i) {
+            var rank = el.querySelector('.ordering-rank');
+            if (rank) rank.textContent = i + 1;
+        });
+    }
+
+    // ── Scoring: 0–10 using normalised Kendall tau distance ──
+
+    function computeScore(playerOrder, correctOrder) {
+        var n = correctOrder.length;
+        if (n <= 1) return 10;
+        // Count discordant pairs (Kendall tau distance)
+        var posMap = {};
+        playerOrder.forEach(function (iso, i) { posMap[iso] = i; });
+        var discordant = 0;
+        var maxDiscordant = n * (n - 1) / 2;
+        for (var i = 0; i < n; i++) {
+            for (var j = i + 1; j < n; j++) {
+                if (posMap[correctOrder[i]] > posMap[correctOrder[j]]) {
+                    discordant++;
+                }
+            }
+        }
+        // 0 discordant → 10, all discordant → 0
+        return Math.round((1 - discordant / maxDiscordant) * 10 * 10) / 10;
     }
 
     // ── Confirm answer ──────────────────────────────────────
@@ -185,11 +220,12 @@ var OrderingGame = (function () {
 
         var q = questions[currentIdx];
         var correct = q.correct_order;
-        var isCorrect = playerOrder.every(function (iso, i) {
-            return iso === correct[i];
-        });
+        var score = computeScore(playerOrder, correct);
+        totalScore += score;
 
-        // Show correct/incorrect per item
+        var isCorrect = score === 10;
+
+        // Show correct/incorrect per item + correct ranking number
         items.forEach(function (el, i) {
             var iso = el.getAttribute('data-iso');
             var correctIdx = correct.indexOf(iso);
@@ -201,25 +237,44 @@ var OrderingGame = (function () {
             badge.textContent = formatted;
             el.appendChild(badge);
 
+            // Show the correct position
+            var rank = el.querySelector('.ordering-rank');
+            if (rank) {
+                rank.textContent = correctIdx + 1;
+                rank.classList.add(iso === correct[i] ? 'rank-correct' : 'rank-wrong');
+            }
+
             if (iso === correct[i]) {
                 el.classList.add('correct');
             } else {
                 el.classList.add('wrong');
             }
+
+            // Disable drag
+            el.setAttribute('draggable', 'false');
+            el.style.cursor = 'default';
         });
 
         if (isCorrect) {
             GeoGame.addCorrect();
-            showFeedback('correct', T['ord.correct'] || '✅ Correct order!');
-        } else {
-            showFeedback('wrong', T['ord.wrong'] || '❌ Wrong order');
         }
 
-        document.getElementById('btn-confirm').disabled = true;
-        setTimeout(function () {
-            currentIdx++;
-            showQuestion();
-        }, 2000);
+        var feedbackText = isCorrect
+            ? (T['ord.correct'] || '✅ Correct order!')
+            : (T['ord.wrong'] || '❌ Wrong order');
+        feedbackText += '  —  ' + (T['ord.score'] || 'Score') + ': ' + score + '/10';
+
+        showFeedback(isCorrect ? 'correct' : 'wrong', feedbackText);
+
+        // Hide confirm, show Next
+        document.getElementById('btn-confirm').style.display = 'none';
+        var nextBtn = document.getElementById('btn-next');
+        if (nextBtn) nextBtn.style.display = '';
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        showQuestion();
     }
 
     function showFeedback(cls, text) {
@@ -236,6 +291,7 @@ var OrderingGame = (function () {
 
     function saveResult() {
         var elapsed = Date.now() - GeoGame.startTime;
+        var avgScore = questions.length > 0 ? totalScore / questions.length : 0;
         var payload = {
             game_type: 'ordering',
             mode: 'solo',
@@ -243,7 +299,11 @@ var OrderingGame = (function () {
             total: GeoGame.total,
             accuracy: GeoGame.total > 0 ? GeoGame.correct / GeoGame.total : 0,
             time_ms: elapsed,
-            config: { continent: GeoGame.settings.continent, questions: questions.length }
+            config: {
+                continent: GeoGame.settings.continent,
+                questions: questions.length,
+                avg_score: Math.round(avgScore * 10) / 10
+            }
         };
         fetch('/api/matches/result', {
             method: 'POST',
@@ -252,5 +312,5 @@ var OrderingGame = (function () {
         }).catch(function () {});
     }
 
-    return { confirm: confirm };
+    return { confirm: confirm, next: nextQuestion };
 })();

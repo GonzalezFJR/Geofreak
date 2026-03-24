@@ -364,9 +364,9 @@ var GeoGame = {
         };
 
         // Read difficulty selector
-        var activeBtn = document.querySelector('#difficulty-selector .diff-btn.active');
-        if (activeBtn) {
-            s.difficulty = activeBtn.getAttribute('data-diff') || 'normal';
+        var diffInput = document.getElementById('diff-value');
+        if (diffInput) {
+            s.difficulty = diffInput.value || 'normal';
         }
 
         // Read countdown toggle
@@ -499,38 +499,65 @@ var GeoGame = {
     },
 };
 
-/* ── Difficulty selector button binding ────────────────────── */
+/* ── Difficulty dropdown binding ────────────────────────────── */
 (function () {
-    var btns = document.querySelectorAll('#difficulty-selector .diff-btn');
-    btns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            btns.forEach(function (b) { b.classList.remove('active'); });
-            btn.classList.add('active');
+    var toggle = document.getElementById('diff-toggle');
+    var menu = document.getElementById('diff-menu');
+    var input = document.getElementById('diff-value');
+    var label = document.getElementById('diff-label');
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        menu.classList.toggle('open');
+    });
+
+    menu.querySelectorAll('li').forEach(function (li) {
+        li.addEventListener('click', function (e) {
+            e.stopPropagation();
+            menu.querySelectorAll('li').forEach(function (l) { l.classList.remove('selected'); });
+            li.classList.add('selected');
+            input.value = li.getAttribute('data-diff');
+            label.textContent = li.textContent;
+            menu.classList.remove('open');
         });
+    });
+
+    document.addEventListener('click', function () {
+        menu.classList.remove('open');
     });
 })();
 
 /* ── Tooltip for stat descriptions (shared) ────────────────────── */
+var _isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+function dismissTooltip() {
+    var existing = document.querySelector('.stat-tooltip-popup');
+    if (existing) existing.remove();
+}
+
 function toggleTooltip(el) {
-    // Remove any existing tooltip
     var existing = document.querySelector('.stat-tooltip-popup');
     if (existing) {
+        var wasSame = existing._trigger === el;
         existing.remove();
-        if (existing._trigger === el) return; // toggle off
+        if (wasSame) return;
     }
+    _showTooltip(el);
+}
+
+function _showTooltip(el) {
     var text = el.getAttribute('data-tooltip');
     if (!text) return;
     var tip = document.createElement('div');
     tip.className = 'stat-tooltip-popup';
     tip.textContent = text;
     tip._trigger = el;
-    // Position below the element
     var rect = el.getBoundingClientRect();
     tip.style.position = 'fixed';
     tip.style.left = Math.max(8, rect.left + rect.width / 2 - 150) + 'px';
     tip.style.top = (rect.bottom + 8) + 'px';
     document.body.appendChild(tip);
-    // Close on outside click
     setTimeout(function() {
         document.addEventListener('click', function handler(e) {
             if (!tip.contains(e.target) && e.target !== el) {
@@ -539,4 +566,29 @@ function toggleTooltip(el) {
             }
         });
     }, 10);
+    return tip;
+}
+
+/** Auto-show tooltip briefly when a new question appears, then fade out */
+function flashTooltip(el) {
+    dismissTooltip();
+    var tip = _showTooltip(el);
+    if (!tip) return;
+    tip.classList.add('flash');
+    setTimeout(function () {
+        tip.classList.add('fade-out');
+        setTimeout(function () { if (tip.parentNode) tip.remove(); }, 500);
+    }, 1500);
+}
+
+function bindTooltipTrigger(el) {
+    if (_isTouch) {
+        el.addEventListener('click', function (e) {
+            e.stopPropagation();
+            toggleTooltip(el);
+        });
+    } else {
+        el.addEventListener('mouseenter', function () { _showTooltip(el); });
+        el.addEventListener('mouseleave', function () { dismissTooltip(); });
+    }
 }

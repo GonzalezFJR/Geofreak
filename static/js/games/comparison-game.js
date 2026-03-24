@@ -41,7 +41,7 @@ var ComparisonGame = (function () {
 
         var labelKey = T['stat.label_key'] || 'label_es';
         var descKey = labelKey.replace('label_', 'description_');
-        var statLabel = q.stat_info[labelKey];
+        var statLabel = q.stat_info[labelKey].toLowerCase();
         var statDesc = q.stat_info[descKey] || '';
 
         document.getElementById('comparison-prompt').innerHTML =
@@ -50,14 +50,12 @@ var ComparisonGame = (function () {
         // Add description tooltip to stat name in prompt
         if (statDesc) {
             var promptEl = document.getElementById('comparison-prompt');
-            var strong = promptEl.querySelector('strong');
-            if (strong) {
-                strong.classList.add('stat-tooltip-trigger');
-                strong.setAttribute('data-tooltip', statDesc);
-                strong.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    toggleTooltip(this);
-                });
+            var em = promptEl.querySelector('em');
+            if (em) {
+                em.classList.add('stat-tooltip-trigger');
+                em.setAttribute('data-tooltip', statDesc);
+                bindTooltipTrigger(em);
+                flashTooltip(em);
             }
         }
 

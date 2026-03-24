@@ -139,6 +139,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Ordering
         "ord.question": "Pregunta",
         "ord.confirm": "✅ Confirmar orden",
+        "ord.next": "Siguiente ➜",
+        "ord.score": "Puntuación",
 
         # Comparison
         "cmp.question": "Pregunta",
@@ -580,6 +582,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Ordering
         "ord.question": "Question",
         "ord.confirm": "✅ Confirm order",
+        "ord.next": "Next ➜",
+        "ord.score": "Score",
 
         # Comparison
         "cmp.question": "Question",
@@ -1020,6 +1024,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Ordering
         "ord.question": "Question",
         "ord.confirm": "✅ Confirmer l'ordre",
+        "ord.next": "Suivant ➜",
+        "ord.score": "Score",
 
         # Comparison
         "cmp.question": "Question",
@@ -1459,6 +1465,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Ordering
         "ord.question": "Domanda",
         "ord.confirm": "✅ Conferma ordine",
+        "ord.next": "Avanti ➜",
+        "ord.score": "Punteggio",
 
         # Comparison
         "cmp.question": "Domanda",
@@ -1898,6 +1906,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Ordering
         "ord.question": "Вопрос",
         "ord.confirm": "✅ Подтвердить порядок",
+        "ord.next": "Далее ➜",
+        "ord.score": "Балл",
 
         # Comparison
         "cmp.question": "Вопрос",
@@ -2215,7 +2225,7 @@ _JS_KEYS = [
     "js.correct", "js.correct_name", "js.wrong_retry", "js.skipped",
     "js.revealed", "js.no_match",
     # Ordering
-    "ord.prompt_asc", "ord.prompt_desc", "ord.correct", "ord.wrong",
+    "ord.prompt_asc", "ord.prompt_desc", "ord.correct", "ord.wrong", "ord.score",
     # Comparison
     "cmp.prompt", "cmp.correct", "cmp.wrong",
     # Map game
@@ -2242,11 +2252,12 @@ _JS_KEYS = [
 # Extra JS keys needed by ordering/comparison that use templates with {stat}
 _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
     "es": {
-        "ord.prompt_asc": "Ordena estos países por <strong>{stat}</strong> de menor a mayor ↑",
-        "ord.prompt_desc": "Ordena estos países por <strong>{stat}</strong> de mayor a menor ↓",
+        "ord.prompt_asc": "Ordena estos países por <em>{stat}</em> de menor a mayor ↑",
+        "ord.prompt_desc": "Ordena estos países por <em>{stat}</em> de mayor a menor ↓",
         "ord.correct": "✅ ¡Orden correcto!",
         "ord.wrong": "❌ Orden incorrecto",
-        "cmp.prompt": "¿Qué país tiene mayor <strong>{stat}</strong>?",
+        "ord.score": "Puntuación",
+        "cmp.prompt": "¿Qué país tiene mayor <em>{stat}</em>?",
         "cmp.correct": "✅ ¡Correcto!",
         "cmp.wrong": "❌ Incorrecto",
         "js.correct": "✅ ¡Correcto!",
@@ -2263,11 +2274,12 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "quiz.no_outline": "🗺️ Sin contorno",
     },
     "en": {
-        "ord.prompt_asc": "Sort these countries by <strong>{stat}</strong> from lowest to highest ↑",
-        "ord.prompt_desc": "Sort these countries by <strong>{stat}</strong> from highest to lowest ↓",
+        "ord.prompt_asc": "Sort these countries by <em>{stat}</em> from lowest to highest ↑",
+        "ord.prompt_desc": "Sort these countries by <em>{stat}</em> from highest to lowest ↓",
         "ord.correct": "✅ Correct order!",
         "ord.wrong": "❌ Wrong order",
-        "cmp.prompt": "Which country has a higher <strong>{stat}</strong>?",
+        "ord.score": "Score",
+        "cmp.prompt": "Which country has a higher <em>{stat}</em>?",
         "cmp.correct": "✅ Correct!",
         "cmp.wrong": "❌ Wrong",
         "js.correct": "✅ Correct!",
@@ -2284,11 +2296,12 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "quiz.no_outline": "🗺️ No outline",
     },
     "fr": {
-        "ord.prompt_asc": "Classez ces pays par <strong>{stat}</strong> du plus petit au plus grand ↑",
-        "ord.prompt_desc": "Classez ces pays par <strong>{stat}</strong> du plus grand au plus petit ↓",
+        "ord.prompt_asc": "Classez ces pays par <em>{stat}</em> du plus petit au plus grand ↑",
+        "ord.prompt_desc": "Classez ces pays par <em>{stat}</em> du plus grand au plus petit ↓",
         "ord.correct": "✅ Ordre correct !",
         "ord.wrong": "❌ Ordre incorrect",
-        "cmp.prompt": "Quel pays a le plus grand <strong>{stat}</strong> ?",
+        "ord.score": "Score",
+        "cmp.prompt": "Quel pays a le plus grand <em>{stat}</em> ?",
         "cmp.correct": "✅ Correct !",
         "cmp.wrong": "❌ Incorrect",
         "js.correct": "✅ Correct !",
@@ -2305,11 +2318,12 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "quiz.no_outline": "🗺️ Pas de contour",
     },
     "it": {
-        "ord.prompt_asc": "Ordina questi paesi per <strong>{stat}</strong> dal più piccolo al più grande ↑",
-        "ord.prompt_desc": "Ordina questi paesi per <strong>{stat}</strong> dal più grande al più piccolo ↓",
+        "ord.prompt_asc": "Ordina questi paesi per <em>{stat}</em> dal più piccolo al più grande ↑",
+        "ord.prompt_desc": "Ordina questi paesi per <em>{stat}</em> dal più grande al più piccolo ↓",
         "ord.correct": "✅ Ordine corretto!",
         "ord.wrong": "❌ Ordine sbagliato",
-        "cmp.prompt": "Quale paese ha il <strong>{stat}</strong> più alto?",
+        "ord.score": "Punteggio",
+        "cmp.prompt": "Quale paese ha il <em>{stat}</em> più alto?",
         "cmp.correct": "✅ Corretto!",
         "cmp.wrong": "❌ Sbagliato",
         "js.correct": "✅ Corretto!",
@@ -2326,11 +2340,12 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "quiz.no_outline": "🗺️ Nessun contorno",
     },
     "ru": {
-        "ord.prompt_asc": "Отсортируйте эти страны по <strong>{stat}</strong> от меньшего к большему ↑",
-        "ord.prompt_desc": "Отсортируйте эти страны по <strong>{stat}</strong> от большего к меньшему ↓",
+        "ord.prompt_asc": "Отсортируйте эти страны по <em>{stat}</em> от меньшего к большему ↑",
+        "ord.prompt_desc": "Отсортируйте эти страны по <em>{stat}</em> от большего к меньшему ↓",
         "ord.correct": "✅ Верный порядок!",
         "ord.wrong": "❌ Неверный порядок",
-        "cmp.prompt": "У какой страны <strong>{stat}</strong> больше?",
+        "ord.score": "Балл",
+        "cmp.prompt": "У какой страны <em>{stat}</em> больше?",
         "cmp.correct": "✅ Верно!",
         "cmp.wrong": "❌ Неверно",
         "js.correct": "✅ Верно!",
