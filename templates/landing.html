@@ -2,6 +2,40 @@
 
 {% block title %}{{ t('landing.title', lang) }}{% endblock %}
 
+{% block pre_navbar %}
+<!-- Top Bar (language) — only on landing -->
+<div class="top-bar" id="top-bar">
+    <div class="top-bar-inner">
+        <div class="nav-lang-wrap" id="nav-lang-wrap">
+            <button class="nav-lang" id="nav-lang-btn" type="button" aria-label="Language">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <ellipse cx="12" cy="12" rx="4" ry="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                </svg>
+                <span>{{ lang|upper }}</span>
+            </button>
+            <div class="lang-dropdown" id="lang-dropdown">
+                <a href="/set-lang/es" class="lang-opt {{ 'active' if lang=='es' }}">🇪🇸 Español</a>
+                <a href="/set-lang/en" class="lang-opt {{ 'active' if lang=='en' }}">🇬🇧 English</a>
+                <a href="/set-lang/fr" class="lang-opt {{ 'active' if lang=='fr' }}">🇫🇷 Français</a>
+                <a href="/set-lang/it" class="lang-opt {{ 'active' if lang=='it' }}">🇮🇹 Italiano</a>
+                <a href="/set-lang/ru" class="lang-opt {{ 'active' if lang=='ru' }}">🇷🇺 Русский</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+(function(){
+    var nb=document.querySelector('.navbar');
+    if(nb){
+        nb.style.top='32px';
+        window.addEventListener('scroll',function(){nb.style.top=window.scrollY>=32?'0':'32px';},{passive:true});
+    }
+})();
+</script>
+{% endblock %}
+
 {% block extra_head %}
 <link rel="stylesheet" href="/static/css/pages.css">
 <style>

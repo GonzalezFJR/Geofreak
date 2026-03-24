@@ -27,7 +27,7 @@ var MapGame = (function () {
     function init(config) {
         mode   = config.mode;
         target = config.target;
-        GeoGame.init({ onStart: loadData });
+        GeoGame.init({ onStart: loadData, delayTimer: true });
 
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') submitAnswer();
@@ -35,7 +35,23 @@ var MapGame = (function () {
     }
 
     /* ── Data loading ──────────────────────────────────────── */
+    function showSpinner() {
+        var mapEl = document.getElementById('game-map');
+        if (!mapEl) return;
+        var sp = document.createElement('div');
+        sp.id = 'map-spinner';
+        sp.className = 'map-spinner-overlay';
+        sp.innerHTML = '<div class="map-spinner"></div>';
+        mapEl.appendChild(sp);
+    }
+
+    function hideSpinner() {
+        var sp = document.getElementById('map-spinner');
+        if (sp) sp.remove();
+    }
+
     function loadData(settings) {
+        showSpinner();
         Promise.all([
             fetch('/api/countries').then(function (r) { return r.json(); }),
             fetch('/api/geojson/all').then(function (r) { return r.json(); }),
@@ -80,6 +96,8 @@ var MapGame = (function () {
             GeoGame.setTotal(targetSet.size);
 
             initMap(geojson);
+            hideSpinner();
+            GeoGame.startTimer();
 
             // Focus input in type mode
             if (mode === 'type') {

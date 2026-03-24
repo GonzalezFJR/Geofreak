@@ -79,7 +79,7 @@ var QuizGame = (function () {
         if (acceptable.has(normalised)) {
             GeoGame.addCorrect();
             input.className = 'correct';
-            showFeedback('correct', (T['js.correct_name'] || '✅ Correct! {name}').replace('{name}', country.name));
+            showFeedback('correct', (T['js.correct_name'] || '✅ Correct! {name}').replace('{name}', GeoUtils.getLocalName(country)));
             setTimeout(function () { currentIdx++; showNext(); }, 800);
         } else {
             input.className = 'wrong';
@@ -91,16 +91,17 @@ var QuizGame = (function () {
 
     function skip() {
         var country = queue[currentIdx];
-        showFeedback('skipped', (T['js.skipped'] || '⏭️ It was: {name}').replace('{name}', country.name));
+        showFeedback('skipped', (T['js.skipped'] || '⏭️ It was: {name}').replace('{name}', GeoUtils.getLocalName(country)));
         setTimeout(function () { currentIdx++; showNext(); }, 1200);
     }
 
     function reveal() {
         var country = queue[currentIdx];
         var input = document.getElementById('answer-input');
-        input.value = country.name;
+        var localName = GeoUtils.getLocalName(country);
+        input.value = localName;
         input.className = 'wrong';
-        showFeedback('wrong', (T['js.revealed'] || '👁️ {name}').replace('{name}', country.name));
+        showFeedback('wrong', (T['js.revealed'] || '👁️ {name}').replace('{name}', localName));
         // Count as seen but NOT correct (it's a fail)
         setTimeout(function () { currentIdx++; showNext(); }, 1500);
     }

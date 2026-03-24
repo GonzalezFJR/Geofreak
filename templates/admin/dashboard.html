@@ -28,15 +28,57 @@
 
         <div class="form-row">
             <div>
-                <label style="font-size:0.75rem;color:#64748b;">{{ t('adm.name', lang) }}</label>
+                <label style="font-size:0.75rem;color:#64748b;">🇪🇸 {{ t('adm.name', lang) }}</label>
                 <input type="text" name="name" value="{{ game.name }}">
+            </div>
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">🇬🇧 {{ t('adm.name', lang) }}</label>
+                <input type="text" name="name_en" value="{{ game.name_en|default('') }}">
+            </div>
+        </div>
+        <div class="form-row">
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">🇫🇷 {{ t('adm.name', lang) }}</label>
+                <input type="text" name="name_fr" value="{{ game.name_fr|default('') }}">
+            </div>
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">🇮🇹 {{ t('adm.name', lang) }}</label>
+                <input type="text" name="name_it" value="{{ game.name_it|default('') }}">
+            </div>
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">🇷🇺 {{ t('adm.name', lang) }}</label>
+                <input type="text" name="name_ru" value="{{ game.name_ru|default('') }}">
             </div>
         </div>
 
         <div class="form-row">
             <div>
-                <label style="font-size:0.75rem;color:#64748b;">{{ t('adm.desc', lang) }}</label>
+                <label style="font-size:0.75rem;color:#64748b;">🇪🇸 {{ t('adm.desc', lang) }}</label>
                 <textarea name="description">{{ game.description }}</textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">🇬🇧 {{ t('adm.desc', lang) }}</label>
+                <textarea name="description_en">{{ game.description_en|default('') }}</textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">🇫🇷 {{ t('adm.desc', lang) }}</label>
+                <textarea name="description_fr">{{ game.description_fr|default('') }}</textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">🇮🇹 {{ t('adm.desc', lang) }}</label>
+                <textarea name="description_it">{{ game.description_it|default('') }}</textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div>
+                <label style="font-size:0.75rem;color:#64748b;">🇷🇺 {{ t('adm.desc', lang) }}</label>
+                <textarea name="description_ru">{{ game.description_ru|default('') }}</textarea>
             </div>
         </div>
 

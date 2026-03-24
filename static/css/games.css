@@ -4,7 +4,7 @@
 
 /* ─── Settings Overlay ─────────────────────────────────────── */
 .game-settings-overlay {
-    min-height: calc(100vh - 96px);
+    min-height: calc(100vh - 64px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +89,7 @@
 /* ─── Game HUD ─────────────────────────────────────────────── */
 .game-hud {
     position: fixed;
-    top: 96px;
+    top: 64px;
     left: 0;
     right: 0;
     z-index: 900;
@@ -463,6 +463,29 @@
 .game-map {
     flex: 1;
     z-index: 1;
+    position: relative;
+}
+
+/* ─── Map Loading Spinner ──────────────────────────────────── */
+.map-spinner-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.map-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #1a73e8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 /* ─── Results Overlay ──────────────────────────────────────── */
@@ -563,7 +586,7 @@
 
 /* ─── Games Dashboard ──────────────────────────────────────── */
 .games-dashboard {
-    padding-top: 132px;
+    padding-top: 100px;
     padding-bottom: 60px;
     min-height: 100vh;
     background: var(--gray-50);
@@ -665,7 +688,7 @@
 
 /* ─── Admin ────────────────────────────────────────────────── */
 .login-page {
-    min-height: calc(100vh - 96px);
+    min-height: calc(100vh - 64px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -710,7 +733,7 @@
 }
 
 .admin-dashboard {
-    padding-top: 132px;
+    padding-top: 100px;
     padding-bottom: 60px;
     max-width: 900px;
     margin: 0 auto;
@@ -831,7 +854,7 @@
     }
 
     /* Settings overlay */
-    .game-settings-overlay { padding: 16px 12px; min-height: calc(100vh - 84px); }
+    .game-settings-overlay { padding: 16px 12px; min-height: calc(100vh - 52px); }
     .game-settings-card { padding: 24px 20px; }
     .game-settings-icon { font-size: 2.2rem; }
     .game-settings-card h2 { font-size: 1.3rem; }
@@ -973,7 +996,7 @@
     .btn-outline-dark { justify-content: center; }
 
     /* Dashboard */
-    .games-dashboard { padding-top: 96px; padding-bottom: 30px; }
+    .games-dashboard { padding-top: 64px; padding-bottom: 30px; }
     .dashboard-header { margin-bottom: 24px; }
     .dashboard-header h1 { font-size: 1.6rem; }
     .dashboard-header p { font-size: 0.9rem; }
@@ -983,7 +1006,7 @@
     .game-card h3 { font-size: 1rem; }
 
     /* Admin */
-    .admin-dashboard { padding-top: 96px; }
+    .admin-dashboard { padding-top: 64px; }
     .admin-header { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
 

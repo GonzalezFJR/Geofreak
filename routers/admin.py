@@ -76,6 +76,13 @@ async def update_game(request: Request, game_id: str):
         "name": form.get("name", ""),
         "description": form.get("description", ""),
     }
+    # Multilingual fields
+    for suffix in ("en", "fr", "it", "ru"):
+        for field in ("name", "description"):
+            key = f"{field}_{suffix}"
+            val = form.get(key, "")
+            if val:
+                updates[key] = val
     defaults = {}
     if form.get("time_limit"):
         defaults["time_limit"] = int(form.get("time_limit", 600))

@@ -102,7 +102,7 @@ img {
 /* ─── Navbar ───────────────────────────────────────────────── */
 .navbar {
     position: fixed;
-    top: 32px;
+    top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
@@ -579,7 +579,7 @@ img {
 
 /* ─── Map Page ─────────────────────────────────────────────── */
 .map-page {
-    padding-top: 96px;
+    padding-top: 64px;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -816,7 +816,7 @@ img {
 /* ─── Loading ──────────────────────────────────────────────── */
 .loading-overlay {
     position: fixed;
-    top: 96px;
+    top: 64px;
     left: 0;
     right: 0;
     bottom: 0;

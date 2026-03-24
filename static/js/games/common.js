@@ -54,13 +54,19 @@ var GeoUtils = {
      */
     /** Get the localised display name for a country. */
     getLocalName: function (country) {
-        if (window.LANG === 'es' && country.name_es) return country.name_es;
+        var lang = window.LANG || 'es';
+        var key = 'name_' + lang;
+        if (country[key]) return country[key];
+        if (lang !== 'en' && country.name_es) return country.name_es;
         return country.name;
     },
 
     /** Get the localised capital name for a country. */
     getLocalCapital: function (country) {
-        if (window.LANG === 'es' && country.capital_es) return country.capital_es;
+        var lang = window.LANG || 'es';
+        var key = 'capital_' + lang;
+        if (country[key]) return country[key];
+        if (lang !== 'en' && country.capital_es) return country.capital_es;
         return country.capital;
     },
 
@@ -68,6 +74,9 @@ var GeoUtils = {
         var names = new Set();
         if (country.name) names.add(GeoUtils.normalize(country.name));
         if (country.name_es) names.add(GeoUtils.normalize(country.name_es));
+        if (country.name_fr) names.add(GeoUtils.normalize(country.name_fr));
+        if (country.name_it) names.add(GeoUtils.normalize(country.name_it));
+        if (country.name_ru) names.add(GeoUtils.normalize(country.name_ru));
         if (country.name_official) names.add(GeoUtils.normalize(country.name_official));
         // Aliases
         var aliases = COUNTRY_ALIASES[country.iso_a3];
@@ -96,6 +105,9 @@ var GeoUtils = {
         var names = new Set();
         if (country.capital) names.add(GeoUtils.normalize(country.capital));
         if (country.capital_es) names.add(GeoUtils.normalize(country.capital_es));
+        if (country.capital_fr) names.add(GeoUtils.normalize(country.capital_fr));
+        if (country.capital_it) names.add(GeoUtils.normalize(country.capital_it));
+        if (country.capital_ru) names.add(GeoUtils.normalize(country.capital_ru));
         var aliases = CAPITAL_ALIASES[country.iso_a3];
         if (aliases) {
             aliases.forEach(function (a) { names.add(GeoUtils.normalize(a)); });
@@ -338,16 +350,36 @@ var GeoGame = {
         this.settings = s;
         this.correct = 0;
         this.total = 0;
-        this.startTime = Date.now();
 
         // Hide settings, show HUD + game area
         document.getElementById('settings-overlay').style.display = 'none';
         document.getElementById('game-hud').style.display = 'flex';
         document.getElementById('game-area').style.display = '';
 
-        // Timer
+        // Timer — if delayTimer is set, defer until startTimer() is called
         this.timeRemaining = s.timeLimit;
-        if (s.timeLimit > 0) {
+        if (this._callbacks.delayTimer) {
+            // Show paused timer display
+            if (s.timeLimit > 0) {
+                this._updateTimer();
+            } else {
+                document.getElementById('hud-timer').textContent = '⏱️ ∞';
+            }
+        } else {
+            this._beginTimer();
+        }
+
+        if (this._callbacks.onStart) this._callbacks.onStart(s);
+    },
+
+    /** Start (or resume) the countdown timer. Called automatically unless delayTimer is set. */
+    startTimer: function () {
+        this._beginTimer();
+    },
+
+    _beginTimer: function () {
+        this.startTime = Date.now();
+        if (this.settings.timeLimit > 0) {
             this._updateTimer();
             var self = this;
             this.timerInterval = setInterval(function () {
@@ -360,8 +392,6 @@ var GeoGame = {
         } else {
             document.getElementById('hud-timer').textContent = '⏱️ ∞';
         }
-
-        if (this._callbacks.onStart) this._callbacks.onStart(s);
     },
 
     _updateTimer: function () {

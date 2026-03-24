@@ -44,7 +44,7 @@ var ComparisonGame = (function () {
         container.innerHTML = '';
 
         q.countries.forEach(function (c) {
-            var displayName = (window.LANG === 'es' && c.name_es) ? c.name_es : c.name;
+            var displayName = GeoUtils.getLocalName(c);
             var card = document.createElement('div');
             card.className = 'comparison-card';
             card.setAttribute('data-iso', c.iso_a3);

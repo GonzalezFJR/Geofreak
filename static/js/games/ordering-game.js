@@ -57,7 +57,7 @@ var OrderingGame = (function () {
             el.innerHTML =
                 '<span class="ordering-handle">☰</span>' +
                 '<span class="ordering-flag">' + (c.flag_emoji || '🏳️') + '</span>' +
-                '<span class="ordering-name">' + ((window.LANG === 'es' && c.name_es) ? c.name_es : c.name) + '</span>';
+                '<span class="ordering-name">' + GeoUtils.getLocalName(c) + '</span>';
 
             // Drag events
             el.addEventListener('dragstart', handleDragStart);
