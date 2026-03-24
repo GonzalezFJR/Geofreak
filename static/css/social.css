@@ -1,0 +1,311 @@
+/* ============================================================
+   GeoFreak — Social Styles (Friends + Public Profile)
+   ============================================================ */
+
+/* ─── Friends page layout ─────────────────────────────────── */
+.friends-page {
+    padding: 100px 24px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.friends-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+.friends-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 6px;
+}
+.friends-header p {
+    color: var(--gray-500);
+    font-size: 1.05rem;
+}
+
+/* ─── Search bar ──────────────────────────────────────────── */
+.friend-search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.friend-search input {
+    flex: 1;
+    padding: 10px 16px;
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-color 0.2s;
+}
+.friend-search input:focus {
+    border-color: var(--blue-500);
+}
+.friend-search button {
+    padding: 10px 20px;
+    background: var(--blue-500);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.friend-search button:hover { background: var(--blue-600); }
+
+/* ─── Search results dropdown ─────────────────────────────── */
+.search-results {
+    max-width: 500px;
+    margin: -20px auto 24px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    display: none;
+}
+.search-results.active { display: block; }
+.search-result-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--gray-100);
+}
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item .sr-name {
+    font-weight: 600;
+    color: var(--gray-800);
+}
+.sr-actions .btn-sm {
+    padding: 5px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-add {
+    background: var(--green-500);
+    color: white;
+}
+.btn-add:hover { background: var(--green-600); }
+.btn-add:disabled { background: var(--gray-300); color: var(--gray-500); cursor: default; }
+.btn-sm-outline {
+    background: transparent;
+    border: 1.5px solid var(--gray-300);
+    color: var(--gray-600);
+}
+
+/* ─── Tabs ────────────────────────────────────────────────── */
+.friends-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.ftab {
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--gray-600);
+    background: var(--gray-100);
+    border: 1.5px solid var(--gray-200);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.ftab:hover { border-color: var(--blue-500); color: var(--blue-600); }
+.ftab.active { background: var(--blue-500); color: white; border-color: var(--blue-500); }
+.ftab .badge {
+    display: inline-block;
+    background: #ef4444;
+    color: white;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    padding: 1px 7px;
+    margin-left: 6px;
+    font-weight: 700;
+}
+
+/* ─── Friend card ─────────────────────────────────────────── */
+.friend-list { display: flex; flex-direction: column; gap: 10px; }
+.friend-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    transition: all 0.2s;
+}
+.friend-card:hover { box-shadow: var(--shadow-sm); border-color: var(--blue-500); }
+.fc-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--blue-500);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+.fc-info { flex: 1; min-width: 0; }
+.fc-name {
+    font-weight: 600;
+    color: var(--gray-800);
+    font-size: 0.95rem;
+}
+.fc-name a { color: inherit; }
+.fc-name a:hover { color: var(--blue-600); }
+.fc-meta {
+    font-size: 0.8rem;
+    color: var(--gray-400);
+    margin-top: 2px;
+}
+.fc-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.btn-danger {
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 5px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-danger:hover { background: #fecaca; }
+.btn-accept {
+    background: var(--green-500);
+    color: white;
+    border: none;
+    padding: 5px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-accept:hover { background: var(--green-600); }
+
+/* ─── Empty state ─────────────────────────────────────────── */
+.friends-empty {
+    text-align: center;
+    padding: 50px 24px;
+    color: var(--gray-400);
+    font-size: 1rem;
+}
+.friends-empty span { font-size: 2rem; display: block; margin-bottom: 10px; }
+
+/* ─── Tab panels ──────────────────────────────────────────── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ============================================================
+   Public Profile
+   ============================================================ */
+.pub-profile {
+    padding: 100px 24px 60px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.pub-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+.pub-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--blue-500);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.pub-info h1 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 4px;
+}
+.pub-info p {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    margin: 0;
+}
+.pub-action {
+    margin-left: auto;
+}
+.pub-action .btn-friend {
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-friend.add { background: var(--green-500); color: white; }
+.btn-friend.add:hover { background: var(--green-600); }
+.btn-friend.pending { background: var(--gray-200); color: var(--gray-500); cursor: default; }
+.btn-friend.accepted { background: var(--blue-500); color: white; }
+.btn-friend.remove { background: #fee2e2; color: #dc2626; }
+.btn-friend.remove:hover { background: #fecaca; }
+
+.pub-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+}
+.pub-stat {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    text-align: center;
+}
+.pub-stat .ps-value {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--blue-600);
+}
+.pub-stat .ps-label {
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    margin-top: 4px;
+}
+
+/* ─── Responsive ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .friends-page { padding: 80px 12px 40px; }
+    .friend-card { flex-wrap: wrap; padding: 12px 14px; }
+    .fc-actions { width: 100%; justify-content: flex-end; margin-top: 8px; }
+    .friend-search { flex-direction: column; }
+    .friend-search button { width: 100%; }
+
+    .pub-profile { padding: 80px 12px 40px; }
+    .pub-header { flex-wrap: wrap; }
+    .pub-action { width: 100%; margin-left: 0; margin-top: 12px; }
+    .pub-action .btn-friend { width: 100%; text-align: center; }
+    .pub-avatar { width: 60px; height: 60px; font-size: 1.5rem; }
+    .pub-stats { grid-template-columns: repeat(2, 1fr); }
+}

@@ -121,6 +121,21 @@ var GeoUtils = {
         var p = feature.properties || {};
         return p.ISO_A3 || p.iso_a3 || p.ISO_A3_EH || '';
     },
+
+    /** Format a stat value for display (int / float1 / float3 / money). */
+    formatValue: function (val, fmt) {
+        var locale = window.LANG === 'en' ? 'en-US' : 'es-ES';
+        if (fmt === 'int') return Math.round(val).toLocaleString(locale);
+        if (fmt === 'float1') return val.toFixed(1);
+        if (fmt === 'float3') return val.toFixed(3);
+        if (fmt === 'money') {
+            if (val >= 1e12) return (val / 1e12).toFixed(1) + 'T $';
+            if (val >= 1e9) return (val / 1e9).toFixed(1) + 'B $';
+            if (val >= 1e6) return (val / 1e6).toFixed(1) + 'M $';
+            return Math.round(val).toLocaleString(locale) + ' $';
+        }
+        return String(val);
+    },
 };
 
 /* ── Hard-coded aliases ────────────────────────────────────── */
@@ -470,3 +485,34 @@ var GeoGame = {
         this.endGame();
     },
 };
+
+/* ── Tooltip for stat descriptions (shared) ────────────────────── */
+function toggleTooltip(el) {
+    // Remove any existing tooltip
+    var existing = document.querySelector('.stat-tooltip-popup');
+    if (existing) {
+        existing.remove();
+        if (existing._trigger === el) return; // toggle off
+    }
+    var text = el.getAttribute('data-tooltip');
+    if (!text) return;
+    var tip = document.createElement('div');
+    tip.className = 'stat-tooltip-popup';
+    tip.textContent = text;
+    tip._trigger = el;
+    // Position below the element
+    var rect = el.getBoundingClientRect();
+    tip.style.position = 'fixed';
+    tip.style.left = Math.max(8, rect.left + rect.width / 2 - 150) + 'px';
+    tip.style.top = (rect.bottom + 8) + 'px';
+    document.body.appendChild(tip);
+    // Close on outside click
+    setTimeout(function() {
+        document.addEventListener('click', function handler(e) {
+            if (!tip.contains(e.target) && e.target !== el) {
+                tip.remove();
+                document.removeEventListener('click', handler);
+            }
+        });
+    }, 10);
+}

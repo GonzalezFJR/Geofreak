@@ -79,7 +79,7 @@
                 '<div class="duel-card-info">' +
                 '<span class="duel-card-type">' + gameLabel + '</span>' +
                 '<span class="duel-card-meta">' + (d.num_questions || 10) + ' ' + (T.questions || 'questions') + '</span>' +
-                '<span class="duel-card-creator">' + (T.by || 'by') + ' ' + escapeHtml(d.creator_username || '?') + '</span>' +
+                '<span class="duel-card-creator">' + (T.by || 'by') + ' ' + GeoFreak.escapeHtml(d.creator_username || '?') + '</span>' +
                 '</div>' +
                 '<button class="btn btn-primary btn-join" data-id="' + d.duel_id + '">' + (T.join || 'Join') + '</button>';
             listEl.appendChild(card);
@@ -104,12 +104,6 @@
                     .catch(function () { loadDuels(); });
             });
         });
-    }
-
-    function escapeHtml(str) {
-        var div = document.createElement('div');
-        div.appendChild(document.createTextNode(str));
-        return div.innerHTML;
     }
 
     loadDuels();

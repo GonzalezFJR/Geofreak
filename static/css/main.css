@@ -112,6 +112,8 @@ img {
     border-bottom: 1px solid var(--gray-200);
     transition: top 0.25s ease, background 0.3s ease;
 }
+/* Landing page: navbar starts below the top-bar */
+.has-topbar .navbar { top: 32px; }
 
 .nav-container {
     max-width: 1200px;

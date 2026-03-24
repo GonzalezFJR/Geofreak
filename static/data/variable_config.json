@@ -1,0 +1,301 @@
+{
+  "variables": [
+    {
+      "key": "population",
+      "label_es": "Población",
+      "label_en": "Population",
+      "label_fr": "Population",
+      "label_it": "Popolazione",
+      "label_ru": "Население",
+      "description_es": "Número total estimado de habitantes del país según las últimas cifras oficiales.",
+      "description_en": "Estimated total number of inhabitants based on the latest official figures.",
+      "unit": "",
+      "format": "int",
+      "enabled": true,
+      "source": "worldbank"
+    },
+    {
+      "key": "area_km2",
+      "label_es": "Superficie (km²)",
+      "label_en": "Area (km²)",
+      "label_fr": "Superficie (km²)",
+      "label_it": "Superficie (km²)",
+      "label_ru": "Площадь (км²)",
+      "description_es": "Superficie total del país en kilómetros cuadrados, incluyendo tierra y aguas interiores.",
+      "description_en": "Total area of the country in square kilometres, including land and inland waters.",
+      "unit": "km²",
+      "format": "int",
+      "enabled": true,
+      "source": "restcountries"
+    },
+    {
+      "key": "density_per_km2",
+      "label_es": "Densidad (hab/km²)",
+      "label_en": "Density (pop/km²)",
+      "label_fr": "Densité (hab/km²)",
+      "label_it": "Densità (ab/km²)",
+      "label_ru": "Плотность (чел/км²)",
+      "description_es": "Número de habitantes por kilómetro cuadrado. Se calcula dividiendo la población total por la superficie.",
+      "description_en": "Number of inhabitants per square kilometre. Calculated by dividing total population by area.",
+      "unit": "hab/km²",
+      "format": "float1",
+      "enabled": true,
+      "source": "worldbank"
+    },
+    {
+      "key": "gdp_usd",
+      "label_es": "PIB (USD)",
+      "label_en": "GDP (USD)",
+      "label_fr": "PIB (USD)",
+      "label_it": "PIL (USD)",
+      "label_ru": "ВВП (USD)",
+      "description_es": "Producto Interior Bruto: valor total de bienes y servicios producidos en un año, expresado en dólares estadounidenses.",
+      "description_en": "Gross Domestic Product: total value of goods and services produced in a year, in US dollars.",
+      "unit": "USD",
+      "format": "money",
+      "enabled": true,
+      "source": "worldbank"
+    },
+    {
+      "key": "gdp_per_capita_usd",
+      "label_es": "PIB per cápita (USD)",
+      "label_en": "GDP per capita (USD)",
+      "label_fr": "PIB par habitant (USD)",
+      "label_it": "PIL pro capite (USD)",
+      "label_ru": "ВВП на душу (USD)",
+      "description_es": "Producto Interior Bruto dividido por la población. Indica el nivel de riqueza medio por persona.",
+      "description_en": "Gross Domestic Product divided by population. Indicates the average wealth level per person.",
+      "unit": "USD",
+      "format": "money",
+      "enabled": true,
+      "source": "worldbank"
+    },
+    {
+      "key": "life_expectancy",
+      "label_es": "Esperanza de vida",
+      "label_en": "Life expectancy",
+      "label_fr": "Espérance de vie",
+      "label_it": "Aspettativa di vita",
+      "label_ru": "Продолжительность жизни",
+      "description_es": "Número medio de años que se espera que viva una persona al nacer, según las tasas de mortalidad actuales.",
+      "description_en": "Average number of years a person is expected to live at birth, based on current mortality rates.",
+      "unit": "años",
+      "format": "float1",
+      "enabled": true,
+      "source": "worldbank"
+    },
+    {
+      "key": "hdi",
+      "label_es": "IDH",
+      "label_en": "HDI",
+      "label_fr": "IDH",
+      "label_it": "ISU",
+      "label_ru": "ИЧР",
+      "description_es": "Índice de Desarrollo Humano: mide el progreso de un país en salud, educación e ingreso. Varía entre 0 (peor) y 1 (mejor).",
+      "description_en": "Human Development Index: measures a country's progress in health, education and income. Ranges from 0 (worst) to 1 (best).",
+      "unit": "",
+      "format": "float3",
+      "enabled": true,
+      "source": "undp"
+    },
+    {
+      "key": "gini",
+      "label_es": "Índice Gini",
+      "label_en": "Gini index",
+      "label_fr": "Indice de Gini",
+      "label_it": "Indice di Gini",
+      "label_ru": "Индекс Джини",
+      "description_es": "El índice Gini cuantifica la desigualdad de ingresos o riqueza dentro de una población. Oscila entre 0 (igualdad perfecta) y 100 (máxima desigualdad).",
+      "description_en": "The Gini index quantifies income or wealth inequality within a population. Ranges from 0 (perfect equality) to 100 (maximum inequality).",
+      "unit": "",
+      "format": "float1",
+      "enabled": true,
+      "source": "worldbank"
+    },
+    {
+      "key": "co2_per_capita",
+      "label_es": "CO₂ per cápita",
+      "label_en": "CO₂ per capita",
+      "label_fr": "CO₂ par habitant",
+      "label_it": "CO₂ pro capite",
+      "label_ru": "CO₂ на душу",
+      "description_es": "Emisiones de dióxido de carbono por persona al año, medidas en toneladas métricas. Indicador clave de huella de carbono.",
+      "description_en": "Carbon dioxide emissions per person per year, measured in metric tonnes. A key indicator of carbon footprint.",
+      "unit": "t",
+      "format": "float1",
+      "enabled": true,
+      "source": "owid"
+    },
+    {
+      "key": "birth_rate",
+      "label_es": "Natalidad (‰)",
+      "label_en": "Birth rate (‰)",
+      "label_fr": "Natalité (‰)",
+      "label_it": "Natalità (‰)",
+      "label_ru": "Рождаемость (‰)",
+      "description_es": "Número de nacimientos por cada 1.000 habitantes en un año. Indicador de la dinámica demográfica.",
+      "description_en": "Number of births per 1,000 inhabitants per year. An indicator of demographic dynamics.",
+      "unit": "‰",
+      "format": "float1",
+      "enabled": true,
+      "source": "worldbank"
+    },
+    {
+      "key": "urban_population_pct",
+      "label_es": "Población urbana (%)",
+      "label_en": "Urban population (%)",
+      "label_fr": "Population urbaine (%)",
+      "label_it": "Popolazione urbana (%)",
+      "label_ru": "Городское население (%)",
+      "description_es": "Porcentaje de la población que vive en áreas clasificadas como urbanas según las definiciones nacionales.",
+      "description_en": "Percentage of the population living in areas classified as urban by national definitions.",
+      "unit": "%",
+      "format": "float1",
+      "enabled": true,
+      "source": "worldbank"
+    },
+    {
+      "key": "literacy_rate",
+      "label_es": "Alfabetización (%)",
+      "label_en": "Literacy rate (%)",
+      "label_fr": "Alphabétisation (%)",
+      "label_it": "Alfabetizzazione (%)",
+      "label_ru": "Грамотность (%)",
+      "description_es": "Porcentaje de personas mayores de 15 años que pueden leer y escribir. Indicador fundamental de desarrollo educativo.",
+      "description_en": "Percentage of people aged 15+ who can read and write. A fundamental indicator of educational development.",
+      "unit": "%",
+      "format": "float1",
+      "enabled": false,
+      "source": "worldbank"
+    },
+    {
+      "key": "immigrant_pct",
+      "label_es": "Inmigración (%)",
+      "label_en": "Immigration (%)",
+      "label_fr": "Immigration (%)",
+      "label_it": "Immigrazione (%)",
+      "label_ru": "Иммиграция (%)",
+      "description_es": "Porcentaje de la población nacida en el extranjero sobre el total de habitantes.",
+      "description_en": "Percentage of the population born abroad relative to total inhabitants.",
+      "unit": "%",
+      "format": "float1",
+      "enabled": false,
+      "source": "un_desa"
+    },
+    {
+      "key": "capital_population",
+      "label_es": "Población de la capital",
+      "label_en": "Capital population",
+      "label_fr": "Population de la capitale",
+      "label_it": "Popolazione della capitale",
+      "label_ru": "Население столицы",
+      "description_es": "Número estimado de habitantes de la ciudad capital del país.",
+      "description_en": "Estimated number of inhabitants of the country's capital city.",
+      "unit": "",
+      "format": "int",
+      "enabled": false,
+      "source": "geonames"
+    },
+    {
+      "key": "elevation_max_m",
+      "label_es": "Altitud máxima (m)",
+      "label_en": "Highest elevation (m)",
+      "label_fr": "Altitude maximale (m)",
+      "label_it": "Altitudine massima (m)",
+      "label_ru": "Макс. высота (м)",
+      "description_es": "Punto más alto del país sobre el nivel del mar, medido en metros.",
+      "description_en": "Highest point of the country above sea level, measured in metres.",
+      "unit": "m",
+      "format": "int",
+      "enabled": false,
+      "source": "cia_factbook"
+    }
+  ],
+  "sources": [
+    {
+      "id": "worldbank",
+      "name": "World Bank Open Data",
+      "name_es": "Banco Mundial — Datos Abiertos",
+      "url": "https://data.worldbank.org/",
+      "description_es": "El Banco Mundial ofrece acceso libre a datos globales sobre desarrollo, incluyendo población, PIB, esperanza de vida, índice Gini, natalidad, alfabetización y más de 1.400 indicadores para todos los países.",
+      "description_en": "The World Bank provides free access to global development data, including population, GDP, life expectancy, Gini index, birth rate, literacy and over 1,400 indicators for all countries.",
+      "variables": [
+        "population",
+        "density_per_km2",
+        "gdp_usd",
+        "gdp_per_capita_usd",
+        "life_expectancy",
+        "gini",
+        "birth_rate",
+        "urban_population_pct",
+        "literacy_rate"
+      ]
+    },
+    {
+      "id": "restcountries",
+      "name": "REST Countries API",
+      "name_es": "REST Countries API",
+      "url": "https://restcountries.com/",
+      "description_es": "API de libre acceso que proporciona información general de los países: superficie, banderas, monedas, idiomas, fronteras, coordenadas y más, basada en fuentes oficiales.",
+      "description_en": "Open API providing general country information: area, flags, currencies, languages, borders, coordinates and more, based on official sources.",
+      "variables": [
+        "area_km2"
+      ]
+    },
+    {
+      "id": "undp",
+      "name": "UNDP Human Development Reports",
+      "name_es": "PNUD — Informes de Desarrollo Humano",
+      "url": "https://hdr.undp.org/data-center/human-development-index",
+      "description_es": "El Programa de las Naciones Unidas para el Desarrollo publica anualmente el Índice de Desarrollo Humano (IDH), que combina indicadores de salud, educación e ingresos.",
+      "description_en": "The United Nations Development Programme annually publishes the Human Development Index (HDI), combining health, education and income indicators.",
+      "variables": [
+        "hdi"
+      ]
+    },
+    {
+      "id": "owid",
+      "name": "Our World in Data",
+      "name_es": "Our World in Data",
+      "url": "https://ourworldindata.org/co2-emissions",
+      "description_es": "Proyecto de la Universidad de Oxford que ofrece datos abiertos y visualizaciones sobre emisiones de CO₂, energía, salud y otros indicadores globales.",
+      "description_en": "Oxford University project offering open data and visualisations on CO₂ emissions, energy, health and other global indicators.",
+      "variables": [
+        "co2_per_capita"
+      ]
+    },
+    {
+      "id": "un_desa",
+      "name": "UN DESA — International Migration",
+      "name_es": "ONU DESA — Migración Internacional",
+      "url": "https://www.un.org/development/desa/pd/content/international-migrant-stock",
+      "description_es": "El Departamento de Asuntos Económicos y Sociales de la ONU publica estimaciones del stock de migrantes internacionales por país de destino y origen.",
+      "description_en": "The UN Department of Economic and Social Affairs publishes estimates of international migrant stock by country of destination and origin.",
+      "variables": [
+        "immigrant_pct"
+      ]
+    },
+    {
+      "id": "geonames",
+      "name": "GeoNames",
+      "name_es": "GeoNames",
+      "url": "https://www.geonames.org/",
+      "description_es": "Base de datos geográfica abierta con información sobre ciudades, coordenadas, población y divisiones administrativas de todo el mundo.",
+      "description_en": "Open geographic database with information about cities, coordinates, population and administrative divisions worldwide.",
+      "variables": [
+        "capital_population"
+      ]
+    },
+    {
+      "id": "cia_factbook",
+      "name": "CIA World Factbook",
+      "name_es": "CIA World Factbook",
+      "url": "https://www.cia.gov/the-world-factbook/",
+      "description_es": "Publicación de la CIA con perfiles detallados de cada país: geografía, demografía, economía, infraestructura, datos militares y elevaciones.",
+      "description_en": "CIA publication with detailed country profiles: geography, demographics, economy, infrastructure, military data and elevations.",
+      "variables": [
+        "elevation_max_m"
+      ]
+    }
+  ]
+}

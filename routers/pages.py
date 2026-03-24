@@ -16,6 +16,7 @@ from services.leaderboards import (
     get_user_position,
     GAME_TYPES,
 )
+from services.quiz import get_sources, get_all_variables
 
 log = logging.getLogger(__name__)
 router = APIRouter()
@@ -122,6 +123,17 @@ async def contact_submit(
     return templates.TemplateResponse("contact.html", {
         "request": request, "user": user, "lang": lang,
         "sent": ok, "error": not ok,
+    })
+
+
+@router.get("/sources", response_class=HTMLResponse)
+async def sources_page(request: Request, user=Depends(get_optional_user)):
+    lang = get_lang(request)
+    sources = get_sources()
+    variables = get_all_variables()
+    return templates.TemplateResponse("sources.html", {
+        "request": request, "user": user, "lang": lang,
+        "sources": sources, "variables": variables,
     })
 
 

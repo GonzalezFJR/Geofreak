@@ -1,6 +1,8 @@
-{% extends "base.html" %}
+{% extends "pages/_base_page.html" %}
 
 {% block title %}{{ t('landing.title', lang) }}{% endblock %}
+
+{% block body_class %}has-topbar{% endblock %}
 
 {% block pre_navbar %}
 <!-- Top Bar (language) — only on landing -->
@@ -25,123 +27,6 @@
         </div>
     </div>
 </div>
-<script>
-(function(){
-    var nb=document.querySelector('.navbar');
-    if(nb){
-        nb.style.top='32px';
-        window.addEventListener('scroll',function(){nb.style.top=window.scrollY>=32?'0':'32px';},{passive:true});
-    }
-})();
-</script>
-{% endblock %}
-
-{% block extra_head %}
-<link rel="stylesheet" href="/static/css/pages.css">
-<style>
-/* Daily challenge hero card */
-.daily-hero {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 36px;
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 36px 40px;
-    border-radius: var(--radius-xl);
-    background: linear-gradient(135deg, #0d47a1 0%, #1565c0 50%, #1976d2 100%);
-    text-decoration: none;
-    color: var(--white);
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(13, 71, 161, 0.3);
-}
-.daily-hero:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(13, 71, 161, 0.4);
-}
-.daily-hero-text h2 {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin: 0 0 8px;
-}
-.daily-hero-text p {
-    opacity: 0.8;
-    font-size: 0.95rem;
-    margin: 0 0 16px;
-    line-height: 1.5;
-}
-.daily-hero-btn {
-    display: inline-block;
-    padding: 10px 28px;
-    border-radius: 50px;
-    background: rgba(255,255,255,0.2);
-    font-weight: 600;
-    font-size: 0.95rem;
-    border: 1.5px solid rgba(255,255,255,0.4);
-    transition: background 0.2s;
-}
-.daily-hero:hover .daily-hero-btn { background: rgba(255,255,255,0.3); }
-.daily-minimap { flex-shrink: 0; width: 200px; height: 120px; }
-
-/* Animated world map SVG */
-@keyframes glow1 { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.7; } }
-@keyframes glow2 { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.65; } }
-@keyframes glow3 { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.6; } }
-.glow-a { animation: glow1 3s ease-in-out infinite; }
-.glow-b { animation: glow2 3s ease-in-out 1s infinite; }
-.glow-c { animation: glow3 3s ease-in-out 2s infinite; }
-
-/* GeoQuiz section */
-.quiz-section {
-    padding: 60px 24px;
-    background: var(--white);
-}
-.quiz-card {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 36px;
-    border-radius: var(--radius-xl);
-    border: 1.5px solid var(--gray-200);
-    background: var(--gray-50);
-}
-.quiz-card-text { flex: 1; }
-.quiz-card-text h2 {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--green-600);
-    margin: 0 0 10px;
-}
-.quiz-card-text p {
-    color: var(--gray-600);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0 0 18px;
-}
-.quiz-btn {
-    display: inline-block;
-    padding: 10px 28px;
-    border-radius: 50px;
-    background: var(--green-500);
-    color: white;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-}
-.quiz-btn:hover { background: var(--green-600); transform: translateY(-1px); }
-.quiz-card-icon { font-size: 3rem; flex-shrink: 0; }
-
-@media (max-width: 640px) {
-    .daily-hero { flex-direction: column; padding: 28px 20px; gap: 20px; text-align: center; }
-    .daily-hero svg { width: 160px; height: 96px; }
-    .modes-grid { grid-template-columns: 1fr !important; }
-    .quiz-card { flex-direction: column; text-align: center; padding: 28px 20px; }
-}
-</style>
 {% endblock %}
 
 {% block content %}
@@ -265,4 +150,16 @@
     </div>
 </section>
 {% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function(){
+    var body=document.body;
+    window.addEventListener('scroll',function(){
+        if(window.scrollY>=32) body.classList.remove('has-topbar');
+        else body.classList.add('has-topbar');
+    },{passive:true});
+})();
+</script>
 {% endblock %}

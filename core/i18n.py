@@ -24,6 +24,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "footer.ranking": "Ranking",
         "footer.slogan": "Aprende geografía jugando",
         "footer.contact": "Contacto",
+        "footer.sources": "Nuestras fuentes",
 
         # Landing
         "landing.title": "GeoFreak — Aprende geografía jugando",
@@ -273,6 +274,18 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "adm.ds_empty": "No hay archivos de datos.",
         "adm.ds_geojson_title": "Datos GeoJSON",
         "adm.ds_geojson_desc": "{count} archivos GeoJSON ({size} total)",
+        "adm.ds_vars_title": "Variables del dataset",
+        "adm.ds_vars_desc": "Variables disponibles para los tests de ordenación y comparación. Activa o desactiva cada variable con el switch.",
+        "adm.ds_var_name": "Variable",
+        "adm.ds_var_key": "Columna",
+        "adm.ds_var_description": "Descripción",
+        "adm.ds_var_source": "Fuente",
+        "adm.ds_var_enabled": "Activa",
+        "adm.ds_sources_title": "Fuentes de datos",
+        "adm.ds_sources_desc": "Fuentes de las que se obtienen los datos del dataset de países.",
+
+        "src.title": "📚 Nuestras fuentes",
+        "src.subtitle": "Todos los datos de GeoFreak provienen de fuentes oficiales y abiertas. Aquí puedes consultar las referencias completas.",
 
         # Leaderboards
         "lb.title": "🏆 Ranking",
@@ -428,6 +441,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "footer.ranking": "Ranking",
         "footer.slogan": "Learn geography by playing",
         "footer.contact": "Contact",
+        "footer.sources": "Our sources",
 
         # Landing
         "landing.title": "GeoFreak — Learn geography by playing",
@@ -677,6 +691,18 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "adm.ds_empty": "No data files.",
         "adm.ds_geojson_title": "GeoJSON data",
         "adm.ds_geojson_desc": "{count} GeoJSON files ({size} total)",
+        "adm.ds_vars_title": "Dataset variables",
+        "adm.ds_vars_desc": "Variables available for ordering and comparison tests. Toggle each variable on or off.",
+        "adm.ds_var_name": "Variable",
+        "adm.ds_var_key": "Column",
+        "adm.ds_var_description": "Description",
+        "adm.ds_var_source": "Source",
+        "adm.ds_var_enabled": "Enabled",
+        "adm.ds_sources_title": "Data sources",
+        "adm.ds_sources_desc": "Sources from which country dataset data is obtained.",
+
+        "src.title": "📚 Our sources",
+        "src.subtitle": "All GeoFreak data comes from official and open sources. Here you can see the full references.",
 
         # Leaderboards
         "lb.title": "🏆 Leaderboard",
@@ -831,6 +857,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "footer.ranking": "Classement",
         "footer.slogan": "Apprenez la géographie en jouant",
         "footer.contact": "Contact",
+        "footer.sources": "Nos sources",
 
         # Landing
         "landing.title": "GeoFreak — Apprenez la géographie en jouant",
@@ -1087,6 +1114,18 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "adm.ds_empty": "Pas de fichiers de données.",
         "adm.ds_geojson_title": "Données GeoJSON",
         "adm.ds_geojson_desc": "{count} fichiers GeoJSON ({size} au total)",
+        "adm.ds_vars_title": "Variables du dataset",
+        "adm.ds_vars_desc": "Variables disponibles pour les tests de classement et de comparaison. Activez ou désactivez chaque variable.",
+        "adm.ds_var_name": "Variable",
+        "adm.ds_var_key": "Colonne",
+        "adm.ds_var_description": "Description",
+        "adm.ds_var_source": "Source",
+        "adm.ds_var_enabled": "Active",
+        "adm.ds_sources_title": "Sources de données",
+        "adm.ds_sources_desc": "Sources utilisées pour les données des pays.",
+
+        "src.title": "📚 Nos sources",
+        "src.subtitle": "Toutes les données de GeoFreak proviennent de sources officielles et ouvertes. Consultez ici les références complètes.",
 
         # Leaderboards
         "lb.title": "🏆 Classement",
@@ -1233,6 +1272,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "footer.ranking": "Classifica",
         "footer.slogan": "Impara la geografia giocando",
         "footer.contact": "Contatto",
+        "footer.sources": "Le nostre fonti",
 
         # Landing
         "landing.title": "GeoFreak — Impara la geografia giocando",
@@ -1489,6 +1529,18 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "adm.ds_empty": "Nessun file di dati.",
         "adm.ds_geojson_title": "Dati GeoJSON",
         "adm.ds_geojson_desc": "{count} file GeoJSON ({size} totale)",
+        "adm.ds_vars_title": "Variabili del dataset",
+        "adm.ds_vars_desc": "Variabili disponibili per i test di ordinamento e confronto. Attiva o disattiva ogni variabile.",
+        "adm.ds_var_name": "Variabile",
+        "adm.ds_var_key": "Colonna",
+        "adm.ds_var_description": "Descrizione",
+        "adm.ds_var_source": "Fonte",
+        "adm.ds_var_enabled": "Attiva",
+        "adm.ds_sources_title": "Fonti dei dati",
+        "adm.ds_sources_desc": "Fonti da cui si ottengono i dati del dataset dei paesi.",
+
+        "src.title": "📚 Le nostre fonti",
+        "src.subtitle": "Tutti i dati di GeoFreak provengono da fonti ufficiali e aperte. Qui puoi consultare i riferimenti completi.",
 
         # Leaderboards
         "lb.title": "🏆 Classifica",
@@ -1635,6 +1687,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "footer.ranking": "Рейтинг",
         "footer.slogan": "Изучай географию играя",
         "footer.contact": "Контакты",
+        "footer.sources": "Наши источники",
 
         # Landing
         "landing.title": "GeoFreak — Изучай географию играя",
@@ -1891,6 +1944,18 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "adm.ds_empty": "Нет файлов данных.",
         "adm.ds_geojson_title": "Данные GeoJSON",
         "adm.ds_geojson_desc": "{count} файлов GeoJSON ({size} всего)",
+        "adm.ds_vars_title": "Переменные датасета",
+        "adm.ds_vars_desc": "Переменные, доступные для тестов сортировки и сравнения. Включайте или отключайте каждую переменную.",
+        "adm.ds_var_name": "Переменная",
+        "adm.ds_var_key": "Столбец",
+        "adm.ds_var_description": "Описание",
+        "adm.ds_var_source": "Источник",
+        "adm.ds_var_enabled": "Включена",
+        "adm.ds_sources_title": "Источники данных",
+        "adm.ds_sources_desc": "Источники, из которых получены данные по странам.",
+
+        "src.title": "📚 Наши источники",
+        "src.subtitle": "Все данные GeoFreak получены из официальных и открытых источников. Здесь можно ознакомиться со всеми ссылками.",
 
         # Leaderboards
         "lb.title": "🏆 Рейтинг",

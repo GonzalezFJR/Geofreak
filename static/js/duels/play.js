@@ -164,14 +164,14 @@
         var sb = document.getElementById('duel-scoreboard');
         if (!sb) return;
         var html = '<div class="sb-player sb-you">' +
-            '<span class="sb-name">' + escapeHtml(T.you || 'You') + '</span>' +
+            '<span class="sb-name">' + GeoFreak.escapeHtml(T.you || 'You') + '</span>' +
             '<span class="sb-score">' + myScore + '</span>' +
             '</div>';
 
         for (var uid in opponentScores) {
             var name = playerUsernames[uid] || T.opponent || 'Opponent';
             html += '<div class="sb-player sb-opponent">' +
-                '<span class="sb-name">' + escapeHtml(name) + '</span>' +
+                '<span class="sb-name">' + GeoFreak.escapeHtml(name) + '</span>' +
                 '<span class="sb-score">' + opponentScores[uid] + '</span>' +
                 '</div>';
         }
@@ -232,7 +232,7 @@
             el.innerHTML =
                 '<span class="ordering-handle">☰</span>' +
                 '<span class="ordering-flag">' + (c.flag_emoji || '🏳️') + '</span>' +
-                '<span class="ordering-name">' + escapeHtml(c.name) + '</span>';
+                '<span class="ordering-name">' + GeoFreak.escapeHtml(c.name) + '</span>';
 
             el.addEventListener('dragstart', handleDragStart);
             el.addEventListener('dragover', handleDragOver);
@@ -332,7 +332,7 @@
             card.setAttribute('data-iso', c.iso_a3);
             card.innerHTML =
                 '<span class="cmp-flag">' + (c.flag_emoji || '🏳️') + '</span>' +
-                '<span class="cmp-name">' + escapeHtml(c.name) + '</span>';
+                '<span class="cmp-name">' + GeoFreak.escapeHtml(c.name) + '</span>';
             card.addEventListener('click', function () {
                 submitComparisonAnswer(c.iso_a3);
                 // Disable cards
@@ -430,17 +430,11 @@
             var name = pid === USER_ID ? (T.you || 'You') : (usernames[pid] || T.opponent || 'Opponent');
             var cls = pid === USER_ID ? 'is-you' : '';
             html += '<div class="final-score-row ' + cls + '">' +
-                '<span class="final-score-name">' + escapeHtml(name) + '</span>' +
+                '<span class="final-score-name">' + GeoFreak.escapeHtml(name) + '</span>' +
                 '<span class="final-score-value">' + parseInt(scores[pid] || 0, 10) + ' ' + (T.points || 'pts') + '</span>' +
                 '</div>';
         }
         scoresEl.innerHTML = html;
     }
 
-    // ── Util ────────────────────────────────────────────────
-    function escapeHtml(str) {
-        var div = document.createElement('div');
-        div.appendChild(document.createTextNode(str));
-        return div.innerHTML;
-    }
 })();

@@ -903,3 +903,293 @@
 @media (max-width: 400px) {
     .modes-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   Landing — Daily Hero Card
+   ============================================================ */
+.daily-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 36px 40px;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(135deg, #0d47a1 0%, #1565c0 50%, #1976d2 100%);
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(13, 71, 161, 0.3);
+}
+.daily-hero:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(13, 71, 161, 0.4);
+}
+.daily-hero-text h2 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+.daily-hero-text p {
+    opacity: 0.8;
+    font-size: 0.95rem;
+    margin: 0 0 16px;
+    line-height: 1.5;
+}
+.daily-hero-btn {
+    display: inline-block;
+    padding: 10px 28px;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.2);
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    transition: background 0.2s;
+}
+.daily-hero:hover .daily-hero-btn { background: rgba(255,255,255,0.3); }
+.daily-minimap { flex-shrink: 0; width: 200px; height: 120px; }
+
+@keyframes glow1 { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.7; } }
+@keyframes glow2 { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.65; } }
+@keyframes glow3 { 0%, 100% { opacity: 0.12; } 50% { opacity: 0.6; } }
+.glow-a { animation: glow1 3s ease-in-out infinite; }
+.glow-b { animation: glow2 3s ease-in-out 1s infinite; }
+.glow-c { animation: glow3 3s ease-in-out 2s infinite; }
+
+/* ============================================================
+   Landing — GeoQuiz Section
+   ============================================================ */
+.quiz-section {
+    padding: 60px 24px;
+    background: var(--white);
+}
+.quiz-card {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 36px;
+    border-radius: var(--radius-xl);
+    border: 1.5px solid var(--gray-200);
+    background: var(--gray-50);
+}
+.quiz-card-text { flex: 1; }
+.quiz-card-text h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--green-600);
+    margin: 0 0 10px;
+}
+.quiz-card-text p {
+    color: var(--gray-600);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 18px;
+}
+.quiz-btn {
+    display: inline-block;
+    padding: 10px 28px;
+    border-radius: 50px;
+    background: var(--green-500);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.quiz-btn:hover { background: var(--green-600); transform: translateY(-1px); }
+.quiz-card-icon { font-size: 3rem; flex-shrink: 0; }
+
+@media (max-width: 640px) {
+    .daily-hero { flex-direction: column; padding: 28px 20px; gap: 20px; text-align: center; }
+    .daily-hero svg { width: 160px; height: 96px; }
+    .quiz-card { flex-direction: column; text-align: center; padding: 28px 20px; }
+}
+
+/* ============================================================
+   Contact Page
+   ============================================================ */
+.contact-page {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 24px 60px;
+    background: linear-gradient(135deg, var(--gray-50) 0%, #e8edf5 100%);
+}
+.contact-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-xl);
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+.contact-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--blue-500), var(--green-500));
+}
+.contact-card h2 {
+    text-align: center;
+    margin-bottom: 6px;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+.contact-subtitle {
+    text-align: center;
+    color: var(--gray-500);
+    font-size: 0.92rem;
+    margin-bottom: 24px;
+}
+.contact-card input,
+.contact-card textarea {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--gray-200);
+    background: var(--white);
+    color: var(--gray-800);
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+.contact-card textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+.contact-card input::placeholder,
+.contact-card textarea::placeholder {
+    color: var(--gray-400);
+}
+.contact-card input:focus,
+.contact-card textarea:focus {
+    outline: none;
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+.contact-card button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    margin-top: 4px;
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+    transition: all 0.2s;
+}
+.contact-card button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(26, 115, 232, 0.4);
+}
+.contact-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #16a34a;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+.contact-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+@media (max-width: 640px) {
+    .contact-page { padding: 80px 12px 40px; }
+    .contact-card { padding: 28px 20px; }
+}
+
+/* ============================================================
+   404 Page
+   ============================================================ */
+.page-404 {
+    min-height: calc(100vh - 64px - 120px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    background: linear-gradient(180deg, var(--gray-50) 0%, #e0ecf8 100%);
+}
+.page-404-inner {
+    text-align: center;
+    max-width: 480px;
+}
+.page-404 svg { margin: 0 auto 24px; display: block; }
+.page-404 h1 {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--blue-700);
+    margin-bottom: 8px;
+}
+.page-404 p {
+    color: var(--gray-500);
+    font-size: 1.05rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+.page-404 a {
+    display: inline-block;
+    padding: 12px 32px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+    transition: all 0.2s;
+}
+.page-404 a:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(26, 115, 232, 0.4); }
+
+@keyframes dropFall {
+    0% { transform: translateY(-30px); opacity: 0; }
+    40% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(2px) scaleY(0.8); opacity: 1; }
+    60% { transform: translateY(-4px); opacity: 0.6; }
+    70% { opacity: 0; }
+    100% { opacity: 0; }
+}
+@keyframes ripple1 {
+    0%, 50% { r: 0; opacity: 0; }
+    55% { r: 2; opacity: 0.7; }
+    100% { r: 50; opacity: 0; }
+}
+@keyframes ripple2 {
+    0%, 58% { r: 0; opacity: 0; }
+    63% { r: 2; opacity: 0.6; }
+    100% { r: 45; opacity: 0; }
+}
+@keyframes ripple3 {
+    0%, 66% { r: 0; opacity: 0; }
+    71% { r: 2; opacity: 0.5; }
+    100% { r: 38; opacity: 0; }
+}
+.drop-anim { animation: dropFall 3s ease-in-out infinite; transform-origin: center bottom; }
+.ripple1 { animation: ripple1 3s ease-out infinite; }
+.ripple2 { animation: ripple2 3s ease-out infinite; }
+.ripple3 { animation: ripple3 3s ease-out infinite; }

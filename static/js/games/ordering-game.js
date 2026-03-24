@@ -36,10 +36,30 @@ var OrderingGame = (function () {
         document.getElementById('q-current').textContent = currentIdx + 1;
         document.getElementById('q-total').textContent = questions.length;
 
+        var labelKey = T['stat.label_key'] || 'label_es';
+        var descKey = labelKey.replace('label_', 'description_');
+        var statLabel = q.stat_info[labelKey];
+        var statDesc = q.stat_info[descKey] || '';
+
         var direction = q.ascending
-            ? (T['ord.prompt_asc'] || 'Sort by <strong>{stat}</strong> ↑').replace('{stat}', q.stat_info[T['stat.label_key'] || 'label_es'])
-            : (T['ord.prompt_desc'] || 'Sort by <strong>{stat}</strong> ↓').replace('{stat}', q.stat_info[T['stat.label_key'] || 'label_es']);
-        document.getElementById('ordering-prompt').innerHTML = direction;
+            ? (T['ord.prompt_asc'] || 'Sort by <strong>{stat}</strong> ↑').replace('{stat}', statLabel)
+            : (T['ord.prompt_desc'] || 'Sort by <strong>{stat}</strong> ↓').replace('{stat}', statLabel);
+
+        var promptEl = document.getElementById('ordering-prompt');
+        promptEl.innerHTML = direction;
+
+        // Add description tooltip to stat name in prompt
+        if (statDesc) {
+            var strong = promptEl.querySelector('strong');
+            if (strong) {
+                strong.classList.add('stat-tooltip-trigger');
+                strong.setAttribute('data-tooltip', statDesc);
+                strong.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleTooltip(this);
+                });
+            }
+        }
 
         renderItems(q.countries);
         clearFeedback();
@@ -173,7 +193,7 @@ var OrderingGame = (function () {
             var iso = el.getAttribute('data-iso');
             var correctIdx = correct.indexOf(iso);
             var val = q.correct_values[iso];
-            var formatted = formatValue(val, q.stat_info.format);
+            var formatted = GeoUtils.formatValue(val, q.stat_info.format);
 
             var badge = document.createElement('span');
             badge.className = 'ordering-value';
@@ -199,20 +219,6 @@ var OrderingGame = (function () {
             currentIdx++;
             showQuestion();
         }, 2000);
-    }
-
-    function formatValue(val, fmt) {
-        var locale = window.LANG === 'en' ? 'en-US' : 'es-ES';
-        if (fmt === 'int') return Math.round(val).toLocaleString(locale);
-        if (fmt === 'float1') return val.toFixed(1);
-        if (fmt === 'float3') return val.toFixed(3);
-        if (fmt === 'money') {
-            if (val >= 1e12) return (val / 1e12).toFixed(1) + 'T $';
-            if (val >= 1e9) return (val / 1e9).toFixed(1) + 'B $';
-            if (val >= 1e6) return (val / 1e6).toFixed(1) + 'M $';
-            return Math.round(val).toLocaleString(locale) + ' $';
-        }
-        return String(val);
     }
 
     function showFeedback(cls, text) {

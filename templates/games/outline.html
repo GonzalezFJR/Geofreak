@@ -1,18 +1,5 @@
 {% extends "games/_base_game.html" %}
 
-{% block extra_head %}
-{{ super() }}
-<style>
-    .outline-map-wrapper {
-        width: 100%;
-        height: 100%;
-        background: #f8fafc;
-        border-radius: 12px;
-    }
-    .outline-map-wrapper .leaflet-container { background: #f8fafc !important; }
-</style>
-{% endblock %}
-
 {% block game_area %}
 <div class="quiz-container">
     <div class="quiz-progress">

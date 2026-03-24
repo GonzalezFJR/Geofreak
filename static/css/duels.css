@@ -155,8 +155,6 @@
     margin: 0 auto 24px;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-
 .duel-waiting-opponent h2 {
     font-size: 1.5rem;
     margin-bottom: 12px;

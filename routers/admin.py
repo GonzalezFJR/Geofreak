@@ -10,6 +10,7 @@ from core.i18n import get_lang
 from core.templates import templates
 from services.analytics import get_counters, get_recent_events, count_s3_events_today, list_s3_event_files
 from services.games import GamesService
+from services.quiz import get_all_variables, get_sources, toggle_variable, reload_var_config
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -193,13 +194,28 @@ async def admin_datasets(request: Request):
     if os.path.isdir(images_dir):
         images_count = len([f for f in os.listdir(images_dir) if os.path.isfile(os.path.join(images_dir, f))])
 
+    # Variables config
+    variables = get_all_variables()
+    sources = get_sources()
+
     return templates.TemplateResponse("admin/datasets.html", {
         "request": request, "lang": lang, "section": "datasets",
         "datasets": datasets_info,
         "geojson_count": geojson_count,
         "geojson_size_human": _human_size(geojson_size),
         "images_count": images_count,
+        "variables": variables,
+        "sources": sources,
     })
+
+
+@router.post("/datasets/variables/{var_key}/toggle")
+async def admin_toggle_variable(request: Request, var_key: str):
+    _require_auth(request)
+    form = await request.form()
+    enabled = form.get("enabled") == "1"
+    toggle_variable(var_key, enabled)
+    return RedirectResponse("/admin/datasets", status_code=303)
 
 
 def _human_size(size_bytes: int) -> str:

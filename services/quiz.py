@@ -1,5 +1,7 @@
 """Quiz engine — generates question sets for ordering & comparison games."""
 
+import json
+import os
 import random
 from typing import Optional
 
@@ -9,22 +11,53 @@ from services.dataset import DatasetService
 
 _ds = DatasetService()
 
-# Stats available for quiz games, with display info
-QUIZ_STATS: dict[str, dict] = {
-    "population":         {"label_es": "Población",            "label_en": "Population",          "unit": "",       "format": "int"},
-    "area_km2":           {"label_es": "Superficie (km²)",     "label_en": "Area (km²)",          "unit": "km²",    "format": "int"},
-    "density_per_km2":    {"label_es": "Densidad (hab/km²)",   "label_en": "Density (pop/km²)",   "unit": "hab/km²","format": "float1"},
-    "gdp_usd":            {"label_es": "PIB (USD)",            "label_en": "GDP (USD)",           "unit": "USD",    "format": "money"},
-    "gdp_per_capita_usd": {"label_es": "PIB per cápita (USD)", "label_en": "GDP per capita (USD)","unit": "USD",    "format": "money"},
-    "life_expectancy":    {"label_es": "Esperanza de vida",    "label_en": "Life expectancy",     "unit": "años",   "format": "float1"},
-    "hdi":                {"label_es": "IDH",                  "label_en": "HDI",                 "unit": "",       "format": "float3"},
-    "gini":               {"label_es": "Índice Gini",          "label_en": "Gini index",          "unit": "",       "format": "float1"},
-    "co2_per_capita":     {"label_es": "CO₂ per cápita",      "label_en": "CO₂ per capita",      "unit": "t",      "format": "float1"},
-    "birth_rate":         {"label_es": "Natalidad (‰)",        "label_en": "Birth rate (‰)",      "unit": "‰",      "format": "float1"},
-    "urban_population_pct":{"label_es": "Población urbana (%)", "label_en": "Urban population (%)", "unit": "%",     "format": "float1"},
-}
+# ── Variable config loader ───────────────────────────────────────────────
 
-STAT_KEYS = list(QUIZ_STATS.keys())
+_VAR_CONFIG_PATH = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)), "static", "data", "variable_config.json"
+)
+_var_config_cache: dict | None = None
+
+
+def _load_var_config() -> dict:
+    global _var_config_cache
+    if _var_config_cache is None:
+        with open(_VAR_CONFIG_PATH, "r", encoding="utf-8") as f:
+            _var_config_cache = json.load(f)
+    return _var_config_cache
+
+
+def reload_var_config():
+    """Force-reload the config (called after admin edits)."""
+    global _var_config_cache
+    _var_config_cache = None
+
+
+def _build_quiz_stats() -> dict[str, dict]:
+    """Build QUIZ_STATS dict from enabled variables in variable_config.json."""
+    cfg = _load_var_config()
+    stats: dict[str, dict] = {}
+    for v in cfg["variables"]:
+        if v.get("enabled"):
+            stats[v["key"]] = {
+                "label_es": v["label_es"],
+                "label_en": v["label_en"],
+                "label_fr": v.get("label_fr", v["label_en"]),
+                "label_it": v.get("label_it", v["label_en"]),
+                "label_ru": v.get("label_ru", v["label_en"]),
+                "description_es": v.get("description_es", ""),
+                "description_en": v.get("description_en", ""),
+                "unit": v["unit"],
+                "format": v["format"],
+            }
+    return stats
+
+
+def get_quiz_stats() -> dict[str, dict]:
+    return _build_quiz_stats()
+
+
+STAT_KEYS_FUNC = lambda: list(_build_quiz_stats().keys())
 
 
 def _get_valid_countries(stat: str, continent: Optional[str] = None) -> list[dict]:
@@ -92,8 +125,10 @@ def generate_ordering_question(
             "correct_order": [ "CHN", "IND", "USA", "IDN", "BRA" ],   # iso_a3 in correct order
         }
     """
+    quiz_stats = get_quiz_stats()
+    stat_keys = list(quiz_stats.keys())
     if stat is None:
-        stat = random.choice(STAT_KEYS)
+        stat = random.choice(stat_keys)
     if ascending is None:
         ascending = random.choice([True, False])
 
@@ -111,7 +146,7 @@ def generate_ordering_question(
 
     return {
         "stat": stat,
-        "stat_info": QUIZ_STATS[stat],
+        "stat_info": quiz_stats[stat],
         "ascending": ascending,
         "countries": display,
         "correct_order": correct_order,
@@ -134,8 +169,10 @@ def generate_comparison_question(
             "values": { "CHN": 1400000000, "IND": 1380000000 },
         }
     """
+    quiz_stats = get_quiz_stats()
+    stat_keys = list(quiz_stats.keys())
     if stat is None:
-        stat = random.choice(STAT_KEYS)
+        stat = random.choice(stat_keys)
 
     countries = _get_valid_countries(stat, continent)
     if len(countries) < 2:
@@ -146,7 +183,7 @@ def generate_comparison_question(
 
     return {
         "stat": stat,
-        "stat_info": QUIZ_STATS[stat],
+        "stat_info": quiz_stats[stat],
         "countries": [
             {"iso_a3": c["iso_a3"], "name": c["name"], "name_es": c["name_es"], "flag_emoji": c["flag_emoji"]}
             for c in pair
@@ -161,16 +198,17 @@ def generate_ordering_set(
     continent: Optional[str] = None,
 ) -> list[dict]:
     """Generate a full set of ordering questions with varied stats."""
+    stat_keys = STAT_KEYS_FUNC()
     questions = []
     used_stats = []
     for _ in range(num_questions):
         if not used_stats:
-            used_stats = STAT_KEYS.copy()
+            used_stats = stat_keys.copy()
             random.shuffle(used_stats)
         q = None
         attempts = 0
-        while q is None and attempts < len(STAT_KEYS):
-            stat = used_stats.pop() if used_stats else random.choice(STAT_KEYS)
+        while q is None and attempts < len(stat_keys):
+            stat = used_stats.pop() if used_stats else random.choice(stat_keys)
             q = generate_ordering_question(stat=stat, continent=continent)
             attempts += 1
         if q:
@@ -183,16 +221,17 @@ def generate_comparison_set(
     continent: Optional[str] = None,
 ) -> list[dict]:
     """Generate a full set of comparison questions with varied stats."""
+    stat_keys = STAT_KEYS_FUNC()
     questions = []
     used_stats = []
     for _ in range(num_questions):
         if not used_stats:
-            used_stats = STAT_KEYS.copy()
+            used_stats = stat_keys.copy()
             random.shuffle(used_stats)
         q = None
         attempts = 0
-        while q is None and attempts < len(STAT_KEYS):
-            stat = used_stats.pop() if used_stats else random.choice(STAT_KEYS)
+        while q is None and attempts < len(stat_keys):
+            stat = used_stats.pop() if used_stats else random.choice(stat_keys)
             q = generate_comparison_question(stat=stat, continent=continent)
             attempts += 1
         if q:
@@ -202,4 +241,28 @@ def generate_comparison_set(
 
 def get_available_stats() -> dict:
     """Return stats metadata for the frontend."""
-    return QUIZ_STATS
+    return get_quiz_stats()
+
+
+def get_all_variables() -> list[dict]:
+    """Return all variable definitions (enabled and disabled)."""
+    cfg = _load_var_config()
+    return cfg["variables"]
+
+
+def get_sources() -> list[dict]:
+    """Return all data sources."""
+    cfg = _load_var_config()
+    return cfg["sources"]
+
+
+def toggle_variable(key: str, enabled: bool):
+    """Enable or disable a variable and save to config."""
+    cfg = _load_var_config()
+    for v in cfg["variables"]:
+        if v["key"] == key:
+            v["enabled"] = enabled
+            break
+    with open(_VAR_CONFIG_PATH, "w", encoding="utf-8") as f:
+        json.dump(cfg, f, indent=2, ensure_ascii=False)
+    reload_var_config()

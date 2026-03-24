@@ -71,7 +71,7 @@
                 '<div class="trn-card-info">' +
                 '<span class="trn-card-rounds">' + t.number_of_rounds + ' ' + (T.rounds || 'rounds') + '</span>' +
                 '<span class="trn-card-meta">' + (t.player_count || 1) + ' ' + (T.players || 'players') + '</span>' +
-                '<span class="trn-card-creator">' + (T.by || 'by') + ' ' + esc(t.creator_username || '?') + '</span>' +
+                '<span class="trn-card-creator">' + (T.by || 'by') + ' ' + GeoFreak.escapeHtml(t.creator_username || '?') + '</span>' +
                 '</div>' +
                 '<button class="btn btn-primary btn-join" data-id="' + t.tournament_id + '">' + (T.join || 'Join') + '</button>';
             listEl.appendChild(card);
@@ -91,12 +91,6 @@
                     .catch(function () { loadTournaments(); });
             });
         });
-    }
-
-    function esc(s) {
-        var d = document.createElement('div');
-        d.appendChild(document.createTextNode(s));
-        return d.innerHTML;
     }
 
     loadTournaments();

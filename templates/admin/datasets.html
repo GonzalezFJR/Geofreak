@@ -36,6 +36,58 @@
         </div>
     </div>
 
+    <!-- Variables config section -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">{{ t('adm.ds_vars_title', lang) }}</h2>
+        <p class="section-info">{{ t('adm.ds_vars_desc', lang) }}</p>
+
+        <div class="analytics-table-wrap" style="margin-top: 16px;">
+            <table class="analytics-table var-table">
+                <thead>
+                    <tr>
+                        <th>{{ t('adm.ds_var_name', lang) }}</th>
+                        <th>{{ t('adm.ds_var_key', lang) }}</th>
+                        <th>{{ t('adm.ds_var_description', lang) }}</th>
+                        <th>{{ t('adm.ds_var_source', lang) }}</th>
+                        <th class="switch-col">{{ t('adm.ds_var_enabled', lang) }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for v in variables %}
+                    <tr class="{{ '' if v.enabled else 'disabled-row' }}">
+                        <td>
+                            <strong>{{ v['label_es'] if lang == 'es' else v.get('label_' + lang, v['label_en']) }}</strong>
+                            {% if v.unit %}
+                            <span class="type-badge" style="margin-left:4px;">{{ v.unit }}</span>
+                            {% endif %}
+                        </td>
+                        <td><code>{{ v.key }}</code></td>
+                        <td class="var-desc-cell">
+                            {{ v['description_es'] if lang == 'es' else v.get('description_' + lang, v['description_en']) }}
+                        </td>
+                        <td>
+                            {% for s in sources %}
+                                {% if s.id == v.source %}
+                                <a href="{{ s.url }}" target="_blank" rel="noopener" class="source-link">{{ s.name }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td class="switch-col">
+                            <form method="post" action="/admin/datasets/variables/{{ v.key }}/toggle" class="inline-form">
+                                <input type="hidden" name="enabled" value="{{ '0' if v.enabled else '1' }}">
+                                <label class="switch">
+                                    <input type="checkbox" {{ 'checked' if v.enabled }} onchange="this.form.submit()">
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- Data files -->
     <div class="admin-section">
         <h2 class="admin-section-title">{{ t('adm.ds_data_files', lang) }}</h2>
@@ -71,6 +123,25 @@
         <p class="section-info">
             {{ geojson_count }} {{ t('adm.ds_geojson', lang) }} ({{ geojson_size_human }} total)
         </p>
+    </div>
+
+    <!-- Data sources -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">{{ t('adm.ds_sources_title', lang) }}</h2>
+        <p class="section-info" style="margin-bottom:16px;">{{ t('adm.ds_sources_desc', lang) }}</p>
+        <div class="sources-grid">
+            {% for s in sources %}
+            <div class="source-card">
+                <h4><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.name }}</a></h4>
+                <p>{{ s['description_es'] if lang == 'es' else s.get('description_' + lang, s['description_en']) }}</p>
+                <div class="source-vars">
+                    {% for vk in s.variables %}
+                    <span class="type-badge">{{ vk }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}

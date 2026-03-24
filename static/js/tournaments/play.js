@@ -194,7 +194,7 @@
         var html = '';
         entries.forEach(function (e) {
             html += '<div class="sb-row' + (e.isYou ? ' sb-you' : '') + '">' +
-                '<span class="sb-name">' + esc(e.name) + '</span>' +
+                '<span class="sb-name">' + GeoFreak.escapeHtml(e.name) + '</span>' +
                 '<span class="sb-round-score">' + e.roundScore + '</span>' +
                 '<span class="sb-total-score">' + e.total + '</span>' +
                 '</div>';
@@ -243,7 +243,7 @@
             el.setAttribute('data-iso', co.iso_a3);
             el.innerHTML = '<span class="ordering-handle">☰</span>' +
                 '<span class="ordering-flag">' + (co.flag_emoji || '🏳️') + '</span>' +
-                '<span class="ordering-name">' + esc(co.name) + '</span>';
+                '<span class="ordering-name">' + GeoFreak.escapeHtml(co.name) + '</span>';
             el.addEventListener('dragstart', dStart);
             el.addEventListener('dragover', dOver);
             el.addEventListener('drop', dDrop);
@@ -299,7 +299,7 @@
             var card = document.createElement('div');
             card.className = 'cmp-card';
             card.innerHTML = '<span class="cmp-flag">' + (co.flag_emoji || '🏳️') + '</span>' +
-                '<span class="cmp-name">' + esc(co.name) + '</span>';
+                '<span class="cmp-name">' + GeoFreak.escapeHtml(co.name) + '</span>';
             card.addEventListener('click', function () {
                 c.querySelectorAll('.cmp-card').forEach(function (el) { el.style.pointerEvents = 'none'; });
                 submitAnswer(co.iso_a3);
@@ -364,7 +364,7 @@
         for (var uid in rs) {
             var name = uid === USER_ID ? (T.you || 'You') : (playerUsernames[uid] || '?');
             html += '<div class="round-score-row' + (uid === USER_ID ? ' is-you' : '') + '">' +
-                '<span>' + esc(name) + '</span><span>' + parseInt(rs[uid] || 0, 10) + ' ' + T.points + '</span></div>';
+                '<span>' + GeoFreak.escapeHtml(name) + '</span><span>' + parseInt(rs[uid] || 0, 10) + ' ' + T.points + '</span></div>';
         }
         rsEl.innerHTML = html;
 
@@ -408,11 +408,10 @@
             var medal = i < 3 ? medals[i] : (i + 1) + '.';
             html += '<div class="standing-row' + (e.uid === USER_ID ? ' is-you' : '') + '">' +
                 '<span class="standing-medal">' + medal + '</span>' +
-                '<span class="standing-name">' + esc(e.name) + '</span>' +
+                '<span class="standing-name">' + GeoFreak.escapeHtml(e.name) + '</span>' +
                 '<span class="standing-score">' + e.score + ' ' + T.points + '</span></div>';
         });
         document.getElementById('trn-final-standings').innerHTML = html;
     }
 
-    function esc(s) { var d = document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
 })();
