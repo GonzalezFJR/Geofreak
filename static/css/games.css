@@ -4,7 +4,7 @@
 
 /* ─── Settings Overlay ─────────────────────────────────────── */
 .game-settings-overlay {
-    min-height: calc(100vh - 96px);
+    min-height: calc(100vh - 64px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +89,7 @@
 /* ─── Game HUD ─────────────────────────────────────────────── */
 .game-hud {
     position: fixed;
-    top: 96px;
+    top: 64px;
     left: 0;
     right: 0;
     z-index: 900;
@@ -563,7 +563,7 @@
 
 /* ─── Games Dashboard ──────────────────────────────────────── */
 .games-dashboard {
-    padding-top: 132px;
+    padding-top: 100px;
     padding-bottom: 60px;
     min-height: 100vh;
     background: var(--gray-50);
@@ -665,7 +665,7 @@
 
 /* ─── Admin ────────────────────────────────────────────────── */
 .login-page {
-    min-height: calc(100vh - 96px);
+    min-height: calc(100vh - 64px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -710,7 +710,7 @@
 }
 
 .admin-dashboard {
-    padding-top: 132px;
+    padding-top: 100px;
     padding-bottom: 60px;
     max-width: 900px;
     margin: 0 auto;
@@ -831,7 +831,7 @@
     }
 
     /* Settings overlay */
-    .game-settings-overlay { padding: 16px 12px; min-height: calc(100vh - 84px); }
+    .game-settings-overlay { padding: 16px 12px; min-height: calc(100vh - 52px); }
     .game-settings-card { padding: 24px 20px; }
     .game-settings-icon { font-size: 2.2rem; }
     .game-settings-card h2 { font-size: 1.3rem; }
@@ -973,7 +973,7 @@
     .btn-outline-dark { justify-content: center; }
 
     /* Dashboard */
-    .games-dashboard { padding-top: 96px; padding-bottom: 30px; }
+    .games-dashboard { padding-top: 64px; padding-bottom: 30px; }
     .dashboard-header { margin-bottom: 24px; }
     .dashboard-header h1 { font-size: 1.6rem; }
     .dashboard-header p { font-size: 0.9rem; }
@@ -983,7 +983,7 @@
     .game-card h3 { font-size: 1rem; }
 
     /* Admin */
-    .admin-dashboard { padding-top: 96px; }
+    .admin-dashboard { padding-top: 64px; }
     .admin-header { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
 
