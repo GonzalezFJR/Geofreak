@@ -2886,6 +2886,11 @@ def t(key: str, lang: str = DEFAULT_LANG) -> str:
 def t_js(lang: str = DEFAULT_LANG) -> str:
     """Return a JSON string with all JS-needed translations for *lang*."""
     merged: dict[str, str] = {}
+    # Pull keys listed in _JS_KEYS from main TRANSLATIONS dicts
+    src = TRANSLATIONS.get(lang, TRANSLATIONS[DEFAULT_LANG])
+    fallback = TRANSLATIONS[DEFAULT_LANG]
+    for key in _JS_KEYS:
+        merged[key] = src.get(key, fallback.get(key, key))
     merged.update(_JS_KEYS_EXTRA.get(lang, _JS_KEYS_EXTRA[DEFAULT_LANG]))
     merged.update(_MAPJS_LABELS.get(lang, _MAPJS_LABELS[DEFAULT_LANG]))
     return json.dumps(merged, ensure_ascii=False)

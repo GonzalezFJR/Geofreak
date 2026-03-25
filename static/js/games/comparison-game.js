@@ -236,7 +236,13 @@ var ComparisonGame = (function () {
         var container = document.getElementById('comparison-cards');
         container.innerHTML = '';
 
-        q.countries.forEach(function (c) {
+        // Randomize left/right order so the correct answer isn't always first
+        var displayCountries = q.countries.slice();
+        if (Math.random() < 0.5) {
+            displayCountries.reverse();
+        }
+
+        displayCountries.forEach(function (c) {
             var displayName = GeoUtils.getLocalName(c);
             var card = document.createElement('div');
             card.className = 'comparison-card';
