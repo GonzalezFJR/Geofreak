@@ -12,7 +12,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
-from core.aws import get_s3_client
+from core.aws import get_dynamodb_resource, get_s3_client
 from core.config import get_settings
 
 log = logging.getLogger(__name__)
@@ -119,3 +119,32 @@ def get_daily_challenge() -> Optional[dict]:
         return data
 
     return None
+
+
+# ── User daily result tracking (stored in user_stats) ─────────────────────
+
+def _user_stats_table():
+    return get_dynamodb_resource().Table(get_settings().table_name("user_stats"))
+
+
+def get_user_daily_result(user_id: str) -> Optional[dict]:
+    """If the user already completed today's challenge, return their result."""
+    from services.user_stats import get_user_stats
+    stats = get_user_stats(user_id)
+    if not stats:
+        return None
+    if stats.get("last_daily_date") == _today_utc():
+        return stats.get("last_daily_result")
+    return None
+
+
+def save_user_daily_result(user_id: str, result: dict) -> None:
+    """Save today's daily challenge result to the user's stats."""
+    _user_stats_table().update_item(
+        Key={"user_id": user_id},
+        UpdateExpression="SET last_daily_date = :d, last_daily_result = :r",
+        ExpressionAttributeValues={
+            ":d": _today_utc(),
+            ":r": result,
+        },
+    )

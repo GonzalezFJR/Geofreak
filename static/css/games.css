@@ -717,6 +717,73 @@
     background: var(--gray-50);
 }
 
+/* ─── Results Summary Table (GeoStats) ─────────────────────── */
+.results-toggle-btn {
+    margin: 16px auto 0;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    display: block;
+}
+
+.gs-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.gs-summary-table th {
+    font-weight: 600;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.5px;
+    padding: 8px 6px;
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.gs-summary-table td {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--gray-100);
+    white-space: nowrap;
+}
+
+.gs-row-correct { background: rgba(76, 175, 80, 0.06); }
+.gs-row-wrong { background: rgba(239, 83, 80, 0.04); }
+
+/* ─── Daily Challenge Done / Countdown ─────────────────────── */
+.daily-done-msg {
+    text-align: center;
+}
+
+.daily-done-msg p {
+    margin-bottom: 12px;
+    color: var(--gray-700);
+    font-weight: 500;
+}
+
+.daily-countdown {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--blue-600);
+}
+
+.daily-anon-msg {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.daily-anon-msg p {
+    margin-bottom: 12px;
+    color: var(--gray-600);
+    font-weight: 500;
+}
+
 /* ─── Games Dashboard ──────────────────────────────────────── */
 .games-dashboard {
     padding-top: 100px;
@@ -1664,8 +1731,9 @@ body:has(.game-page) {
 /* ─── Stat Description Tooltip ─────────────────────────────── */
 .stat-tooltip-trigger {
     cursor: help;
-    border-bottom: 1px dotted rgba(255,255,255,0.5);
+    border-bottom: 1.5px dotted #9ca3af;
     position: relative;
+    text-decoration: none;
 }
 .stat-tooltip-popup {
     max-width: 300px;

@@ -58,7 +58,6 @@ var OrderingGame = (function () {
                 em.classList.add('stat-tooltip-trigger');
                 em.setAttribute('data-tooltip', statDesc);
                 bindTooltipTrigger(em);
-                flashTooltip(em);
             }
         }
 

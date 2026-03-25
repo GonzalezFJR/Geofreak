@@ -1,10 +1,13 @@
-"""Admin routes — login, game config, users, analytics, datasets."""
+"""Admin routes — login, game config, users, analytics, datasets, daily challenges."""
 
 import csv
+import json
 import os
+import subprocess
+import sys
 
 from fastapi import APIRouter, Request, Form, HTTPException, Query
-from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, JSONResponse
 
 from core.config import get_settings
 from core.i18n import get_lang
@@ -348,3 +351,110 @@ def _human_size(size_bytes: int) -> str:
             return f"{size_bytes:.1f} {unit}"
         size_bytes /= 1024
     return f"{size_bytes:.1f} TB"
+
+
+# ── Daily Challenges ─────────────────────────────────────────────────────────
+
+_DC_S3_PREFIX = "daily_challenges"
+
+
+def _list_daily_challenges_s3(max_keys: int = 200) -> list[dict]:
+    """List daily challenge files in S3."""
+    from core.aws import get_s3_client
+    settings = get_settings()
+    s3 = get_s3_client()
+    try:
+        resp = s3.list_objects_v2(
+            Bucket=settings.s3_bucket_name,
+            Prefix=f"{_DC_S3_PREFIX}/",
+            MaxKeys=max_keys,
+        )
+        files = []
+        for obj in resp.get("Contents", []):
+            key = obj["Key"]
+            date_part = key.replace(f"{_DC_S3_PREFIX}/", "").replace(".json", "")
+            files.append({
+                "key": key,
+                "date": date_part,
+                "size": obj["Size"],
+                "size_human": _human_size(obj["Size"]),
+                "last_modified": obj["LastModified"].isoformat() if obj.get("LastModified") else "",
+            })
+        files.sort(key=lambda f: f["date"])
+        return files
+    except Exception:
+        return []
+
+
+def _get_challenge_json_s3(date_str: str) -> dict | None:
+    """Download and return a challenge JSON from S3."""
+    from core.aws import get_s3_client
+    settings = get_settings()
+    s3 = get_s3_client()
+    key = f"{_DC_S3_PREFIX}/{date_str}.json"
+    try:
+        resp = s3.get_object(Bucket=settings.s3_bucket_name, Key=key)
+        body = resp["Body"].read().decode("utf-8")
+        return json.loads(body)
+    except Exception:
+        return None
+
+
+@router.get("/daily", response_class=HTMLResponse)
+async def admin_daily(request: Request):
+    if not is_authenticated(request):
+        return RedirectResponse("/admin/login", status_code=303)
+    lang = get_lang(request)
+
+    challenges = _list_daily_challenges_s3()
+    # Split into past/today and future
+    from datetime import datetime, timezone
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    future = [c for c in challenges if c["date"] >= today]
+    past = [c for c in challenges if c["date"] < today]
+
+    return templates.TemplateResponse("admin/daily.html", {
+        "request": request, "lang": lang, "section": "daily",
+        "challenges_future": future,
+        "challenges_past": past,
+        "today": today,
+        "total_challenges": len(challenges),
+    })
+
+
+@router.post("/daily/generate")
+async def admin_daily_generate(
+    request: Request,
+    start: str = Form(""),
+    days: int = Form(90),
+    difficulty: str = Form("normal"),
+):
+    _require_auth(request)
+    from datetime import datetime, timezone
+    if not start:
+        start = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
+        difficulty = "normal"
+    if days < 1:
+        days = 1
+    if days > 365:
+        days = 365
+
+    try:
+        subprocess.Popen(
+            [sys.executable, "-m", "scripts.generate_daily_challenges",
+             "--start", start, "--days", str(days), "--difficulty", difficulty],
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+    return RedirectResponse("/admin/daily", status_code=303)
+
+
+@router.get("/daily/preview/{date_str}")
+async def admin_daily_preview(request: Request, date_str: str):
+    _require_auth(request)
+    data = _get_challenge_json_s3(date_str)
+    if not data:
+        raise HTTPException(status_code=404, detail="Challenge not found")
+    return JSONResponse(content=data)

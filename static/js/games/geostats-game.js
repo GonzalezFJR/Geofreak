@@ -14,6 +14,7 @@ var GeoStatsGame = (function () {
     var totalScore = 0;
     var resolved = false;
     var bestDistPct = Infinity;   // closest wrong guess (% of stat range)
+    var answers = [];             // track per-question results for summary
 
     /* ── Name → ISO reverse map ──────────────────────────── */
     var nameToIso = null;
@@ -68,6 +69,7 @@ var GeoStatsGame = (function () {
                 if (data.max_attempts) maxAttempts = data.max_attempts;
                 currentIdx = 0;
                 totalScore = 0;
+                answers = [];
                 GeoGame.setTotal(questions.length);
                 buildNameMap();
                 showQuestion();
@@ -106,7 +108,6 @@ var GeoStatsGame = (function () {
                 em.classList.add('stat-tooltip-trigger');
                 em.setAttribute('data-tooltip', statDesc);
                 bindTooltipTrigger(em);
-                flashTooltip(em);
             }
         }
 
@@ -277,6 +278,21 @@ var GeoStatsGame = (function () {
         var msg = (T['gs.correct'] || '✅ Correct!') +
             '  —  ' + (T['gs.score'] || 'Score') + ': ' + score + '/10';
         showFeedback('correct', msg);
+
+        var labelKey = T['stat.label_key'] || 'label_es';
+        answers.push({
+            stat: q.stat_info[labelKey],
+            correct_iso: q.target_iso,
+            correct_name: cName,
+            correct_flag: cFlag,
+            guessed_iso: iso,
+            guessed_name: cName,
+            guessed_flag: cFlag,
+            is_correct: true,
+            score: score,
+            attempts: currentAttempts,
+        });
+
         endQuestion();
     }
 
@@ -328,6 +344,21 @@ var GeoStatsGame = (function () {
                 .replace('{name}', tFlag + ' ' + tName) +
                 '  —  ' + (T['gs.score'] || 'Score') + ': ' + proxScore + '/10';
             showFeedback('wrong', msg);
+
+            var labelKey = T['stat.label_key'] || 'label_es';
+            answers.push({
+                stat: q.stat_info[labelKey],
+                correct_iso: q.target_iso,
+                correct_name: tName,
+                correct_flag: tFlag,
+                guessed_iso: iso,
+                guessed_name: cName,
+                guessed_flag: cFlag,
+                is_correct: false,
+                score: proxScore,
+                attempts: currentAttempts,
+            });
+
             endQuestion();
         } else {
             showFeedback('wrong', T['gs.wrong'] || '❌ Wrong');
@@ -383,7 +414,38 @@ var GeoStatsGame = (function () {
 
     /* ── Save result ─────────────────────────────────────── */
 
+    function renderSummary() {
+        var wrap = document.getElementById('results-summary-wrap');
+        var container = document.getElementById('results-summary');
+        if (!wrap || !container || answers.length === 0) return;
+
+        var html = '<table class="gs-summary-table">';
+        html += '<thead><tr>' +
+            '<th>#</th>' +
+            '<th>' + (T['gs.sum_stat'] || 'Stat') + '</th>' +
+            '<th>' + (T['gs.sum_correct'] || 'Answer') + '</th>' +
+            '<th>' + (T['gs.sum_guessed'] || 'Your guess') + '</th>' +
+            '<th>' + (T['gs.sum_score'] || 'Score') + '</th>' +
+            '</tr></thead><tbody>';
+
+        for (var i = 0; i < answers.length; i++) {
+            var a = answers[i];
+            var rowClass = a.is_correct ? 'gs-row-correct' : 'gs-row-wrong';
+            html += '<tr class="' + rowClass + '">' +
+                '<td>' + (i + 1) + '</td>' +
+                '<td>' + a.stat + '</td>' +
+                '<td>' + a.correct_flag + ' ' + a.correct_name + '</td>' +
+                '<td>' + (a.is_correct ? '✅' : a.guessed_flag + ' ' + a.guessed_name) + '</td>' +
+                '<td>' + a.score + '/10</td>' +
+                '</tr>';
+        }
+        html += '</tbody></table>';
+        container.innerHTML = html;
+        wrap.style.display = '';
+    }
+
     function saveResult() {
+        renderSummary();
         var elapsed = Date.now() - GeoGame.startTime;
         var avgScore = questions.length > 0 ? totalScore / questions.length : 0;
         var payload = {

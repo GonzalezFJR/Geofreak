@@ -20,7 +20,7 @@ from services.quiz import (
 from services.matches import create_match, finish_match, save_match_player
 from services.user_stats import record_match_result, get_user_stats, ensure_user_stats
 from services.analytics import track
-from services.daily_challenge import get_daily_challenge
+from services.daily_challenge import get_daily_challenge, get_user_daily_result, save_user_daily_result
 from services.leaderboards import get_leaderboard, get_user_position, rebuild_all_leaderboards, GAME_TYPES
 
 router = APIRouter(tags=["api"])
@@ -157,12 +157,31 @@ async def quiz_geostats(
 # ── Daily challenge endpoint ─────────────────────────────────────────────────
 
 @router.get("/daily-challenge")
-async def api_daily_challenge():
-    """Return today's pre-generated daily challenge."""
+async def api_daily_challenge(user: Optional[dict] = Depends(get_optional_user)):
+    """Return today's pre-generated daily challenge.
+
+    If user is logged in and already played today, returns their previous result
+    instead of the questions.
+    """
+    # Check if logged-in user already played
+    if user:
+        prev = get_user_daily_result(user["user_id"])
+        if prev:
+            return {"already_played": True, "result": prev}
+
     challenge = get_daily_challenge()
     if not challenge:
         raise HTTPException(status_code=404, detail="No daily challenge available for today")
-    return challenge
+    return {"already_played": False, **challenge}
+
+
+@router.get("/daily-challenge/result")
+async def api_daily_challenge_result(user: dict = Depends(get_current_user)):
+    """Return the current user's daily challenge result for today, if any."""
+    result = get_user_daily_result(user["user_id"])
+    if not result:
+        return {"played": False}
+    return {"played": True, "result": result}
 
 
 # ── Match result saving ──────────────────────────────────────────────────────
@@ -229,6 +248,16 @@ async def save_match_result(
         "game_type": payload.game_type, "mode": payload.mode,
         "score": payload.score, "total": payload.total,
     })
+
+    # Save daily challenge result for one-time enforcement
+    if payload.mode == "daily":
+        save_user_daily_result(user["user_id"], {
+            "score": payload.score,
+            "total": payload.total,
+            "accuracy": payload.accuracy,
+            "time_ms": payload.time_ms,
+            "match_id": match["match_id"],
+        })
 
     return {
         "saved": True,

@@ -19,6 +19,10 @@ var ComparisonGame = (function () {
             fetch('/api/daily-challenge')
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
+                    if (data.already_played) {
+                        showAlreadyPlayed(data.result);
+                        return;
+                    }
                     questions = data.questions || [];
                     currentIdx = 0;
                     GeoGame.setTotal(questions.length);
@@ -37,6 +41,65 @@ var ComparisonGame = (function () {
                     showQuestion();
                 });
         }
+    }
+
+    function showAlreadyPlayed(result) {
+        // Hide game area and HUD, show results overlay with previous result + countdown
+        document.getElementById('game-area').style.display = 'none';
+        document.getElementById('game-hud').style.display = 'none';
+        var overlay = document.getElementById('results-overlay');
+        overlay.style.display = 'flex';
+
+        var pct = result.total > 0 ? Math.round((result.score / result.total) * 100) : 0;
+        var elapsed = Math.round(result.time_ms / 1000);
+        var m = Math.floor(elapsed / 60);
+        var s = elapsed % 60;
+        var icon = pct >= 80 ? '🏆' : pct >= 50 ? '👏' : '💪';
+
+        document.querySelector('.results-icon').textContent = icon;
+        document.getElementById('result-correct').textContent = result.score;
+        document.getElementById('result-total').textContent = result.total;
+        document.getElementById('result-pct').textContent = pct + '%';
+        document.getElementById('result-time').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+
+        // Replace actions with countdown and "come back tomorrow" message
+        var actions = document.querySelector('.results-actions');
+        actions.innerHTML =
+            '<div class="daily-done-msg">' +
+            '<p>' + (T['daily.already_played'] || 'You already completed today\'s challenge!') + '</p>' +
+            '<p class="daily-countdown" id="daily-countdown"></p>' +
+            '<a href="/games" class="btn-outline-dark">' + (T['game.others'] || 'Other games') + '</a>' +
+            '</div>';
+        startCountdown();
+    }
+
+    function showAnonMessage() {
+        // After game ends for anonymous user, show signup prompt
+        var actions = document.querySelector('.results-actions');
+        if (!actions || !(GAME_CONFIG && GAME_CONFIG.daily)) return;
+        var signupHtml =
+            '<div class="daily-anon-msg">' +
+            '<p>' + (T['daily.register_prompt'] || 'Register to save your progress!') + '</p>' +
+            '<a href="/auth/register" class="btn btn-primary">' + (T['daily.register_btn'] || 'Sign up') + '</a>' +
+            '</div>';
+        actions.insertAdjacentHTML('beforeend', signupHtml);
+    }
+
+    function startCountdown() {
+        var el = document.getElementById('daily-countdown');
+        if (!el) return;
+        function update() {
+            var now = new Date();
+            var tomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+            var diff = tomorrow - now;
+            var h = Math.floor(diff / 3600000);
+            var m = Math.floor((diff % 3600000) / 60000);
+            var s = Math.floor((diff % 60000) / 1000);
+            el.textContent = (T['daily.next_in'] || 'Next challenge in') + ' ' +
+                (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+        }
+        update();
+        setInterval(update, 1000);
     }
 
     function showQuestion() {
@@ -67,7 +130,6 @@ var ComparisonGame = (function () {
                 em.classList.add('stat-tooltip-trigger');
                 em.setAttribute('data-tooltip', statDesc);
                 bindTooltipTrigger(em);
-                flashTooltip(em);
             }
         }
 
@@ -164,6 +226,22 @@ var ComparisonGame = (function () {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
+        }).then(function (r) { return r.json(); }).then(function (data) {
+            if (isDaily) {
+                if (!data.saved) {
+                    // Anonymous user — show register prompt
+                    showAnonMessage();
+                } else {
+                    // Logged-in user — show countdown instead of replay
+                    var actions = document.querySelector('.results-actions');
+                    actions.innerHTML =
+                        '<div class="daily-done-msg">' +
+                        '<p class="daily-countdown" id="daily-countdown"></p>' +
+                        '<a href="/games" class="btn-outline-dark">' + (T['game.others'] || 'Other games') + '</a>' +
+                        '</div>';
+                    startCountdown();
+                }
+            }
         }).catch(function () {});
     }
 

@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/admin.css">
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="admin-header">
+        <div>
+            <h1>🎯 {{ t('adm.daily_title', lang) }}</h1>
+            <p class="admin-subtitle">{{ t('adm.daily_subtitle', lang) }}</p>
+        </div>
+        <a href="/admin/logout" class="admin-logout">{{ t('adm.logout', lang) }}</a>
+    </div>
+
+    {% include "admin/_nav.html" %}
+
+    <!-- Stats summary -->
+    <div class="admin-game-card">
+        <h3>📊 {{ t('adm.daily_stats', lang) }}</h3>
+        <div class="admin-stats-row">
+            <div class="admin-stat-box">
+                <div class="admin-stat-value">{{ total_challenges }}</div>
+                <div class="admin-stat-label">{{ t('adm.daily_total', lang) }}</div>
+            </div>
+            <div class="admin-stat-box">
+                <div class="admin-stat-value">{{ challenges_future|length }}</div>
+                <div class="admin-stat-label">{{ t('adm.daily_future', lang) }}</div>
+            </div>
+            <div class="admin-stat-box">
+                <div class="admin-stat-value">{{ challenges_past|length }}</div>
+                <div class="admin-stat-label">{{ t('adm.daily_past', lang) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generate form -->
+    <div class="admin-game-card">
+        <h3>⚡ {{ t('adm.daily_generate', lang) }}</h3>
+        <form method="post" action="/admin/daily/generate">
+            <div class="form-row">
+                <div>
+                    <label>{{ t('adm.daily_start', lang) }}</label>
+                    <input type="date" name="start" value="{{ today }}">
+                </div>
+                <div>
+                    <label>{{ t('adm.daily_days', lang) }}</label>
+                    <input type="number" name="days" value="90" min="1" max="365">
+                </div>
+                <div>
+                    <label>{{ t('adm.daily_difficulty', lang) }}</label>
+                    <select name="difficulty">
+                        <option value="easy">{{ t('game.diff_easy', lang) }}</option>
+                        <option value="normal" selected>{{ t('game.diff_normal', lang) }}</option>
+                        <option value="hard">{{ t('game.diff_hard', lang) }}</option>
+                        <option value="very_hard">{{ t('game.diff_very_hard', lang) }}</option>
+                        <option value="extreme">{{ t('game.diff_extreme', lang) }}</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn-save">🚀 {{ t('adm.daily_generate_btn', lang) }}</button>
+            <p style="font-size:0.8rem;color:var(--gray-500);margin-top:8px;">
+                {{ t('adm.daily_generate_note', lang) }}
+            </p>
+        </form>
+    </div>
+
+    <!-- Upcoming challenges -->
+    <div class="admin-game-card">
+        <h3>📅 {{ t('adm.daily_upcoming', lang) }}</h3>
+        {% if challenges_future %}
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>{{ t('adm.daily_date', lang) }}</th>
+                        <th>{{ t('adm.daily_questions', lang) }}</th>
+                        <th>{{ t('adm.daily_size', lang) }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in challenges_future %}
+                    <tr class="{{ 'admin-row-today' if c.date == today }}">
+                        <td>{{ c.date }}{% if c.date == today %} <span class="badge-today">{{ t('adm.daily_today', lang) }}</span>{% endif %}</td>
+                        <td>—</td>
+                        <td>{{ c.size_human }}</td>
+                        <td>
+                            <button class="btn-preview" onclick="previewChallenge('{{ c.date }}')">
+                                👁️ {{ t('adm.daily_preview', lang) }}
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p style="color:var(--gray-500);font-size:0.9rem;">{{ t('adm.daily_no_future', lang) }}</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Preview modal -->
+<div class="admin-modal-overlay" id="preview-modal" style="display:none" onclick="closePreview(event)">
+    <div class="admin-modal-card">
+        <div class="admin-modal-header">
+            <h3 id="preview-title">Preview</h3>
+            <button onclick="document.getElementById('preview-modal').style.display='none'" class="admin-modal-close">&times;</button>
+        </div>
+        <div class="admin-modal-body" id="preview-body">
+            Loading…
+        </div>
+    </div>
+</div>
+
+<script>
+function previewChallenge(date) {
+    var modal = document.getElementById('preview-modal');
+    var body = document.getElementById('preview-body');
+    var title = document.getElementById('preview-title');
+    title.textContent = '🎯 ' + date;
+    body.innerHTML = '<p style="text-align:center;color:var(--gray-500)">Loading…</p>';
+    modal.style.display = 'flex';
+
+    fetch('/admin/daily/preview/' + date)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var html = '<div class="preview-meta">' +
+                '<strong>Date:</strong> ' + (data.date || date) +
+                ' &nbsp;|&nbsp; <strong>Type:</strong> ' + (data.game_type || '—') +
+                ' &nbsp;|&nbsp; <strong>Difficulty:</strong> ' + (data.difficulty || '—') +
+                ' &nbsp;|&nbsp; <strong>Questions:</strong> ' + (data.num_questions || 0) +
+                '</div>';
+            html += '<table class="admin-table" style="margin-top:12px">';
+            html += '<thead><tr><th>#</th><th>Stat</th><th>Country A</th><th>Country B</th><th>Correct</th></tr></thead><tbody>';
+            var qs = data.questions || [];
+            for (var i = 0; i < qs.length; i++) {
+                var q = qs[i];
+                var labelKey = 'label_es';
+                var a = q.countries[0] || {};
+                var b = q.countries[1] || {};
+                html += '<tr>' +
+                    '<td>' + (i + 1) + '</td>' +
+                    '<td>' + (q.stat_info ? q.stat_info[labelKey] : q.stat) + '</td>' +
+                    '<td>' + (a.flag_emoji || '') + ' ' + (a.name_es || a.name || '') + '</td>' +
+                    '<td>' + (b.flag_emoji || '') + ' ' + (b.name_es || b.name || '') + '</td>' +
+                    '<td>' + (q.correct_iso || '') + '</td>' +
+                    '</tr>';
+            }
+            html += '</tbody></table>';
+            body.innerHTML = html;
+        })
+        .catch(function() {
+            body.innerHTML = '<p style="color:red">Error loading challenge</p>';
+        });
+}
+
+function closePreview(e) {
+    if (e.target === document.getElementById('preview-modal')) {
+        document.getElementById('preview-modal').style.display = 'none';
+    }
+}
+</script>
+{% endblock %}
