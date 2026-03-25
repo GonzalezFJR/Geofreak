@@ -20,6 +20,7 @@ from services.quiz import (
 from services.matches import create_match, finish_match, save_match_player
 from services.user_stats import record_match_result, get_user_stats, ensure_user_stats
 from services.analytics import track
+from services.daily_challenge import get_daily_challenge
 from services.leaderboards import get_leaderboard, get_user_position, rebuild_all_leaderboards, GAME_TYPES
 
 router = APIRouter(tags=["api"])
@@ -151,6 +152,17 @@ async def quiz_geostats(
     if not data or not data.get("questions"):
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
     return data
+
+
+# ── Daily challenge endpoint ─────────────────────────────────────────────────
+
+@router.get("/daily-challenge")
+async def api_daily_challenge():
+    """Return today's pre-generated daily challenge."""
+    challenge = get_daily_challenge()
+    if not challenge:
+        raise HTTPException(status_code=404, detail="No daily challenge available for today")
+    return challenge
 
 
 # ── Match result saving ──────────────────────────────────────────────────────

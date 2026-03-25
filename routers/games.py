@@ -34,6 +34,20 @@ MAP_GAME_CONFIG = {
 }
 
 
+@router.get("/daily", response_class=HTMLResponse)
+async def daily_challenge(request: Request, user=Depends(get_optional_user)):
+    """Render the daily challenge page (comparison game with pre-generated questions)."""
+    lang = get_lang(request)
+    game = games_service.get_game("comparison")
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    game_data = game.copy()
+    game_data["daily"] = True
+    game_json = json.dumps(game_data, ensure_ascii=False)
+    ctx = {"request": request, "game": game_data, "game_json": game_json, "user": user, "lang": lang}
+    return templates.TemplateResponse("games/comparison.html", ctx)
+
+
 @router.get("", response_class=HTMLResponse)
 async def games_dashboard(request: Request, user=Depends(get_optional_user)):
     lang = get_lang(request)

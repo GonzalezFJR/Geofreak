@@ -14,17 +14,29 @@ var ComparisonGame = (function () {
     init();
 
     function loadData(settings) {
-        var num = settings.maxItems || 10;
-        var continent = settings.continent || 'all';
-        var difficulty = settings.difficulty || 'normal';
-        fetch('/api/quiz/comparison?num=' + num + '&continent=' + continent + '&difficulty=' + difficulty)
-            .then(function (r) { return r.json(); })
-            .then(function (data) {
-                questions = data.questions || [];
-                currentIdx = 0;
-                GeoGame.setTotal(questions.length);
-                showQuestion();
-            });
+        var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
+        if (isDaily) {
+            fetch('/api/daily-challenge')
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    questions = data.questions || [];
+                    currentIdx = 0;
+                    GeoGame.setTotal(questions.length);
+                    showQuestion();
+                });
+        } else {
+            var num = settings.maxItems || 10;
+            var continent = settings.continent || 'all';
+            var difficulty = settings.difficulty || 'normal';
+            fetch('/api/quiz/comparison?num=' + num + '&continent=' + continent + '&difficulty=' + difficulty)
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    questions = data.questions || [];
+                    currentIdx = 0;
+                    GeoGame.setTotal(questions.length);
+                    showQuestion();
+                });
+        }
     }
 
     function showQuestion() {
@@ -138,9 +150,10 @@ var ComparisonGame = (function () {
 
     function saveResult() {
         var elapsed = Date.now() - GeoGame.startTime;
+        var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
         var payload = {
             game_type: 'comparison',
-            mode: 'solo',
+            mode: isDaily ? 'daily' : 'solo',
             score: GeoGame.correct,
             total: GeoGame.total,
             accuracy: GeoGame.total > 0 ? GeoGame.correct / GeoGame.total : 0,
