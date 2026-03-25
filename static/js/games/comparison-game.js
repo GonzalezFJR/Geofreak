@@ -8,6 +8,141 @@ var ComparisonGame = (function () {
     var currentIdx = 0;
     var answered = false;
 
+    /* ── SVG Star helpers ─────────────────────────────────── */
+    var _halfStarId = 0;
+    function starSVG(type) {
+        // type: 'full', 'half', 'empty'
+        var w = 28, h = 28;
+        var pts = '14,3 17.5,10 25,11.5 19.5,17 21,24.5 14,20.5 7,24.5 8.5,17 3,11.5 10.5,10';
+        if (type === 'full') {
+            return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">' +
+                '<polygon points="'+pts+'" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.2" stroke-linejoin="round"/>' +
+                '</svg>';
+        }
+        if (type === 'half') {
+            var uid = 'hs' + (++_halfStarId);
+            return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">' +
+                '<defs><clipPath id="'+uid+'-l"><rect x="0" y="0" width="14" height="28"/></clipPath>' +
+                '<clipPath id="'+uid+'-r"><rect x="14" y="0" width="14" height="28"/></clipPath></defs>' +
+                '<polygon points="'+pts+'" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.2" stroke-linejoin="round" clip-path="url(#'+uid+'-l)"/>' +
+                '<polygon points="'+pts+'" fill="none" stroke="#f59e0b" stroke-width="1.2" stroke-linejoin="round" clip-path="url(#'+uid+'-r)"/>' +
+                '</svg>';
+        }
+        // empty
+        return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">' +
+            '<polygon points="'+pts+'" fill="none" stroke="#d1d5db" stroke-width="1.2" stroke-linejoin="round"/>' +
+            '</svg>';
+    }
+
+    function renderStars(score, total) {
+        // 10 questions → each correct = 0.5 star out of max 5
+        var stars = total > 0 ? (score / total) * 5 : 0;
+        var fullCount = Math.floor(stars);
+        var hasHalf = (stars - fullCount) >= 0.5;
+        var emptyCount = 5 - fullCount - (hasHalf ? 1 : 0);
+        var html = '<div class="daily-stars">';
+        for (var i = 0; i < fullCount; i++) html += starSVG('full');
+        if (hasHalf) html += starSVG('half');
+        for (var j = 0; j < emptyCount; j++) html += starSVG('empty');
+        html += '</div>';
+        return html;
+    }
+
+    function starsText(score, total) {
+        var stars = total > 0 ? (score / total) * 5 : 0;
+        var fullCount = Math.floor(stars);
+        var hasHalf = (stars - fullCount) >= 0.5;
+        var emptyCount = 5 - fullCount - (hasHalf ? 1 : 0);
+        var txt = '';
+        for (var i = 0; i < fullCount; i++) txt += '★';
+        if (hasHalf) txt += '⯨';
+        for (var j = 0; j < emptyCount; j++) txt += '☆';
+        return txt;
+    }
+
+    /* ── Format elapsed time ──────────────────────────────── */
+    function fmtTime(ms) {
+        var sec = Math.round(ms / 1000);
+        var m = Math.floor(sec / 60);
+        var s = sec % 60;
+        return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    /* ── Build daily results section ──────────────────────── */
+    function buildDailyResults(score, total, timeMs, opts) {
+        // opts: { isAnon, isReplay }
+        var pct = total > 0 ? Math.round((score / total) * 100) : 0;
+        var icon = pct >= 80 ? '🏆' : pct >= 50 ? '👏' : '💪';
+
+        // Hide the normal stats grid
+        var normalStats = document.getElementById('results-stats-normal');
+        if (normalStats) normalStats.style.display = 'none';
+
+        // Set icon & title
+        document.querySelector('.results-icon').textContent = icon;
+
+        // Build daily section
+        var section = document.getElementById('daily-results-section');
+        section.style.display = '';
+        section.innerHTML =
+            renderStars(score, total) +
+            '<div class="daily-metrics">' +
+                '<div class="daily-metric">' +
+                    '<span class="daily-metric-value">' + score + '/' + total + '</span>' +
+                    '<span class="daily-metric-label">' + (T['daily.hits'] || 'Correct') + '</span>' +
+                '</div>' +
+                '<div class="daily-metric">' +
+                    '<span class="daily-metric-value">' + fmtTime(timeMs) + '</span>' +
+                    '<span class="daily-metric-label">' + (T['game.time'] || 'Time') + '</span>' +
+                '</div>' +
+            '</div>';
+
+        // Build actions
+        var actions = document.getElementById('results-actions');
+        actions.className = 'results-actions daily-actions';
+        var html = '';
+
+        // Share button
+        html += '<div class="daily-share-row">' +
+            '<button class="btn-daily-share" id="btn-daily-share" onclick="ComparisonGame.shareResults()">' +
+                '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> ' +
+                (T['daily.share'] || 'Share results') +
+            '</button>' +
+            '<button class="btn-daily-copy" id="btn-daily-copy" onclick="ComparisonGame.copyResults()">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ' +
+                (T['daily.copy'] || 'Copy') +
+            '</button>' +
+            '</div>';
+
+        // Countdown
+        html += '<div class="daily-countdown-wrap">' +
+            '<p class="daily-countdown" id="daily-countdown"></p>' +
+            '</div>';
+
+        // Auth-dependent button
+        if (opts && opts.isAnon) {
+            html += '<a href="/auth/register" class="btn-daily-register">' +
+                (T['daily.register_btn'] || 'Sign up') +
+                '</a>' +
+                '<p class="daily-register-hint">' + (T['daily.register_prompt'] || 'Register to save your progress!') + '</p>';
+        } else {
+            html += '<a href="/profile" class="btn-daily-stats">' +
+                (T['daily.view_stats'] || '📊 View my stats') +
+                '</a>';
+        }
+
+        // Other games — subtle link
+        html += '<a href="/games" class="daily-other-games">' + (T['game.others'] || 'Other games') + '</a>';
+
+        actions.innerHTML = html;
+
+        // Start countdown
+        startCountdown();
+
+        // Store result for share
+        ComparisonGame._lastResult = { score: score, total: total, timeMs: timeMs };
+    }
+
     function init() {
         GeoGame.init({ onStart: loadData });
     }
@@ -44,45 +179,10 @@ var ComparisonGame = (function () {
     }
 
     function showAlreadyPlayed(result) {
-        // Hide game area and HUD, show results overlay with previous result + countdown
         document.getElementById('game-area').style.display = 'none';
         document.getElementById('game-hud').style.display = 'none';
-        var overlay = document.getElementById('results-overlay');
-        overlay.style.display = 'flex';
-
-        var pct = result.total > 0 ? Math.round((result.score / result.total) * 100) : 0;
-        var elapsed = Math.round(result.time_ms / 1000);
-        var m = Math.floor(elapsed / 60);
-        var s = elapsed % 60;
-        var icon = pct >= 80 ? '🏆' : pct >= 50 ? '👏' : '💪';
-
-        document.querySelector('.results-icon').textContent = icon;
-        document.getElementById('result-correct').textContent = result.score;
-        document.getElementById('result-total').textContent = result.total;
-        document.getElementById('result-pct').textContent = pct + '%';
-        document.getElementById('result-time').textContent = m + ':' + (s < 10 ? '0' : '') + s;
-
-        // Replace actions with countdown and "come back tomorrow" message
-        var actions = document.querySelector('.results-actions');
-        actions.innerHTML =
-            '<div class="daily-done-msg">' +
-            '<p>' + (T['daily.already_played'] || 'You already completed today\'s challenge!') + '</p>' +
-            '<p class="daily-countdown" id="daily-countdown"></p>' +
-            '<a href="/games" class="btn-outline-dark">' + (T['game.others'] || 'Other games') + '</a>' +
-            '</div>';
-        startCountdown();
-    }
-
-    function showAnonMessage() {
-        // After game ends for anonymous user, show signup prompt
-        var actions = document.querySelector('.results-actions');
-        if (!actions || !(GAME_CONFIG && GAME_CONFIG.daily)) return;
-        var signupHtml =
-            '<div class="daily-anon-msg">' +
-            '<p>' + (T['daily.register_prompt'] || 'Register to save your progress!') + '</p>' +
-            '<a href="/auth/register" class="btn btn-primary">' + (T['daily.register_btn'] || 'Sign up') + '</a>' +
-            '</div>';
-        actions.insertAdjacentHTML('beforeend', signupHtml);
+        document.getElementById('results-overlay').style.display = 'flex';
+        buildDailyResults(result.score, result.total, result.time_ms, { isAnon: false, isReplay: true });
     }
 
     function startCountdown() {
@@ -228,22 +328,58 @@ var ComparisonGame = (function () {
             body: JSON.stringify(payload),
         }).then(function (r) { return r.json(); }).then(function (data) {
             if (isDaily) {
-                if (!data.saved) {
-                    // Anonymous user — show register prompt
-                    showAnonMessage();
-                } else {
-                    // Logged-in user — show countdown instead of replay
-                    var actions = document.querySelector('.results-actions');
-                    actions.innerHTML =
-                        '<div class="daily-done-msg">' +
-                        '<p class="daily-countdown" id="daily-countdown"></p>' +
-                        '<a href="/games" class="btn-outline-dark">' + (T['game.others'] || 'Other games') + '</a>' +
-                        '</div>';
-                    startCountdown();
-                }
+                var isAnon = !data.saved;
+                buildDailyResults(GeoGame.correct, GeoGame.total, elapsed, { isAnon: isAnon });
             }
-        }).catch(function () {});
+        }).catch(function () {
+            if (isDaily) {
+                buildDailyResults(GeoGame.correct, GeoGame.total, elapsed, { isAnon: true });
+            }
+        });
     }
 
-    return { pick: pick };
+    /* ── Share / Copy ─────────────────────────────────────── */
+    function getShareText() {
+        var r = ComparisonGame._lastResult;
+        if (!r) return '';
+        var template = T['daily.share_text'] || 'I got {score}/{total} on today\'s GeoFreak daily challenge';
+        var text = template.replace('{score}', r.score).replace('{total}', r.total);
+        text += '\n' + starsText(r.score, r.total);
+        text += '\n⏱️ ' + fmtTime(r.timeMs);
+        text += '\nhttps://geofreak.app/games/daily';
+        return text;
+    }
+
+    function shareResults() {
+        var text = getShareText();
+        var title = T['daily.share_title'] || '🌍 GeoFreak — Daily Challenge';
+        if (navigator.share) {
+            navigator.share({ title: title, text: text }).catch(function () {});
+        } else {
+            // Fallback: copy to clipboard
+            copyResults();
+        }
+    }
+
+    function copyResults() {
+        var text = getShareText();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () {
+                var btn = document.getElementById('btn-daily-copy');
+                if (btn) {
+                    btn.textContent = T['daily.copied'] || '¡Copiado!';
+                    setTimeout(function () {
+                        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ' + (T['daily.copy'] || 'Copy');
+                    }, 2000);
+                }
+            });
+        }
+    }
+
+    return {
+        pick: pick,
+        shareResults: shareResults,
+        copyResults: copyResults,
+        _lastResult: null
+    };
 })();

@@ -79,10 +79,12 @@
 
     <!-- ─── Results overlay ───────────────────────────────── -->
     <div class="game-results-overlay" id="results-overlay" style="display:none">
-        <div class="game-results-card">
+        <div class="game-results-card" id="results-card">
             <div class="results-icon">🏆</div>
             <h2>{{ t('game.end', lang) }}</h2>
-            <div class="results-stats">
+
+            {# ── Standard stats (non-daily) ── #}
+            <div class="results-stats" id="results-stats-normal">
                 <div class="result-stat">
                     <div class="result-stat-value" id="result-correct">0</div>
                     <div class="result-stat-label">{{ t('game.correct', lang) }}</div>
@@ -100,13 +102,17 @@
                     <div class="result-stat-label">{{ t('game.time', lang) }}</div>
                 </div>
             </div>
+
+            {# ── Daily-specific results (filled by JS) ── #}
+            <div id="daily-results-section" style="display:none"></div>
+
             <div id="results-summary-wrap" style="display:none">
                 <button class="btn-outline-dark results-toggle-btn" id="btn-toggle-summary" onclick="document.getElementById('results-summary').style.display=document.getElementById('results-summary').style.display==='none'?'':'none'">
                     {{ t('game.show_answers', lang) }}
                 </button>
                 <div id="results-summary" style="display:none"></div>
             </div>
-            <div class="results-actions">
+            <div class="results-actions" id="results-actions">
                 <button class="btn btn-primary" onclick="location.reload()">{{ t('game.replay', lang) }}</button>
                 <a href="/games" class="btn-outline-dark">{{ t('game.others', lang) }}</a>
             </div>
@@ -117,7 +123,10 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script>var GAME_CONFIG = {{ game_json | safe }};</script>
+<script>
+var GAME_CONFIG = {{ game_json | safe }};
+var IS_LOGGED_IN = {{ 'true' if user else 'false' }};
+</script>
 <script src="/static/js/games/common.js"></script>
 {% block game_scripts %}{% endblock %}
 {% endblock %}
