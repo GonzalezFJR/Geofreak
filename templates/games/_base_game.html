@@ -80,10 +80,14 @@
     <!-- ─── Results overlay ───────────────────────────────── -->
     <div class="game-results-overlay" id="results-overlay" style="display:none">
         <div class="game-results-card" id="results-card">
+            <button class="results-close" id="results-close" onclick="document.getElementById('results-overlay').style.display='none'" aria-label="Close">&times;</button>
             <div class="results-icon">🏆</div>
             <h2>{{ t('game.end', lang) }}</h2>
 
-            {# ── Standard stats (non-daily) ── #}
+            {# ── Enhanced results: stars + compact metrics (filled by JS) ── #}
+            <div id="results-enhanced" style="display:none"></div>
+
+            {# ── Standard 4-stat grid (hidden when enhanced is active) ── #}
             <div class="results-stats" id="results-stats-normal">
                 <div class="result-stat">
                     <div class="result-stat-value" id="result-correct">0</div>
@@ -102,9 +106,6 @@
                     <div class="result-stat-label">{{ t('game.time', lang) }}</div>
                 </div>
             </div>
-
-            {# ── Daily-specific results (filled by JS) ── #}
-            <div id="daily-results-section" style="display:none"></div>
 
             <div id="results-summary-wrap" style="display:none">
                 <button class="btn-outline-dark results-toggle-btn" id="btn-toggle-summary" onclick="document.getElementById('results-summary').style.display=document.getElementById('results-summary').style.display==='none'?'':'none'">

@@ -451,23 +451,25 @@ var GeoGame = {
 
     endGame: function () {
         if (this.timerInterval) clearInterval(this.timerInterval);
-        var elapsed = Math.round((Date.now() - this.startTime) / 1000);
+        var elapsedMs = Date.now() - this.startTime;
+        var elapsed = Math.round(elapsedMs / 1000);
         var pct = this.total > 0 ? Math.round((this.correct / this.total) * 100) : 0;
         var m = Math.floor(elapsed / 60);
         var s = elapsed % 60;
 
+        // Populate hidden fallback stats (still used as data source)
         document.getElementById('result-correct').textContent = this.correct;
         document.getElementById('result-total').textContent = this.total;
         document.getElementById('result-pct').textContent = pct + '%';
         document.getElementById('result-time').textContent = m + ':' + (s < 10 ? '0' : '') + s;
 
-        // Icon based on performance
         var icon = pct >= 80 ? '🏆' : pct >= 50 ? '👏' : '💪';
         document.querySelector('.results-icon').textContent = icon;
 
-        document.getElementById('results-overlay').style.display = 'flex';
+        // Build enhanced results UI (stars + metrics + share + actions)
+        GeoResults.build(this.correct, this.total, elapsedMs);
 
-        // Save result to backend (if game_type is known)
+        document.getElementById('results-overlay').style.display = 'flex';
         this._saveResult(elapsed);
     },
 
@@ -592,3 +594,234 @@ function bindTooltipTrigger(el) {
         el.addEventListener('mouseleave', function () { dismissTooltip(); });
     }
 }
+
+/* ============================================================
+   GeoResults — Enhanced results overlay (stars, share, actions)
+   Used by ALL games.
+   ============================================================ */
+var GeoResults = (function () {
+    var _halfStarId = 0;
+    var _lastResult = null;
+
+    /* ── SVG Stars ────────────────────────────────────────── */
+    function starSVG(type) {
+        var w = 28, h = 28;
+        var pts = '14,3 17.5,10 25,11.5 19.5,17 21,24.5 14,20.5 7,24.5 8.5,17 3,11.5 10.5,10';
+        if (type === 'full') {
+            return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">' +
+                '<polygon points="'+pts+'" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.2" stroke-linejoin="round"/></svg>';
+        }
+        if (type === 'half') {
+            var uid = 'hs' + (++_halfStarId);
+            return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">' +
+                '<defs><clipPath id="'+uid+'-l"><rect x="0" y="0" width="14" height="28"/></clipPath>' +
+                '<clipPath id="'+uid+'-r"><rect x="14" y="0" width="14" height="28"/></clipPath></defs>' +
+                '<polygon points="'+pts+'" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.2" stroke-linejoin="round" clip-path="url(#'+uid+'-l)"/>' +
+                '<polygon points="'+pts+'" fill="none" stroke="#f59e0b" stroke-width="1.2" stroke-linejoin="round" clip-path="url(#'+uid+'-r)"/></svg>';
+        }
+        return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">' +
+            '<polygon points="'+pts+'" fill="none" stroke="#d1d5db" stroke-width="1.2" stroke-linejoin="round"/></svg>';
+    }
+
+    function renderStarsHTML(score, total) {
+        var stars = total > 0 ? (score / total) * 5 : 0;
+        var full = Math.floor(stars);
+        var half = (stars - full) >= 0.5 ? 1 : 0;
+        var empty = 5 - full - half;
+        var html = '<div class="daily-stars">';
+        for (var i = 0; i < full; i++) html += starSVG('full');
+        if (half) html += starSVG('half');
+        for (var j = 0; j < empty; j++) html += starSVG('empty');
+        html += '</div>';
+        return html;
+    }
+
+    function starsText(score, total) {
+        var stars = total > 0 ? (score / total) * 5 : 0;
+        var full = Math.floor(stars);
+        var half = (stars - full) >= 0.5 ? 1 : 0;
+        var empty = 5 - full - half;
+        var txt = '';
+        for (var i = 0; i < full; i++) txt += '★';
+        if (half) txt += '⯨';
+        for (var j = 0; j < empty; j++) txt += '☆';
+        return txt;
+    }
+
+    function fmtTime(ms) {
+        var sec = Math.round(ms / 1000);
+        var m = Math.floor(sec / 60);
+        var s = sec % 60;
+        return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    /* ── Build enhanced results ───────────────────────────── */
+    function build(score, total, timeMs) {
+        _lastResult = { score: score, total: total, timeMs: timeMs };
+
+        // Hide normal stats grid, show enhanced section
+        var normalStats = document.getElementById('results-stats-normal');
+        if (normalStats) normalStats.style.display = 'none';
+
+        var section = document.getElementById('results-enhanced');
+        section.style.display = '';
+        section.innerHTML =
+            renderStarsHTML(score, total) +
+            '<div class="daily-metrics">' +
+                '<div class="daily-metric">' +
+                    '<span class="daily-metric-value">' + score + '/' + total + '</span>' +
+                    '<span class="daily-metric-label">' + (T['daily.hits'] || 'Correct') + '</span>' +
+                '</div>' +
+                '<div class="daily-metric">' +
+                    '<span class="daily-metric-value">' + fmtTime(timeMs) + '</span>' +
+                    '<span class="daily-metric-label">' + (T['game.time'] || 'Time') + '</span>' +
+                '</div>' +
+            '</div>';
+
+        // Build actions
+        var actions = document.getElementById('results-actions');
+        actions.className = 'results-actions daily-actions';
+        var html = '';
+
+        // Share row
+        html += '<div class="daily-share-row">' +
+            '<button class="btn-daily-share" onclick="GeoResults.share()">' +
+                '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> ' +
+                (T['daily.share'] || 'Share results') +
+            '</button>' +
+            '<button class="btn-daily-copy" id="btn-geo-copy" onclick="GeoResults.copy()">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ' +
+                (T['daily.copy'] || 'Copy') +
+            '</button>' +
+            '</div>';
+
+        // Play again + Other games
+        html += '<button class="btn btn-primary" onclick="location.reload()">' +
+            (T['game.replay'] || '🔄 Play again') + '</button>';
+        html += '<a href="/games" class="daily-other-games">' +
+            (T['game.others'] || 'Other games') + '</a>';
+
+        // Auth-dependent: register or stats
+        if (typeof IS_LOGGED_IN !== 'undefined' && !IS_LOGGED_IN) {
+            html += '<div class="daily-register-block">' +
+                '<a href="/register" class="btn-daily-register">' +
+                    (T['daily.register_btn'] || 'Sign up') +
+                '</a>' +
+                '<p class="daily-register-hint">' +
+                    (T['daily.register_prompt'] || 'Register to save your progress!') +
+                '</p></div>';
+        }
+
+        actions.innerHTML = html;
+    }
+
+    /* ── Build daily-specific results (extends build) ─────── */
+    function buildDaily(score, total, timeMs, opts) {
+        build(score, total, timeMs);
+
+        var actions = document.getElementById('results-actions');
+        // Remove replay button for daily
+        var replayBtn = actions.querySelector('.btn.btn-primary');
+        if (replayBtn) replayBtn.remove();
+
+        // Add countdown before the "other games" link
+        var otherLink = actions.querySelector('.daily-other-games');
+        var countdownWrap = document.createElement('div');
+        countdownWrap.className = 'daily-countdown-wrap';
+        countdownWrap.innerHTML = '<p class="daily-countdown" id="daily-countdown"></p>';
+        if (otherLink) {
+            actions.insertBefore(countdownWrap, otherLink);
+        } else {
+            actions.appendChild(countdownWrap);
+        }
+
+        // For anon users: remove stats link, ensure register block exists
+        if (opts && opts.isAnon) {
+            var registerBlock = actions.querySelector('.daily-register-block');
+            if (!registerBlock) {
+                var regHtml = '<div class="daily-register-block">' +
+                    '<a href="/register" class="btn-daily-register">' +
+                        (T['daily.register_btn'] || 'Sign up') +
+                    '</a>' +
+                    '<p class="daily-register-hint">' +
+                        (T['daily.register_prompt'] || 'Register to save your progress!') +
+                    '</p></div>';
+                actions.insertAdjacentHTML('beforeend', regHtml);
+            }
+        } else {
+            // Logged-in: replace register block with stats link
+            var regBlock = actions.querySelector('.daily-register-block');
+            if (regBlock) regBlock.remove();
+            var statsLink = document.createElement('a');
+            statsLink.href = '/profile';
+            statsLink.className = 'btn-daily-stats';
+            statsLink.textContent = T['daily.view_stats'] || '📊 View my stats';
+            var otherGames = actions.querySelector('.daily-other-games');
+            if (otherGames) {
+                actions.insertBefore(statsLink, otherGames);
+            } else {
+                actions.appendChild(statsLink);
+            }
+        }
+    }
+
+    /* ── Share / Copy ─────────────────────────────────────── */
+    function getShareText() {
+        if (!_lastResult) return '';
+        var r = _lastResult;
+        var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
+        var gameName = (GAME_CONFIG && GAME_CONFIG.name) || 'GeoFreak';
+        var template = isDaily
+            ? (T['daily.share_text'] || 'I got {score}/{total} on today\'s GeoFreak daily challenge')
+            : (T['game.share_text'] || 'I got {score}/{total} on GeoFreak — {game}');
+        var text = template.replace('{score}', r.score).replace('{total}', r.total).replace('{game}', gameName);
+        text += '\n' + starsText(r.score, r.total);
+        text += '\n⏱️ ' + fmtTime(r.timeMs);
+        if (isDaily) {
+            text += '\nhttps://geofreak.app/games/daily';
+        } else {
+            text += '\nhttps://geofreak.app/games';
+        }
+        return text;
+    }
+
+    function share() {
+        var text = getShareText();
+        var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
+        var title = isDaily
+            ? (T['daily.share_title'] || '🌍 GeoFreak — Daily Challenge')
+            : (T['game.share_title'] || '🌍 GeoFreak');
+        if (navigator.share) {
+            navigator.share({ title: title, text: text }).catch(function () {});
+        } else {
+            copy();
+        }
+    }
+
+    function copy() {
+        var text = getShareText();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () {
+                var btn = document.getElementById('btn-geo-copy');
+                if (btn) {
+                    btn.textContent = T['daily.copied'] || '¡Copiado!';
+                    setTimeout(function () {
+                        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ' + (T['daily.copy'] || 'Copy');
+                    }, 2000);
+                }
+            });
+        }
+    }
+
+    return { build: build, buildDaily: buildDaily, share: share, copy: copy, starsText: starsText, fmtTime: fmtTime };
+})();
+
+/* ── Escape key to close results overlay ─────────────────── */
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        var overlay = document.getElementById('results-overlay');
+        if (overlay && overlay.style.display !== 'none') {
+            overlay.style.display = 'none';
+        }
+    }
+});
