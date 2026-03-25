@@ -5,14 +5,20 @@ A local cache file avoids repeated S3 downloads within the same day.
 """
 
 import json
+import logging
 import os
-from datetime import datetime, timezone
+import subprocess
+import sys
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from core.aws import get_s3_client
 from core.config import get_settings
 
+log = logging.getLogger(__name__)
+
 S3_PREFIX = "daily_challenges"
+_BACKFILL_DAYS = 90
 
 _LOCAL_CACHE_DIR = os.path.join(
     os.path.dirname(os.path.dirname(__file__)), "static", "data", "daily_challenges"
@@ -58,12 +64,40 @@ def _download_from_s3(date_str: str) -> Optional[dict]:
         return None
 
 
+def _generate_today() -> None:
+    """Run the generation script for today only (1 day), blocking."""
+    today = _today_utc()
+    log.info("No daily challenge found for %s — generating today's …", today)
+    try:
+        subprocess.run(
+            [sys.executable, "-m", "scripts.generate_daily_challenges",
+             "--start", today, "--days", "1"],
+            check=True,
+            timeout=30,
+        )
+    except Exception as exc:
+        log.error("Daily challenge generation failed: %s", exc)
+
+
+def _generate_next_days_background() -> None:
+    """Kick off generation of the next N days in background (fire-and-forget)."""
+    tomorrow = (datetime.now(timezone.utc) + timedelta(days=1)).strftime("%Y-%m-%d")
+    log.info("Launching background generation of %d days starting %s", _BACKFILL_DAYS, tomorrow)
+    try:
+        subprocess.Popen(
+            [sys.executable, "-m", "scripts.generate_daily_challenges",
+             "--start", tomorrow, "--days", str(_BACKFILL_DAYS)],
+        )
+    except Exception as exc:
+        log.error("Background daily challenge generation failed to start: %s", exc)
+
+
 def get_daily_challenge() -> Optional[dict]:
     """Return today's daily challenge.
 
     1. Check local cache — if valid for today, return it.
     2. Otherwise download from S3, cache locally, and return.
-    3. If S3 has no challenge for today, return None.
+    3. If S3 has no challenge for today, generate it on the fly, then retry S3.
     """
     cached = _read_local_cache()
     if cached is not None:
@@ -73,6 +107,15 @@ def get_daily_challenge() -> Optional[dict]:
     data = _download_from_s3(today)
     if data is not None:
         _save_local_cache(data)
+        return data
+
+    # Fallback: generate today's challenge and retry
+    _generate_today()
+    data = _download_from_s3(today)
+    if data is not None:
+        _save_local_cache(data)
+        # Also backfill next 90 days in background
+        _generate_next_days_background()
         return data
 
     return None
