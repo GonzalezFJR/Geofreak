@@ -36,7 +36,7 @@
                 </thead>
                 <tbody>
                 {% for u in users %}
-                    <tr class="{{ 'disabled-row' if u.status == 'disabled' }}">
+                    <tr class="{{ 'disabled-row' if u.status == 'disabled' }}" data-user-id="{{ u.user_id }}">
                         <td class="username-cell">
                             <strong>{{ u.username }}</strong>
                             <span class="user-id-hint">{{ u.user_id[:8] }}…</span>
@@ -77,4 +77,142 @@
         {% endif %}
     </div>
 </div>
+
+<!-- User detail modal -->
+<div id="user-modal-overlay" class="user-modal-overlay" style="display:none" role="dialog" aria-modal="true">
+    <div class="user-modal">
+        <button class="user-modal-close" id="user-modal-close" aria-label="Cerrar">&times;</button>
+        <div class="user-modal-header">
+            <div class="um-avatar">
+                <img id="um-avatar-img" src="" alt=""
+                     onerror="this.style.display='none'; document.getElementById('um-avatar-initials').style.display='flex'">
+                <div id="um-avatar-initials" class="um-avatar-initials" style="display:none"></div>
+            </div>
+            <div>
+                <h2 id="um-username">…</h2>
+                <p id="um-email" class="um-email"></p>
+                <div id="um-badges" class="um-badges"></div>
+            </div>
+        </div>
+        <div class="user-modal-body">
+            <div class="um-section">
+                <h3>Cuenta</h3>
+                <div class="um-grid">
+                    <div class="um-item"><span class="um-label">Plan</span><span id="um-plan"></span></div>
+                    <div class="um-item"><span class="um-label">País</span><span id="um-country"></span></div>
+                    <div class="um-item"><span class="um-label">Idioma</span><span id="um-language"></span></div>
+                    <div class="um-item"><span class="um-label">Registro</span><span id="um-created"></span></div>
+                    <div class="um-item"><span class="um-label">Última conexión</span><span id="um-last-login"></span></div>
+                    <div class="um-item"><span class="um-label">Última actividad</span><span id="um-last-activity"></span></div>
+                </div>
+            </div>
+            <div class="um-section">
+                <h3>Estadísticas</h3>
+                <div class="um-stats">
+                    <div class="um-stat"><div id="um-matches" class="um-stat-val">—</div><div class="um-stat-lbl">Partidas</div></div>
+                    <div class="um-stat"><div id="um-wins" class="um-stat-val">—</div><div class="um-stat-lbl">Victorias</div></div>
+                    <div class="um-stat"><div id="um-rating" class="um-stat-val">—</div><div class="um-stat-lbl">Rating</div></div>
+                    <div class="um-stat"><div id="um-streak" class="um-stat-val">—</div><div class="um-stat-lbl">Racha</div></div>
+                </div>
+            </div>
+            <div class="um-section">
+                <h3>Ranking global (top 50)</h3>
+                <div class="um-grid">
+                    <div class="um-item"><span class="um-label">Por rating</span><span id="um-rank-rating"></span></div>
+                    <div class="um-item"><span class="um-label">Por partidas</span><span id="um-rank-matches"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    const overlay = document.getElementById('user-modal-overlay');
+
+    // Double-click on any row to open modal
+    document.querySelectorAll('.users-table tbody tr').forEach(function (row) {
+        row.addEventListener('dblclick', function (e) {
+            // Avoid triggering when clicking on form buttons
+            if (e.target.closest('form')) return;
+            const uid = this.dataset.userId;
+            if (uid) openUserModal(uid);
+        });
+    });
+
+    document.getElementById('user-modal-close').addEventListener('click', closeModal);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+
+    function closeModal() { overlay.style.display = 'none'; }
+
+    async function openUserModal(userId) {
+        // Reset state
+        document.getElementById('um-username').textContent = '…';
+        document.getElementById('um-email').textContent = '';
+        document.getElementById('um-badges').innerHTML = '';
+        ['um-plan','um-country','um-language','um-created','um-last-login','um-last-activity',
+         'um-matches','um-wins','um-rating','um-streak','um-rank-rating','um-rank-matches']
+            .forEach(function (id) { document.getElementById(id).textContent = '—'; });
+
+        // Show avatar placeholder
+        const avatarImg = document.getElementById('um-avatar-img');
+        const avatarInitials = document.getElementById('um-avatar-initials');
+        avatarImg.style.display = '';
+        avatarImg.src = '/avatar/' + userId;
+        avatarInitials.style.display = 'none';
+
+        overlay.style.display = 'flex';
+
+        try {
+            const resp = await fetch('/admin/users/' + userId + '/details');
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            const data = await resp.json();
+            fillModal(data, userId);
+        } catch (err) {
+            document.getElementById('um-username').textContent = 'Error al cargar';
+        }
+    }
+
+    function fillModal(data, userId) {
+        const u = data.user;
+        const s = data.stats;
+        const r = data.rankings;
+
+        // Avatar initials fallback
+        const initials = document.getElementById('um-avatar-initials');
+        initials.textContent = u.username ? u.username[0].toUpperCase() : '?';
+
+        document.getElementById('um-username').textContent = u.username || '—';
+        document.getElementById('um-email').textContent = u.email || '—';
+
+        // Badges
+        const badges = document.getElementById('um-badges');
+        badges.innerHTML = '';
+        const verBadge = u.email_verified
+            ? '<span class="um-badge um-badge-ok">✓ Verificado</span>'
+            : '<span class="um-badge um-badge-warn">✗ Sin verificar</span>';
+        const statusBadge = '<span class="um-badge um-badge-' + (u.status || 'active') + '">' + (u.status || 'active') + '</span>';
+        badges.innerHTML = verBadge + statusBadge;
+
+        // Account info
+        document.getElementById('um-plan').textContent = u.plan || 'free';
+        document.getElementById('um-country').textContent = u.country || '—';
+        document.getElementById('um-language').textContent = u.language || '—';
+        document.getElementById('um-created').textContent = u.created_at ? u.created_at.slice(0, 10) : '—';
+        document.getElementById('um-last-login').textContent = u.last_login ? u.last_login.slice(0, 10) : '—';
+        document.getElementById('um-last-activity').textContent = s.updated_at ? s.updated_at.slice(0, 10) : '—';
+
+        // Stats
+        document.getElementById('um-matches').textContent = s.total_matches != null ? s.total_matches : '—';
+        document.getElementById('um-wins').textContent = s.total_wins != null ? s.total_wins : '—';
+        document.getElementById('um-rating').textContent = s.rating != null ? s.rating : '—';
+        document.getElementById('um-streak').textContent = s.best_streak != null ? s.best_streak : '—';
+
+        // Rankings
+        document.getElementById('um-rank-rating').textContent = r.rating ? '#' + r.rating : 'Top 50+';
+        document.getElementById('um-rank-matches').textContent = r.total_matches ? '#' + r.total_matches : 'Top 50+';
+    }
+}());
+</script>
 {% endblock %}

@@ -1,9 +1,10 @@
 """Auth routes — register, login, logout, me, email confirm, password reset."""
 
 import re
+from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Form, status
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi import APIRouter, Depends, File, HTTPException, Request, Form, UploadFile, status
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
 
 from core.auth import get_current_user, get_optional_user
 from core.config import get_settings
@@ -144,6 +145,7 @@ async def login(
         )
 
     track("session_started", {"user_id": user["user_id"]})
+    update_user(user["user_id"], {"last_login": datetime.now(timezone.utc).isoformat()})
     response = RedirectResponse("/profile", status_code=303)
     _set_auth_cookies(response, user["user_id"])
     return response
@@ -316,6 +318,35 @@ async def confirm_email_change(request: Request, token: str = ""):
         "title": "auth.email_changed_title",
         "message": "auth.email_changed",
     })
+
+
+# ── Avatar ───────────────────────────────────────────────────────────────────
+
+@router.get("/avatar/{user_id}")
+async def serve_avatar(user_id: str):
+    """Serve a user's profile picture from S3 (no auth required)."""
+    from services.avatars import get_avatar_stream
+    user = get_user_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=404)
+    stream = get_avatar_stream(user["email"])
+    if not stream:
+        raise HTTPException(status_code=404)
+    return StreamingResponse(stream, media_type="image/jpeg", headers={"Cache-Control": "public, max-age=86400"})
+
+
+@router.post("/profile/avatar")
+async def upload_avatar(
+    request: Request,
+    file: UploadFile = File(...),
+    user=Depends(get_current_user),
+):
+    """Receive a cropped image, resize if needed, store in S3."""
+    from services.avatars import upload_avatar as _upload
+    data = await file.read()
+    _upload(user["email"], data)
+    update_user(user["user_id"], {"has_avatar": True})
+    return JSONResponse({"ok": True})
 
 
 # ── API (JSON) ───────────────────────────────────────────────────────────────

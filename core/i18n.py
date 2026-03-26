@@ -378,6 +378,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.date": "Fecha",
         "prof.friends_count": "Amigos",
         "prof.see_friends": "Ver amigos",
+        "prof.avatar_change": "Cambiar foto",
+        "prof.avatar_crop_title": "Recorta tu foto de perfil",
+        "prof.avatar_crop_hint": "Ajusta el recuadro cuadrado y pulsa Guardar.",
+        "prof.avatar_save": "Guardar foto",
+        "prof.avatar_cancel": "Cancelar",
+        "prof.avatar_ok": "Foto de perfil actualizada.",
+        "prof.avatar_error": "Error al subir la foto. Inténtalo de nuevo.",
 
         # Duels
         "duel.lobby_title": "⚔️ Duelos",
@@ -871,6 +878,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.date": "Date",
         "prof.friends_count": "Friends",
         "prof.see_friends": "See friends",
+        "prof.avatar_change": "Change photo",
+        "prof.avatar_crop_title": "Crop your profile photo",
+        "prof.avatar_crop_hint": "Adjust the square frame and click Save.",
+        "prof.avatar_save": "Save photo",
+        "prof.avatar_cancel": "Cancel",
+        "prof.avatar_ok": "Profile photo updated.",
+        "prof.avatar_error": "Error uploading photo. Please try again.",
 
         # Duels
         "duel.lobby_title": "⚔️ Duels",
@@ -1221,6 +1235,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.date": "Date",
         "prof.friends_count": "Amis",
         "prof.see_friends": "Voir les amis",
+        "prof.avatar_change": "Changer la photo",
+        "prof.avatar_crop_title": "Recadrer votre photo de profil",
+        "prof.avatar_crop_hint": "Ajustez le cadre carré et cliquez sur Enregistrer.",
+        "prof.avatar_save": "Enregistrer la photo",
+        "prof.avatar_cancel": "Annuler",
+        "prof.avatar_ok": "Photo de profil mise à jour.",
+        "prof.avatar_error": "Erreur lors de l'envoi. Réessayez.",
 
         # Admin
         "adm.login_h": "🔐 Accès administrateur",
@@ -1711,6 +1732,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.date": "Data",
         "prof.friends_count": "Amici",
         "prof.see_friends": "Vedi amici",
+        "prof.avatar_change": "Cambia foto",
+        "prof.avatar_crop_title": "Ritaglia la tua foto profilo",
+        "prof.avatar_crop_hint": "Regola il riquadro quadrato e clicca Salva.",
+        "prof.avatar_save": "Salva foto",
+        "prof.avatar_cancel": "Annulla",
+        "prof.avatar_ok": "Foto profilo aggiornata.",
+        "prof.avatar_error": "Errore durante il caricamento. Riprova.",
 
         # Admin (kept mostly in English for admin)
         "adm.login_h": "🔐 Accesso amministratore",
@@ -2201,6 +2229,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.date": "Дата",
         "prof.friends_count": "Друзья",
         "prof.see_friends": "Смотреть друзей",
+        "prof.avatar_change": "Изменить фото",
+        "prof.avatar_crop_title": "Обрезать фото профиля",
+        "prof.avatar_crop_hint": "Настройте квадратную рамку и нажмите Сохранить.",
+        "prof.avatar_save": "Сохранить фото",
+        "prof.avatar_cancel": "Отмена",
+        "prof.avatar_ok": "Фото профиля обновлено.",
+        "prof.avatar_error": "Ошибка загрузки. Попробуйте снова.",
 
         # Admin
         "adm.login_h": "🔐 Доступ администратора",

@@ -1,12 +1,31 @@
 {% extends "pages/_base_page.html" %}
 
+{% block page_head %}
+<link rel="stylesheet" href="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.css">
+{% endblock %}
+
 {% block title %}{{ t('prof.title', lang) }} — {{ user.username }} — GeoFreak{% endblock %}
 
 {% block content %}
 <div class="profile-page">
     <!-- Header -->
     <div class="profile-header">
-        <div class="profile-avatar">{{ user.username[0]|upper }}</div>
+        <div class="profile-avatar-wrap">
+            {% if user.get('has_avatar') %}
+            <img id="avatar-img" src="/avatar/{{ user.user_id }}" class="profile-avatar-img" alt="{{ user.username }}"
+                 onerror="this.style.display='none'; document.getElementById('avatar-initials').style.display='flex'">
+            <div id="avatar-initials" class="profile-avatar" style="display:none">{{ user.username[0]|upper }}</div>
+            {% else %}
+            <div id="avatar-initials" class="profile-avatar">{{ user.username[0]|upper }}</div>
+            {% endif %}
+            <label for="avatar-input" class="avatar-change-btn" title="{{ t('prof.avatar_change', lang) }}">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+            </label>
+            <input type="file" id="avatar-input" accept="image/*" style="display:none">
+        </div>
         <div class="profile-info">
             <h1>{{ user.username }}</h1>
             <p>{{ user.email }} · {{ t('prof.since', lang) }} {{ user.created_at[:10] }}</p>
@@ -128,4 +147,98 @@
         <a href="/logout" class="prof-btn-outline">{{ t('prof.logout', lang) }}</a>
     </div>
 </div>
+
+<!-- Crop modal -->
+<div id="crop-modal" class="crop-modal-overlay" style="display:none" role="dialog" aria-modal="true">
+    <div class="crop-modal">
+        <h3>{{ t('prof.avatar_crop_title', lang) }}</h3>
+        <p class="crop-hint">{{ t('prof.avatar_crop_hint', lang) }}</p>
+        <div class="crop-container">
+            <img id="crop-img" src="" alt="crop">
+        </div>
+        <div class="crop-actions">
+            <button id="crop-cancel" class="prof-btn-outline" type="button">{{ t('prof.avatar_cancel', lang) }}</button>
+            <button id="crop-save" class="btn-accent" type="button">{{ t('prof.avatar_save', lang) }}</button>
+        </div>
+        <div id="avatar-status" class="avatar-status"></div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.js"></script>
+<script>
+(function () {
+    const input = document.getElementById('avatar-input');
+    const cropModal = document.getElementById('crop-modal');
+    const cropImg = document.getElementById('crop-img');
+    const cancelBtn = document.getElementById('crop-cancel');
+    const saveBtn = document.getElementById('crop-save');
+    const statusEl = document.getElementById('avatar-status');
+    const saveLbl = saveBtn.textContent;
+    let cropper = null;
+
+    input.addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+            cropImg.src = ev.target.result;
+            cropModal.style.display = 'flex';
+            if (cropper) { cropper.destroy(); cropper = null; }
+            cropper = new Cropper(cropImg, {
+                aspectRatio: 1,
+                viewMode: 1,
+                autoCropArea: 1,
+                movable: true,
+                zoomable: true,
+                rotatable: false,
+            });
+        };
+        reader.readAsDataURL(file);
+        this.value = '';
+    });
+
+    cancelBtn.addEventListener('click', function () {
+        closeCropModal();
+    });
+
+    cropModal.addEventListener('click', function (e) {
+        if (e.target === cropModal) closeCropModal();
+    });
+
+    saveBtn.addEventListener('click', function () {
+        if (!cropper) return;
+        saveBtn.disabled = true;
+        saveBtn.textContent = '…';
+        statusEl.textContent = '';
+
+        const canvas = cropper.getCroppedCanvas({ width: 1024, height: 1024, maxWidth: 1024, maxHeight: 1024 });
+        canvas.toBlob(async function (blob) {
+            const fd = new FormData();
+            fd.append('file', blob, 'avatar.jpg');
+            try {
+                const resp = await fetch('/profile/avatar', { method: 'POST', body: fd });
+                if (resp.ok) {
+                    window.location.reload();
+                } else {
+                    statusEl.textContent = '{{ t("prof.avatar_error", lang) }}';
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = saveLbl;
+                }
+            } catch (_) {
+                statusEl.textContent = '{{ t("prof.avatar_error", lang) }}';
+                saveBtn.disabled = false;
+                saveBtn.textContent = saveLbl;
+            }
+        }, 'image/jpeg', 0.85);
+    });
+
+    function closeCropModal() {
+        cropModal.style.display = 'none';
+        if (cropper) { cropper.destroy(); cropper = null; }
+        statusEl.textContent = '';
+        saveBtn.disabled = false;
+        saveBtn.textContent = saveLbl;
+    }
+}());
+</script>
 {% endblock %}

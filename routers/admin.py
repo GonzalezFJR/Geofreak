@@ -153,6 +153,63 @@ async def admin_delete_user(request: Request, user_id: str):
     return RedirectResponse("/admin/users", status_code=303)
 
 
+@router.get("/users/{user_id}/details")
+async def admin_user_details(request: Request, user_id: str):
+    _require_auth(request)
+    from decimal import Decimal
+    from core.aws import get_dynamodb_resource
+    from services.user_stats import get_user_stats
+    from services.leaderboards import get_user_position
+
+    settings = get_settings()
+    table = get_dynamodb_resource().Table(settings.table_name("users"))
+    resp = table.get_item(Key={"user_id": user_id})
+    user = resp.get("Item", {})
+    user.pop("password_hash", None)
+
+    stats = get_user_stats(user_id) or {}
+    stats.pop("user_id", None)
+    stats.pop("stats_by_game", None)
+    stats.pop("best_scores", None)
+    stats.pop("best_times", None)
+    stats.pop("recent_matches", None)
+
+    def _conv(o):
+        if isinstance(o, Decimal):
+            return int(o)
+        if isinstance(o, dict):
+            return {k: _conv(v) for k, v in o.items()}
+        if isinstance(o, list):
+            return [_conv(i) for i in o]
+        return o
+
+    user = _conv(user)
+    stats = _conv(stats)
+
+    try:
+        rank_rating = get_user_position(user_id, "global", "all", "rating")
+        rank_matches = get_user_position(user_id, "global", "all", "total_matches")
+    except Exception:
+        rank_rating = None
+        rank_matches = None
+
+    return JSONResponse({
+        "user": user,
+        "stats": {
+            "total_matches": stats.get("total_matches", 0),
+            "total_wins": stats.get("total_wins", 0),
+            "total_losses": stats.get("total_losses", 0),
+            "rating": stats.get("rating", 1000),
+            "best_streak": stats.get("best_streak", 0),
+            "updated_at": stats.get("updated_at", ""),
+        },
+        "rankings": {
+            "rating": rank_rating,
+            "total_matches": rank_matches,
+        },
+    })
+
+
 # ── Analytics ────────────────────────────────────────────────────────────────
 
 @router.get("/analytics", response_class=HTMLResponse)
