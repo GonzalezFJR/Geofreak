@@ -377,6 +377,7 @@ var GeoStatsGame = (function () {
         document.getElementById('geostats-input').disabled = true;
         document.getElementById('btn-guess').style.display = 'none';
         document.getElementById('btn-gs-next').style.display = '';
+        GeoReview.snapshot();
     }
 
     function next() {

@@ -45,6 +45,9 @@ class Settings(BaseSettings):
     smtp_user: str = ""
     smtp_password: str = ""
     smtp_from: str = ""
+    smtp_from_name: str = "GeoFreak"
+    smtp_starttls: bool = True
+    smtp_ssl: bool = False
     mail_to: str = ""
 
     # Public URL (for email links)

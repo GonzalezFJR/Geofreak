@@ -269,6 +269,8 @@ var OrderingGame = (function () {
         document.getElementById('btn-confirm').style.display = 'none';
         var nextBtn = document.getElementById('btn-next');
         if (nextBtn) nextBtn.style.display = '';
+
+        GeoReview.snapshot();
     }
 
     function nextQuestion() {

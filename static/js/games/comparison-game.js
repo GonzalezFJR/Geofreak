@@ -159,6 +159,8 @@ var ComparisonGame = (function () {
             isCorrect ? (T['cmp.correct'] || '✅ Correct!') : (T['cmp.wrong'] || '❌ Wrong')
         );
 
+        GeoReview.snapshot();
+
         setTimeout(function () {
             currentIdx++;
             showQuestion();

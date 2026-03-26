@@ -104,6 +104,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.others": "🎮 Otros juegos",
         "game.share_text": "He sacado {score}/{total} en GeoFreak — {game}",
         "game.share_title": "🌍 GeoFreak",
+        "review.results": "📊 Resultados",
         "game.nquestions": "Número de preguntas",
         "game.difficulty": "Dificultad",
         "game.diff_easy": "Fácil",
@@ -595,6 +596,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.others": "🎮 Other games",
         "game.share_text": "I got {score}/{total} on GeoFreak — {game}",
         "game.share_title": "🌍 GeoFreak",
+        "review.results": "📊 Results",
         "game.nquestions": "Number of questions",
         "game.difficulty": "Difficulty",
         "game.diff_easy": "Easy",
@@ -1087,6 +1089,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.others": "🎮 Autres jeux",
         "game.share_text": "J'ai obtenu {score}/{total} sur GeoFreak — {game}",
         "game.share_title": "🌍 GeoFreak",
+        "review.results": "📊 Résultats",
         "game.nquestions": "Nombre de questions",
         "game.difficulty": "Difficulté",
         "game.diff_easy": "Facile",
@@ -1573,6 +1576,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.others": "🎮 Altri giochi",
         "game.share_text": "Ho ottenuto {score}/{total} su GeoFreak — {game}",
         "game.share_title": "🌍 GeoFreak",
+        "review.results": "📊 Risultati",
         "game.nquestions": "Numero di domande",
         "game.difficulty": "Difficoltà",
         "game.diff_easy": "Facile",
@@ -2060,6 +2064,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.others": "🎮 Другие игры",
         "game.share_text": "Я набрал {score}/{total} в GeoFreak — {game}",
         "game.share_title": "🌍 GeoFreak",
+        "review.results": "📊 Результаты",
         "game.nquestions": "Количество вопросов",
         "game.difficulty": "Сложность",
         "game.diff_easy": "Легко",
@@ -2473,6 +2478,8 @@ _JS_KEYS = [
     "daily.share_title", "daily.share_text", "daily.hits", "daily.view_stats",
     "game.time", "game.others", "game.replay",
     "game.share_text", "game.share_title",
+    # Review navigation
+    "review.results",
     # Map game
     "mg.what_country", "mg.what_capital",
     # Map viewer

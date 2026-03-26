@@ -816,12 +816,142 @@ var GeoResults = (function () {
     return { build: build, buildDaily: buildDaily, share: share, copy: copy, starsText: starsText, fmtTime: fmtTime };
 })();
 
-/* ── Escape key to close results overlay ─────────────────── */
+/* ============================================================
+   GeoReview — Post-game question review navigation
+   After closing the results modal, the player can navigate
+   through all answered questions using ← → arrows.
+   ============================================================ */
+var GeoReview = (function () {
+    var _snapshots = [];
+    var _reviewIdx = -1;
+    var _active = false;
+    var _nav = null;
+
+    /** Capture the current #game-area state as a reviewable snapshot. */
+    function snapshot() {
+        var area = document.getElementById('game-area');
+        if (!area) return;
+        var clone = area.cloneNode(true);
+        // Convert canvases to static images so they survive innerHTML restore
+        var origCanvases = area.querySelectorAll('canvas');
+        var cloneCanvases = clone.querySelectorAll('canvas');
+        for (var i = 0; i < origCanvases.length; i++) {
+            try {
+                var img = document.createElement('img');
+                img.src = origCanvases[i].toDataURL();
+                img.style.width = '100%';
+                img.style.maxHeight = (origCanvases[i].parentElement
+                    ? origCanvases[i].parentElement.clientHeight : 300) + 'px';
+                img.className = origCanvases[i].className;
+                cloneCanvases[i].parentNode.replaceChild(img, cloneCanvases[i]);
+            } catch (e) { /* cross-origin canvas — skip */ }
+        }
+        _snapshots.push(clone.innerHTML);
+    }
+
+    /** Activate review mode — called when the results overlay is dismissed. */
+    function activate() {
+        if (_snapshots.length === 0) return;
+        _active = true;
+        _reviewIdx = _snapshots.length - 1;
+        _showNav();
+        _updateNav();
+        _restoreSnapshot();
+    }
+
+    function deactivate() {
+        _active = false;
+        _hideNav();
+    }
+
+    function isActive() { return _active; }
+
+    /** Navigate by delta (-1 = prev, +1 = next). */
+    function navigate(delta) {
+        if (!_active) return;
+        var newIdx = _reviewIdx + delta;
+        if (newIdx < 0) return;
+        if (newIdx >= _snapshots.length) {
+            // Past the last question → re-open results
+            showResults();
+            return;
+        }
+        _reviewIdx = newIdx;
+        _restoreSnapshot();
+        _updateNav();
+    }
+
+    function _restoreSnapshot() {
+        var area = document.getElementById('game-area');
+        if (area) area.innerHTML = _snapshots[_reviewIdx];
+    }
+
+    function _showNav() {
+        if (_nav) { _nav.style.display = 'flex'; return; }
+        _nav = document.createElement('div');
+        _nav.className = 'review-nav';
+        _nav.id = 'review-nav';
+        _nav.innerHTML =
+            '<button class="review-nav-arrow" id="review-prev" onclick="GeoReview.navigate(-1)">&#8249;</button>' +
+            '<span class="review-nav-counter" id="review-counter"></span>' +
+            '<button class="review-nav-arrow" id="review-next" onclick="GeoReview.navigate(1)">&#8250;</button>' +
+            '<button class="review-nav-results" onclick="GeoReview.showResults()">' +
+                (T['review.results'] || '📊') +
+            '</button>';
+        document.body.appendChild(_nav);
+    }
+
+    function _hideNav() {
+        if (_nav) _nav.style.display = 'none';
+    }
+
+    function _updateNav() {
+        var counter = document.getElementById('review-counter');
+        if (counter) counter.textContent = (_reviewIdx + 1) + ' / ' + _snapshots.length;
+        var prev = document.getElementById('review-prev');
+        if (prev) prev.disabled = (_reviewIdx <= 0);
+    }
+
+    /** Re-open the results overlay and exit review mode. */
+    function showResults() {
+        document.getElementById('results-overlay').style.display = 'flex';
+        deactivate();
+    }
+
+    /** Reset all state (for a new game / page reload). */
+    function reset() {
+        _snapshots = [];
+        _reviewIdx = -1;
+        _active = false;
+        if (_nav) { _nav.remove(); _nav = null; }
+    }
+
+    return {
+        snapshot: snapshot,
+        activate: activate,
+        deactivate: deactivate,
+        isActive: isActive,
+        navigate: navigate,
+        showResults: showResults,
+        reset: reset
+    };
+})();
+
+/* ── Keyboard: Escape to toggle results, Arrows to review ── */
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
-        var overlay = document.getElementById('results-overlay');
-        if (overlay && overlay.style.display !== 'none') {
-            overlay.style.display = 'none';
+        if (GeoReview.isActive()) {
+            GeoReview.showResults();
+        } else {
+            var overlay = document.getElementById('results-overlay');
+            if (overlay && overlay.style.display !== 'none') {
+                overlay.style.display = 'none';
+                GeoReview.activate();
+            }
         }
+    }
+    if (GeoReview.isActive()) {
+        if (e.key === 'ArrowLeft')  { e.preventDefault(); GeoReview.navigate(-1); }
+        if (e.key === 'ArrowRight') { e.preventDefault(); GeoReview.navigate(1); }
     }
 });

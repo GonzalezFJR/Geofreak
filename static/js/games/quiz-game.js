@@ -80,6 +80,7 @@ var QuizGame = (function () {
             GeoGame.addCorrect();
             input.className = 'correct';
             showFeedback('correct', (T['js.correct_name'] || '✅ Correct! {name}').replace('{name}', GeoUtils.getLocalName(country)));
+            GeoReview.snapshot();
             setTimeout(function () { currentIdx++; showNext(); }, 800);
         } else {
             input.className = 'wrong';
@@ -92,6 +93,7 @@ var QuizGame = (function () {
     function skip() {
         var country = queue[currentIdx];
         showFeedback('skipped', (T['js.skipped'] || '⏭️ It was: {name}').replace('{name}', GeoUtils.getLocalName(country)));
+        GeoReview.snapshot();
         setTimeout(function () { currentIdx++; showNext(); }, 1200);
     }
 
@@ -102,6 +104,7 @@ var QuizGame = (function () {
         input.value = localName;
         input.className = 'wrong';
         showFeedback('wrong', (T['js.revealed'] || '👁️ {name}').replace('{name}', localName));
+        GeoReview.snapshot();
         // Count as seen but NOT correct (it's a fail)
         setTimeout(function () { currentIdx++; showNext(); }, 1500);
     }

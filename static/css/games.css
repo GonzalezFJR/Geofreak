@@ -942,6 +942,76 @@
     text-decoration: underline;
 }
 
+/* ─── Review Navigation Bar ────────────────────────────────── */
+.review-nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 50px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1500;
+    animation: slideUp 0.3s ease;
+}
+
+.review-nav-arrow {
+    width: 38px;
+    height: 38px;
+    border: none;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+}
+
+.review-nav-arrow:hover:not(:disabled) {
+    background: var(--primary-color);
+    color: white;
+}
+
+.review-nav-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.review-nav-counter {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    min-width: 56px;
+    text-align: center;
+}
+
+.review-nav-results {
+    border: none;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-size: 1rem;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-left: 4px;
+}
+
+.review-nav-results:hover {
+    background: var(--gray-200);
+}
+
 /* ─── Games Dashboard ──────────────────────────────────────── */
 .games-dashboard {
     padding-top: 100px;
@@ -1364,6 +1434,12 @@
     .daily-stars svg { width: 24px; height: 24px; }
     .btn-daily-register { padding: 14px 28px; font-size: 0.95rem; width: 100%; }
     .btn-daily-stats { width: 100%; justify-content: center; }
+
+    /* Review nav on mobile */
+    .review-nav { bottom: 12px; padding: 6px 12px; gap: 8px; }
+    .review-nav-arrow { width: 34px; height: 34px; font-size: 1.3rem; }
+    .review-nav-counter { font-size: 0.85rem; min-width: 48px; }
+    .review-nav-results { padding: 6px 10px; font-size: 0.9rem; }
 
     /* Dashboard */
     .games-dashboard { padding-top: 64px; padding-bottom: 30px; }
