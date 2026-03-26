@@ -140,6 +140,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.ph_capital": "Nombre de la capital…",
         "mg.ph_type_country": "Escribe el nombre de un país…",
         "mg.ph_type_capital": "Escribe el nombre de una capital…",
+        "mg.sel_target": "Identidad",
+        "mg.target_country": "Países",
+        "mg.target_capital": "Capitales",
+        "mg.sel_mode": "Modo",
+        "mg.mode_name": "Nombrar",
+        "mg.mode_locate": "Situar",
 
         # Ordering
         "ord.question": "Pregunta",
@@ -644,6 +650,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.ph_capital": "Capital name…",
         "mg.ph_type_country": "Type a country name…",
         "mg.ph_type_capital": "Type a capital name…",
+        "mg.sel_target": "Target",
+        "mg.target_country": "Countries",
+        "mg.target_capital": "Capitals",
+        "mg.sel_mode": "Mode",
+        "mg.mode_name": "Name",
+        "mg.mode_locate": "Locate",
 
         # Ordering
         "ord.question": "Question",
@@ -1149,6 +1161,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.ph_capital": "Nom de la capitale…",
         "mg.ph_type_country": "Tapez le nom d'un pays…",
         "mg.ph_type_capital": "Tapez le nom d'une capitale…",
+        "mg.sel_target": "Entité",
+        "mg.target_country": "Pays",
+        "mg.target_capital": "Capitales",
+        "mg.sel_mode": "Mode",
+        "mg.mode_name": "Nommer",
+        "mg.mode_locate": "Situer",
 
         # Ordering
         "ord.question": "Question",
@@ -1648,6 +1666,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.ph_capital": "Nome della capitale…",
         "mg.ph_type_country": "Scrivi il nome di un paese…",
         "mg.ph_type_capital": "Scrivi il nome di una capitale…",
+        "mg.sel_target": "Entità",
+        "mg.target_country": "Paesi",
+        "mg.target_capital": "Capitali",
+        "mg.sel_mode": "Modalità",
+        "mg.mode_name": "Nominare",
+        "mg.mode_locate": "Localizzare",
 
         # Ordering
         "ord.question": "Domanda",
@@ -2148,6 +2172,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.ph_capital": "Название столицы…",
         "mg.ph_type_country": "Введите название страны…",
         "mg.ph_type_capital": "Введите название столицы…",
+        "mg.sel_target": "Тип",
+        "mg.target_country": "Страны",
+        "mg.target_capital": "Столицы",
+        "mg.sel_mode": "Режим",
+        "mg.mode_name": "Назвать",
+        "mg.mode_locate": "Найти",
 
         # Ordering
         "ord.question": "Вопрос",
@@ -2542,6 +2572,8 @@ _JS_KEYS = [
     "review.results",
     # Map game
     "mg.what_country", "mg.what_capital",
+    "mg.ph_country", "mg.ph_capital",
+    "mg.ph_type_country", "mg.ph_type_capital",
     # Map viewer
     "mapjs.layer_flat", "mapjs.layer_standard", "mapjs.layer_satellite",
     "mapjs.layer_dark", "mapjs.capitals", "mapjs.megacities",

@@ -14,6 +14,8 @@
             <h2>{{ game_field(game, 'name', lang) }}</h2>
             <p class="game-settings-desc">{{ game_field(game, 'description', lang) }}</p>
 
+            {% block extra_settings %}{% endblock %}
+
             {% if not game.daily %}
             {% if game.type == 'solo' and game.has_difficulty|default(true) %}
             <!-- Difficulty selector (inline dropdown) -->

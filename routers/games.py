@@ -17,21 +17,13 @@ games_service = GamesService()
 TEMPLATE_MAP = {
     "flags": "games/flags.html",
     "outline": "games/outline.html",
-    "name-countries-map": "games/map_game.html",
-    "name-countries-type": "games/map_game.html",
-    "name-capitals-map": "games/map_game.html",
-    "name-capitals-type": "games/map_game.html",
+    "map-challenge": "games/map_game.html",
     "ordering": "games/ordering.html",
     "comparison": "games/comparison.html",
     "geostats": "games/geostats.html",
 }
 
-MAP_GAME_CONFIG = {
-    "name-countries-map":  {"map_mode": "click", "map_target": "country"},
-    "name-countries-type": {"map_mode": "type",  "map_target": "country"},
-    "name-capitals-map":   {"map_mode": "click", "map_target": "capital"},
-    "name-capitals-type":  {"map_mode": "type",  "map_target": "capital"},
-}
+MAP_GAME_CONFIG: dict = {}
 
 
 @router.get("/daily", response_class=HTMLResponse)

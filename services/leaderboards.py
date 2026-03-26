@@ -21,8 +21,7 @@ LEADERBOARD_TYPES = [
 # Per-game leaderboards are generated dynamically for each game_type
 GAME_TYPES = [
     "flags", "outline",
-    "name-countries-map", "name-countries-type",
-    "name-capitals-map", "name-capitals-type",
+    "map-challenge",
     "ordering", "comparison",
 ]
 

@@ -1,21 +1,57 @@
 {% extends "games/_base_game.html" %}
 
+{% block extra_settings %}
+<!-- Target selector -->
+<div class="game-setting-group">
+    <label class="game-setting-label">{{ t('mg.sel_target', lang) }}</label>
+    <div class="seg-buttons" id="target-selector">
+        <button type="button" class="seg-btn active" data-value="country">{{ t('mg.target_country', lang) }}</button>
+        <button type="button" class="seg-btn" data-value="capital">{{ t('mg.target_capital', lang) }}</button>
+        <input type="hidden" id="map-target-value" value="country">
+    </div>
+</div>
+<!-- Mode selector -->
+<div class="game-setting-group">
+    <label class="game-setting-label">{{ t('mg.sel_mode', lang) }}</label>
+    <div class="seg-buttons" id="mode-selector">
+        <button type="button" class="seg-btn active" data-value="type">{{ t('mg.mode_name', lang) }}</button>
+        <button type="button" class="seg-btn" data-value="click">{{ t('mg.mode_locate', lang) }}</button>
+        <input type="hidden" id="map-mode-value" value="type">
+    </div>
+</div>
+<script>
+(function () {
+    ['target-selector', 'mode-selector'].forEach(function (groupId) {
+        var group = document.getElementById(groupId);
+        if (!group) return;
+        var hidden = group.querySelector('input[type=hidden]');
+        group.querySelectorAll('.seg-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                group.querySelectorAll('.seg-btn').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                hidden.value = btn.getAttribute('data-value');
+            });
+        });
+    });
+}());
+</script>
+{% endblock %}
+
 {% block game_area %}
 <div class="map-game-container">
-    {% if map_mode == 'click' %}
+    <!-- Click/locate mode prompt (shown when mode=click) -->
     <div class="map-game-prompt" id="game-prompt" style="display:none">
         <span class="prompt-country" id="prompt-country"></span>
-        <span class="prompt-label" id="prompt-text">{{ t('mg.what_' ~ map_target, lang) }}</span>
-        <input type="text" id="answer-input" placeholder="{{ t('mg.ph_' ~ map_target, lang) }}" autocomplete="off">
+        <span class="prompt-label" id="prompt-text"></span>
+        <input type="text" id="answer-input-locate" autocomplete="off" placeholder="">
         <button class="btn-reveal-map" onclick="MapGame.reveal()">👁️</button>
     </div>
-    {% else %}
-    <div class="map-game-input-bar" id="game-input-bar">
-        <input type="text" id="answer-input" placeholder="{{ t('mg.ph_type_' ~ map_target, lang) }}" autocomplete="off">
-        <button class="btn-reveal-map-bar" onclick="MapGame.reveal()">{{ t('quiz.reveal', lang) }}</button>
+    <!-- Type/name mode bar (shown when mode=type) -->
+    <div class="map-game-input-bar" id="game-input-bar" style="display:none">
+        <input type="text" id="answer-input-name" autocomplete="off" placeholder="">
+        <button class="btn-reveal-map-bar" id="btn-reveal-bar" onclick="MapGame.reveal()" disabled>{{ t('quiz.reveal', lang) }}</button>
         <div class="input-feedback" id="input-feedback"></div>
     </div>
-    {% endif %}
     <div id="game-map" class="game-map"></div>
 </div>
 {% endblock %}
@@ -23,6 +59,6 @@
 {% block game_scripts %}
 <script src="/static/js/games/map-game.js"></script>
 <script>
-    MapGame.init({ mode: '{{ map_mode }}', target: '{{ map_target }}' });
+    MapGame.init();
 </script>
 {% endblock %}

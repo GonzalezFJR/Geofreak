@@ -80,6 +80,29 @@
     box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
 }
 
+/* ─── Segment picker (target / mode selectors) ─────────────── */
+.seg-buttons {
+    display: flex;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+.seg-btn {
+    flex: 1;
+    padding: 5px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    background: var(--white);
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+.seg-btn + .seg-btn { border-left: 1.5px solid var(--gray-200); }
+.seg-btn.active { background: var(--blue-500); color: var(--white); }
+.seg-btn:not(.active):hover { background: var(--gray-100); }
+
 /* ─── Game setting groups (difficulty, countdown) ──────────── */
 .game-setting-group {
     display: flex;
@@ -201,7 +224,7 @@
 }
 
 .switch-toggle input:checked + .switch-slider {
-    background: var(--primary);
+    background: var(--blue-500);
 }
 
 .switch-toggle input:checked + .switch-slider::before {
