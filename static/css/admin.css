@@ -275,6 +275,18 @@
 .btn-success:hover {
     background: #c8e6c9;
 }
+.btn-delete {
+    background: #b71c1c;
+    color: #fff;
+}
+.btn-delete:hover {
+    background: #7f0000;
+}
+.actions-cell {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
 
 /* ── Dataset type badge ────────────────────────────────────────────────── */
 

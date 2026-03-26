@@ -145,6 +145,14 @@ async def admin_toggle_user_status(request: Request, user_id: str):
     return RedirectResponse("/admin/users", status_code=303)
 
 
+@router.post("/users/{user_id}/delete")
+async def admin_delete_user(request: Request, user_id: str):
+    _require_auth(request)
+    from services.users import delete_user
+    delete_user(user_id)
+    return RedirectResponse("/admin/users", status_code=303)
+
+
 # ── Analytics ────────────────────────────────────────────────────────────────
 
 @router.get("/analytics", response_class=HTMLResponse)

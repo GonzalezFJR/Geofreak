@@ -47,7 +47,7 @@
                         </td>
                         <td>{{ u.plan | default('free') }}</td>
                         <td class="ts">{{ u.created_at[:10] if u.created_at else '—' }}</td>
-                        <td>
+                        <td class="actions-cell">
                             <form method="post" action="/admin/users/{{ u.user_id }}/status" class="inline-form">
                                 {% if u.status == 'active' %}
                                 <input type="hidden" name="status" value="disabled">
@@ -60,6 +60,11 @@
                                     {{ t('adm.users_enable', lang) }}
                                 </button>
                                 {% endif %}
+                            </form>
+                            <form method="post" action="/admin/users/{{ u.user_id }}/delete" class="inline-form">
+                                <button type="submit" class="btn-sm btn-delete" onclick="return confirm('{{ t('adm.users_confirm_delete', lang) }}')">
+                                    {{ t('adm.users_delete', lang) }}
+                                </button>
                             </form>
                         </td>
                     </tr>

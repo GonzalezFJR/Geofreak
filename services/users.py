@@ -90,3 +90,10 @@ def update_user(user_id: str, updates: dict) -> Optional[dict]:
         ReturnValues="ALL_NEW",
     )
     return resp.get("Attributes")
+
+
+# ── Delete ───────────────────────────────────────────────────────────────────
+
+def delete_user(user_id: str) -> None:
+    """Permanently delete a user from the database."""
+    _table().delete_item(Key={"user_id": user_id})
