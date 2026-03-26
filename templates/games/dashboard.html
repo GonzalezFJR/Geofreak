@@ -11,8 +11,8 @@
         <p>{{ t('dash.subtitle', lang) }}</p>
     </div>
 
-    <!-- GeoFreak Games (Solo/Duel/Tournament type) -->
-    <h2 class="dashboard-category">{{ t('dash.cat_geofreak', lang) }}</h2>
+    <!-- GeoGames -->
+    <h2 class="dashboard-category">GeoGames</h2>
     <div class="games-grid">
         {% for game in games %}
         {% if game.enabled and game.type == 'solo' %}
@@ -26,11 +26,29 @@
         {% endfor %}
     </div>
 
-    <!-- Quiz Games -->
-    <h2 class="dashboard-category">{{ t('dash.cat_quiz', lang) }}</h2>
+    <!-- GeoQuiz -->
+    <h2 class="dashboard-category">GeoQuiz</h2>
+
+    <!-- Subcategory: Adivina cuál -->
+    <h3 class="dashboard-subcategory">{{ t('dash.subcat_adivina', lang) }}</h3>
     <div class="games-grid">
         {% for game in games %}
-        {% if game.enabled and game.type in ['quiz', 'map'] %}
+        {% if game.enabled and game.subcategory == 'adivina_cual' %}
+        <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
+            <div class="game-card-icon">{{ game.icon }}</div>
+            <h3>{{ game_field(game, 'name', lang) }}</h3>
+            <p>{{ game_field(game, 'description', lang) }}</p>
+            <div class="game-card-play">{{ t('dash.play', lang) }}</div>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Subcategory: Sobre el mapa -->
+    <h3 class="dashboard-subcategory">{{ t('dash.subcat_mapa', lang) }}</h3>
+    <div class="games-grid">
+        {% for game in games %}
+        {% if game.enabled and game.subcategory == 'sobre_el_mapa' %}
         <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
             <div class="game-card-icon">{{ game.icon }}</div>
             <h3>{{ game_field(game, 'name', lang) }}</h3>
