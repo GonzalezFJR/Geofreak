@@ -172,13 +172,16 @@ async def confirm_email(request: Request, token: str = ""):
             "message": "auth.confirm_fail",
         })
     user = get_user_by_id(payload["sub"])
-    if user:
-        update_user(user["user_id"], {"email_verified": True})
-    return templates.TemplateResponse("auth/message.html", {
-        "request": request, "lang": lang,
-        "title": "auth.confirm_ok_title",
-        "message": "auth.confirm_ok",
-    })
+    if not user:
+        return templates.TemplateResponse("auth/message.html", {
+            "request": request, "lang": lang,
+            "title": "auth.confirm_fail_title",
+            "message": "auth.confirm_fail",
+        })
+    update_user(user["user_id"], {"email_verified": True})
+    # Redirect to profile so the user can see the verified status immediately.
+    # If not logged in, get_current_user will redirect them to /login.
+    return RedirectResponse("/profile?verified=1", status_code=303)
 
 
 # ── Password recovery ───────────────────────────────────────────────────────
