@@ -127,15 +127,6 @@
             </div>
         </div>
 
-        <!-- ── 3. Count preview ──────────────────────────────────── -->
-        <div class="mcfg-preview" id="mcfg-preview">
-            <span class="mcfg-preview-n" id="preview-n">–</span>
-            <span class="mcfg-preview-sep">·</span>
-            <span id="preview-time-type">–</span>
-            <span class="mcfg-preview-sep">·</span>
-            <span id="preview-time-locate">–</span>
-        </div>
-
         <!-- ── 4. Mode ────────────────────────────────────────────── -->
         <div class="mcfg-section">
             <div class="mcfg-section-title">{{ t('mg.cfg_mode_q', lang) }}</div>
@@ -160,7 +151,12 @@
             </div>
         </div>
 
-        <!-- ── 5. Start button ────────────────────────────────────── -->
+        <!-- ── 5. Preview + Start ────────────────────────────────── -->
+        <div class="mcfg-preview" id="mcfg-preview">
+            <span class="mcfg-preview-n" id="preview-n">–</span>
+            <span class="mcfg-preview-sep">·</span>
+            <span id="preview-time">–</span>
+        </div>
         <button type="button" class="mcfg-play-btn" id="mcfg-play-btn">
             {{ t('mg.cfg_start', lang) }}
         </button>
@@ -195,7 +191,7 @@
         mode: 'type',
     };
 
-    function calcMin(n, factor) { var m = Math.floor(n * factor / 60); return m < 1 ? 1 : m; }
+    function calcMin(n, factor) { return Math.floor(n * factor / 60) + 1; }
 
     function getN() {
         var ds = state.dataset === 'regions' ? state.region : state.dataset;
@@ -214,12 +210,13 @@
 
     function updatePreview() {
         var n = getN();
-        var nEl   = document.getElementById('preview-n');
-        var tType = document.getElementById('preview-time-type');
-        var tLoc  = document.getElementById('preview-time-locate');
-        if (nEl)   nEl.textContent   = getEntLabel(n);
-        if (tType) tType.textContent = calcMin(n, 4) + ' ' + TLABELS.name;
-        if (tLoc)  tLoc.textContent  = calcMin(n, 6) + ' ' + TLABELS.locate;
+        var nEl  = document.getElementById('preview-n');
+        var tEl  = document.getElementById('preview-time');
+        if (nEl) nEl.textContent = getEntLabel(n);
+        if (tEl) {
+            var isType = (state.mode === 'type');
+            tEl.textContent = calcMin(n, isType ? 4 : 6) + ' ' + (isType ? TLABELS.name : TLABELS.locate);
+        }
     }
 
     function wireCards(containerId, stateKey, onChange) {
@@ -269,7 +266,7 @@
     }
 
     wireCards('dataset-cards', 'dataset', onDatasetChange);
-    wireCards('mode-cards', 'mode', null);
+    wireCards('mode-cards', 'mode', function() { updatePreview(); });
     wireRegionCards();
     wirePills('countries-continent-pills', 'continent', updatePreview);
     wirePills('countries-type-pills',      'entityType', updatePreview);

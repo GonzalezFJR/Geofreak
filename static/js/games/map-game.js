@@ -177,8 +177,7 @@ var MapGame = (function () {
             var N = targetSet.size;
             if (GeoGame.settings.timeLimit > 0) {
                 var factor  = (mode === 'type') ? 4 : 6;
-                var minutes = Math.floor(N * factor / 60);
-                if (minutes < 1) minutes = 1;
+                var minutes = Math.floor(N * factor / 60) + 1;
                 var secs = minutes * 60;
                 GeoGame.settings.timeLimit = secs;
                 GeoGame.timeRemaining      = secs;

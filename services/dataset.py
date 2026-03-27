@@ -213,7 +213,7 @@ class DatasetService:
             if not os.path.exists(SPAIN_PROVINCES_CSV):
                 self._spain_df = pd.DataFrame()
             else:
-                self._spain_df = pd.read_csv(SPAIN_PROVINCES_CSV, keep_default_na=False)
+                self._spain_df = pd.read_csv(SPAIN_PROVINCES_CSV, keep_default_na=False, dtype={"code": str})
         return self._spain_df
 
     def _load_russia(self) -> pd.DataFrame:
