@@ -2,55 +2,54 @@
   <style>
     .card-back {
       transform-origin: 32px 32px;
-      animation: flip 3.5s ease-in-out infinite;
+      animation: show-back 4s ease-in-out infinite;
     }
     .card-front {
       transform-origin: 32px 32px;
-      animation: flip-front 3.5s ease-in-out infinite;
+      animation: show-front 4s ease-in-out infinite;
     }
-    .question-mark {
-      transform-origin: 32px 32px;
-      animation: flip-front 3.5s ease-in-out infinite;
+    @keyframes show-back {
+      0%, 38%  { transform: scaleX(1); }
+      45%, 55% { transform: scaleX(0); }
+      62%, 100% { transform: scaleX(1); }
     }
-    @keyframes flip {
-      0%, 35%, 100% { transform: scaleX(1); opacity: 1; }
-      45%, 55%      { transform: scaleX(0); opacity: 0; }
-      65%, 90%      { transform: scaleX(1); opacity: 1; }
+    @keyframes show-front {
+      0%, 38%  { transform: scaleX(0); }
+      45%, 55% { transform: scaleX(1); }
+      62%, 100% { transform: scaleX(0); }
     }
-    @keyframes flip-front {
-      0%, 40%       { transform: scaleX(0); opacity: 0; }
-      55%, 85%      { transform: scaleX(1); opacity: 1; }
-      95%, 100%     { transform: scaleX(0); opacity: 0; }
-    }
-    .dot-pulse {
-      animation: dot-p 3.5s ease-in-out infinite;
-    }
-    @keyframes dot-p {
-      0%, 40%   { r: 2; opacity: 0; }
-      55%, 85%  { r: 3; opacity: 1; }
-      95%, 100% { r: 2; opacity: 0; }
+    .q-mark {
+      transform-origin: 32px 30px;
+      animation: show-front 4s ease-in-out infinite;
     }
   </style>
 
-  <!-- Card shadow -->
-  <rect x="11" y="11" width="42" height="42" rx="6" fill="#555" opacity="0.12"/>
+  <!-- Drop shadow -->
+  <rect x="12" y="13" width="42" height="44" rx="7" fill="#0001" />
 
-  <!-- Card back (flag stripes placeholder) -->
+  <!-- Card back: flag-style stripes -->
   <g class="card-back">
-    <rect x="9" y="9" width="42" height="42" rx="6" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
-    <line x1="9"  y1="23" x2="51" y2="23" stroke="#4caf50" stroke-width="1.5" opacity="0.5"/>
-    <line x1="9"  y1="37" x2="51" y2="37" stroke="#4caf50" stroke-width="1.5" opacity="0.5"/>
-    <rect x="14" y="14" width="32" height="8" rx="2" fill="#4caf50" opacity="0.3"/>
+    <rect x="10" y="10" width="44" height="44" rx="6" fill="#fff8e1" stroke="#f9a825" stroke-width="1.8"/>
+    <!-- Flag stripe top (solid) -->
+    <rect x="10" y="10" width="44" height="15" rx="6" fill="#f9a825" opacity="0.85"/>
+    <rect x="10" y="22" width="44" height="3" rx="0" fill="#f9a825" opacity="0.85"/>
+    <!-- Middle stripe white area -->
+    <rect x="10" y="25" width="44" height="14" fill="white" opacity="0.9"/>
+    <!-- Bottom stripe -->
+    <rect x="10" y="39" width="44" height="15" rx="0" fill="#4caf50" opacity="0.75"/>
+    <rect x="10" y="48" width="44" height="6" rx="0" fill="#4caf50" opacity="0.75"/>
   </g>
 
-  <!-- Card front (question mark) -->
+  <!-- Card front: clean blue with ? -->
   <g class="card-front">
-    <rect x="9" y="9" width="42" height="42" rx="6" fill="#e3f2fd" stroke="#1a73e8" stroke-width="2"/>
+    <rect x="10" y="10" width="44" height="44" rx="6" fill="#e8f0fe" stroke="#1a73e8" stroke-width="1.8"/>
+    <!-- Inner subtle decoration -->
+    <circle cx="32" cy="32" r="16" fill="#1a73e8" opacity="0.07"/>
   </g>
-  <!-- ? symbol (separate so we can animate independently) -->
-  <g class="question-mark">
-    <text x="32" y="40" text-anchor="middle" font-size="26" font-weight="bold"
-          fill="#1a73e8" font-family="Georgia, serif">?</text>
+  <g class="q-mark">
+    <text x="32" y="39" text-anchor="middle"
+          font-size="28" font-weight="800" fill="#1a73e8"
+          font-family="Georgia, 'Times New Roman', serif"
+          letter-spacing="-1">?</text>
   </g>
-  <circle class="dot-pulse" cx="32" cy="47" r="3" fill="#1a73e8"/>
 </svg>

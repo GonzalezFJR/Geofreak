@@ -704,44 +704,71 @@
     margin: 0 auto;
 }
 .mode-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 36px 24px 28px;
-    border-radius: var(--radius-lg);
+    padding: 36px 24px 32px;
+    border-radius: var(--radius-xl);
     background: var(--white);
     border: 1.5px solid var(--gray-200);
     text-decoration: none;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+.mode-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--mode-color, var(--blue-500));
+    opacity: 0.9;
 }
 .mode-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px -8px rgba(0,0,0,0.15);
+    border-color: transparent;
+}
+.mode-icon-wrap {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--mode-color, var(--blue-500)) 10%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+.mode-card:hover .mode-icon-wrap {
+    transform: scale(1.08);
 }
 .mode-icon {
-    font-size: 2.4rem;
     display: block;
-    margin-bottom: 14px;
+    width: 64px;
+    height: 64px;
 }
 .mode-card h3 {
     font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 .mode-card p {
     color: var(--gray-500);
     font-size: 0.9rem;
-    line-height: 1.5;
+    line-height: 1.55;
 }
-.mode-solo:hover { border-color: var(--blue-500); }
+.mode-solo  { --mode-color: var(--blue-500); }
 .mode-solo h3 { color: var(--blue-600); }
-.mode-duel:hover { border-color: #e53935; }
+.mode-duel  { --mode-color: #e53935; }
 .mode-duel h3 { color: #e53935; }
-.mode-tournament:hover { border-color: #ff9800; }
+.mode-tournament { --mode-color: #ff9800; }
 .mode-tournament h3 { color: #e68a00; }
-.mode-tests:hover { border-color: var(--green-500); }
+.mode-tests { --mode-color: var(--green-500); }
 .mode-tests h3 { color: var(--green-600); }
-.mode-quizz:hover { border-color: var(--green-500); }
+.mode-quizz { --mode-color: var(--green-500); }
 .mode-quizz h3 { color: var(--green-600); }
 
 /* ============================================================
@@ -879,25 +906,55 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 32px 24px 28px;
-    border-radius: var(--radius-lg);
+    padding: 0;
+    border-radius: var(--radius-xl);
     background: var(--white);
     border: 1.5px solid var(--gray-200);
     text-decoration: none;
-    transition: all 0.25s ease;
+    transition: all 0.28s ease;
+    overflow: hidden;
+    position: relative;
+}
+.select-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--card-accent, var(--blue-500));
 }
 .select-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--card-accent, var(--blue-500));
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px -8px rgba(0,0,0,0.15);
+    border-color: transparent;
 }
 .select-card-icon {
-    font-size: 2.6rem;
-    margin-bottom: 14px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px 18px;
+    background: color-mix(in srgb, var(--card-accent, var(--blue-500)) 7%, transparent);
+    transition: background 0.28s ease;
+}
+.select-card:hover .select-card-icon {
+    background: color-mix(in srgb, var(--card-accent, var(--blue-500)) 13%, transparent);
+}
+.select-card-icon img {
+    width: 72px;
+    height: 72px;
+    display: block;
+}
+.select-card-content {
+    padding: 16px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    width: 100%;
 }
 .select-card h3 {
     font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-size: 1.12rem;
     font-weight: 700;
     color: var(--gray-900);
     margin: 0 0 8px;
@@ -905,19 +962,19 @@
 .select-card p {
     color: var(--gray-500);
     font-size: 0.88rem;
-    line-height: 1.5;
+    line-height: 1.55;
     margin: 0 0 18px;
     flex: 1;
 }
 .select-card-btn {
     display: inline-block;
-    padding: 8px 28px;
+    padding: 9px 30px;
     border-radius: 50px;
     font-size: 0.88rem;
     font-weight: 600;
     background: var(--card-accent, var(--blue-500));
     color: var(--white);
-    transition: filter 0.2s;
+    transition: filter 0.2s, transform 0.2s;
 }
 .select-card:hover .select-card-btn {
     filter: brightness(0.9);
@@ -930,7 +987,8 @@
     .daily-icon { font-size: 1.8rem; }
     .select-page { padding: 80px 12px 40px; }
     .select-grid { grid-template-columns: 1fr; gap: 16px; }
-    .select-card { padding: 24px 18px 22px; }
+    .select-card-icon { padding: 22px 18px 14px; }
+    .select-card-content { padding: 12px 16px 20px; }
 }
 
 /* ============================================================
@@ -986,7 +1044,8 @@
     .modes-section { padding: 60px 12px; }
     .modes-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
     .mode-card { padding: 24px 14px 20px; }
-    .mode-icon { font-size: 1.8rem; }
+    .mode-icon-wrap { width: 76px; height: 76px; margin-bottom: 14px; }
+    .mode-icon { width: 52px; height: 52px; }
     .signup-section { padding: 50px 16px; }
     .footer-grid { flex-direction: column; align-items: center; text-align: center; }
     .footer-links { justify-content: center; }
@@ -1124,7 +1183,12 @@
     transition: all 0.2s;
 }
 .quiz-btn:hover { background: var(--green-600); transform: translateY(-1px); }
-.quiz-card-icon { font-size: 3rem; flex-shrink: 0; }
+.quiz-card-icon {
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+    display: block;
+}
 
 @media (max-width: 640px) {
     .daily-hero { flex-direction: column; padding: 28px 20px; gap: 20px; text-align: center; }

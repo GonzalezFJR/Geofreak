@@ -12,11 +12,13 @@
         {% if game.enabled %}
         <a href="{{ game._href }}" class="select-card" style="--card-accent: {{ game.color }}">
             <div class="select-card-icon">
-                <img src="/static/img/icons/{{ game.id }}.svg" width="56" height="56" alt="">
+                <img src="/static/img/icons/{{ game.id }}.svg" width="72" height="72" alt="">
             </div>
-            <h3>{{ game_field(game, 'name', lang) }}</h3>
-            <p>{{ game_field(game, 'description', lang) }}</p>
-            <span class="select-card-btn">{{ t('sel.play', lang) }}</span>
+            <div class="select-card-content">
+                <h3>{{ game_field(game, 'name', lang) }}</h3>
+                <p>{{ game_field(game, 'description', lang) }}</p>
+                <span class="select-card-btn">{{ t('sel.play', lang) }}</span>
+            </div>
         </a>
         {% endif %}
         {% endfor %}

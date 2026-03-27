@@ -1095,11 +1095,11 @@
 .game-card {
     background: var(--white);
     border: 1px solid var(--gray-200);
-    border-radius: var(--radius-lg);
-    padding: 28px 24px;
+    border-radius: var(--radius-xl);
+    padding: 0;
     text-decoration: none;
     color: inherit;
-    transition: all 0.25s;
+    transition: all 0.28s ease;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -1109,44 +1109,73 @@
 .game-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 4px;
     background: var(--card-color, var(--blue-500));
 }
 
 .game-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px -8px rgba(0,0,0,0.15);
     border-color: transparent;
 }
 
 .game-card-icon {
-    font-size: 2.2rem;
-    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 24px 16px;
+    background: color-mix(in srgb, var(--card-color, var(--blue-500)) 6%, transparent);
+    transition: background 0.28s ease;
+}
+
+.game-card:hover .game-card-icon {
+    background: color-mix(in srgb, var(--card-color, var(--blue-500)) 12%, transparent);
+}
+
+.game-card-icon img {
+    width: 72px;
+    height: 72px;
+    display: block;
+}
+
+.game-card-body {
+    padding: 16px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .game-card h3 {
     font-family: var(--font-display);
     font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--gray-800);
+    font-weight: 700;
+    color: var(--card-color, var(--gray-800));
     margin-bottom: 6px;
 }
 
 .game-card p {
     color: var(--gray-500);
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 0.88rem;
+    line-height: 1.55;
     flex: 1;
 }
 
 .game-card-play {
     margin-top: 16px;
     font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--blue-500);
+    font-size: 0.82rem;
+    color: var(--card-color, var(--blue-500));
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.game-card-play::after {
+    content: '→';
+    transition: transform 0.2s;
+}
+.game-card:hover .game-card-play::after {
+    transform: translateX(4px);
 }
 
 /* ─── Admin ────────────────────────────────────────────────── */
@@ -1482,8 +1511,9 @@
     .dashboard-header h1 { font-size: 1.6rem; }
     .dashboard-header p { font-size: 0.9rem; }
     .games-grid { grid-template-columns: 1fr; gap: 10px; padding: 0 12px; }
-    .game-card { padding: 18px 16px; }
-    .game-card-icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .game-card-icon { padding: 20px 16px 12px; }
+    .game-card-icon img { width: 56px; height: 56px; }
+    .game-card-body { padding: 12px 16px 18px; }
     .game-card h3 { font-size: 1rem; }
 
     /* Admin */
