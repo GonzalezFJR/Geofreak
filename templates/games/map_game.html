@@ -1,6 +1,7 @@
 {% extends "games/_base_game.html" %}
 
 {% block game_area %}
+<div class="map-game-container">
 <!-- Click/locate mode prompt (polygon datasets) -->
 <div class="map-game-prompt" id="game-prompt" style="display:none">
     <span class="prompt-country" id="prompt-country"></span>
@@ -19,6 +20,7 @@
     <div class="input-feedback" id="input-feedback"></div>
 </div>
 <div id="game-map" class="game-map"></div>
+</div>
 
 <!-- Settings from config page (URL query params → template context) -->
 <input type="hidden" id="map-dataset-value"       value="{{ map_dataset }}">
