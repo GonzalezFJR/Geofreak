@@ -899,7 +899,13 @@
 .daily-actions {
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
+}
+
+.daily-actions .results-replay-btn {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
 }
 
 .daily-share-row {
@@ -962,12 +968,22 @@
     color: var(--blue-600);
 }
 
+.daily-register-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 320px;
+}
+
 .btn-daily-register {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 36px;
-    background: linear-gradient(135deg, var(--blue-600), #7c3aed);
+    width: 100%;
+    padding: 13px 28px;
+    background: linear-gradient(135deg, #22c55e, #15803d);
     color: #fff;
     border: none;
     border-radius: var(--radius-lg);
@@ -976,19 +992,20 @@
     cursor: pointer;
     text-decoration: none;
     transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
 }
 
 .btn-daily-register:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+    box-shadow: 0 6px 20px rgba(22, 163, 74, 0.5);
 }
 
 .daily-register-hint {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--gray-500);
-    margin-top: -8px;
+    margin: 0;
     text-align: center;
+    line-height: 1.4;
 }
 
 .btn-daily-stats {
@@ -1556,7 +1573,7 @@
     .daily-metric-value { font-size: 1.3rem; }
     .daily-share-row { max-width: 100%; }
     .daily-stars svg { width: 24px; height: 24px; }
-    .btn-daily-register { padding: 14px 28px; font-size: 0.95rem; width: 100%; }
+    .btn-daily-register { padding: 12px 24px; font-size: 0.95rem; }
     .btn-daily-stats { width: 100%; justify-content: center; }
 
     /* Review nav on mobile */

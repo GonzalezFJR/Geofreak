@@ -32,20 +32,20 @@ var MapGame = (function () {
         'countries':        { center: [20,  0],  zoom: 2, minZoom: 2, maxBounds: null },
         'cities':           { center: [20,  0],  zoom: 2, minZoom: 2, maxBounds: null },
         'us-states':        { center: [39, -98], zoom: 4, minZoom: 3,
-                              maxBounds: [[16, -138], [58, -54]] },
+                              maxBounds: [[-26, -138], [85, -54]] },
         'spain-provinces':  { center: [40,  -4], zoom: 5, minZoom: 4,
-                              maxBounds: [[29, -17], [50, 12]] },
+                              maxBounds: [[ 8,  -17], [71,  12]] },
         'russia-regions':   { center: [62,  90], zoom: 3, minZoom: 3,
-                              maxBounds: [[34, 8], [87, 200]] },
+                              maxBounds: [[-19,    8], [85, 200]] },
     };
 
     /* ── Map config per continent (countries dataset filtered) ── */
     var CONTINENT_CONFIG = {
-        'europe':   { center: [54,  15], zoom: 4, minZoom: 3, maxBounds: [[28, -28], [73,  52]] },
-        'asia':     { center: [35,  90], zoom: 3, minZoom: 2, maxBounds: [[-12, 25], [78, 180]] },
-        'africa':   { center: [ 5,  20], zoom: 3, minZoom: 2, maxBounds: [[-40, -22], [42,  58]] },
-        'america':  { center: [10, -78], zoom: 3, minZoom: 2, maxBounds: [[-62, -130], [78, -25]] },
-        'oceania':  { center: [-25, 145], zoom: 4, minZoom: 3, maxBounds: [[-55, 108], [12, 188]] },
+        'europe':   { center: [54,  15], zoom: 4, minZoom: 3, maxBounds: [[-17, -28], [85,  52]] },
+        'asia':     { center: [35,  90], zoom: 3, minZoom: 2, maxBounds: [[-85,  25], [85, 180]] },
+        'africa':   { center: [ 5,  20], zoom: 3, minZoom: 2, maxBounds: [[-85, -22], [85,  58]] },
+        'america':  { center: [10, -78], zoom: 3, minZoom: 2, maxBounds: [[-85, -130], [85, -25]] },
+        'oceania':  { center: [-25, 145], zoom: 4, minZoom: 3, maxBounds: [[-85, 108], [79, 188]] },
     };
 
     /* Returns the right map cfg for dataset + active continent filter */

@@ -683,21 +683,23 @@ var GeoResults = (function () {
         actions.className = 'results-actions daily-actions';
         var html = '';
 
-        // Share row
+        // Share row — copy button only on touch/mobile (navigator.share available)
         html += '<div class="daily-share-row">' +
             '<button class="btn-daily-share" onclick="GeoResults.share()">' +
                 '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> ' +
                 (T['daily.share'] || 'Share results') +
             '</button>' +
-            '<button class="btn-daily-copy" id="btn-geo-copy" onclick="GeoResults.copy()">' +
-                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ' +
-                (T['daily.copy'] || 'Copy') +
-            '</button>' +
+            (navigator.share
+                ? '<button class="btn-daily-copy" id="btn-geo-copy" onclick="GeoResults.copy()">' +
+                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ' +
+                    (T['daily.copy'] || 'Copy') +
+                  '</button>'
+                : '') +
             '</div>';
 
         // Play again + Other games
-        html += '<button class="btn btn-primary" onclick="location.reload()">' +
-            (T['game.replay'] || '🔄 Play again') + '</button>';
+        html += '<button class="btn btn-primary results-replay-btn" onclick="location.reload()">' +
+            (T['game.replay'] || 'Play again') + '</button>';
         html += '<a href="/games" class="daily-other-games">' +
             (T['game.others'] || 'Other games') + '</a>';
 
