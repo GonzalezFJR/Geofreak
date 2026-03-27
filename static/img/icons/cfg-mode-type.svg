@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <style>
+    .letter-f { animation: appear 2.8s step-start infinite; }
+    .letter-r { animation: appear 2.8s step-start infinite; animation-delay: 0.5s; }
+    .letter-a { animation: appear 2.8s step-start infinite; animation-delay: 1s; }
+    .letter-n { animation: appear 2.8s step-start infinite; animation-delay: 1.5s; }
+
+    @keyframes appear {
+      0%         { opacity: 0; }
+      17%        { opacity: 0; }
+      18%, 100%  { opacity: 1; }
+    }
+
+    .cursor {
+      animation: blink 1s steps(1, end) infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+  </style>
+
+  <!-- Map area background -->
+  <rect x="6" y="8" width="60" height="40" rx="5" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+
+  <!-- Land polygon 1 -->
+  <polygon points="10,18 28,14 34,20 30,30 18,34 10,28" fill="#86efac" fill-opacity="0.85"/>
+
+  <!-- Land polygon 2 -->
+  <polygon points="38,16 54,14 62,22 58,36 44,38 36,30" fill="#86efac" fill-opacity="0.85"/>
+
+  <!-- Coast line detail -->
+  <polyline points="10,28 14,32 18,34 22,30 28,32 30,30" stroke="#16a34a" stroke-width="0.8" fill="none" opacity="0.5"/>
+
+  <!-- Input bar background -->
+  <rect x="6" y="54" width="60" height="12" rx="5" fill="white" stroke="#16a34a" stroke-width="1.5"/>
+
+  <!-- Typed letters -->
+  <text class="letter-f" x="12" y="64" font-family="monospace" font-size="8" fill="#16a34a" font-weight="700">F</text>
+  <text class="letter-r" x="19" y="64" font-family="monospace" font-size="8" fill="#16a34a" font-weight="700">R</text>
+  <text class="letter-a" x="26" y="64" font-family="monospace" font-size="8" fill="#16a34a" font-weight="700">A</text>
+  <text class="letter-n" x="33" y="64" font-family="monospace" font-size="8" fill="#16a34a" font-weight="700">N</text>
+
+  <!-- Blinking cursor -->
+  <rect class="cursor" x="41" y="57" width="1.5" height="8" rx="0.5" fill="#16a34a"/>
+
+  <!-- Small magnifier icon hint -->
+  <circle cx="60" cy="60" r="3.5" stroke="#16a34a" stroke-width="1.2" fill="none" opacity="0.6"/>
+  <line x1="62.5" y1="62.5" x2="64.5" y2="64.5" stroke="#16a34a" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+</svg>

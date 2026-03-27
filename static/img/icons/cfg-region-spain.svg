@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" fill="none">
+  <defs>
+    <clipPath id="flag-clip-es">
+      <rect x="2" y="2" width="36" height="36" rx="3"/>
+    </clipPath>
+  </defs>
+
+  <!-- White base (shows between stripes if any gap) -->
+  <rect x="2" y="2" width="36" height="36" rx="3" fill="white"/>
+
+  <!-- Red top strip (9px) -->
+  <rect x="2" y="2"  width="36" height="9"  fill="#c60b1e" clip-path="url(#flag-clip-es)"/>
+
+  <!-- Yellow/gold center strip (18px) -->
+  <rect x="2" y="11" width="36" height="18" fill="#ffc400" clip-path="url(#flag-clip-es)"/>
+
+  <!-- Red bottom strip (9px) -->
+  <rect x="2" y="29" width="36" height="9"  fill="#c60b1e" clip-path="url(#flag-clip-es)"/>
+
+  <!-- Light gray border -->
+  <rect x="2" y="2" width="36" height="36" rx="3" stroke="#d1d5db" stroke-width="1" fill="none"/>
+</svg>

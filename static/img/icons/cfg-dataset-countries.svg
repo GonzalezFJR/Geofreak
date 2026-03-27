@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <style>
+    .country-highlight {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: pulse-country 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse-country {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+    .dash-orbit {
+      animation: dash-spin 7s linear infinite;
+    }
+    @keyframes dash-spin {
+      from { stroke-dashoffset: 0; }
+      to { stroke-dashoffset: 54; }
+    }
+  </style>
+
+  <!-- Background globe circle -->
+  <circle cx="36" cy="36" r="30" fill="#dbeafe" stroke="#1e40af" stroke-width="1.8"/>
+
+  <!-- Grid lines: latitude -->
+  <ellipse cx="36" cy="36" rx="30" ry="10" stroke="#93c5fd" stroke-width="0.9" opacity="0.6"/>
+  <ellipse cx="36" cy="36" rx="30" ry="20" stroke="#93c5fd" stroke-width="0.9" opacity="0.4"/>
+  <line x1="6" y1="36" x2="66" y2="36" stroke="#93c5fd" stroke-width="0.9" opacity="0.5"/>
+
+  <!-- Grid lines: longitude -->
+  <ellipse cx="36" cy="36" rx="10" ry="30" stroke="#93c5fd" stroke-width="0.9" opacity="0.5"/>
+  <ellipse cx="36" cy="36" rx="20" ry="30" stroke="#93c5fd" stroke-width="0.9" opacity="0.35"/>
+
+  <!-- Static land polygon 1 (left continent) -->
+  <polygon points="13,28 22,24 28,27 26,34 19,37 12,34" fill="#60a5fa" fill-opacity="0.6"/>
+
+  <!-- Static land polygon 2 (right continent) -->
+  <polygon points="40,30 50,26 57,30 55,40 46,42 38,38" fill="#60a5fa" fill-opacity="0.6"/>
+
+  <!-- Pulsing highlighted country -->
+  <polygon class="country-highlight" points="28,38 38,34 44,40 42,48 32,50 26,45" fill="#1d4ed8" fill-opacity="0.85"/>
+
+  <!-- Animated dashed longitude ellipse -->
+  <ellipse cx="36" cy="36" rx="15" ry="30" stroke="#3b82f6" stroke-width="1.4"
+           stroke-dasharray="5 4" fill="none" class="dash-orbit" opacity="0.7"/>
+
+  <!-- Border circle -->
+  <circle cx="36" cy="36" r="30" stroke="#1e40af" stroke-width="1.8" fill="none"/>
+</svg>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <style>
+    .region1 { animation: highlight-r1 4s ease-in-out infinite; }
+    .region2 { animation: highlight-r2 4s ease-in-out infinite; }
+    .region3 { animation: highlight-r3 4s ease-in-out infinite; }
+    .region4 { animation: highlight-r4 4s ease-in-out infinite; }
+
+    @keyframes highlight-r1 {
+      0%   { fill: #c4b5fd; }
+      7%   { fill: #a855f7; }
+      15%  { fill: #c4b5fd; }
+      100% { fill: #c4b5fd; }
+    }
+    @keyframes highlight-r2 {
+      0%,  33% { fill: #ddd6fe; }
+      40%      { fill: #a855f7; }
+      50%      { fill: #ddd6fe; }
+      100%     { fill: #ddd6fe; }
+    }
+    @keyframes highlight-r3 {
+      0%,  60% { fill: #c4b5fd; }
+      67%      { fill: #a855f7; }
+      75%      { fill: #c4b5fd; }
+      100%     { fill: #c4b5fd; }
+    }
+    @keyframes highlight-r4 {
+      0%,  85% { fill: #ddd6fe; }
+      92%      { fill: #a855f7; }
+      100%     { fill: #ddd6fe; }
+    }
+  </style>
+
+  <!-- Map background -->
+  <rect x="6" y="10" width="60" height="52" rx="5" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.8"/>
+
+  <!-- Clip path to keep regions inside rounded rect -->
+  <defs>
+    <clipPath id="map-clip">
+      <rect x="6" y="10" width="60" height="52" rx="5"/>
+    </clipPath>
+  </defs>
+
+  <!-- Region 1: top-left -->
+  <polygon class="region1"
+    points="6,10 36,10 30,20 18,30 6,26"
+    fill="#c4b5fd" clip-path="url(#map-clip)"/>
+
+  <!-- Region 2: top-right -->
+  <polygon class="region2"
+    points="36,10 66,10 66,30 50,36 30,20"
+    fill="#ddd6fe" clip-path="url(#map-clip)"/>
+
+  <!-- Region 3: bottom-left -->
+  <polygon class="region3"
+    points="6,26 18,30 30,20 50,36 36,50 14,62 6,62"
+    fill="#c4b5fd" clip-path="url(#map-clip)"/>
+
+  <!-- Region 4: bottom-right -->
+  <polygon class="region4"
+    points="50,36 66,30 66,62 36,62 14,62 36,50"
+    fill="#ddd6fe" clip-path="url(#map-clip)"/>
+
+  <!-- Internal border lines -->
+  <line x1="30" y1="10" x2="6" y2="26" stroke="#7c3aed" stroke-width="1.2" opacity="0.7" clip-path="url(#map-clip)"/>
+  <line x1="30" y1="10" x2="50" y2="36" stroke="#7c3aed" stroke-width="1.2" opacity="0.7" clip-path="url(#map-clip)"/>
+  <line x1="18" y1="30" x2="50" y2="36" stroke="#7c3aed" stroke-width="1.2" opacity="0.7" clip-path="url(#map-clip)"/>
+  <line x1="50" y1="36" x2="36" y2="62" stroke="#7c3aed" stroke-width="1.2" opacity="0.7" clip-path="url(#map-clip)"/>
+  <line x1="14" y1="62" x2="36" y2="50" stroke="#7c3aed" stroke-width="1.2" opacity="0.7" clip-path="url(#map-clip)"/>
+
+  <!-- Outer border on top -->
+  <rect x="6" y="10" width="60" height="52" rx="5" stroke="#7c3aed" stroke-width="1.8" fill="none"/>
+</svg>

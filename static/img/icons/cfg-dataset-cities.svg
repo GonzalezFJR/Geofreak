@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <style>
+    .pin-bounce {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: bounce-pin 2.4s ease-in-out infinite;
+    }
+    @keyframes bounce-pin {
+      0%   { transform: translateY(0); }
+      30%  { transform: translateY(-10px); }
+      50%  { transform: translateY(-2px); }
+      65%  { transform: translateY(-7px); }
+      80%  { transform: translateY(0); }
+      100% { transform: translateY(0); }
+    }
+    .pin-shadow {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: shadow-pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes shadow-pulse {
+      0%   { transform: scaleX(1); opacity: 0.3; }
+      30%  { transform: scaleX(0.5); opacity: 0.1; }
+      50%  { transform: scaleX(0.85); opacity: 0.22; }
+      65%  { transform: scaleX(0.6); opacity: 0.15; }
+      80%  { transform: scaleX(1); opacity: 0.3; }
+      100% { transform: scaleX(1); opacity: 0.3; }
+    }
+  </style>
+
+  <!-- Sky background -->
+  <rect x="4" y="4" width="64" height="64" rx="6" fill="#fff8f0"/>
+
+  <!-- Building 1 (tallest, left) -->
+  <rect x="8" y="22" width="13" height="40" rx="1.5" fill="#ff8f00"/>
+  <!-- Windows -->
+  <rect x="11" y="26" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="15" y="26" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="11" y="32" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="15" y="32" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="11" y="38" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="15" y="38" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="11" y="44" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="15" y="44" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+
+  <!-- Building 2 (medium, center-left) -->
+  <rect x="23" y="30" width="11" height="32" rx="1.5" fill="#ff9800"/>
+  <rect x="25" y="33" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="29" y="33" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="25" y="40" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="29" y="40" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="25" y="47" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="29" y="47" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+
+  <!-- Building 3 (shorter, right-ish) -->
+  <rect x="48" y="34" width="11" height="28" rx="1.5" fill="#ff9800"/>
+  <rect x="50" y="37" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="54" y="37" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="50" y="44" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="54" y="44" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="50" y="51" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="54" y="51" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+
+  <!-- Building 4 (medium-tall, far right) -->
+  <rect x="61" y="26" width="7" height="36" rx="1.5" fill="#ffa000"/>
+  <rect x="63" y="29" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="63" y="36" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="63" y="43" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+  <rect x="63" y="50" width="3" height="3" rx="0.5" fill="white" fill-opacity="0.7"/>
+
+  <!-- Ground strip -->
+  <rect x="4" y="62" width="64" height="6" rx="3" fill="#ffd54f"/>
+
+  <!-- Pin shadow -->
+  <ellipse class="pin-shadow" cx="37" cy="62" rx="6" ry="2" fill="#e65100"/>
+
+  <!-- Bouncing pin group -->
+  <g class="pin-bounce">
+    <!-- Pin head circle -->
+    <circle cx="37" cy="42" r="8" fill="#e65100"/>
+    <!-- White inner circle -->
+    <circle cx="37" cy="42" r="3.5" fill="white" fill-opacity="0.9"/>
+    <!-- Pin triangle pointing down -->
+    <polygon points="32,48 42,48 37,57" fill="#e65100"/>
+    <!-- Slight shadow on triangle -->
+    <polygon points="33,48 41,48 37,55" fill="#bf360c" fill-opacity="0.3"/>
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" fill="none">
+  <!-- White base -->
+  <rect x="2" y="2" width="36" height="36" rx="3" fill="white" stroke="#9ca3af" stroke-width="1"/>
+
+  <!-- Red stripes (clipped to rounded rect) -->
+  <defs>
+    <clipPath id="flag-clip-us">
+      <rect x="2" y="2" width="36" height="36" rx="3"/>
+    </clipPath>
+  </defs>
+
+  <!-- 5 red stripes -->
+  <rect x="2" y="2"  width="36" height="5.5" fill="#b22234" clip-path="url(#flag-clip-us)"/>
+  <rect x="2" y="13" width="36" height="5.5" fill="#b22234" clip-path="url(#flag-clip-us)"/>
+  <rect x="2" y="24" width="36" height="5.5" fill="#b22234" clip-path="url(#flag-clip-us)"/>
+
+  <!-- Blue canton -->
+  <rect x="2" y="2" width="16" height="18" rx="2" fill="#3c3b6e" clip-path="url(#flag-clip-us)"/>
+
+  <!-- 5-pointed star centered at (10, 10) -->
+  <!-- Points of a 5-pointed star: outer r=4.5, inner r=1.9 -->
+  <polygon
+    points="10,5.5 11.38,8.97 15.09,8.97 12.13,11.18 13.27,14.73 10,12.70 6.73,14.73 7.87,11.18 4.91,8.97 8.62,8.97"
+    fill="white"/>
+
+  <!-- Border on top -->
+  <rect x="2" y="2" width="36" height="36" rx="3" stroke="#9ca3af" stroke-width="1" fill="none"/>
+</svg>

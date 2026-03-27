@@ -186,6 +186,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.entities_state": "estados",
         "mg.entities_province": "provincias",
         "mg.entities_region": "regiones",
+        "mg.cfg_play": "▶ Jugar",
+        "mg.cfg_dataset_q": "¿Qué quieres jugar?",
+        "mg.cfg_mode_q": "¿Cómo quieres jugar?",
+        "mg.type_territory_tip": "Incluye regiones asociadas como Groenlandia, Gibraltar o las Bermudas",
+        "mg.mode_type_desc": "Escribe los nombres en el mapa",
+        "mg.mode_locate_desc": "Haz clic en el mapa para identificar",
 
         # Ordering
         "ord.question": "Pregunta",
@@ -736,6 +742,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.entities_state": "states",
         "mg.entities_province": "provinces",
         "mg.entities_region": "regions",
+        "mg.cfg_play": "▶ Play",
+        "mg.cfg_dataset_q": "What do you want to play?",
+        "mg.cfg_mode_q": "How do you want to play?",
+        "mg.type_territory_tip": "Includes associated regions like Greenland, Gibraltar or Bermuda",
+        "mg.mode_type_desc": "Type names on the map",
+        "mg.mode_locate_desc": "Click the map to identify",
 
         # Ordering
         "ord.question": "Question",
@@ -1287,6 +1299,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.entities_state": "états",
         "mg.entities_province": "provinces",
         "mg.entities_region": "régions",
+        "mg.cfg_play": "▶ Jouer",
+        "mg.cfg_dataset_q": "Qu'est-ce que vous voulez jouer ?",
+        "mg.cfg_mode_q": "Comment voulez-vous jouer ?",
+        "mg.type_territory_tip": "Inclut des régions associées comme le Groenland, Gibraltar ou les Bermudes",
+        "mg.mode_type_desc": "Tapez les noms sur la carte",
+        "mg.mode_locate_desc": "Cliquez sur la carte pour identifier",
 
         # Ordering
         "ord.question": "Question",
@@ -1832,6 +1850,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.entities_state": "stati",
         "mg.entities_province": "province",
         "mg.entities_region": "regioni",
+        "mg.cfg_play": "▶ Gioca",
+        "mg.cfg_dataset_q": "Cosa vuoi giocare?",
+        "mg.cfg_mode_q": "Come vuoi giocare?",
+        "mg.type_territory_tip": "Include regioni associate come Groenlandia, Gibilterra o le Bermuda",
+        "mg.mode_type_desc": "Scrivi i nomi sulla mappa",
+        "mg.mode_locate_desc": "Clicca sulla mappa per identificare",
 
         # Ordering
         "ord.question": "Domanda",
@@ -2378,6 +2402,12 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.entities_state": "штатов",
         "mg.entities_province": "провинций",
         "mg.entities_region": "регионов",
+        "mg.cfg_play": "▶ Играть",
+        "mg.cfg_dataset_q": "Что хотите играть?",
+        "mg.cfg_mode_q": "Как хотите играть?",
+        "mg.type_territory_tip": "Включает зависимые территории, например Гренландию, Гибралтар или Бермуды",
+        "mg.mode_type_desc": "Вводите названия на карте",
+        "mg.mode_locate_desc": "Кликайте на карту для определения",
 
         # Ordering
         "ord.question": "Вопрос",

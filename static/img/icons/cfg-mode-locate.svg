@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <style>
+    .drop-pin {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: drop-in 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes drop-in {
+      0%   { transform: translateY(-18px); opacity: 0; }
+      18%  { transform: translateY(-18px); opacity: 0; }
+      42%  { transform: translateY(0px);   opacity: 1; }
+      52%  { transform: translateY(-4px);  opacity: 1; }
+      62%  { transform: translateY(0px);   opacity: 1; }
+      80%, 100% { transform: translateY(0px); opacity: 1; }
+    }
+    .ripple {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: ripple-out 2.2s ease-out infinite;
+      animation-delay: 0.6s;
+    }
+    @keyframes ripple-out {
+      0%         { r: 0;  stroke-opacity: 0; }
+      10%        { r: 2;  stroke-opacity: 0.7; }
+      80%        { r: 16; stroke-opacity: 0; }
+      100%       { r: 16; stroke-opacity: 0; }
+    }
+  </style>
+
+  <!-- Map background -->
+  <rect x="6" y="8" width="60" height="56" rx="5" fill="#fff5f5" stroke="#dc2626" stroke-width="1.8"/>
+
+  <!-- Land mass polygon 1 -->
+  <polygon points="10,20 28,14 36,22 32,34 16,38 10,30" fill="#fca5a5" fill-opacity="0.8"/>
+
+  <!-- Land mass polygon 2 -->
+  <polygon points="40,18 58,16 64,26 60,40 46,44 38,36" fill="#fca5a5" fill-opacity="0.8"/>
+
+  <!-- Water detail lines -->
+  <path d="M10,44 Q20,46 30,44 Q40,42 50,44" stroke="#fca5a5" stroke-width="1" fill="none" opacity="0.6"/>
+  <path d="M12,50 Q24,52 36,50 Q48,48 60,50" stroke="#fca5a5" stroke-width="1" fill="none" opacity="0.4"/>
+
+  <!-- Ripple at landing point -->
+  <circle class="ripple" cx="36" cy="44" r="0" stroke="#dc2626" stroke-width="1.5" fill="none"/>
+
+  <!-- Dropping pin group -->
+  <g class="drop-pin">
+    <!-- Pin head -->
+    <circle cx="36" cy="34" r="7" fill="#dc2626"/>
+    <!-- White inner dot -->
+    <circle cx="36" cy="34" r="3" fill="white" fill-opacity="0.92"/>
+    <!-- Pin triangle pointing down -->
+    <polygon points="30,39 42,39 36,50" fill="#dc2626"/>
+    <!-- Shadow edge on triangle -->
+    <polygon points="31,39 41,39 36,48" fill="#b91c1c" fill-opacity="0.35"/>
+  </g>
+
+  <!-- Map border on top -->
+  <rect x="6" y="8" width="60" height="56" rx="5" stroke="#dc2626" stroke-width="1.8" fill="none"/>
+</svg>

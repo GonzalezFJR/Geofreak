@@ -64,10 +64,28 @@ var MapGame = (function () {
 
     /* ── Init ───────────────────────────────────────────────── */
     function init() {
-        GeoGame.init({ onStart: loadData, delayTimer: true });
+        GeoGame.init({ onStart: showConfigView, delayTimer: true });
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Enter' && inputEl) submitAnswer();
         });
+    }
+
+    /* ── Config view flow ───────────────────────────────────── */
+    function showConfigView() {
+        var cfgView = document.getElementById('map-cfg-view');
+        if (cfgView) cfgView.style.display = '';
+        var playBtn = document.getElementById('cfg-play-btn');
+        if (playBtn) {
+            playBtn.addEventListener('click', startGame, { once: true });
+        }
+    }
+
+    function startGame() {
+        var cfgView = document.getElementById('map-cfg-view');
+        if (cfgView) cfgView.style.display = 'none';
+        var gameContainer = document.getElementById('map-game-container');
+        if (gameContainer) gameContainer.style.display = '';
+        loadData();
     }
 
     /* ── Spinner ────────────────────────────────────────────── */
