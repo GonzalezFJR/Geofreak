@@ -2135,7 +2135,351 @@ body:has(.game-page) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   Map Game — Config view
+   Map Challenge — Config page (light, extends base.html)
+   ═══════════════════════════════════════════════════════════ */
+
+.mcfg-page {
+    padding-top: 100px;
+    padding-bottom: 72px;
+    min-height: 100vh;
+    background: var(--gray-50);
+}
+
+.mcfg-container {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Breadcrumb */
+.mcfg-breadcrumb { margin-bottom: -8px; }
+.mcfg-back {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s;
+}
+.mcfg-back:hover { color: var(--blue-500); }
+
+/* Header */
+.mcfg-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+}
+.mcfg-header-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: rgba(26,115,232,0.08);
+    border-radius: var(--radius-lg);
+}
+.mcfg-header-text h1 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+}
+.mcfg-header-text p {
+    color: var(--gray-500);
+    font-size: 0.95rem;
+}
+
+/* Section */
+.mcfg-section { display: flex; flex-direction: column; gap: 12px; }
+.mcfg-section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+}
+
+/* Card grids */
+.mcfg-cards { display: grid; gap: 14px; }
+.mcfg-cards-3 { grid-template-columns: repeat(3, 1fr); }
+.mcfg-cards-2 { grid-template-columns: repeat(2, 1fr); }
+
+/* Cards */
+.mcfg-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 22px 14px 18px;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.22s ease;
+    color: var(--gray-700);
+    text-align: center;
+}
+.mcfg-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-color, var(--blue-500));
+    opacity: 0;
+    transition: opacity 0.22s;
+}
+.mcfg-card:hover {
+    border-color: var(--card-color, var(--blue-500));
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+.mcfg-card:hover::before { opacity: 1; }
+.mcfg-card.active {
+    border-color: var(--card-color, var(--blue-500));
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--card-color, var(--blue-500)) 20%, transparent),
+                var(--shadow-md);
+}
+.mcfg-card.active::before { opacity: 1; }
+.mcfg-card-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.mcfg-card-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--gray-800);
+}
+.mcfg-card-desc {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--gray-500);
+    line-height: 1.35;
+    margin-top: 1px;
+}
+
+/* Filter panel */
+.mcfg-filter-panel {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: var(--shadow-sm);
+}
+.mcfg-filter-group { display: flex; flex-direction: column; gap: 8px; }
+.mcfg-filter-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+}
+
+/* Pills */
+.mcfg-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.mcfg-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 14px;
+    background: var(--gray-100);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+.mcfg-pill:hover {
+    border-color: var(--blue-500);
+    color: var(--blue-500);
+    background: rgba(26,115,232,0.06);
+}
+.mcfg-pill.active {
+    background: var(--blue-500);
+    border-color: var(--blue-500);
+    color: var(--white);
+}
+
+/* Info tip */
+.mcfg-info-tip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--gray-300);
+    color: var(--gray-600);
+    font-size: 0.65rem;
+    font-weight: 700;
+    font-style: normal;
+    cursor: default;
+    position: relative;
+    vertical-align: middle;
+    transition: background 0.15s, color 0.15s;
+}
+.mcfg-info-tip:hover {
+    background: var(--blue-500);
+    color: var(--white);
+}
+.mcfg-info-tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gray-900);
+    color: var(--gray-100);
+    font-size: 0.72rem;
+    font-weight: 400;
+    line-height: 1.45;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    white-space: normal;
+    width: 220px;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s;
+    z-index: 100;
+    text-transform: none;
+    letter-spacing: 0;
+}
+.mcfg-info-tip:hover::after { opacity: 1; }
+
+/* Region sub-cards */
+.mcfg-region-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.mcfg-region-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 10px 12px;
+    background: var(--gray-50);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--gray-700);
+    text-align: center;
+}
+.mcfg-region-card:hover {
+    border-color: #a855f7;
+    background: rgba(168,85,247,0.05);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+.mcfg-region-card.active {
+    border-color: #a855f7;
+    background: rgba(168,85,247,0.07);
+    box-shadow: 0 0 0 3px rgba(168,85,247,0.2), var(--shadow-sm);
+}
+.mcfg-region-card-icon {
+    width: 40px; height: 40px;
+    border-radius: 6px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mcfg-region-card-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    line-height: 1.25;
+}
+
+/* Preview bar */
+.mcfg-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(26,115,232,0.06);
+    border: 1px solid rgba(26,115,232,0.15);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    flex-wrap: wrap;
+}
+.mcfg-preview-n {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--blue-500);
+}
+.mcfg-preview-sep { color: var(--gray-300); font-size: 1.1rem; }
+
+/* Play button */
+.mcfg-play-btn {
+    width: 100%;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, var(--blue-500), var(--blue-600));
+    border: none;
+    border-radius: var(--radius-lg);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--white);
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: all 0.18s;
+    box-shadow: 0 4px 16px rgba(26,115,232,0.35);
+}
+.mcfg-play-btn:hover {
+    background: linear-gradient(135deg, #2979ef, var(--blue-500));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,115,232,0.45);
+}
+.mcfg-play-btn:active { transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 520px) {
+    .mcfg-page { padding-top: 80px; padding-bottom: 48px; }
+    .mcfg-container { padding: 0 14px; gap: 18px; }
+    .mcfg-cards-3 { gap: 8px; }
+    .mcfg-card { padding: 16px 8px 14px; gap: 7px; }
+    .mcfg-card-icon { width: 48px; height: 48px; }
+    .mcfg-card-icon img { width: 48px; height: 48px; }
+    .mcfg-card-label { font-size: 0.78rem; }
+    .mcfg-header { padding: 16px; gap: 14px; }
+    .mcfg-header-icon { width: 56px; height: 56px; }
+    .mcfg-header-text h1 { font-size: 1.25rem; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Map Game — Config view (in-game overlay, unused/legacy)
    ═══════════════════════════════════════════════════════════ */
 
 /* Full-area scrollable wrapper */

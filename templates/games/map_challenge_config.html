@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/games.css">
+{% endblock %}
+
+{% block content %}
+<section class="mcfg-page">
+    <div class="mcfg-container">
+
+        <!-- Breadcrumb -->
+        <div class="mcfg-breadcrumb">
+            <a href="/games" class="mcfg-back">← {{ t('nav.games', lang) }}</a>
+        </div>
+
+        <!-- Header -->
+        <div class="mcfg-header">
+            <div class="mcfg-header-icon">
+                <img src="/static/img/icons/map-challenge.svg" width="64" height="64" alt="">
+            </div>
+            <div class="mcfg-header-text">
+                <h1>{{ game_field(game, 'name', lang) }}</h1>
+                <p>{{ t('mg.cfg_subtitle', lang) }}</p>
+            </div>
+        </div>
+
+        <!-- ── 1. Dataset ──────────────────────────────────────── -->
+        <div class="mcfg-section">
+            <div class="mcfg-section-title">{{ t('mg.cfg_dataset_q', lang) }}</div>
+            <div class="mcfg-cards mcfg-cards-3" id="dataset-cards">
+
+                <button type="button" class="mcfg-card active" data-value="countries" style="--card-color: #1a73e8">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-dataset-countries.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('mg.dataset_countries', lang) }}</span>
+                </button>
+
+                <button type="button" class="mcfg-card" data-value="cities" style="--card-color: #f59e0b">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-dataset-cities.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('mg.dataset_cities', lang) }}</span>
+                </button>
+
+                <button type="button" class="mcfg-card" data-value="regions" style="--card-color: #a855f7">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-dataset-regions.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('mg.entities_region', lang) | capitalize }}</span>
+                </button>
+
+            </div>
+        </div>
+
+        <!-- ── 2a. Countries filters ────────────────────────────── -->
+        <div id="filters-countries" class="mcfg-filter-panel">
+            <div class="mcfg-filter-group">
+                <span class="mcfg-filter-label">{{ t('mg.fil_continent', lang) }}</span>
+                <div class="mcfg-pills" id="countries-continent-pills">
+                    <button type="button" class="mcfg-pill active" data-value="all">{{ t('mg.cont_all', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="europe">{{ t('mg.cont_europe', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="americas">{{ t('mg.cont_americas', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="asia">{{ t('mg.cont_asia', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="africa">{{ t('mg.cont_africa', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="oceania">{{ t('mg.cont_oceania', lang) }}</button>
+                </div>
+            </div>
+            <div class="mcfg-filter-group">
+                <span class="mcfg-filter-label">{{ t('mg.fil_type', lang) }}</span>
+                <div class="mcfg-pills" id="countries-type-pills">
+                    <button type="button" class="mcfg-pill active" data-value="all">{{ t('mg.type_all', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="country">{{ t('mg.type_country', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="territory">
+                        {{ t('mg.type_territory', lang) }}
+                        <span class="mcfg-info-tip" data-tip="{{ t('mg.type_territory_tip', lang) }}">i</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── 2b. Cities filters ────────────────────────────────── -->
+        <div id="filters-cities" class="mcfg-filter-panel" style="display:none">
+            <div class="mcfg-filter-group">
+                <span class="mcfg-filter-label">{{ t('mg.fil_cities', lang) }}</span>
+                <div class="mcfg-pills" id="cities-size-pills">
+                    <button type="button" class="mcfg-pill active" data-value="capitals">{{ t('mg.city_capitals', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="5m">{{ t('mg.city_5m', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="1m">{{ t('mg.city_1m', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="100k">{{ t('mg.city_100k', lang) }}</button>
+                </div>
+            </div>
+            <div class="mcfg-filter-group">
+                <span class="mcfg-filter-label">{{ t('mg.fil_continent', lang) }}</span>
+                <div class="mcfg-pills" id="cities-continent-pills">
+                    <button type="button" class="mcfg-pill active" data-value="all">{{ t('mg.cont_all', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="europe">{{ t('mg.cont_europe', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="americas">{{ t('mg.cont_americas', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="asia">{{ t('mg.cont_asia', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="africa">{{ t('mg.cont_africa', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="oceania">{{ t('mg.cont_oceania', lang) }}</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── 2c. Regions sub-selector ──────────────────────────── -->
+        <div id="filters-regions" class="mcfg-filter-panel" style="display:none">
+            <div class="mcfg-region-cards" id="region-cards">
+                <button type="button" class="mcfg-region-card active" data-value="us-states">
+                    <div class="mcfg-region-card-icon">
+                        <img src="/static/img/icons/cfg-region-us.svg" width="40" height="40" alt="">
+                    </div>
+                    <span class="mcfg-region-card-label">{{ t('mg.dataset_us', lang) }}</span>
+                </button>
+                <button type="button" class="mcfg-region-card" data-value="spain-provinces">
+                    <div class="mcfg-region-card-icon">
+                        <img src="/static/img/icons/cfg-region-spain.svg" width="40" height="40" alt="">
+                    </div>
+                    <span class="mcfg-region-card-label">{{ t('mg.dataset_spain', lang) }}</span>
+                </button>
+                <button type="button" class="mcfg-region-card" data-value="russia-regions">
+                    <div class="mcfg-region-card-icon">
+                        <img src="/static/img/icons/cfg-region-russia.svg" width="40" height="40" alt="">
+                    </div>
+                    <span class="mcfg-region-card-label">{{ t('mg.dataset_russia', lang) }}</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ── 3. Count preview ──────────────────────────────────── -->
+        <div class="mcfg-preview" id="mcfg-preview">
+            <span class="mcfg-preview-n" id="preview-n">–</span>
+            <span class="mcfg-preview-sep">·</span>
+            <span id="preview-time-type">–</span>
+            <span class="mcfg-preview-sep">·</span>
+            <span id="preview-time-locate">–</span>
+        </div>
+
+        <!-- ── 4. Mode ────────────────────────────────────────────── -->
+        <div class="mcfg-section">
+            <div class="mcfg-section-title">{{ t('mg.cfg_mode_q', lang) }}</div>
+            <div class="mcfg-cards mcfg-cards-2" id="mode-cards">
+
+                <button type="button" class="mcfg-card active" data-value="type" style="--card-color: #10b981">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-mode-type.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('mg.mode_name', lang) }}</span>
+                    <span class="mcfg-card-desc">{{ t('mg.mode_type_desc', lang) }}</span>
+                </button>
+
+                <button type="button" class="mcfg-card" data-value="click" style="--card-color: #ef4444">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-mode-locate.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('mg.mode_locate', lang) }}</span>
+                    <span class="mcfg-card-desc">{{ t('mg.mode_locate_desc', lang) }}</span>
+                </button>
+
+            </div>
+        </div>
+
+        <!-- ── 5. Start button ────────────────────────────────────── -->
+        <button type="button" class="mcfg-play-btn" id="mcfg-play-btn">
+            {{ t('mg.cfg_start', lang) }}
+        </button>
+
+    </div>
+</section>
+
+<script>
+(function () {
+    var COUNTS = {{ map_game_counts_json | safe }};
+    var TLABELS = {
+        name:   {{ t('mg.preview_name', lang) | tojson }},
+        locate: {{ t('mg.preview_locate', lang) | tojson }},
+        ent: {
+            countries_all:       {{ t('mg.entities_country', lang) | tojson }},
+            countries_country:   {{ t('mg.entities_country', lang) | tojson }},
+            countries_territory: {{ t('mg.entities_territory', lang) | tojson }},
+            cities:              {{ t('mg.entities_city', lang) | tojson }},
+            'us-states':         {{ t('mg.entities_state', lang) | tojson }},
+            'spain-provinces':   {{ t('mg.entities_province', lang) | tojson }},
+            'russia-regions':    {{ t('mg.entities_region', lang) | tojson }},
+        },
+    };
+
+    var state = {
+        dataset: 'countries',
+        continent: 'all',
+        entityType: 'all',
+        cityFilter: 'capitals',
+        cityContinent: 'all',
+        region: 'us-states',
+        mode: 'type',
+    };
+
+    function calcMin(n, factor) { var m = Math.floor(n * factor / 60); return m < 1 ? 1 : m; }
+
+    function getN() {
+        var ds = state.dataset === 'regions' ? state.region : state.dataset;
+        var dc = COUNTS[ds];
+        if (!dc) return 0;
+        if (ds === 'countries') return dc[state.continent + '_' + state.entityType] || 0;
+        if (ds === 'cities')    return dc[state.cityFilter + '_' + state.cityContinent] || 0;
+        return dc['all'] || 0;
+    }
+
+    function getEntLabel(n) {
+        var ds  = state.dataset === 'regions' ? state.region : state.dataset;
+        var key = ds === 'countries' ? ('countries_' + state.entityType) : ds;
+        return n + ' ' + (TLABELS.ent[key] || '');
+    }
+
+    function updatePreview() {
+        var n = getN();
+        var nEl   = document.getElementById('preview-n');
+        var tType = document.getElementById('preview-time-type');
+        var tLoc  = document.getElementById('preview-time-locate');
+        if (nEl)   nEl.textContent   = getEntLabel(n);
+        if (tType) tType.textContent = calcMin(n, 4) + ' ' + TLABELS.name;
+        if (tLoc)  tLoc.textContent  = calcMin(n, 6) + ' ' + TLABELS.locate;
+    }
+
+    function wireCards(containerId, stateKey, onChange) {
+        var c = document.getElementById(containerId);
+        if (!c) return;
+        c.querySelectorAll('.mcfg-card').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                c.querySelectorAll('.mcfg-card').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                state[stateKey] = btn.getAttribute('data-value');
+                if (onChange) onChange(state[stateKey]);
+            });
+        });
+    }
+
+    function wireRegionCards() {
+        var c = document.getElementById('region-cards');
+        if (!c) return;
+        c.querySelectorAll('.mcfg-region-card').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                c.querySelectorAll('.mcfg-region-card').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                state.region = btn.getAttribute('data-value');
+                updatePreview();
+            });
+        });
+    }
+
+    function wirePills(groupId, stateKey, onChange) {
+        var g = document.getElementById(groupId);
+        if (!g) return;
+        g.querySelectorAll('.mcfg-pill').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                g.querySelectorAll('.mcfg-pill').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                state[stateKey] = btn.getAttribute('data-value');
+                if (onChange) onChange();
+            });
+        });
+    }
+
+    function onDatasetChange(ds) {
+        document.getElementById('filters-countries').style.display = ds === 'countries' ? '' : 'none';
+        document.getElementById('filters-cities').style.display    = ds === 'cities'    ? '' : 'none';
+        document.getElementById('filters-regions').style.display   = ds === 'regions'   ? '' : 'none';
+        updatePreview();
+    }
+
+    wireCards('dataset-cards', 'dataset', onDatasetChange);
+    wireCards('mode-cards', 'mode', null);
+    wireRegionCards();
+    wirePills('countries-continent-pills', 'continent', updatePreview);
+    wirePills('countries-type-pills',      'entityType', updatePreview);
+    wirePills('cities-size-pills',         'cityFilter', updatePreview);
+    wirePills('cities-continent-pills',    'cityContinent', updatePreview);
+
+    updatePreview();
+
+    document.getElementById('mcfg-play-btn').addEventListener('click', function () {
+        var ds = state.dataset === 'regions' ? state.region : state.dataset;
+        var params = new URLSearchParams({
+            dataset:       ds,
+            mode:          state.mode,
+            continent:     state.continent,
+            entity_type:   state.entityType,
+            city_filter:   state.cityFilter,
+            city_continent: state.cityContinent,
+        });
+        window.location.href = '/games/map-challenge/play?' + params.toString();
+    });
+}());
+</script>
+{% endblock %}

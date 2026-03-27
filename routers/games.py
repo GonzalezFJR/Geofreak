@@ -19,7 +19,6 @@ _dataset_service = DatasetService()
 TEMPLATE_MAP = {
     "flags": "games/flags.html",
     "outline": "games/outline.html",
-    "map-challenge": "games/map_game.html",
     "ordering": "games/ordering.html",
     "comparison": "games/comparison.html",
     "geostats": "games/geostats.html",
@@ -51,6 +50,48 @@ async def games_dashboard(request: Request, user=Depends(get_optional_user)):
     )
 
 
+@router.get("/map-challenge", response_class=HTMLResponse)
+async def map_challenge_config(request: Request, user=Depends(get_optional_user)):
+    lang = get_lang(request)
+    game = games_service.get_game("map-challenge")
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    counts = _dataset_service.get_map_game_counts()
+    ctx = {
+        "request": request, "game": game, "user": user, "lang": lang,
+        "map_game_counts_json": json.dumps(counts, ensure_ascii=False),
+    }
+    return templates.TemplateResponse("games/map_challenge_config.html", ctx)
+
+
+@router.get("/map-challenge/play", response_class=HTMLResponse)
+async def play_map_challenge(
+    request: Request,
+    dataset: str = "countries",
+    mode: str = "type",
+    continent: str = "all",
+    entity_type: str = "all",
+    city_filter: str = "capitals",
+    city_continent: str = "all",
+    user=Depends(get_optional_user),
+):
+    lang = get_lang(request)
+    game = games_service.get_game("map-challenge")
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    game_json = json.dumps(game, ensure_ascii=False)
+    ctx = {
+        "request": request, "game": game, "game_json": game_json, "user": user, "lang": lang,
+        "map_dataset": dataset,
+        "map_mode": mode,
+        "map_continent": continent,
+        "map_entity_type": entity_type,
+        "map_city_filter": city_filter,
+        "map_city_continent": city_continent,
+    }
+    return templates.TemplateResponse("games/map_game.html", ctx)
+
+
 @router.get("/{game_id}", response_class=HTMLResponse)
 async def play_game(request: Request, game_id: str, user=Depends(get_optional_user)):
     lang = get_lang(request)
@@ -63,7 +104,4 @@ async def play_game(request: Request, game_id: str, user=Depends(get_optional_us
     game_json = json.dumps(game, ensure_ascii=False)
     ctx = {"request": request, "game": game, "game_json": game_json, "user": user, "lang": lang}
     ctx.update(MAP_GAME_CONFIG.get(game_id, {}))
-    if game_id == "map-challenge":
-        counts = _dataset_service.get_map_game_counts()
-        ctx["map_game_counts_json"] = json.dumps(counts, ensure_ascii=False)
     return templates.TemplateResponse(template, ctx)
