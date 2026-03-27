@@ -17,7 +17,9 @@
         {% for game in games %}
         {% if game.enabled and game.type == 'solo' %}
         <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
-            <div class="game-card-icon">{{ game.icon }}</div>
+            <div class="game-card-icon">
+                <img src="/static/img/icons/{{ game.id }}.svg" width="56" height="56" alt="">
+            </div>
             <h3>{{ game_field(game, 'name', lang) }}</h3>
             <p>{{ game_field(game, 'description', lang) }}</p>
             <div class="game-card-play">{{ t('dash.play', lang) }}</div>
@@ -35,7 +37,9 @@
         {% for game in games %}
         {% if game.enabled and game.subcategory == 'adivina_cual' %}
         <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
-            <div class="game-card-icon">{{ game.icon }}</div>
+            <div class="game-card-icon">
+                <img src="/static/img/icons/{{ game.id }}.svg" width="56" height="56" alt="">
+            </div>
             <h3>{{ game_field(game, 'name', lang) }}</h3>
             <p>{{ game_field(game, 'description', lang) }}</p>
             <div class="game-card-play">{{ t('dash.play', lang) }}</div>
@@ -50,7 +54,9 @@
         {% for game in games %}
         {% if game.enabled and game.subcategory == 'sobre_el_mapa' %}
         <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
-            <div class="game-card-icon">{{ game.icon }}</div>
+            <div class="game-card-icon">
+                <img src="/static/img/icons/{{ game.id }}.svg" width="56" height="56" alt="">
+            </div>
             <h3>{{ game_field(game, 'name', lang) }}</h3>
             <p>{{ game_field(game, 'description', lang) }}</p>
             <div class="game-card-play">{{ t('dash.play', lang) }}</div>

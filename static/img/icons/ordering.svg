@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <style>
+    .bar1 { transform-origin: 14px 54px; animation: b1 2.8s ease-in-out infinite; }
+    .bar2 { transform-origin: 32px 54px; animation: b2 2.8s ease-in-out infinite 0.15s; }
+    .bar3 { transform-origin: 50px 54px; animation: b3 2.8s ease-in-out infinite 0.3s; }
+    @keyframes b1 {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.62); }
+    }
+    @keyframes b2 {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(1.13); }
+    }
+    @keyframes b3 {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.8); }
+    }
+  </style>
+
+  <!-- Base line -->
+  <line x1="5" y1="54" x2="59" y2="54" stroke="#e65100" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Bar 2nd place (left, medium) -->
+  <rect class="bar1" x="6" y="32" width="16" height="22" rx="2.5" fill="#e65100" opacity="0.65"/>
+  <!-- Rank label -->
+  <text x="14" y="29" text-anchor="middle" font-size="9" font-weight="bold"
+        fill="#e65100" opacity="0.8" font-family="sans-serif" font-style="normal">2</text>
+
+  <!-- Bar 1st place (center, tallest) -->
+  <rect class="bar2" x="24" y="16" width="16" height="38" rx="2.5" fill="#e65100"/>
+  <!-- Star on top -->
+  <text x="32" y="13" text-anchor="middle" font-size="10"
+        fill="#e65100" font-family="sans-serif">★</text>
+
+  <!-- Bar 3rd place (right, shortest) -->
+  <rect class="bar3" x="42" y="40" width="16" height="14" rx="2.5" fill="#e65100" opacity="0.5"/>
+  <text x="50" y="37" text-anchor="middle" font-size="9" font-weight="bold"
+        fill="#e65100" opacity="0.65" font-family="sans-serif" font-style="normal">3</text>
+</svg>

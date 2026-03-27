@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <style>
+    .country {
+      transform-origin: 32px 30px;
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    .capital-dot {
+      transform-origin: 33px 30px;
+      animation: dot-blink 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    @keyframes dot-blink {
+      0%, 100% { r: 2.5; opacity: 1; }
+      50% { r: 4; opacity: 0.4; }
+    }
+  </style>
+
+  <!-- Country silhouette (vaguely hexagonal/irregular) -->
+  <g class="country">
+    <path
+      d="M24,8 L33,6 L42,9 L50,17 L52,27 L49,36 L44,44 L36,52 L26,52 L18,46 L12,37 L12,25 L17,15 Z"
+      fill="#1a73e8" fill-opacity="0.13"
+      stroke="#1a73e8" stroke-width="2.2" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Capital city dot -->
+  <circle class="capital-dot" cx="33" cy="30" r="2.5" fill="#1a73e8"/>
+</svg>

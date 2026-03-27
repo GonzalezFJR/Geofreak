@@ -54,21 +54,20 @@
 <section class="modes-section">
     <div class="section-header">
         <h2 class="section-title">{{ t('landing.modes_title', lang) }}</h2>
-        <p class="section-desc">{{ t('landing.modes_desc', lang) }}</p>
     </div>
     <div class="modes-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 720px;">
         <a href="/play/solo" class="mode-card mode-solo">
-            <span class="mode-icon">🎯</span>
+            <img src="/static/img/icons/solo.svg" class="mode-icon" width="56" height="56" alt="">
             <h3>{{ t('landing.mode_solo', lang) }}</h3>
             <p>{{ t('landing.mode_solo_d', lang) }}</p>
         </a>
         <a href="/play/duel" class="mode-card mode-duel">
-            <span class="mode-icon">⚔️</span>
+            <img src="/static/img/icons/duel.svg" class="mode-icon" width="56" height="56" alt="">
             <h3>{{ t('landing.mode_duel', lang) }}</h3>
             <p>{{ t('landing.mode_duel_d', lang) }}</p>
         </a>
         <a href="/play/tournament" class="mode-card mode-tournament">
-            <span class="mode-icon">🏆</span>
+            <img src="/static/img/icons/tournament.svg" class="mode-icon" width="56" height="56" alt="">
             <h3>{{ t('landing.mode_tournament', lang) }}</h3>
             <p>{{ t('landing.mode_tournament_d', lang) }}</p>
         </a>
@@ -78,7 +77,7 @@
 <!-- GeoQuiz -->
 <section class="quiz-section">
     <div class="quiz-card">
-        <span class="quiz-card-icon">📝</span>
+        <img src="/static/img/icons/quiz.svg" class="quiz-card-icon" width="64" height="64" alt="">
         <div class="quiz-card-text">
             <h2>GeoQuiz</h2>
             <p>{{ t('landing.quiz_desc', lang) }}</p>

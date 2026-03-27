@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <style>
+    .arrow {
+      transform-origin: 33px 31px;
+      animation: quiver 3.2s ease-in-out infinite;
+    }
+    @keyframes quiver {
+      0%,  32%, 100% { transform: rotate(0deg); }
+      5%  { transform: rotate(-2.8deg); }
+      10% { transform: rotate(2.8deg); }
+      15% { transform: rotate(-2deg); }
+      20% { transform: rotate(2deg); }
+      25% { transform: rotate(-0.9deg); }
+      30% { transform: rotate(0.9deg); }
+    }
+  </style>
+
+  <!-- Outer ring -->
+  <circle cx="32" cy="32" r="27" stroke="#e53935" stroke-width="1.5" fill="#e53935" fill-opacity="0.04"/>
+  <!-- Middle ring -->
+  <circle cx="32" cy="32" r="18" stroke="#e53935" stroke-width="1.5" fill="#e53935" fill-opacity="0.06"/>
+  <!-- Inner ring -->
+  <circle cx="32" cy="32" r="10" stroke="#e53935" stroke-width="1.5" fill="#e53935" fill-opacity="0.1"/>
+  <!-- Bullseye -->
+  <circle cx="32" cy="32" r="4" fill="#e53935"/>
+
+  <!-- Arrow (quivers after impact) -->
+  <g class="arrow">
+    <!-- Shaft -->
+    <line x1="52" y1="12" x2="35" y2="29" stroke="#37474f" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- Arrowhead -->
+    <path d="M35,29 L29,27 L32,21 Z" fill="#37474f"/>
+    <!-- Fletching right -->
+    <path d="M52,12 L56,9 L54,15" fill="#ef9a9a" opacity="0.85"/>
+    <!-- Fletching left -->
+    <path d="M52,12 L48,9 L50,15" fill="#ef9a9a" opacity="0.85"/>
+  </g>
+</svg>

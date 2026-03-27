@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <style>
+    .sword-a {
+      transform-origin: 32px 32px;
+      animation: clash-a 2.8s ease-in-out infinite;
+    }
+    .sword-b {
+      transform-origin: 32px 32px;
+      animation: clash-b 2.8s ease-in-out infinite;
+    }
+    .sparks {
+      transform-origin: 32px 32px;
+      animation: spark-flash 2.8s ease-in-out infinite;
+    }
+    @keyframes clash-a {
+      0%, 100% { transform: rotate(0deg); }
+      25%       { transform: rotate(-11deg); }
+      55%       { transform: rotate(4deg); }
+    }
+    @keyframes clash-b {
+      0%, 100% { transform: rotate(0deg); }
+      25%       { transform: rotate(11deg); }
+      55%       { transform: rotate(-4deg); }
+    }
+    @keyframes spark-flash {
+      0%, 100%   { opacity: 0; transform: scale(0.4); }
+      22%, 28%   { opacity: 1; transform: scale(1); }
+    }
+  </style>
+
+  <!-- Sword A: handle top-left, tip bottom-right -->
+  <g class="sword-a">
+    <!-- Blade -->
+    <line x1="18" y1="18" x2="50" y2="50" stroke="#78909c" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Guard crosspiece -->
+    <line x1="22" y1="14" x2="14" y2="22" stroke="#78909c" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="14" y1="14" x2="22" y2="22" stroke="#78909c" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Handle -->
+    <line x1="8"  y1="8"  x2="18" y2="18" stroke="#6d4c41" stroke-width="4"   stroke-linecap="round"/>
+  </g>
+
+  <!-- Sword B: handle top-right, tip bottom-left -->
+  <g class="sword-b">
+    <!-- Blade -->
+    <line x1="46" y1="18" x2="14" y2="50" stroke="#546e7a" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Guard crosspiece -->
+    <line x1="50" y1="22" x2="42" y2="14" stroke="#546e7a" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="42" y1="22" x2="50" y2="14" stroke="#546e7a" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Handle -->
+    <line x1="56" y1="8"  x2="46" y2="18" stroke="#6d4c41" stroke-width="4"   stroke-linecap="round"/>
+  </g>
+
+  <!-- Clash sparks at center -->
+  <g class="sparks">
+    <line x1="32" y1="32" x2="27" y2="25" stroke="#ffca28" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="32" y1="32" x2="39" y2="26" stroke="#ffca28" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="32" y1="32" x2="26" y2="38" stroke="#ffca28" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="32" y1="32" x2="39" y2="39" stroke="#ffca28" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="32" cy="32" r="2.5" fill="#ffca28"/>
+  </g>
+</svg>

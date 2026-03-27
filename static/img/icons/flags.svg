@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <!-- Pole ball -->
+  <circle cx="12" cy="8" r="2.5" fill="#757575"/>
+  <!-- Pole -->
+  <line x1="12" y1="8" x2="12" y2="58" stroke="#757575" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Waving flag body (path morphing) -->
+  <path fill="#4caf50" stroke="#2e7d32" stroke-width="1">
+    <animate attributeName="d"
+      values="M12,11 C22,11 34,11 48,11 L48,33 C34,33 22,33 12,33 Z;
+              M12,11 C22,9 34,14 48,12 L48,34 C34,32 22,36 12,33 Z;
+              M12,11 C22,13 34,8 48,10 L48,32 C34,34 22,29 12,33 Z;
+              M12,11 C22,11 34,11 48,11 L48,33 C34,33 22,33 12,33 Z"
+      dur="2.5s" repeatCount="indefinite" calcMode="spline"
+      keySplines="0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1"/>
+  </path>
+
+  <!-- White horizontal stripe (also waves) -->
+  <path fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+    <animate attributeName="d"
+      values="M12,22 C22,22 34,22 48,22;
+              M12,22 C22,20 34,25 48,23;
+              M12,22 C22,24 34,19 48,21;
+              M12,22 C22,22 34,22 48,22"
+      dur="2.5s" repeatCount="indefinite" calcMode="spline"
+      keySplines="0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1"/>
+  </path>
+</svg>

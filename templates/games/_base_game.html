@@ -10,7 +10,9 @@
     <!-- ─── Start overlay ────────────────────────────────── -->
     <div class="game-settings-overlay" id="settings-overlay">
         <div class="game-settings-card">
-            <div class="game-settings-icon">{{ game.icon }}</div>
+            <div class="game-settings-icon">
+                <img src="/static/img/icons/{{ game.id }}.svg" width="64" height="64" alt="">
+            </div>
             <h2>{{ game_field(game, 'name', lang) }}</h2>
             <p class="game-settings-desc">{{ game_field(game, 'description', lang) }}</p>
 

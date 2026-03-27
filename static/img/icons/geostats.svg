@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <!-- Axes -->
+  <line x1="8" y1="56" x2="58" y2="56" stroke="#00897b" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+  <line x1="8" y1="8"  x2="8"  y2="56" stroke="#00897b" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+  <!-- Grid -->
+  <line x1="8" y1="38" x2="58" y2="38" stroke="#00897b" stroke-width="0.8" opacity="0.2"/>
+  <line x1="8" y1="20" x2="58" y2="20" stroke="#00897b" stroke-width="0.8" opacity="0.2"/>
+  <line x1="28" y1="8"  x2="28" y2="56" stroke="#00897b" stroke-width="0.8" opacity="0.15"/>
+  <line x1="48" y1="8"  x2="48" y2="56" stroke="#00897b" stroke-width="0.8" opacity="0.15"/>
+
+  <!-- Area fill -->
+  <path d="M8,50 C14,48 20,44 28,36 S42,20 58,14 L58,56 L8,56 Z"
+        fill="#00897b" opacity="0.12"/>
+
+  <!-- Trend line -->
+  <path d="M8,50 C14,48 20,44 28,36 S42,20 58,14"
+        stroke="#00897b" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Dot traveling along the path -->
+  <circle r="4.5" fill="#00897b">
+    <animateMotion path="M8,50 C14,48 20,44 28,36 S42,20 58,14"
+      dur="2.8s" repeatCount="indefinite" calcMode="spline"
+      keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
+  </circle>
+
+  <!-- Glow halo around dot -->
+  <circle r="8" fill="none" stroke="#00897b" stroke-width="1.5">
+    <animateMotion path="M8,50 C14,48 20,44 28,36 S42,20 58,14"
+      dur="2.8s" repeatCount="indefinite" calcMode="spline"
+      keyTimes="0;1" keySplines="0.4 0 0.2 1"/>
+    <animate attributeName="opacity" values="0.55;0.1;0.55" dur="1.4s" repeatCount="indefinite"/>
+    <animate attributeName="r" values="7;11;7" dur="1.4s" repeatCount="indefinite"/>
+  </circle>
+</svg>

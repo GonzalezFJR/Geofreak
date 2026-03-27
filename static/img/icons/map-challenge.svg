@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <style>
+    .pin-group {
+      animation: bounce 1.8s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+    }
+    @keyframes bounce {
+      0%, 55%, 100% { transform: translateY(0); }
+      28% { transform: translateY(-8px); }
+    }
+    .pin-shadow {
+      transform-origin: 40px 38px;
+      animation: shadow 1.8s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+    }
+    @keyframes shadow {
+      0%, 55%, 100% { transform: scaleX(1); opacity: 0.25; }
+      28% { transform: scaleX(0.5); opacity: 0.1; }
+    }
+  </style>
+
+  <!-- Globe circle -->
+  <circle cx="28" cy="36" r="21" stroke="#ff9800" stroke-width="2"/>
+  <!-- Central meridian ellipse -->
+  <ellipse cx="28" cy="36" rx="9" ry="21" stroke="#ff9800" stroke-width="1.5" opacity="0.45"/>
+  <!-- Equator -->
+  <line x1="7" y1="36" x2="49" y2="36" stroke="#ff9800" stroke-width="1.5" opacity="0.45"/>
+  <!-- Tropics -->
+  <path d="M10,26 Q28,22 46,26" stroke="#ff9800" stroke-width="1" opacity="0.3" fill="none"/>
+  <path d="M10,46 Q28,50 46,46" stroke="#ff9800" stroke-width="1" opacity="0.3" fill="none"/>
+
+  <!-- Pin shadow on globe surface -->
+  <ellipse class="pin-shadow" cx="40" cy="38" rx="4.5" ry="1.5" fill="#ff9800"/>
+
+  <!-- Bouncing map pin -->
+  <g class="pin-group">
+    <circle cx="40" cy="22" r="6.5" fill="#ff9800" stroke="#e65100" stroke-width="1"/>
+    <circle cx="40" cy="22" r="2.5" fill="white" opacity="0.85"/>
+    <path d="M40,28.5 L37.5,33 Q40,37 42.5,33 Z" fill="#e65100"/>
+  </g>
+</svg>
