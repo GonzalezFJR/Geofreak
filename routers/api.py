@@ -104,6 +104,44 @@ async def get_country_cities(iso_code: str):
     return cities
 
 
+# ── Map-game endpoints ───────────────────────────────────────────────────────
+
+@router.get("/map-game/data")
+async def map_game_data(
+    dataset: str = Query("countries", description="Dataset: countries|cities|us-states|spain-provinces|russia-regions"),
+    continent: str = Query("all", description="Continent filter (countries/cities only)"),
+    entity_type: str = Query("all", description="Entity type filter (countries only): all|country|territory"),
+    city_filter: str = Query("capitals", description="City filter: capitals|5m|1m|100k"),
+):
+    """Return entity list for the map game based on dataset and filters."""
+    if dataset == "countries":
+        return dataset_service.get_countries_for_map(continent=continent, entity_type=entity_type)
+    elif dataset == "cities":
+        return dataset_service.get_cities_for_map(city_filter=city_filter, continent=continent)
+    elif dataset == "us-states":
+        return dataset_service.get_us_states()
+    elif dataset == "spain-provinces":
+        return dataset_service.get_spain_provinces()
+    elif dataset == "russia-regions":
+        return dataset_service.get_russia_regions()
+    else:
+        raise HTTPException(status_code=400, detail="Unknown dataset")
+
+
+@router.get("/map-game/geojson")
+async def map_game_geojson(
+    dataset: str = Query("countries", description="Dataset: countries|us-states|spain-provinces|russia-regions"),
+):
+    """Return GeoJSON for the map game (polygon-based datasets only)."""
+    if dataset == "countries":
+        data = geodata_service.get_simple_geojson()
+    elif dataset in ("us-states", "spain-provinces", "russia-regions"):
+        data = geodata_service.get_subnational_geojson(dataset)
+    else:
+        raise HTTPException(status_code=400, detail="No GeoJSON for dataset: " + dataset)
+    return JSONResponse(content=data)
+
+
 # ── Quiz endpoints ───────────────────────────────────────────────────────────
 
 @router.get("/quiz/stats")

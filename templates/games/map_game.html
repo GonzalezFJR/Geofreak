@@ -1,16 +1,79 @@
 {% extends "games/_base_game.html" %}
 
 {% block extra_settings %}
-<!-- Target selector -->
-<div class="game-setting-group">
-    <label class="game-setting-label">{{ t('mg.sel_target', lang) }}</label>
-    <div class="seg-buttons" id="target-selector">
-        <button type="button" class="seg-btn active" data-value="country">{{ t('mg.target_country', lang) }}</button>
-        <button type="button" class="seg-btn" data-value="capital">{{ t('mg.target_capital', lang) }}</button>
-        <input type="hidden" id="map-target-value" value="country">
+<!-- 1. Dataset selector -->
+<div class="game-setting-group mg-section">
+    <label class="game-setting-label">{{ t('mg.sel_dataset', lang) }}</label>
+    <div class="seg-buttons seg-wrap" id="dataset-selector">
+        <button type="button" class="seg-btn active" data-value="countries">{{ t('mg.dataset_countries', lang) }}</button>
+        <button type="button" class="seg-btn" data-value="cities">{{ t('mg.dataset_cities', lang) }}</button>
+        <button type="button" class="seg-btn" data-value="us-states">{{ t('mg.dataset_us', lang) }}</button>
+        <button type="button" class="seg-btn" data-value="spain-provinces">{{ t('mg.dataset_spain', lang) }}</button>
+        <button type="button" class="seg-btn" data-value="russia-regions">{{ t('mg.dataset_russia', lang) }}</button>
+        <input type="hidden" id="map-dataset-value" value="countries">
     </div>
 </div>
-<!-- Mode selector -->
+
+<!-- 2. Dynamic filters -->
+<div id="mg-filter-countries" class="mg-filter-panel">
+    <div class="game-setting-group">
+        <label class="game-setting-label">{{ t('mg.fil_continent', lang) }}</label>
+        <div class="seg-buttons seg-wrap" id="continent-selector">
+            <button type="button" class="seg-btn active" data-value="all">{{ t('mg.cont_all', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="europe">{{ t('mg.cont_europe', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="americas">{{ t('mg.cont_americas', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="asia">{{ t('mg.cont_asia', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="africa">{{ t('mg.cont_africa', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="oceania">{{ t('mg.cont_oceania', lang) }}</button>
+            <input type="hidden" id="map-continent-value" value="all">
+        </div>
+    </div>
+    <div class="game-setting-group">
+        <label class="game-setting-label">{{ t('mg.fil_type', lang) }}</label>
+        <div class="seg-buttons" id="entitytype-selector">
+            <button type="button" class="seg-btn active" data-value="all">{{ t('mg.type_all', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="country">{{ t('mg.type_country', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="territory">{{ t('mg.type_territory', lang) }}</button>
+            <input type="hidden" id="map-entity-type-value" value="all">
+        </div>
+    </div>
+</div>
+
+<div id="mg-filter-cities" class="mg-filter-panel" style="display:none">
+    <div class="game-setting-group">
+        <label class="game-setting-label">{{ t('mg.fil_cities', lang) }}</label>
+        <div class="seg-buttons seg-wrap" id="cityfilter-selector">
+            <button type="button" class="seg-btn active" data-value="capitals">{{ t('mg.city_capitals', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="5m">{{ t('mg.city_5m', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="1m">{{ t('mg.city_1m', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="100k">{{ t('mg.city_100k', lang) }}</button>
+            <input type="hidden" id="map-city-filter-value" value="capitals">
+        </div>
+    </div>
+    <div class="game-setting-group">
+        <label class="game-setting-label">{{ t('mg.fil_continent', lang) }}</label>
+        <div class="seg-buttons seg-wrap" id="city-continent-selector">
+            <button type="button" class="seg-btn active" data-value="all">{{ t('mg.cont_all', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="europe">{{ t('mg.cont_europe', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="americas">{{ t('mg.cont_americas', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="asia">{{ t('mg.cont_asia', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="africa">{{ t('mg.cont_africa', lang) }}</button>
+            <button type="button" class="seg-btn" data-value="oceania">{{ t('mg.cont_oceania', lang) }}</button>
+            <input type="hidden" id="map-city-continent-value" value="all">
+        </div>
+    </div>
+</div>
+
+<!-- 3. Live count & time preview -->
+<div class="map-preview-bar" id="mg-preview-bar">
+    <span class="preview-count" id="mg-preview-count">–</span>
+    <span class="preview-sep">·</span>
+    <span class="preview-time" id="mg-preview-time-type">– {{ t('mg.preview_name', lang) }}</span>
+    <span class="preview-sep">·</span>
+    <span class="preview-time" id="mg-preview-time-locate">– {{ t('mg.preview_locate', lang) }}</span>
+</div>
+
+<!-- 4. Mode selector -->
 <div class="game-setting-group">
     <label class="game-setting-label">{{ t('mg.sel_mode', lang) }}</label>
     <div class="seg-buttons" id="mode-selector">
@@ -19,32 +82,118 @@
         <input type="hidden" id="map-mode-value" value="type">
     </div>
 </div>
+
 <script>
 (function () {
-    ['target-selector', 'mode-selector'].forEach(function (groupId) {
+    var COUNTS = {{ map_game_counts_json | safe }};
+    var T_preview = {
+        name: {{ t('mg.preview_name', lang) | tojson }},
+        locate: {{ t('mg.preview_locate', lang) | tojson }},
+        entities: {
+            countries: { all: {{ t('mg.entities_country', lang) | tojson }}, country: {{ t('mg.entities_country', lang) | tojson }}, territory: {{ t('mg.entities_territory', lang) | tojson }} },
+            cities: {{ t('mg.entities_city', lang) | tojson }},
+            'us-states': {{ t('mg.entities_state', lang) | tojson }},
+            'spain-provinces': {{ t('mg.entities_province', lang) | tojson }},
+            'russia-regions': {{ t('mg.entities_region', lang) | tojson }},
+        },
+    };
+
+    // ── Seg-button helper ──
+    function makeSeg(groupId, hiddenId, onChange) {
         var group = document.getElementById(groupId);
         if (!group) return;
-        var hidden = group.querySelector('input[type=hidden]');
+        var hidden = document.getElementById(hiddenId);
         group.querySelectorAll('.seg-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 group.querySelectorAll('.seg-btn').forEach(function (b) { b.classList.remove('active'); });
                 btn.classList.add('active');
-                hidden.value = btn.getAttribute('data-value');
+                if (hidden) hidden.value = btn.getAttribute('data-value');
+                if (onChange) onChange(btn.getAttribute('data-value'));
             });
         });
+    }
+
+    // ── Preview update ──
+    function calcMinutes(n, factor) {
+        var m = Math.floor(n * factor / 60);
+        return m < 1 ? 1 : m;
+    }
+
+    function getN() {
+        var dataset = document.getElementById('map-dataset-value').value || 'countries';
+        var dc = COUNTS[dataset];
+        if (!dc) return 0;
+        if (dataset === 'countries') {
+            var cont = document.getElementById('map-continent-value').value || 'all';
+            var et = document.getElementById('map-entity-type-value').value || 'all';
+            return dc[cont + '_' + et] || 0;
+        }
+        if (dataset === 'cities') {
+            var cf = document.getElementById('map-city-filter-value').value || 'capitals';
+            var cc = document.getElementById('map-city-continent-value').value || 'all';
+            return dc[cf + '_' + cc] || 0;
+        }
+        return dc['all'] || 0;
+    }
+
+    function getEntityLabel(n, dataset, entityType) {
+        var t_ent = T_preview.entities;
+        if (dataset === 'countries') {
+            var et = entityType || 'all';
+            var label = (t_ent.countries[et] || t_ent.countries['all']);
+            return n + ' ' + label;
+        }
+        if (typeof t_ent[dataset] === 'string') return n + ' ' + t_ent[dataset];
+        return n + ' entidades';
+    }
+
+    function updatePreview() {
+        var n = getN();
+        var dataset = document.getElementById('map-dataset-value').value || 'countries';
+        var et = dataset === 'countries' ? (document.getElementById('map-entity-type-value').value || 'all') : 'all';
+        var countEl  = document.getElementById('mg-preview-count');
+        var typeEl   = document.getElementById('mg-preview-time-type');
+        var locateEl = document.getElementById('mg-preview-time-locate');
+        if (countEl)  countEl.textContent  = getEntityLabel(n, dataset, et);
+        if (typeEl)   typeEl.textContent   = calcMinutes(n, 4) + ' ' + T_preview.name;
+        if (locateEl) locateEl.textContent = calcMinutes(n, 6) + ' ' + T_preview.locate;
+    }
+
+    // ── Filter panel visibility ──
+    function showFilterPanel(dataset) {
+        document.getElementById('mg-filter-countries').style.display = (dataset === 'countries') ? '' : 'none';
+        document.getElementById('mg-filter-cities').style.display    = (dataset === 'cities')    ? '' : 'none';
+    }
+
+    // ── Wire up selectors ──
+    makeSeg('dataset-selector', 'map-dataset-value', function (val) {
+        showFilterPanel(val);
+        updatePreview();
     });
+    makeSeg('continent-selector', 'map-continent-value', updatePreview);
+    makeSeg('entitytype-selector', 'map-entity-type-value', updatePreview);
+    makeSeg('cityfilter-selector', 'map-city-filter-value', updatePreview);
+    makeSeg('city-continent-selector', 'map-city-continent-value', updatePreview);
+    makeSeg('mode-selector', 'map-mode-value', null);
+
+    // Initial render
+    updatePreview();
 }());
 </script>
 {% endblock %}
 
 {% block game_area %}
 <div class="map-game-container">
-    <!-- Click/locate mode prompt (shown when mode=click) -->
+    <!-- Click/locate mode prompt (shown when mode=click for polygon datasets) -->
     <div class="map-game-prompt" id="game-prompt" style="display:none">
         <span class="prompt-country" id="prompt-country"></span>
         <span class="prompt-label" id="prompt-text"></span>
         <input type="text" id="answer-input-locate" autocomplete="off" placeholder="">
         <button class="btn-reveal-map" onclick="MapGame.reveal()">👁️</button>
+    </div>
+    <!-- Cities locate prompt -->
+    <div class="map-game-prompt map-city-prompt" id="city-locate-prompt" style="display:none">
+        <span class="prompt-label" id="city-locate-text"></span>
     </div>
     <!-- Type/name mode bar (shown when mode=type) -->
     <div class="map-game-input-bar" id="game-input-bar" style="display:none">

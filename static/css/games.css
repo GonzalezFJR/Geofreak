@@ -16,7 +16,7 @@
     background: var(--white);
     border-radius: var(--radius-xl);
     padding: 40px 36px;
-    max-width: 480px;
+    max-width: 540px;
     width: 100%;
     text-align: center;
     box-shadow: var(--shadow-xl);
@@ -87,6 +87,22 @@
     border-radius: var(--radius-sm);
     overflow: hidden;
 }
+/* Wrapping variant for many buttons (dataset/continent selectors) */
+.seg-buttons.seg-wrap {
+    flex-wrap: wrap;
+    overflow: visible;
+    border-radius: var(--radius-sm);
+    border: none;
+    gap: 4px;
+}
+.seg-buttons.seg-wrap .seg-btn {
+    flex: 0 0 auto;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    font-size: 0.78rem;
+}
+.seg-buttons.seg-wrap .seg-btn + .seg-btn { border-left: 1.5px solid var(--gray-200); }
 .seg-btn {
     flex: 1;
     padding: 5px 14px;
@@ -102,6 +118,50 @@
 .seg-btn + .seg-btn { border-left: 1.5px solid var(--gray-200); }
 .seg-btn.active { background: var(--blue-500); color: var(--white); }
 .seg-btn:not(.active):hover { background: var(--gray-100); }
+
+/* ─── Map game config panel ────────────────────────────────── */
+.mg-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+.mg-filter-panel {
+    width: 100%;
+}
+.mg-filter-panel .game-setting-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+.map-preview-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    background: var(--gray-50);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    margin-bottom: 18px;
+    font-size: 0.85rem;
+    color: var(--gray-700);
+}
+.preview-count {
+    font-weight: 700;
+    color: var(--blue-500);
+}
+.preview-sep { color: var(--gray-300); }
+.preview-time { color: var(--gray-600); }
+
+/* City locate prompt */
+.map-city-prompt {
+    background: rgba(255,255,255,0.95);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    padding: 8px 18px;
+    justify-content: center;
+}
 
 /* ─── Game setting groups (difficulty, countdown) ──────────── */
 .game-setting-group {

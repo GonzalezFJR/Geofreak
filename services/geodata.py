@@ -5,9 +5,14 @@ import os
 from typing import Optional
 
 
-GEOJSON_DIR = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)), "static", "data", "geojson"
-)
+_DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static", "data")
+GEOJSON_DIR = os.path.join(_DATA_DIR, "geojson")
+
+SUBNATIONAL_DIRS: dict[str, str] = {
+    "us-states":        os.path.join(_DATA_DIR, "geojson_us"),
+    "spain-provinces":  os.path.join(_DATA_DIR, "geojson_spain"),
+    "russia-regions":   os.path.join(_DATA_DIR, "geojson_russia"),
+}
 
 
 class GeodataService:
@@ -16,6 +21,7 @@ class GeodataService:
     def __init__(self):
         self._all_cache: Optional[dict] = None
         self._simple_cache: Optional[dict] = None
+        self._subnational_cache: dict[str, dict] = {}
 
     def get_all_geojson(self) -> dict:
         """Return a combined FeatureCollection from all individual country files."""
@@ -63,6 +69,42 @@ class GeodataService:
 
         # Fallback to full version
         return self.get_all_geojson()
+
+    def get_subnational_geojson(self, dataset: str) -> dict:
+        """Return a FeatureCollection combining all .geojson files for a sub-national dataset.
+
+        Adds ``_game_id`` (filename without extension) to each feature's properties
+        so the JS engine can match features to CSV entity IDs.
+        """
+        if dataset in self._subnational_cache:
+            return self._subnational_cache[dataset]
+
+        directory = SUBNATIONAL_DIRS.get(dataset)
+        if not directory or not os.path.isdir(directory):
+            return {"type": "FeatureCollection", "features": []}
+
+        features: list = []
+        for fname in sorted(os.listdir(directory)):
+            if not fname.endswith(".geojson"):
+                continue
+            game_id = fname[:-8]  # strip ".geojson"
+            fpath = os.path.join(directory, fname)
+            try:
+                with open(fpath, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                if data.get("type") == "FeatureCollection":
+                    for feat in data.get("features", []):
+                        feat.setdefault("properties", {})["_game_id"] = game_id
+                        features.append(feat)
+                elif data.get("type") == "Feature":
+                    data.setdefault("properties", {})["_game_id"] = game_id
+                    features.append(data)
+            except (json.JSONDecodeError, OSError):
+                continue
+
+        result = {"type": "FeatureCollection", "features": features}
+        self._subnational_cache[dataset] = result
+        return result
 
     def get_country_geojson(self, iso_code: str) -> Optional[dict]:
         """Return GeoJSON for a single country by ISO code."""

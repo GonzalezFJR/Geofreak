@@ -9,10 +9,12 @@ from core.auth import get_optional_user
 from core.i18n import get_lang
 from core.templates import templates
 from services.games import GamesService
+from services.dataset import DatasetService
 
 router = APIRouter(prefix="/games", tags=["games"])
 
 games_service = GamesService()
+_dataset_service = DatasetService()
 
 TEMPLATE_MAP = {
     "flags": "games/flags.html",
@@ -61,4 +63,7 @@ async def play_game(request: Request, game_id: str, user=Depends(get_optional_us
     game_json = json.dumps(game, ensure_ascii=False)
     ctx = {"request": request, "game": game, "game_json": game_json, "user": user, "lang": lang}
     ctx.update(MAP_GAME_CONFIG.get(game_id, {}))
+    if game_id == "map-challenge":
+        counts = _dataset_service.get_map_game_counts()
+        ctx["map_game_counts_json"] = json.dumps(counts, ensure_ascii=False)
     return templates.TemplateResponse(template, ctx)
