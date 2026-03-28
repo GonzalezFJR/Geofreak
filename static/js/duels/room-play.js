@@ -20,6 +20,7 @@
         timer: null,
         timerInterval: null,
         pollInterval: null,
+        finished: false,     // true once player has submitted their score
         geoGuessPos: null,   // 0-1 fraction for geostats
         ordSelected: null,   // index of selected card for swap
     };
@@ -73,8 +74,11 @@
             stopPolling();
             showSection('rp-game');
             loadAndStartGame();
+        } else if (data.status === 'playing' && state.finished) {
+            // Player finished — keep updating the live waiting table
+            updateWaitingView(data);
         } else if (data.status === 'playing') {
-            // Already in game — do nothing (game loop handles itself)
+            // Still in game — do nothing (game loop handles itself)
         } else if (data.status === 'finished') {
             stopPolling();
             showResults(data);
@@ -540,6 +544,7 @@
         if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
         var timeMs = Date.now() - state.startTime;
         var total  = state.questions.length;
+        state.finished = true;
 
         fetch('/api/rooms/' + state.roomCode + '/score', {
             method: 'POST',
@@ -554,11 +559,82 @@
 
         // Show waiting-for-results section, poll for leaderboard
         showSection('rp-waiting-results');
-        startPolling(4000);
+        startPolling(3000);
+    }
+
+    // ── Live waiting table ────────────────────────────────────────────────────
+    function updateWaitingView(data) {
+        var players = data.players || [];
+        var scores  = data.scores  || {};
+        var total   = data.n_questions || state.questions.length;
+
+        // Update subtitle count
+        var finishedCount = Object.keys(scores).length;
+        var wrCount = document.getElementById('rp-wr-count');
+        if (wrCount) {
+            wrCount.textContent = ROOM_T.n_finished
+                .replace('{n}', finishedCount)
+                .replace('{total}', players.length);
+        }
+
+        // Split into finished / still playing
+        var finished = [], playing = [];
+        players.forEach(function (p) {
+            var s = scores[p.player_id];
+            if (s) {
+                finished.push({ name: p.name, player_id: p.player_id, is_guest: p.is_guest,
+                    score: s.score || 0, pct: s.pct || 0, time_ms: s.time_ms || 0 });
+            } else {
+                playing.push(p);
+            }
+        });
+        finished.sort(function (a, b) { return b.score - a.score || a.time_ms - b.time_ms; });
+
+        var tbody = document.getElementById('rp-wr-tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        var rank = 1;
+        finished.forEach(function (p) {
+            var isYou = (p.player_id === state.playerId);
+            var medals = ['🥇', '🥈', '🥉'];
+            var rankCell = rank <= 3 ? medals[rank - 1] : rank + '.';
+            var tr = document.createElement('tr');
+            tr.className = 'rp-wr-row rp-wr-finished' + (isYou ? ' rp-wr-you' : '');
+            tr.innerHTML =
+                '<td class="rp-wr-rank">' + rankCell + '</td>' +
+                '<td class="rp-wr-name">' + esc(p.name) +
+                    (isYou ? ' <span class="rp-badge-you">' + ROOM_T.you + '</span>' : '') + '</td>' +
+                '<td class="rp-wr-score">' + p.score + ' / ' + total + '</td>' +
+                '<td class="rp-wr-time">' + formatTime(p.time_ms) + '</td>' +
+                '<td class="rp-wr-status rp-wr-done">✅</td>';
+            tbody.appendChild(tr);
+            rank++;
+        });
+
+        playing.forEach(function (p) {
+            var isYou = (p.player_id === state.playerId);
+            var tr = document.createElement('tr');
+            tr.className = 'rp-wr-row rp-wr-playing' + (isYou ? ' rp-wr-you' : '');
+            tr.innerHTML =
+                '<td class="rp-wr-rank">—</td>' +
+                '<td class="rp-wr-name">' + esc(p.name) + '</td>' +
+                '<td class="rp-wr-score">—</td>' +
+                '<td class="rp-wr-time">—</td>' +
+                '<td class="rp-wr-status rp-wr-still-playing">' + esc(ROOM_T.still_playing) + '</td>';
+            tbody.appendChild(tr);
+        });
+    }
+
+    function formatTime(ms) {
+        var secs = Math.floor((ms || 0) / 1000);
+        var m = Math.floor(secs / 60), s = secs % 60;
+        return m + ':' + (s < 10 ? '0' : '') + s;
     }
 
     // ── Results ────────────────────────────────────────────────────────────────
     function showResults(data) {
+        updateWaitingView(data); // sync the waiting table one last time
         showSection('rp-results');
         var scores  = data.scores || {};
         var players = data.players || [];

@@ -558,6 +558,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.waiting_results": "¡Has terminado! Esperando a los demás…",
         "room.partial_results": "Resultados parciales",
         "room.n_finished": "{n} de {total} jugadores han terminado",
+        "room.still_playing": "Jugando…",
         "room.results_title": "Resultados finales",
         "room.play_again": "Jugar otra vez",
         "room.back_games": "Ir a juegos",
@@ -1168,6 +1169,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.geo_correct": "✅ Very close!", "room.geo_close": "🟡 Close", "room.geo_wrong": "❌ Far off",
         "room.waiting_results": "Done! Waiting for others…", "room.partial_results": "Partial results",
         "room.n_finished": "{n} of {total} players finished",
+        "room.still_playing": "Playing…",
         "room.results_title": "Final results", "room.play_again": "Play again", "room.back_games": "Go to games",
         "dash.play_solo": "Play solo", "dash.play_duel": "⚔️ Duel",
 
@@ -1769,6 +1771,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.geo_correct": "✅ Très proche !", "room.geo_close": "🟡 Proche", "room.geo_wrong": "❌ Loin",
         "room.waiting_results": "Terminé ! En attente des autres…", "room.partial_results": "Résultats partiels",
         "room.n_finished": "{n} sur {total} joueurs ont terminé",
+        "room.still_playing": "En jeu…",
         "room.results_title": "Résultats finaux", "room.play_again": "Rejouer", "room.back_games": "Jeux",
         "dash.play_solo": "Jouer solo", "dash.play_duel": "⚔️ Duel",
 
@@ -2367,6 +2370,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.geo_correct": "✅ Molto vicino!", "room.geo_close": "🟡 Vicino", "room.geo_wrong": "❌ Lontano",
         "room.waiting_results": "Finito! Aspettando gli altri…", "room.partial_results": "Risultati parziali",
         "room.n_finished": "{n} su {total} giocatori hanno finito",
+        "room.still_playing": "Giocando…",
         "room.results_title": "Risultati finali", "room.play_again": "Gioca ancora", "room.back_games": "Giochi",
         "dash.play_solo": "Gioca solo", "dash.play_duel": "⚔️ Duello",
 
@@ -2965,6 +2969,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.geo_correct": "✅ Очень близко!", "room.geo_close": "🟡 Близко", "room.geo_wrong": "❌ Далеко",
         "room.waiting_results": "Готово! Ожидание других…", "room.partial_results": "Частичные результаты",
         "room.n_finished": "{n} из {total} игроков завершили",
+        "room.still_playing": "Играет…",
         "room.results_title": "Финальные результаты", "room.play_again": "Играть снова", "room.back_games": "Игры",
         "dash.play_solo": "Играть одному", "dash.play_duel": "⚔️ Дуэль",
 

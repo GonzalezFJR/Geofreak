@@ -732,7 +732,17 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
-/* HUD */
+/* Game area override: quiz games don't need overflow:hidden like map games */
+.rp-game-area {
+    overflow-y: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    max-width: 700px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* HUD — legacy styles kept for .rp-hud-progress; color inherits white from .game-hud */
 .rp-hud {
     display: flex;
     align-items: center;
@@ -743,9 +753,8 @@
     margin-bottom: 20px;
     box-shadow: 0 1px 6px rgba(0,0,0,0.07);
 }
-.rp-hud-progress { flex: 1; font-size: 0.9rem; color: var(--gray-600, #4b5563); }
-.rp-hud-score { font-size: 1.1rem; font-weight: 700; color: var(--gray-900, #111827); }
-.rp-hud-timer { font-size: 0.9rem; color: #ef4444; font-weight: 600; }
+/* Inside .game-hud all text is white; progress is left-aligned */
+.rp-hud-progress { flex: 1; font-size: 0.9rem; }
 
 /* Prompt */
 .rp-prompt {
@@ -880,12 +889,78 @@
 .rp-geo-answer { margin-top: 8px; font-size: 1rem; font-weight: 600; color: var(--gray-800); }
 
 /* ── Waiting results ─────────────────────────────────────────── */
-.rp-waiting-results {
-    text-align: center;
-    padding: 40px 16px;
+.rp-wr-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
 }
+.rp-wr-header h3 { font-size: 1.25rem; font-weight: 700; color: var(--gray-900, #111827); margin: 0 0 4px; }
+.rp-wr-count { color: var(--gray-500, #6b7280); font-size: 0.9rem; margin: 0; }
+
+.rp-wr-table-wrap {
+    background: var(--white, #fff);
+    border-radius: var(--radius-lg, 14px);
+    box-shadow: var(--shadow-sm, 0 1px 6px rgba(0,0,0,0.07));
+    overflow: hidden;
+}
+.rp-wr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+.rp-wr-table thead tr {
+    background: var(--gray-50, #f9fafb);
+    border-bottom: 2px solid var(--gray-100, #f3f4f6);
+}
+.rp-wr-table th {
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--gray-500, #6b7280);
+    text-align: left;
+}
+.rp-wr-table th:nth-child(3),
+.rp-wr-table th:nth-child(4),
+.rp-wr-table th:nth-child(5) { text-align: right; }
+
+.rp-wr-row { border-bottom: 1px solid var(--gray-100, #f3f4f6); transition: background 0.15s; }
+.rp-wr-row:last-child { border-bottom: none; }
+.rp-wr-row td { padding: 12px 14px; vertical-align: middle; }
+
+.rp-wr-you { background: #eff6ff; }
+.rp-wr-playing { opacity: 0.65; }
+
+.rp-wr-rank { font-size: 1.2rem; min-width: 32px; width: 40px; }
+.rp-wr-name { font-weight: 600; color: var(--gray-900, #111827); }
+.rp-wr-name .rp-badge-you {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 10px;
+    background: #dbeafe;
+    color: #1e40af;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+.rp-wr-score,
+.rp-wr-time,
+.rp-wr-status { text-align: right; }
+.rp-wr-score { font-weight: 700; color: var(--gray-800, #1f2937); }
+.rp-wr-time { color: var(--gray-500, #6b7280); font-size: 0.85rem; }
+.rp-wr-done { color: #16a34a; font-size: 1.1rem; }
+.rp-wr-still-playing {
+    font-size: 0.78rem;
+    color: var(--gray-500, #6b7280);
+    font-style: italic;
+}
+
 .rp-spinner {
     width: 44px; height: 44px;
+    flex-shrink: 0;
     border: 4px solid var(--gray-200, #e5e7eb);
     border-top-color: var(--blue-500, #3b82f6);
     border-radius: 50%;
@@ -893,10 +968,6 @@
     margin: 0 auto 20px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.rp-waiting-results h3 { font-size: 1.3rem; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
-.rp-waiting-results p { color: var(--gray-500); margin-bottom: 24px; }
-.rp-partial-leaderboard { text-align: left; }
-.rp-partial-leaderboard h4 { font-size: 0.9rem; font-weight: 700; color: var(--gray-600); margin: 0 0 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* ── Results ─────────────────────────────────────────────────── */
 .rp-results-header { text-align: center; margin-bottom: 28px; }

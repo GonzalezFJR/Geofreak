@@ -3,6 +3,7 @@
 {% block title %}{{ game_field(game, 'name', lang) }} — {{ t('room.duel', lang) }}{% endblock %}
 
 {% block extra_head %}
+<link rel="stylesheet" href="/static/css/games.css">
 <link rel="stylesheet" href="/static/css/duels.css">
 {% endblock %}
 
@@ -50,62 +51,67 @@
         <p class="room-error" id="rp-start-error" style="display:none"></p>
     </div>
 
-    <!-- ── Game area ──────────────────────────────────────────────── -->
-    <div id="rp-game" class="rp-section" style="display:none">
-        <!-- HUD -->
-        <div class="rp-hud" id="rp-hud">
-            <div class="rp-hud-progress">
+    <!-- ── Game area — same structure as solo mode (.game-hud + .game-area) ── -->
+    <div id="rp-game" style="display:none">
+        <!-- HUD: reuses .game-hud from games.css — fixed below navbar, dark bar -->
+        <div class="game-hud" id="rp-hud">
+            <span class="rp-hud-progress">
                 {{ t('room.question', lang) }} <span id="rp-q-num">1</span>/<span id="rp-q-total">?</span>
-            </div>
-            <div class="rp-hud-score">
+            </span>
+            <span class="hud-score">
                 <span id="rp-score">0</span> {{ t('room.pts', lang) }}
+            </span>
+            <span class="hud-timer" id="rp-timer" style="display:none">⏱ <span id="rp-timer-val">0:00</span></span>
+        </div>
+
+        <!-- Game panels: reuses .game-area offset from games.css; scrollable for quiz games -->
+        <div class="game-area rp-game-area">
+
+            <!-- Comparison game -->
+            <div id="rp-cmp" style="display:none">
+                <div class="rp-prompt" id="rp-cmp-prompt"></div>
+                <div class="rp-cmp-cards" id="rp-cmp-cards"></div>
+                <div class="rp-feedback" id="rp-cmp-fb"></div>
             </div>
-            <div class="rp-hud-timer" id="rp-timer" style="display:none">⏱ <span id="rp-timer-val">0:00</span></div>
-        </div>
 
-        <!-- Comparison game -->
-        <div id="rp-cmp" style="display:none">
-            <div class="rp-prompt" id="rp-cmp-prompt"></div>
-            <div class="rp-cmp-cards" id="rp-cmp-cards"></div>
-            <div class="rp-feedback" id="rp-cmp-fb"></div>
-        </div>
-
-        <!-- Ordering game -->
-        <div id="rp-ord" style="display:none">
-            <div class="rp-prompt" id="rp-ord-prompt"></div>
-            <ul class="rp-ord-list" id="rp-ord-list"></ul>
-            <button class="room-primary-btn rp-confirm-btn" id="rp-ord-confirm" onclick="RoomPlay.confirmOrder()">
-                {{ t('room.confirm', lang) }}
-            </button>
-            <div class="rp-feedback" id="rp-ord-fb"></div>
-            <button class="room-secondary-btn rp-next-btn" id="rp-ord-next" onclick="RoomPlay.nextQuestion()" style="display:none">
-                {{ t('room.next', lang) }}
-            </button>
-        </div>
-
-        <!-- Geostats game -->
-        <div id="rp-geo" style="display:none">
-            <div class="rp-prompt" id="rp-geo-prompt"></div>
-            <div class="rp-geo-target" id="rp-geo-target"></div>
-            <div class="rp-geo-curve-wrap">
-                <div class="rp-geo-labels">
-                    <span class="rp-geo-label-min" id="rp-geo-min"></span>
-                    <span class="rp-geo-label-max" id="rp-geo-max"></span>
-                </div>
-                <div class="rp-geo-curve" id="rp-geo-curve" onclick="RoomPlay.geoClick(event)">
-                    <div class="rp-geo-bar"></div>
-                    <div class="rp-geo-marker rp-geo-guess" id="rp-geo-guess-marker" style="display:none"></div>
-                    <div class="rp-geo-marker rp-geo-correct" id="rp-geo-correct-marker" style="display:none"></div>
-                </div>
-                <div class="rp-geo-hint">{{ t('room.geo_hint', lang) }}</div>
+            <!-- Ordering game -->
+            <div id="rp-ord" style="display:none">
+                <div class="rp-prompt" id="rp-ord-prompt"></div>
+                <ul class="rp-ord-list" id="rp-ord-list"></ul>
+                <button class="room-primary-btn rp-confirm-btn" id="rp-ord-confirm" onclick="RoomPlay.confirmOrder()">
+                    {{ t('room.confirm', lang) }}
+                </button>
+                <div class="rp-feedback" id="rp-ord-fb"></div>
+                <button class="room-secondary-btn rp-next-btn" id="rp-ord-next" onclick="RoomPlay.nextQuestion()" style="display:none">
+                    {{ t('room.next', lang) }}
+                </button>
             </div>
-            <button class="room-primary-btn rp-confirm-btn" id="rp-geo-confirm" onclick="RoomPlay.confirmGeo()" style="display:none">
-                {{ t('room.confirm', lang) }}
-            </button>
-            <div class="rp-feedback" id="rp-geo-fb"></div>
-            <button class="room-secondary-btn rp-next-btn" id="rp-geo-next" onclick="RoomPlay.nextQuestion()" style="display:none">
-                {{ t('room.next', lang) }}
-            </button>
+
+            <!-- Geostats game -->
+            <div id="rp-geo" style="display:none">
+                <div class="rp-prompt" id="rp-geo-prompt"></div>
+                <div class="rp-geo-target" id="rp-geo-target"></div>
+                <div class="rp-geo-curve-wrap">
+                    <div class="rp-geo-labels">
+                        <span class="rp-geo-label-min" id="rp-geo-min"></span>
+                        <span class="rp-geo-label-max" id="rp-geo-max"></span>
+                    </div>
+                    <div class="rp-geo-curve" id="rp-geo-curve" onclick="RoomPlay.geoClick(event)">
+                        <div class="rp-geo-bar"></div>
+                        <div class="rp-geo-marker rp-geo-guess" id="rp-geo-guess-marker" style="display:none"></div>
+                        <div class="rp-geo-marker rp-geo-correct" id="rp-geo-correct-marker" style="display:none"></div>
+                    </div>
+                    <div class="rp-geo-hint">{{ t('room.geo_hint', lang) }}</div>
+                </div>
+                <button class="room-primary-btn rp-confirm-btn" id="rp-geo-confirm" onclick="RoomPlay.confirmGeo()" style="display:none">
+                    {{ t('room.confirm', lang) }}
+                </button>
+                <div class="rp-feedback" id="rp-geo-fb"></div>
+                <button class="room-secondary-btn rp-next-btn" id="rp-geo-next" onclick="RoomPlay.nextQuestion()" style="display:none">
+                    {{ t('room.next', lang) }}
+                </button>
+            </div>
+
         </div>
     </div>
 
@@ -124,13 +130,31 @@
     </div>
 
     <!-- ── Waiting for results ────────────────────────────────────── -->
-    <div id="rp-waiting-results" class="rp-section rp-waiting-results" style="display:none">
-        <div class="rp-spinner"></div>
-        <h3>{{ t('room.waiting_results', lang) }}</h3>
-        <p id="rp-wr-count"></p>
-        <div class="rp-partial-leaderboard">
-            <h4>{{ t('room.partial_results', lang) }}</h4>
-            <ol class="rp-leaderboard rp-leaderboard-partial" id="rp-partial-lb"></ol>
+    <div id="rp-waiting-results" class="rp-section" style="display:none">
+        <div class="rp-wr-header">
+            <div class="rp-spinner"></div>
+            <div>
+                <h3>{{ t('room.waiting_results', lang) }}</h3>
+                <p id="rp-wr-count" class="rp-wr-count"></p>
+            </div>
+        </div>
+        <div class="rp-wr-table-wrap">
+            <table class="rp-wr-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ t('room.players_title', lang) }}</th>
+                        <th>{{ t('room.pts', lang) }}</th>
+                        <th>⏱</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="rp-wr-tbody"></tbody>
+            </table>
+        </div>
+        <div class="rp-results-actions" style="margin-top:28px">
+            <a href="/duel/{{ game.id }}" class="room-secondary-btn">{{ t('room.play_again', lang) }}</a>
+            <a href="/games" class="room-text-btn">{{ t('room.back_games', lang) }}</a>
         </div>
     </div>
 
@@ -157,6 +181,7 @@ var ROOM_T = {
     geo_close: {{ t('room.geo_close', lang) | tojson }},
     geo_wrong: {{ t('room.geo_wrong', lang) | tojson }},
     n_finished: {{ t('room.n_finished', lang) | tojson }},
+    still_playing: {{ t('room.still_playing', lang) | tojson }},
     wait_host: {{ t('room.wait_host', lang) | tojson }},
     starting: {{ t('room.starting', lang) | tojson }},
     err_start: {{ t('room.err_start', lang) | tojson }},
