@@ -26,9 +26,31 @@
                     <p>{{ game_field(game, 'description', lang) }}</p>
                 </div>
             </a>
-            <div class="game-card-actions">
-                <a href="/games/{{ game.id }}" class="game-card-play-solo">{{ t('dash.play_solo', lang) }}</a>
-                <a href="/duel/{{ game.id }}" class="game-card-play-duel">{{ t('dash.play_duel', lang) }}</a>
+            <div class="game-card-footer">
+                <div class="gmt" data-solo="/games/{{ game.id }}" data-duel="/duel/{{ game.id }}">
+                    <div class="gmt-track">
+                        <div class="gmt-thumb"></div>
+                        <button class="gmt-opt active" data-idx="0" type="button">
+                            <svg width="13" height="13" viewBox="0 0 13 13" fill="currentColor" aria-hidden="true">
+                                <circle cx="6.5" cy="3.5" r="2.5"/>
+                                <path d="M1.5 12.5c0-2.76 2.24-5 5-5s5 2.24 5 5H1.5z"/>
+                            </svg>
+                            <span>Solo</span>
+                        </button>
+                        <button class="gmt-opt" data-idx="1" type="button">
+                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="1.5" y1="1.5" x2="8.5" y2="8.5"/>
+                                <line x1="11.5" y1="1.5" x2="4.5" y2="8.5"/>
+                                <line x1="7" y1="4" x2="9" y2="2"/>
+                                <line x1="6" y1="4" x2="4" y2="2"/>
+                                <line x1="8.5" y1="8.5" x2="11" y2="11"/>
+                                <line x1="4.5" y1="8.5" x2="2" y2="11"/>
+                            </svg>
+                            <span>Duelo</span>
+                        </button>
+                    </div>
+                </div>
+                <a class="gmt-play" href="/games/{{ game.id }}">{{ t('dash.play', lang) }}</a>
             </div>
         </div>
         {% endif %}
@@ -76,4 +98,33 @@
         {% endfor %}
     </div>
 </section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function () {
+    document.querySelectorAll('.gmt').forEach(function (gmt) {
+        var opts = gmt.querySelectorAll('.gmt-opt');
+        var playBtn = gmt.closest('.game-card-footer').querySelector('.gmt-play');
+        var soloHref = gmt.getAttribute('data-solo');
+        var duelHref = gmt.getAttribute('data-duel');
+
+        opts.forEach(function (opt) {
+            opt.addEventListener('click', function (e) {
+                e.preventDefault();
+                var idx = parseInt(opt.getAttribute('data-idx'));
+                opts.forEach(function (o) { o.classList.remove('active'); });
+                opt.classList.add('active');
+                if (idx === 0) {
+                    gmt.classList.remove('duel-mode');
+                    playBtn.href = soloHref;
+                } else {
+                    gmt.classList.add('duel-mode');
+                    playBtn.href = duelHref;
+                }
+            });
+        });
+    });
+}());
+</script>
 {% endblock %}
