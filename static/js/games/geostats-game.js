@@ -80,8 +80,10 @@ var GeoStatsGame = (function () {
                 });
         } else {
             var num = settings.maxItems || 10;
-            var continent = settings.continent || 'all';
-            fetch('/api/quiz/geostats?num=' + num + '&continent=' + continent)
+            var cust = (typeof GeoCustomize !== 'undefined') ? GeoCustomize.getState() : {};
+            var continent = (cust.dataset === 'countries') ? (cust.continent || settings.continent || 'all') : 'all';
+            var extraParams = (typeof GeoCustomize !== 'undefined') ? GeoCustomize.buildApiParams() : '';
+            fetch('/api/quiz/geostats?num=' + num + '&continent=' + continent + extraParams)
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
                     questions = data.questions || [];

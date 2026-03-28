@@ -162,11 +162,15 @@ async def quiz_ordering(
     num: int = Query(10, ge=1, le=20),
     continent: Optional[str] = Query(None),
     difficulty: str = Query("normal"),
+    dataset: str = Query("countries"),
+    entity_type: str = Query("all"),
 ):
     """Generate a set of ordering questions."""
     if difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
         difficulty = "normal"
-    questions = generate_ordering_set(num_questions=num, continent=continent, difficulty=difficulty)
+    questions = generate_ordering_set(
+        num_questions=num, continent=continent, difficulty=difficulty, dataset=dataset
+    )
     if not questions:
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
     return {"questions": questions}
@@ -177,11 +181,15 @@ async def quiz_comparison(
     num: int = Query(10, ge=1, le=30),
     continent: Optional[str] = Query(None),
     difficulty: str = Query("normal"),
+    dataset: str = Query("countries"),
+    entity_type: str = Query("all"),
 ):
     """Generate a set of comparison questions."""
     if difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
         difficulty = "normal"
-    questions = generate_comparison_set(num_questions=num, continent=continent, difficulty=difficulty)
+    questions = generate_comparison_set(
+        num_questions=num, continent=continent, difficulty=difficulty, dataset=dataset
+    )
     if not questions:
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
     return {"questions": questions}
@@ -191,12 +199,23 @@ async def quiz_comparison(
 async def quiz_geostats(
     num: int = Query(10, ge=1, le=20),
     continent: Optional[str] = Query(None),
+    dataset: str = Query("countries"),
+    entity_type: str = Query("all"),
 ):
-    """Generate a set of geostats questions (guess country from stat curve)."""
-    data = generate_geostats_set(num_questions=num, continent=continent)
+    """Generate a set of geostats questions (guess entity from stat curve)."""
+    data = generate_geostats_set(num_questions=num, continent=continent, dataset=dataset)
     if not data or not data.get("questions"):
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
     return data
+
+
+@router.get("/entity-geojson/{dataset}/{code}")
+async def get_entity_geojson(dataset: str, code: str):
+    """Return GeoJSON for a single sub-national entity (for outline quiz)."""
+    data = geodata_service.get_single_subnational(dataset, code.upper())
+    if data is None:
+        raise HTTPException(status_code=404, detail="GeoJSON not found")
+    return JSONResponse(content=data)
 
 
 # ── Daily challenge endpoint ─────────────────────────────────────────────────

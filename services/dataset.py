@@ -2,7 +2,7 @@
 
 import json
 import os
-from typing import Optional
+from typing import Any, Optional
 
 import pandas as pd
 
@@ -387,6 +387,20 @@ class DatasetService:
             except (ValueError, TypeError):
                 continue
         return records
+
+    def get_dataset_df(self, dataset_id: str) -> pd.DataFrame:
+        """Return the full DataFrame for any dataset by ID."""
+        loaders: dict[str, Any] = {
+            "countries":       self._load_countries,
+            "us-states":       self._load_us,
+            "spain-provinces": self._load_spain,
+            "russia-regions":  self._load_russia,
+            "france-regions":  self._load_france,
+            "italy-regions":   self._load_italy,
+            "germany-states":  self._load_germany,
+        }
+        loader = loaders.get(dataset_id)
+        return loader() if loader else pd.DataFrame()
 
     # ── Map game counts ───────────────────────────────────────
 

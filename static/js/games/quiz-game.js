@@ -28,23 +28,46 @@ var QuizGame = (function () {
     }
 
     function loadData(settings) {
-        fetch('/api/countries')
-            .then(function (r) { return r.json(); })
-            .then(function (data) {
-                var filtered = GeoUtils.filterByContinent(data, settings.continent);
-                // Only sovereign countries (exclude territories)
-                filtered = filtered.filter(function (c) {
-                    if (!c.iso_a3 || !c.name) return false;
-                    if (c.entity_type && c.entity_type !== 'country') return false;
-                    return true;
+        var cust = (typeof GeoCustomize !== 'undefined') ? GeoCustomize.getState() : {};
+        var isSubnational = cust.dataset === 'regions';
+        var apiDataset = isSubnational ? cust.subDataset : 'countries';
+
+        if (isSubnational) {
+            fetch('/api/map-game/data?dataset=' + encodeURIComponent(apiDataset))
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    // map-game/data returns {id, name, name_es, ...}; expose iso_a3 for quiz engine
+                    var entities = data.map(function (e) {
+                        return Object.assign({}, e, { iso_a3: e.id, entity_type: 'country', flag_emoji: '' });
+                    });
+                    GeoUtils.shuffle(entities);
+                    var max = settings.maxItems || 0;
+                    queue = max > 0 ? entities.slice(0, max) : entities;
+                    currentIdx = 0;
+                    GeoGame.setTotal(queue.length);
+                    showNext();
                 });
-                GeoUtils.shuffle(filtered);
-                var max = settings.maxItems || 0;
-                queue = max > 0 ? filtered.slice(0, max) : filtered;
-                currentIdx = 0;
-                GeoGame.setTotal(queue.length);
-                showNext();
-            });
+        } else {
+            var continent = cust.continent || settings.continent;
+            var entityType = cust.entityType || 'all';
+            fetch('/api/countries')
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    var filtered = GeoUtils.filterByContinent(data, continent);
+                    filtered = filtered.filter(function (c) {
+                        if (!c.iso_a3 || !c.name) return false;
+                        if (entityType !== 'all') return c.entity_type === entityType;
+                        if (c.entity_type && c.entity_type !== 'country') return false;
+                        return true;
+                    });
+                    GeoUtils.shuffle(filtered);
+                    var max = settings.maxItems || 0;
+                    queue = max > 0 ? filtered.slice(0, max) : filtered;
+                    currentIdx = 0;
+                    GeoGame.setTotal(queue.length);
+                    showNext();
+                });
+        }
     }
 
     function showNext() {

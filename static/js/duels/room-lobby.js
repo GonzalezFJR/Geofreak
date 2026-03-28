@@ -16,6 +16,15 @@
         return id;
     }
 
+    // ── Dataset selector: hide continent when non-countries ───────────────────
+    var _datasetSel = document.getElementById('create-dataset');
+    if (_datasetSel) {
+        _datasetSel.addEventListener('change', function () {
+            var row = document.getElementById('create-continent-row');
+            if (row) row.style.display = this.value === 'countries' ? '' : 'none';
+        });
+    }
+
     // ── N-items buttons ────────────────────────────────────────────────────────
     document.querySelectorAll('#create-n-btns .room-n-btn').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -49,12 +58,15 @@
             hideError('create-error');
             var nItems = parseInt(document.getElementById('create-n').value) || 10;
             var difficulty = document.getElementById('create-difficulty').value;
+            var dataset = (document.getElementById('create-dataset') || {}).value || 'countries';
+            var continent = (document.getElementById('create-continent') || {}).value || 'all';
             var body = {
                 game_id: ROOM_GAME_ID,
                 n_items: nItems,
                 difficulty: difficulty,
                 countdown: true,
-                continent: 'all',
+                dataset: dataset,
+                continent: dataset === 'countries' ? continent : 'all',
             };
             if (!ROOM_IS_LOGGED) {
                 var name = (document.getElementById('create-guest-name') || {}).value || '';

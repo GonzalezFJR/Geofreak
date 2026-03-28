@@ -11,6 +11,17 @@ from services.dataset import DatasetService
 
 _ds = DatasetService()
 
+# ── Dataset → variable_config.json ID mapping ───────────────────────────────
+QUIZ_DATASET_TO_VAR_CONFIG: dict[str, str] = {
+    "countries":       "countries",
+    "us-states":       "usastates",
+    "spain-provinces": "spain_provinces",
+    "russia-regions":  "russia_regions",
+    "france-regions":  "france_regions",
+    "italy-regions":   "italy_regions",
+    "germany-states":  "germany_states",
+}
+
 # ── Variable config loader ───────────────────────────────────────────────
 
 _VAR_CONFIG_PATH = os.path.join(
@@ -35,8 +46,9 @@ def reload_var_config():
 
 def _build_quiz_stats(dataset_id: str = "countries") -> dict[str, dict]:
     """Build QUIZ_STATS dict from enabled variables in variable_config.json."""
+    var_config_key = QUIZ_DATASET_TO_VAR_CONFIG.get(dataset_id, "countries")
     cfg = _load_var_config()
-    ds = cfg.get("datasets", {}).get(dataset_id, {})
+    ds = cfg.get("datasets", {}).get(var_config_key, {})
     stats: dict[str, dict] = {}
     for v in ds.get("variables", []):
         if v.get("enabled"):
@@ -112,6 +124,46 @@ def _get_valid_countries(stat: str, continent: Optional[str] = None) -> list[dic
     return records
 
 
+def _get_valid_entities(
+    stat: str,
+    dataset: str = "countries",
+    continent: Optional[str] = None,
+    entity_type: str = "all",
+) -> list[dict]:
+    """Return entities with a valid numeric value for the given stat.
+
+    Dispatches to `_get_valid_countries` for the countries dataset; loads
+    sub-national DataFrames for all other datasets.
+    """
+    if dataset == "countries":
+        return _get_valid_countries(stat, continent)
+
+    df = _ds.get_dataset_df(dataset)
+    if df.empty or stat not in df.columns:
+        return []
+    df = df[df[stat].notna() & (df[stat] != "")]
+
+    records = []
+    for _, row in df.iterrows():
+        try:
+            val = float(row[stat])
+        except (ValueError, TypeError):
+            continue
+        code = str(row.get("code", ""))
+        records.append({
+            "iso_a3": code,
+            "name": str(row.get("name", code)),
+            "name_es": str(row.get("name_es", row.get("name", code))),
+            "name_fr": str(row.get("name_fr", "")),
+            "name_it": str(row.get("name_it", "")),
+            "name_ru": str(row.get("name_ru", "")),
+            "flag_emoji": "",
+            "continent": "",
+            "stat_value": val,
+        })
+    return records
+
+
 def _pick_by_difficulty(
     reference_value: float,
     candidates: list[dict],
@@ -155,6 +207,7 @@ def generate_ordering_question(
     count: int = 5,
     ascending: Optional[bool] = None,
     difficulty: str = "normal",
+    dataset: str = "countries",
 ) -> Optional[dict]:
     """Generate one ordering question: sort N countries by a stat.
 
@@ -167,14 +220,16 @@ def generate_ordering_question(
             "correct_order": [ "CHN", "IND", "USA", "IDN", "BRA" ],   # iso_a3 in correct order
         }
     """
-    quiz_stats = get_quiz_stats()
+    quiz_stats = _build_quiz_stats(dataset)
     stat_keys = list(quiz_stats.keys())
+    if not stat_keys:
+        return None
     if stat is None:
         stat = random.choice(stat_keys)
     if ascending is None:
         ascending = random.choice([True, False])
 
-    countries = _get_valid_countries(stat, continent)
+    countries = _get_valid_entities(stat, dataset, continent)
     if len(countries) < count:
         return None
 
@@ -221,6 +276,7 @@ def generate_comparison_question(
     stat: Optional[str] = None,
     continent: Optional[str] = None,
     difficulty: str = "normal",
+    dataset: str = "countries",
 ) -> Optional[dict]:
     """Generate one comparison question: which of 2 countries has a higher stat?
 
@@ -233,12 +289,14 @@ def generate_comparison_question(
             "values": { "CHN": 1400000000, "IND": 1380000000 },
         }
     """
-    quiz_stats = get_quiz_stats()
+    quiz_stats = _build_quiz_stats(dataset)
     stat_keys = list(quiz_stats.keys())
+    if not stat_keys:
+        return None
     if stat is None:
         stat = random.choice(stat_keys)
 
-    countries = _get_valid_countries(stat, continent)
+    countries = _get_valid_entities(stat, dataset, continent)
     if len(countries) < 2:
         return None
 
@@ -270,11 +328,14 @@ def generate_ordering_set(
     num_questions: int = 10,
     continent: Optional[str] = None,
     difficulty: str = "normal",
+    dataset: str = "countries",
 ) -> list[dict]:
     """Generate a full set of ordering questions with varied stats."""
-    stat_keys = STAT_KEYS_FUNC()
+    stat_keys = list(_build_quiz_stats(dataset).keys())
+    if not stat_keys:
+        return []
     questions = []
-    used_stats = []
+    used_stats: list[str] = []
     for _ in range(num_questions):
         if not used_stats:
             used_stats = stat_keys.copy()
@@ -283,7 +344,7 @@ def generate_ordering_set(
         attempts = 0
         while q is None and attempts < len(stat_keys):
             stat = used_stats.pop() if used_stats else random.choice(stat_keys)
-            q = generate_ordering_question(stat=stat, continent=continent, difficulty=difficulty)
+            q = generate_ordering_question(stat=stat, continent=continent, difficulty=difficulty, dataset=dataset)
             attempts += 1
         if q:
             questions.append(q)
@@ -294,11 +355,14 @@ def generate_comparison_set(
     num_questions: int = 10,
     continent: Optional[str] = None,
     difficulty: str = "normal",
+    dataset: str = "countries",
 ) -> list[dict]:
     """Generate a full set of comparison questions with varied stats."""
-    stat_keys = STAT_KEYS_FUNC()
+    stat_keys = list(_build_quiz_stats(dataset).keys())
+    if not stat_keys:
+        return []
     questions = []
-    used_stats = []
+    used_stats: list[str] = []
     for _ in range(num_questions):
         if not used_stats:
             used_stats = stat_keys.copy()
@@ -307,7 +371,7 @@ def generate_comparison_set(
         attempts = 0
         while q is None and attempts < len(stat_keys):
             stat = used_stats.pop() if used_stats else random.choice(stat_keys)
-            q = generate_comparison_question(stat=stat, continent=continent, difficulty=difficulty)
+            q = generate_comparison_question(stat=stat, continent=continent, difficulty=difficulty, dataset=dataset)
             attempts += 1
         if q:
             questions.append(q)
@@ -319,6 +383,7 @@ def generate_comparison_set(
 def generate_geostats_question(
     stat: Optional[str] = None,
     continent: Optional[str] = None,
+    dataset: str = "countries",
 ) -> Optional[dict]:
     """Generate one geostats question: guess a country from its position on a stat curve.
 
@@ -332,13 +397,15 @@ def generate_geostats_question(
             "target_index": 45,
         }
     """
-    quiz_stats = get_quiz_stats()
+    quiz_stats = _build_quiz_stats(dataset)
     stat_keys = list(quiz_stats.keys())
+    if not stat_keys:
+        return None
     if stat is None:
         stat = random.choice(stat_keys)
 
-    countries = _get_valid_countries(stat, continent)
-    if len(countries) < 20:
+    countries = _get_valid_entities(stat, dataset, continent)
+    if len(countries) < 8:
         return None
 
     countries.sort(key=lambda c: c["stat_value"])
@@ -362,28 +429,44 @@ def generate_geostats_set(
     num_questions: int = 10,
     continent: Optional[str] = None,
     max_attempts: int = 5,
+    dataset: str = "countries",
 ) -> dict:
-    """Generate a full geostats game with a countries lookup and N questions."""
-    # Build countries lookup once (all sovereign countries)
-    df = _ds.get_countries()
+    """Generate a full geostats game with an entities lookup and N questions."""
+    # Build entities lookup once
+    df = _ds.get_dataset_df(dataset)
     if df.empty:
         return {"countries_lookup": {}, "max_attempts": max_attempts, "questions": []}
-    if "entity_type" in df.columns:
-        df = df[df["entity_type"] == "country"]
 
-    countries_lookup: dict[str, dict] = {}
-    for _, row in df.iterrows():
-        countries_lookup[row["iso_a3"]] = {
-            "name": row.get("name", ""),
-            "name_es": row.get("name_es", row.get("name", "")),
-            "name_fr": row.get("name_fr", ""),
-            "name_it": row.get("name_it", ""),
-            "name_ru": row.get("name_ru", ""),
-            "flag_emoji": row.get("flag_emoji", ""),
-        }
+    entities_lookup: dict[str, dict] = {}
+    if dataset == "countries":
+        if "entity_type" in df.columns:
+            df = df[df["entity_type"] == "country"]
+        for _, row in df.iterrows():
+            entities_lookup[str(row["iso_a3"])] = {
+                "name": row.get("name", ""),
+                "name_es": row.get("name_es", row.get("name", "")),
+                "name_fr": row.get("name_fr", ""),
+                "name_it": row.get("name_it", ""),
+                "name_ru": row.get("name_ru", ""),
+                "flag_emoji": row.get("flag_emoji", ""),
+            }
+    else:
+        for _, row in df.iterrows():
+            code = str(row.get("code", ""))
+            entities_lookup[code] = {
+                "name": str(row.get("name", code)),
+                "name_es": str(row.get("name_es", row.get("name", code))),
+                "name_fr": str(row.get("name_fr", "")),
+                "name_it": str(row.get("name_it", "")),
+                "name_ru": str(row.get("name_ru", "")),
+                "flag_emoji": "",
+            }
 
     # Generate questions with varied stats
-    stat_keys = STAT_KEYS_FUNC()
+    stat_keys = list(_build_quiz_stats(dataset).keys())
+    if not stat_keys:
+        return {"countries_lookup": entities_lookup, "max_attempts": max_attempts, "questions": []}
+
     questions: list[dict] = []
     used_stats: list[str] = []
     for _ in range(num_questions):
@@ -394,13 +477,13 @@ def generate_geostats_set(
         attempts = 0
         while q is None and attempts < len(stat_keys):
             stat = used_stats.pop() if used_stats else random.choice(stat_keys)
-            q = generate_geostats_question(stat=stat, continent=continent)
+            q = generate_geostats_question(stat=stat, continent=continent, dataset=dataset)
             attempts += 1
         if q:
             questions.append(q)
 
     return {
-        "countries_lookup": countries_lookup,
+        "countries_lookup": entities_lookup,
         "max_attempts": max_attempts,
         "questions": questions,
     }

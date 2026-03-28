@@ -64,6 +64,38 @@
                 <input type="hidden" id="create-difficulty" value="normal">
                 {% endif %}
 
+                <!-- Advanced customization -->
+                <div class="room-setting-group">
+                    <details class="cust-advanced-details">
+                        <summary class="cust-advanced-summary">⚙ {{ t('cust.advanced', lang) }}</summary>
+                        <div class="cust-advanced-body">
+                            <div class="cust-field">
+                                <label class="cust-label">{{ t('mg.sel_dataset', lang) }}</label>
+                                <select id="create-dataset" class="room-select">
+                                    <option value="countries">🌍 {{ t('mg.dataset_countries', lang) }}</option>
+                                    <option value="us-states">🇺🇸 {{ t('mg.dataset_us', lang) }}</option>
+                                    <option value="spain-provinces">🇪🇸 {{ t('mg.dataset_spain', lang) }}</option>
+                                    <option value="russia-regions">🇷🇺 {{ t('mg.dataset_russia', lang) }}</option>
+                                    <option value="france-regions">🇫🇷 {{ t('mg.dataset_france', lang) }}</option>
+                                    <option value="italy-regions">🇮🇹 {{ t('mg.dataset_italy', lang) }}</option>
+                                    <option value="germany-states">🇩🇪 {{ t('mg.dataset_germany', lang) }}</option>
+                                </select>
+                            </div>
+                            <div class="cust-field" id="create-continent-row">
+                                <label class="cust-label">{{ t('mg.fil_continent', lang) }}</label>
+                                <select id="create-continent" class="room-select">
+                                    <option value="all">{{ t('mg.cont_all', lang) }}</option>
+                                    <option value="europe">{{ t('mg.cont_europe', lang) }}</option>
+                                    <option value="asia">{{ t('mg.cont_asia', lang) }}</option>
+                                    <option value="africa">{{ t('mg.cont_africa', lang) }}</option>
+                                    <option value="americas">{{ t('mg.cont_americas', lang) }}</option>
+                                    <option value="oceania">{{ t('mg.cont_oceania', lang) }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
                 {% if not user %}
                 <div class="room-setting-group">
                     <label class="room-setting-label">{{ t('room.your_name', lang) }}</label>

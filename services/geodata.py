@@ -109,6 +109,17 @@ class GeodataService:
         self._subnational_cache[dataset] = result
         return result
 
+    def get_single_subnational(self, dataset: str, code: str) -> Optional[dict]:
+        """Return GeoJSON for a single sub-national entity by dataset and code."""
+        directory = SUBNATIONAL_DIRS.get(dataset)
+        if not directory:
+            return None
+        fpath = os.path.join(directory, f"{code}.geojson")
+        if not os.path.exists(fpath):
+            return None
+        with open(fpath, "r", encoding="utf-8") as f:
+            return json.load(f)
+
     def get_country_geojson(self, iso_code: str) -> Optional[dict]:
         """Return GeoJSON for a single country by ISO code."""
         # Try individual file first

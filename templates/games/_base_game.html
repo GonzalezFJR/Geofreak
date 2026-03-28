@@ -10,6 +10,10 @@
     <!-- ─── Start overlay ────────────────────────────────── -->
     <div class="game-settings-overlay" id="settings-overlay">
         <div class="game-settings-card">
+            {% if not game.daily %}
+            <button class="gear-btn" onclick="GeoCustomize.openModal()"
+                    title="{{ t('cust.title', lang) }}" aria-label="{{ t('cust.title', lang) }}">⚙</button>
+            {% endif %}
             <div class="game-settings-icon">
                 <img src="/static/img/icons/{{ game.id }}.svg" width="64" height="64" alt="">
             </div>
@@ -139,6 +143,7 @@
         </div>
     </div>
 
+    {% include "games/_customize_panel.html" %}
 </div>
 {% endblock %}
 
@@ -147,6 +152,7 @@
 var GAME_CONFIG = {{ game_json | safe }};
 var IS_LOGGED_IN = {{ 'true' if user else 'false' }};
 </script>
+<script src="/static/js/games/game-customize.js"></script>
 <script src="/static/js/games/common.js"></script>
 {% block game_scripts %}{% endblock %}
 {% endblock %}

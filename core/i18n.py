@@ -113,6 +113,11 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.diff_very_hard": "Muy difícil",
         "game.diff_extreme": "Extremo",
         "game.countdown": "Cuenta atrás",
+        "cust.title": "Personalizar partida",
+        "cust.apply": "Aplicar",
+        "cust.advanced": "Opciones avanzadas",
+        "cust.regions": "Regiones",
+        "cust.region_set": "Conjunto de regiones",
 
         # Dashboard
         "dash.title": "🎮 Juegos GeoFreak",
@@ -774,6 +779,11 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.diff_very_hard": "Very hard",
         "game.diff_extreme": "Extreme",
         "game.countdown": "Countdown",
+        "cust.title": "Customize game",
+        "cust.apply": "Apply",
+        "cust.advanced": "Advanced options",
+        "cust.regions": "Regions",
+        "cust.region_set": "Region set",
 
         # Dashboard
         "dash.title": "🎮 GeoFreak Games",
@@ -1404,6 +1414,11 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.diff_very_hard": "Très difficile",
         "game.diff_extreme": "Extrême",
         "game.countdown": "Compte à rebours",
+        "cust.title": "Personnaliser la partie",
+        "cust.apply": "Appliquer",
+        "cust.advanced": "Options avancées",
+        "cust.regions": "Régions",
+        "cust.region_set": "Ensemble de régions",
 
         # Dashboard
         "dash.title": "🎮 Jeux GeoFreak",
@@ -2023,6 +2038,11 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.diff_very_hard": "Molto difficile",
         "game.diff_extreme": "Estremo",
         "game.countdown": "Conto alla rovescia",
+        "cust.title": "Personalizza partita",
+        "cust.apply": "Applica",
+        "cust.advanced": "Opzioni avanzate",
+        "cust.regions": "Regioni",
+        "cust.region_set": "Insieme di regioni",
 
         # Dashboard
         "dash.title": "🎮 Giochi GeoFreak",
@@ -2643,6 +2663,11 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "game.diff_very_hard": "Очень сложно",
         "game.diff_extreme": "Экстремально",
         "game.countdown": "Обратный отсчёт",
+        "cust.title": "Настроить игру",
+        "cust.apply": "Применить",
+        "cust.advanced": "Доп. настройки",
+        "cust.regions": "Регионы",
+        "cust.region_set": "Набор регионов",
 
         # Dashboard
         "dash.title": "🎮 GeoFreak Игры",

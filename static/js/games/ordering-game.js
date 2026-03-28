@@ -32,9 +32,11 @@ var OrderingGame = (function () {
                 });
         } else {
             var num = settings.maxItems || 10;
-            var continent = settings.continent || 'all';
             var difficulty = settings.difficulty || 'normal';
-            fetch('/api/quiz/ordering?num=' + num + '&continent=' + continent + '&difficulty=' + difficulty)
+            var cust = (typeof GeoCustomize !== 'undefined') ? GeoCustomize.getState() : {};
+            var continent = (cust.dataset === 'countries') ? (cust.continent || settings.continent || 'all') : 'all';
+            var extraParams = (typeof GeoCustomize !== 'undefined') ? GeoCustomize.buildApiParams() : '';
+            fetch('/api/quiz/ordering?num=' + num + '&continent=' + continent + '&difficulty=' + difficulty + extraParams)
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
                     questions = data.questions || [];

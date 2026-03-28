@@ -30,7 +30,12 @@
             if (_outlineMap) { _outlineMap.remove(); _outlineMap = null; }
 
             // Fetch this country's GeoJSON and render
-            fetch('/api/geojson/' + country.iso_a3)
+            var _cust = (typeof GeoCustomize !== 'undefined') ? GeoCustomize.getState() : {};
+            var _entityId = country.id || country.iso_a3;
+            var _geoUrl = (_cust.dataset === 'regions')
+                ? '/api/entity-geojson/' + _cust.subDataset + '/' + _entityId
+                : '/api/geojson/' + country.iso_a3;
+            fetch(_geoUrl)
                 .then(function (r) {
                     if (!r.ok) throw new Error('No geojson');
                     return r.json();
