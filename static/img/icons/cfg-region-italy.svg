@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" fill="none">
+  <defs>
+    <clipPath id="flag-clip-it">
+      <rect x="2" y="2" width="36" height="36" rx="3"/>
+    </clipPath>
+  </defs>
+
+  <!-- Green left strip -->
+  <rect x="2" y="2" width="12" height="36" fill="#009246" clip-path="url(#flag-clip-it)"/>
+
+  <!-- White center strip -->
+  <rect x="14" y="2" width="12" height="36" fill="#EDEDED" clip-path="url(#flag-clip-it)"/>
+
+  <!-- Red right strip -->
+  <rect x="26" y="2" width="12" height="36" fill="#CE2B37" clip-path="url(#flag-clip-it)"/>
+
+  <!-- Light gray border -->
+  <rect x="2" y="2" width="36" height="36" rx="3" stroke="#d1d5db" stroke-width="1" fill="none"/>
+</svg>
