@@ -186,7 +186,7 @@ async def api_start_room(
 
     game_id = room["game_id"]
     cfg = room.get("config", {})
-    n = cfg.get("n_items", 10)
+    n = int(cfg.get("n_items", 10))
     difficulty = cfg.get("difficulty", "normal")
     continent = cfg.get("continent") if cfg.get("continent") != "all" else None
 

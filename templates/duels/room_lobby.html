@@ -22,102 +22,105 @@
             </div>
         </div>
 
-        <!-- Two panels -->
-        <div class="room-panels">
+        <!-- Tab selector -->
+        <div class="room-tab-selector">
+            <button class="room-tab active" id="tab-create" onclick="RoomLobby.switchTab('create')">
+                <span class="room-tab-icon">⚔️</span>
+                <span>{{ t('room.create_title', lang) }}</span>
+            </button>
+            <button class="room-tab" id="tab-join" onclick="RoomLobby.switchTab('join')">
+                <span class="room-tab-icon">🚪</span>
+                <span>{{ t('room.join_title', lang) }}</span>
+            </button>
+        </div>
 
-            <!-- ── Create ── -->
-            <div class="room-panel" id="panel-create">
-                <div class="room-panel-icon">⚔️</div>
-                <h2>{{ t('room.create_title', lang) }}</h2>
-                <p class="room-panel-desc">{{ t('room.create_desc', lang) }}</p>
+        <!-- ── Create panel ── -->
+        <div class="room-panel" id="panel-create">
+            <p class="room-panel-desc">{{ t('room.create_desc', lang) }}</p>
 
-                <!-- Settings (hidden after creation) -->
-                <div id="create-settings">
-                    <div class="room-setting-group">
-                        <label class="room-setting-label">{{ t('room.n_items', lang) }}</label>
-                        <div class="room-n-btns" id="create-n-btns">
-                            {% for n in [5, 10, 15, 20] %}
-                            <button type="button" class="room-n-btn{% if n == 10 %} active{% endif %}" data-n="{{ n }}">{{ n }}</button>
-                            {% endfor %}
-                        </div>
-                        <input type="hidden" id="create-n" value="10">
+            <!-- Settings (hidden after creation) -->
+            <div id="create-settings">
+                <div class="room-setting-group">
+                    <label class="room-setting-label">{{ t('room.n_items', lang) }}</label>
+                    <div class="room-n-btns" id="create-n-btns">
+                        {% for n in [5, 10, 15, 20] %}
+                        <button type="button" class="room-n-btn{% if n == 10 %} active{% endif %}" data-n="{{ n }}">{{ n }}</button>
+                        {% endfor %}
                     </div>
-
-                    <div class="room-setting-group">
-                        <label class="room-setting-label">{{ t('game.difficulty', lang) }}</label>
-                        <select id="create-difficulty" class="room-select">
-                            <option value="easy">{{ t('game.diff_easy', lang) }}</option>
-                            <option value="normal" selected>{{ t('game.diff_normal', lang) }}</option>
-                            <option value="hard">{{ t('game.diff_hard', lang) }}</option>
-                            <option value="very_hard">{{ t('game.diff_very_hard', lang) }}</option>
-                        </select>
-                    </div>
-
-                    {% if not user %}
-                    <div class="room-setting-group">
-                        <label class="room-setting-label">{{ t('room.your_name', lang) }}</label>
-                        <input type="text" id="create-guest-name" class="room-input"
-                               placeholder="{{ t('room.name_placeholder', lang) }}" maxlength="30">
-                    </div>
-                    {% endif %}
-
-                    <button class="room-primary-btn" id="btn-create" onclick="RoomLobby.create()">
-                        {{ t('room.create_btn', lang) }}
-                    </button>
-                    <p class="room-error" id="create-error" style="display:none"></p>
+                    <input type="hidden" id="create-n" value="10">
                 </div>
-
-                <!-- Code display (shown after creation) -->
-                <div id="create-code-display" style="display:none">
-                    <div class="room-code-box">
-                        <div class="room-code-label">{{ t('room.room_code', lang) }}</div>
-                        <div class="room-code-value" id="created-code">–</div>
-                        <button class="room-copy-btn" onclick="RoomLobby.copyCode()" title="{{ t('room.copy_code', lang) }}">
-                            {{ t('room.copy_code', lang) }}
-                        </button>
-                    </div>
-                    <a class="room-primary-btn room-go-btn" id="btn-go-room" href="#">
-                        {{ t('room.enter_room', lang) }}
-                    </a>
-                </div>
-            </div>
-
-            <!-- ── Join ── -->
-            <div class="room-panel" id="panel-join">
-                <div class="room-panel-icon">🚪</div>
-                <h2>{{ t('room.join_title', lang) }}</h2>
-                <p class="room-panel-desc">{{ t('room.join_desc', lang) }}</p>
 
                 <div class="room-setting-group">
-                    <label class="room-setting-label">{{ t('room.enter_code', lang) }}</label>
-                    <input type="text" id="join-code" class="room-input room-code-input"
-                           placeholder="AB3X7K2M" maxlength="8"
-                           oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+                    <label class="room-setting-label">{{ t('game.difficulty', lang) }}</label>
+                    <select id="create-difficulty" class="room-select">
+                        <option value="easy">{{ t('game.diff_easy', lang) }}</option>
+                        <option value="normal" selected>{{ t('game.diff_normal', lang) }}</option>
+                        <option value="hard">{{ t('game.diff_hard', lang) }}</option>
+                        <option value="very_hard">{{ t('game.diff_very_hard', lang) }}</option>
+                    </select>
                 </div>
 
-                {% if user %}
-                <div class="room-logged-as">
-                    {{ t('room.playing_as', lang) }} <strong>{{ user.username }}</strong>
-                </div>
-                {% else %}
+                {% if not user %}
                 <div class="room-setting-group">
                     <label class="room-setting-label">{{ t('room.your_name', lang) }}</label>
-                    <input type="text" id="join-guest-name" class="room-input"
+                    <input type="text" id="create-guest-name" class="room-input"
                            placeholder="{{ t('room.name_placeholder', lang) }}" maxlength="30">
-                </div>
-                <div class="room-auth-hint">
-                    <a href="/login">{{ t('nav.login', lang) }}</a> {{ t('room.or', lang) }}
-                    <a href="/register">{{ t('room.register', lang) }}</a>
-                    {{ t('room.auth_hint', lang) }}
                 </div>
                 {% endif %}
 
-                <button class="room-secondary-btn" id="btn-join" onclick="RoomLobby.join()">
-                    {{ t('room.join_btn', lang) }}
+                <button class="room-primary-btn" id="btn-create" onclick="RoomLobby.create()">
+                    {{ t('room.create_btn', lang) }}
                 </button>
-                <p class="room-error" id="join-error" style="display:none"></p>
+                <p class="room-error" id="create-error" style="display:none"></p>
             </div>
 
+            <!-- Code display (shown after creation) -->
+            <div id="create-code-display" style="display:none">
+                <div class="room-code-box">
+                    <div class="room-code-label">{{ t('room.room_code', lang) }}</div>
+                    <div class="room-code-value" id="created-code">–</div>
+                    <button class="room-copy-btn" onclick="RoomLobby.copyCode()" title="{{ t('room.copy_code', lang) }}">
+                        {{ t('room.copy_code', lang) }}
+                    </button>
+                </div>
+                <a class="room-primary-btn room-go-btn" id="btn-go-room" href="#">
+                    {{ t('room.enter_room', lang) }}
+                </a>
+            </div>
+        </div>
+
+        <!-- ── Join panel ── -->
+        <div class="room-panel" id="panel-join" style="display:none">
+            <p class="room-panel-desc">{{ t('room.join_desc', lang) }}</p>
+
+            <div class="room-setting-group">
+                <label class="room-setting-label">{{ t('room.enter_code', lang) }}</label>
+                <input type="text" id="join-code" class="room-input room-code-input"
+                       placeholder="AB3X7K2M" maxlength="8"
+                       oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            </div>
+
+            {% if user %}
+            <div class="room-logged-as">
+                {{ t('room.playing_as', lang) }} <strong>{{ user.username }}</strong>
+            </div>
+            {% else %}
+            <div class="room-setting-group">
+                <label class="room-setting-label">{{ t('room.your_name', lang) }}</label>
+                <input type="text" id="join-guest-name" class="room-input"
+                       placeholder="{{ t('room.name_placeholder', lang) }}" maxlength="30">
+            </div>
+            <div class="room-auth-hint">
+                <a href="/login">{{ t('nav.login', lang) }}</a> {{ t('room.or', lang) }}
+                <a href="/register">{{ t('room.register', lang) }}</a>
+                {{ t('room.auth_hint', lang) }}
+            </div>
+            {% endif %}
+
+            <button class="room-secondary-btn" id="btn-join" onclick="RoomLobby.join()">
+                {{ t('room.join_btn', lang) }}
+            </button>
+            <p class="room-error" id="join-error" style="display:none"></p>
         </div>
     </div>
 </section>

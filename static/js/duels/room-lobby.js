@@ -152,6 +152,14 @@
                 });
         },
 
+        switchTab: function (tab) {
+            var isCreate = tab === 'create';
+            document.getElementById('panel-create').style.display = isCreate ? '' : 'none';
+            document.getElementById('panel-join').style.display = isCreate ? 'none' : '';
+            document.getElementById('tab-create').classList.toggle('active', isCreate);
+            document.getElementById('tab-join').classList.toggle('active', !isCreate);
+        },
+
         copyCode: function () {
             var code = (document.getElementById('created-code') || {}).textContent || '';
             if (!code || code === '–') return;
