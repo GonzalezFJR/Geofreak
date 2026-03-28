@@ -67,9 +67,22 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
     # Best scores per game type
     best_scores = _build_best_scores(stats)
 
+    # Processed data for charts (convert DynamoDB Decimals to native types)
+    recent_matches_chart = [
+        {"game_type": str(m.get("game_type", "")), "date": str(m.get("date", ""))[:10]}
+        for m in (stats.get("recent_matches") or [])
+        if m.get("date")
+    ]
+    game_counters = {
+        gt: int(gs.get("matches", 0))
+        for gt, gs in (stats.get("stats_by_game") or {}).items()
+    }
+
     return templates.TemplateResponse("auth/profile.html", {
         "request": request, "user": user, "stats": stats, "lang": lang,
         "friends_count": friends_count, "best_scores": best_scores,
+        "recent_matches_chart": recent_matches_chart,
+        "game_counters": game_counters,
     })
 
 

@@ -4,6 +4,134 @@
 <link rel="stylesheet" href="/static/css/admin.css">
 {% endblock %}
 
+{% macro game_card(game, show_modes=false) %}
+<form class="admin-game-card" method="post" action="/admin/games/{{ game.id }}">
+
+    <!-- Header: name + visibility switch -->
+    <div class="admin-game-card-header">
+        <h3>{{ game.icon }} {{ game.name }}</h3>
+        <div class="admin-visibility">
+            <span class="admin-visibility-label">{{ t('adm.visible', lang) }}</span>
+            <label class="switch">
+                <input type="checkbox" name="visible" value="1" {% if game.visible|default(true) %}checked{% endif %}>
+                <span class="switch-slider"></span>
+            </label>
+            <span class="admin-visibility-hint" id="vis-hint-{{ game.id }}">
+                {% if game.visible|default(true) %}{{ t('adm.visible_on', lang) }}{% else %}{{ t('adm.visible_off', lang) }}{% endif %}
+            </span>
+        </div>
+    </div>
+
+    <!-- ─── Name fields per language ────────────────────── -->
+    <div class="form-row lang-field" data-lang="es">
+        <div><label>{{ t('adm.name', lang) }}</label><input type="text" name="name" value="{{ game.name }}"></div>
+    </div>
+    <div class="form-row lang-field" data-lang="en" style="display:none">
+        <div><label>{{ t('adm.name', lang) }}</label><input type="text" name="name_en" value="{{ game.name_en|default('') }}"></div>
+    </div>
+    <div class="form-row lang-field" data-lang="fr" style="display:none">
+        <div><label>{{ t('adm.name', lang) }}</label><input type="text" name="name_fr" value="{{ game.name_fr|default('') }}"></div>
+    </div>
+    <div class="form-row lang-field" data-lang="it" style="display:none">
+        <div><label>{{ t('adm.name', lang) }}</label><input type="text" name="name_it" value="{{ game.name_it|default('') }}"></div>
+    </div>
+    <div class="form-row lang-field" data-lang="ru" style="display:none">
+        <div><label>{{ t('adm.name', lang) }}</label><input type="text" name="name_ru" value="{{ game.name_ru|default('') }}"></div>
+    </div>
+
+    <!-- ─── Description fields per language ─────────────── -->
+    <div class="form-row lang-field" data-lang="es">
+        <div><label>{{ t('adm.desc', lang) }}</label><textarea name="description">{{ game.description }}</textarea></div>
+    </div>
+    <div class="form-row lang-field" data-lang="en" style="display:none">
+        <div><label>{{ t('adm.desc', lang) }}</label><textarea name="description_en">{{ game.description_en|default('') }}</textarea></div>
+    </div>
+    <div class="form-row lang-field" data-lang="fr" style="display:none">
+        <div><label>{{ t('adm.desc', lang) }}</label><textarea name="description_fr">{{ game.description_fr|default('') }}</textarea></div>
+    </div>
+    <div class="form-row lang-field" data-lang="it" style="display:none">
+        <div><label>{{ t('adm.desc', lang) }}</label><textarea name="description_it">{{ game.description_it|default('') }}</textarea></div>
+    </div>
+    <div class="form-row lang-field" data-lang="ru" style="display:none">
+        <div><label>{{ t('adm.desc', lang) }}</label><textarea name="description_ru">{{ game.description_ru|default('') }}</textarea></div>
+    </div>
+
+    <!-- ─── Game defaults ───────────────────────────────── -->
+    <div class="admin-defaults-section">
+        <h4>{{ t('adm.defaults_title', lang) }}</h4>
+        <div class="form-row">
+            <div>
+                <label>{{ t('adm.def_time', lang) }}</label>
+                <input type="number" name="time_limit_min"
+                       value="{{ (game.defaults.time_limit / 60)|int }}"
+                       min="1" max="999">
+            </div>
+            {% if game.type in ['quiz', 'solo'] %}
+            <div>
+                <label>{{ t('adm.def_q', lang) }}</label>
+                <input type="number" name="max_items" value="{{ game.defaults.max_items|default(10) }}" min="1" max="250">
+            </div>
+            {% endif %}
+            {% if game.type == 'solo' and game.has_difficulty|default(true) %}
+            <div>
+                <label>{{ t('adm.def_difficulty', lang) }}</label>
+                <select name="default_difficulty">
+                    {% set cur_diff = game.defaults.default_difficulty|default('normal') %}
+                    <option value="easy"      {{ 'selected' if cur_diff == 'easy'      }}>{{ t('game.diff_easy', lang) }}</option>
+                    <option value="normal"    {{ 'selected' if cur_diff == 'normal'    }}>{{ t('game.diff_normal', lang) }}</option>
+                    <option value="hard"      {{ 'selected' if cur_diff == 'hard'      }}>{{ t('game.diff_hard', lang) }}</option>
+                    <option value="very_hard" {{ 'selected' if cur_diff == 'very_hard' }}>{{ t('game.diff_very_hard', lang) }}</option>
+                    <option value="extreme"   {{ 'selected' if cur_diff == 'extreme'   }}>{{ t('game.diff_extreme', lang) }}</option>
+                </select>
+            </div>
+            {% endif %}
+            <div>
+                <label>{{ t('adm.def_countdown', lang) }}</label>
+                <select name="default_countdown">
+                    {% set cur_cd = game.defaults.default_countdown|default('auto') %}
+                    <option value="auto" {{ 'selected' if cur_cd == 'auto' }}>{{ t('adm.countdown_auto', lang) }}</option>
+                    <option value="on"   {{ 'selected' if cur_cd == 'on'   }}>{{ t('adm.countdown_on', lang) }}</option>
+                    <option value="off"  {{ 'selected' if cur_cd == 'off'  }}>{{ t('adm.countdown_off', lang) }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    {% if show_modes %}
+    <!-- ─── Game modes ───────────────────────────────────── -->
+    <div class="admin-modes-section">
+        <h4>{{ t('adm.modes_title', lang) }}</h4>
+        <div class="admin-modes-row">
+            {% set gm = game.modes|default({'solo': true, 'duel': true, 'tournament': true}) %}
+            <div class="admin-mode-item">
+                <label class="switch">
+                    <input type="checkbox" name="mode_solo" value="1" {% if gm.solo|default(true) %}checked{% endif %}>
+                    <span class="switch-slider"></span>
+                </label>
+                <span>{{ t('adm.mode_solo', lang) }}</span>
+            </div>
+            <div class="admin-mode-item">
+                <label class="switch">
+                    <input type="checkbox" name="mode_duel" value="1" {% if gm.duel|default(true) %}checked{% endif %}>
+                    <span class="switch-slider"></span>
+                </label>
+                <span>{{ t('adm.mode_duel', lang) }}</span>
+            </div>
+            <div class="admin-mode-item">
+                <label class="switch">
+                    <input type="checkbox" name="mode_tournament" value="1" {% if gm.tournament|default(true) %}checked{% endif %}>
+                    <span class="switch-slider"></span>
+                </label>
+                <span>{{ t('adm.mode_tournament', lang) }}</span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <button type="submit" class="btn-save">{{ t('adm.save', lang) }}</button>
+</form>
+{% endmacro %}
+
 {% block content %}
 <div class="admin-dashboard">
     <div class="admin-header">
@@ -34,126 +162,41 @@
         </div>
     </div>
 
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- GeoGames                                                           -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <h2 class="admin-category">🎮 GeoGames</h2>
+
     {% for game in games %}
-    <form class="admin-game-card" method="post" action="/admin/games/{{ game.id }}">
-        <h3>{{ game.icon }} {{ game.name }}</h3>
-
-        <!-- ─── Name fields per language ────────────────────── -->
-        <div class="form-row lang-field" data-lang="es">
-            <div>
-                <label>{{ t('adm.name', lang) }}</label>
-                <input type="text" name="name" value="{{ game.name }}">
-            </div>
-        </div>
-        <div class="form-row lang-field" data-lang="en" style="display:none">
-            <div>
-                <label>{{ t('adm.name', lang) }}</label>
-                <input type="text" name="name_en" value="{{ game.name_en|default('') }}">
-            </div>
-        </div>
-        <div class="form-row lang-field" data-lang="fr" style="display:none">
-            <div>
-                <label>{{ t('adm.name', lang) }}</label>
-                <input type="text" name="name_fr" value="{{ game.name_fr|default('') }}">
-            </div>
-        </div>
-        <div class="form-row lang-field" data-lang="it" style="display:none">
-            <div>
-                <label>{{ t('adm.name', lang) }}</label>
-                <input type="text" name="name_it" value="{{ game.name_it|default('') }}">
-            </div>
-        </div>
-        <div class="form-row lang-field" data-lang="ru" style="display:none">
-            <div>
-                <label>{{ t('adm.name', lang) }}</label>
-                <input type="text" name="name_ru" value="{{ game.name_ru|default('') }}">
-            </div>
-        </div>
-
-        <!-- ─── Description fields per language ─────────────── -->
-        <div class="form-row lang-field" data-lang="es">
-            <div>
-                <label>{{ t('adm.desc', lang) }}</label>
-                <textarea name="description">{{ game.description }}</textarea>
-            </div>
-        </div>
-        <div class="form-row lang-field" data-lang="en" style="display:none">
-            <div>
-                <label>{{ t('adm.desc', lang) }}</label>
-                <textarea name="description_en">{{ game.description_en|default('') }}</textarea>
-            </div>
-        </div>
-        <div class="form-row lang-field" data-lang="fr" style="display:none">
-            <div>
-                <label>{{ t('adm.desc', lang) }}</label>
-                <textarea name="description_fr">{{ game.description_fr|default('') }}</textarea>
-            </div>
-        </div>
-        <div class="form-row lang-field" data-lang="it" style="display:none">
-            <div>
-                <label>{{ t('adm.desc', lang) }}</label>
-                <textarea name="description_it">{{ game.description_it|default('') }}</textarea>
-            </div>
-        </div>
-        <div class="form-row lang-field" data-lang="ru" style="display:none">
-            <div>
-                <label>{{ t('adm.desc', lang) }}</label>
-                <textarea name="description_ru">{{ game.description_ru|default('') }}</textarea>
-            </div>
-        </div>
-
-        <!-- ─── Game defaults ───────────────────────────────── -->
-        <div class="admin-defaults-section">
-            <h4>{{ t('adm.defaults_title', lang) }}</h4>
-            <div class="form-row">
-                <div>
-                    <label>{{ t('adm.def_time', lang) }}</label>
-                    <select name="time_limit">
-                        <option value="300" {{ 'selected' if game.defaults.time_limit == 300 }}>{{ t('adm.5m', lang) }}</option>
-                        <option value="600" {{ 'selected' if game.defaults.time_limit == 600 }}>{{ t('adm.10m', lang) }}</option>
-                        <option value="900" {{ 'selected' if game.defaults.time_limit == 900 }}>{{ t('adm.15m', lang) }}</option>
-                        <option value="1800" {{ 'selected' if game.defaults.time_limit == 1800 }}>{{ t('adm.30m', lang) }}</option>
-                        <option value="0" {{ 'selected' if game.defaults.time_limit == 0 }}>{{ t('adm.nolimit', lang) }}</option>
-                    </select>
-                </div>
-                {% if game.type in ['quiz', 'solo'] %}
-                <div>
-                    <label>{{ t('adm.def_q', lang) }}</label>
-                    <input type="number" name="max_items" value="{{ game.defaults.max_items|default(10) }}" min="1" max="250">
-                </div>
-                {% endif %}
-                {% if game.type == 'solo' %}
-                <div>
-                    <label>{{ t('adm.def_difficulty', lang) }}</label>
-                    <select name="default_difficulty">
-                        {% set cur_diff = game.defaults.default_difficulty|default('normal') %}
-                        <option value="easy" {{ 'selected' if cur_diff == 'easy' }}>{{ t('game.diff_easy', lang) }}</option>
-                        <option value="normal" {{ 'selected' if cur_diff == 'normal' }}>{{ t('game.diff_normal', lang) }}</option>
-                        <option value="hard" {{ 'selected' if cur_diff == 'hard' }}>{{ t('game.diff_hard', lang) }}</option>
-                        <option value="very_hard" {{ 'selected' if cur_diff == 'very_hard' }}>{{ t('game.diff_very_hard', lang) }}</option>
-                        <option value="extreme" {{ 'selected' if cur_diff == 'extreme' }}>{{ t('game.diff_extreme', lang) }}</option>
-                    </select>
-                </div>
-                {% endif %}
-                <div>
-                    <label>{{ t('adm.def_countdown', lang) }}</label>
-                    <select name="default_countdown">
-                        {% set cur_cd = game.defaults.default_countdown|default('auto') %}
-                        <option value="auto" {{ 'selected' if cur_cd == 'auto' }}>{{ t('adm.countdown_auto', lang) }}</option>
-                        <option value="on" {{ 'selected' if cur_cd == 'on' }}>{{ t('adm.countdown_on', lang) }}</option>
-                        <option value="off" {{ 'selected' if cur_cd == 'off' }}>{{ t('adm.countdown_off', lang) }}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <button type="submit" class="btn-save">{{ t('adm.save', lang) }}</button>
-    </form>
+    {% if game.type == 'solo' %}
+    {{ game_card(game, show_modes=true) }}
+    {% endif %}
     {% endfor %}
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- GeoQuiz                                                            -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <h2 class="admin-category">🧩 GeoQuiz</h2>
+
+    <h3 class="admin-subcategory">{{ t('dash.subcat_adivina', lang) }}</h3>
+    {% for game in games %}
+    {% if game.subcategory == 'adivina_cual' %}
+    {{ game_card(game) }}
+    {% endif %}
+    {% endfor %}
+
+    <h3 class="admin-subcategory">{{ t('dash.subcat_mapa', lang) }}</h3>
+    {% for game in games %}
+    {% if game.subcategory == 'sobre_el_mapa' %}
+    {{ game_card(game) }}
+    {% endif %}
+    {% endfor %}
+
 </div>
 
 <script>
 (function() {
+    // Language tab switcher
     var btns = document.querySelectorAll('#admin-lang-btns .admin-lang-btn');
     btns.forEach(function(btn) {
         btn.addEventListener('click', function() {
@@ -163,6 +206,16 @@
             document.querySelectorAll('.lang-field').forEach(function(el) {
                 el.style.display = el.getAttribute('data-lang') === editLang ? '' : 'none';
             });
+        });
+    });
+
+    // Visibility hint text update
+    var visOnText  = '{{ t("adm.visible_on", lang) }}';
+    var visOffText = '{{ t("adm.visible_off", lang) }}';
+    document.querySelectorAll('input[name="visible"]').forEach(function(chk) {
+        var hint = chk.closest('.admin-visibility').querySelector('.admin-visibility-hint');
+        chk.addEventListener('change', function() {
+            if (hint) hint.textContent = chk.checked ? visOnText : visOffText;
         });
     });
 })();

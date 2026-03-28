@@ -63,13 +63,13 @@ async def logout(request: Request):
 # ── Dashboard (games) ───────────────────────────────────────────────────────
 
 @router.get("", response_class=HTMLResponse)
-async def admin_dashboard(request: Request):
+async def admin_dashboard(request: Request, saved: str = ""):
     if not is_authenticated(request):
         return RedirectResponse("/admin/login", status_code=303)
     lang = get_lang(request)
     games = games_service.get_games()
     return templates.TemplateResponse(
-        "admin/dashboard.html", {"request": request, "games": games, "lang": lang, "section": "games"}
+        "admin/dashboard.html", {"request": request, "games": games, "lang": lang, "section": "games", "saved": saved == "1"}
     )
 
 
@@ -88,11 +88,19 @@ async def update_game(request: Request, game_id: str):
             val = form.get(key, "")
             if val:
                 updates[key] = val
+    # Visibility
+    updates["visible"] = form.get("visible") == "1"
+
     # Build defaults — merge with existing to preserve unset fields
     game = games_service.get_game(game_id)
     defaults = dict(game.get("defaults", {})) if game else {}
-    if form.get("time_limit") is not None:
-        defaults["time_limit"] = int(form.get("time_limit", 600))
+    time_min_str = form.get("time_limit_min")
+    if time_min_str is not None:
+        try:
+            mins = max(1, min(999, int(time_min_str)))
+            defaults["time_limit"] = mins * 60
+        except (ValueError, TypeError):
+            pass
     if form.get("max_items"):
         defaults["max_items"] = int(form.get("max_items", 10))
     if form.get("default_difficulty"):
@@ -104,8 +112,17 @@ async def update_game(request: Request, game_id: str):
         if val in ("auto", "on", "off"):
             defaults["default_countdown"] = val
     updates["defaults"] = defaults
+
+    # Game modes (solo-type games only)
+    if game and game.get("type") == "solo":
+        updates["modes"] = {
+            "solo": form.get("mode_solo") == "1",
+            "duel": form.get("mode_duel") == "1",
+            "tournament": form.get("mode_tournament") == "1",
+        }
+
     games_service.update_game(game_id, updates)
-    return RedirectResponse("/admin", status_code=303)
+    return RedirectResponse("/admin?saved=1", status_code=303)
 
 
 # ── Users management ────────────────────────────────────────────────────────

@@ -61,95 +61,139 @@
         </div>
     </div>
 
-    <!-- Account details -->
-    <div class="profile-section">
-        <h2>{{ t('prof.account', lang) }}</h2>
-        <div class="profile-detail">
-            <span class="label">{{ t('prof.user', lang) }}</span>
-            <span>{{ user.username }}</span>
-        </div>
-        <div class="profile-detail">
-            <span class="label">{{ t('prof.email', lang) }}</span>
-            <span>{{ user.email }}{% if not user.email_verified %} <small style="color:#ff9800;">({{ t('prof.unverified', lang) }})</small>{% endif %}</span>
-        </div>
-        <div class="profile-detail">
-            <span class="label">{{ t('prof.plan', lang) }}</span>
-            <span>{{ user.plan | capitalize }}</span>
-        </div>
-    </div>
-
-    <!-- Change email -->
-    <div class="profile-section">
-        <h2>{{ t('prof.change_email', lang) }}</h2>
-        {% if request.query_params.get('em_sent') %}
-        <div class="auth-success">{{ t('prof.email_sent', lang) }}</div>
-        {% endif %}
-        {% if request.query_params.get('em_error') == 'invalid' %}
-        <div class="auth-error">{{ t('prof.email_invalid', lang) }}</div>
-        {% elif request.query_params.get('em_error') == 'taken' %}
-        <div class="auth-error">{{ t('prof.email_taken', lang) }}</div>
-        {% endif %}
-        <form method="post" action="/profile/change-email" class="profile-form">
-            <input type="email" name="new_email" placeholder="{{ t('prof.new_email', lang) }}" required>
-            <button type="submit" class="btn-accent">{{ t('prof.send_confirm', lang) }}</button>
-        </form>
-    </div>
-
-    <!-- Change password -->
-    <div class="profile-section">
-        <h2>{{ t('prof.change_pw', lang) }}</h2>
-        {% if request.query_params.get('pw_ok') %}
-        <div class="auth-success">{{ t('prof.pw_changed', lang) }}</div>
-        {% endif %}
-        {% if request.query_params.get('pw_error') == 'wrong_pw' %}
-        <div class="auth-error">{{ t('prof.pw_wrong', lang) }}</div>
-        {% elif request.query_params.get('pw_error') == 'too_short' %}
-        <div class="auth-error">{{ t('prof.pw_short', lang) }}</div>
-        {% elif request.query_params.get('pw_error') == 'mismatch' %}
-        <div class="auth-error">{{ t('prof.pw_mismatch', lang) }}</div>
-        {% endif %}
-        <form method="post" action="/profile/change-password" class="profile-form">
-            <input type="password" name="current_password" placeholder="{{ t('prof.current_pw', lang) }}" required>
-            <input type="password" name="new_password" placeholder="{{ t('auth.new_password', lang) }}" required minlength="8">
-            <input type="password" name="new_password2" placeholder="{{ t('auth.repeat_password', lang) }}" required minlength="8">
-            <button type="submit" class="btn-accent">{{ t('prof.change_pw_btn', lang) }}</button>
-        </form>
-    </div>
-
-    <!-- Best scores -->
-    <div class="profile-section">
-        <h2>{{ t('prof.best_scores', lang) }}</h2>
-        {% if best_scores %}
-        <table class="history-table">
-            <thead>
-                <tr>
-                    <th>{{ t('prof.game', lang) }}</th>
-                    <th>{{ t('prof.score', lang) }}</th>
-                    <th>{{ t('prof.accuracy', lang) }}</th>
-                    <th>{{ t('prof.matches', lang) }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for m in best_scores %}
-                <tr>
-                    <td>{{ m.game_type | replace('-', ' ') | title }}</td>
-                    <td class="ht-score">{{ m.best_score }}</td>
-                    <td>{{ "%.0f" | format(m.best_accuracy | float * 100) }}%</td>
-                    <td>{{ m.matches }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="history-empty">{{ t('prof.no_scores', lang) }}</div>
-        {% endif %}
-    </div>
-
+    <!-- Action buttons -->
     <div class="profile-actions">
         <a href="/games" class="btn-accent">{{ t('prof.play', lang) }}</a>
         <a href="/friends" class="prof-btn-outline">{{ t('prof.see_friends', lang) }}</a>
-        <a href="/logout" class="prof-btn-outline">{{ t('prof.logout', lang) }}</a>
+        <a href="/logout" class="prof-btn-outline prof-btn-logout">{{ t('prof.logout', lang) }}</a>
     </div>
+
+    <!-- Tabs -->
+    <div class="profile-tabs">
+        <button class="tab-btn active" data-tab="config">{{ t('prof.tab_config', lang) }}</button>
+        <button class="tab-btn" data-tab="stats">{{ t('prof.tab_stats', lang) }}</button>
+    </div>
+
+    <!-- Tab: Configuración -->
+    <div id="tab-config" class="tab-content">
+
+        <!-- Account details -->
+        <div class="profile-section">
+            <h2>{{ t('prof.account', lang) }}</h2>
+            <div class="profile-detail">
+                <span class="label">{{ t('prof.user', lang) }}</span>
+                <span>{{ user.username }}</span>
+            </div>
+            <div class="profile-detail">
+                <span class="label">{{ t('prof.email', lang) }}</span>
+                <span>{{ user.email }}{% if not user.email_verified %} <small style="color:#ff9800;">({{ t('prof.unverified', lang) }})</small>{% endif %}</span>
+            </div>
+            <div class="profile-detail">
+                <span class="label">{{ t('prof.plan', lang) }}</span>
+                <span>{{ user.plan | capitalize }}</span>
+            </div>
+        </div>
+
+        <!-- Change email -->
+        <div class="profile-section">
+            <h2>{{ t('prof.change_email', lang) }}</h2>
+            {% if request.query_params.get('em_sent') %}
+            <div class="auth-success">{{ t('prof.email_sent', lang) }}</div>
+            {% endif %}
+            {% if request.query_params.get('em_error') == 'invalid' %}
+            <div class="auth-error">{{ t('prof.email_invalid', lang) }}</div>
+            {% elif request.query_params.get('em_error') == 'taken' %}
+            <div class="auth-error">{{ t('prof.email_taken', lang) }}</div>
+            {% endif %}
+            <form method="post" action="/profile/change-email" class="profile-form">
+                <input type="email" name="new_email" placeholder="{{ t('prof.new_email', lang) }}" required>
+                <button type="submit" class="btn-accent">{{ t('prof.send_confirm', lang) }}</button>
+            </form>
+        </div>
+
+        <!-- Change password -->
+        <div class="profile-section">
+            <h2>{{ t('prof.change_pw', lang) }}</h2>
+            {% if request.query_params.get('pw_ok') %}
+            <div class="auth-success">{{ t('prof.pw_changed', lang) }}</div>
+            {% endif %}
+            {% if request.query_params.get('pw_error') == 'wrong_pw' %}
+            <div class="auth-error">{{ t('prof.pw_wrong', lang) }}</div>
+            {% elif request.query_params.get('pw_error') == 'too_short' %}
+            <div class="auth-error">{{ t('prof.pw_short', lang) }}</div>
+            {% elif request.query_params.get('pw_error') == 'mismatch' %}
+            <div class="auth-error">{{ t('prof.pw_mismatch', lang) }}</div>
+            {% endif %}
+            <form method="post" action="/profile/change-password" class="profile-form">
+                <input type="password" name="current_password" placeholder="{{ t('prof.current_pw', lang) }}" required>
+                <input type="password" name="new_password" placeholder="{{ t('auth.new_password', lang) }}" required minlength="8">
+                <input type="password" name="new_password2" placeholder="{{ t('auth.repeat_password', lang) }}" required minlength="8">
+                <button type="submit" class="btn-accent">{{ t('prof.change_pw_btn', lang) }}</button>
+            </form>
+        </div>
+
+    </div><!-- /tab-config -->
+
+    <!-- Tab: Mis stats -->
+    <div id="tab-stats" class="tab-content" style="display:none">
+
+        <!-- Best scores -->
+        <div class="profile-section">
+            <h2>{{ t('prof.best_scores', lang) }}</h2>
+            {% if best_scores %}
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>{{ t('prof.game', lang) }}</th>
+                        <th>{{ t('prof.score', lang) }}</th>
+                        <th>{{ t('prof.accuracy', lang) }}</th>
+                        <th>{{ t('prof.matches', lang) }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in best_scores %}
+                    <tr>
+                        <td>{{ m.game_type | replace('-', ' ') | title }}</td>
+                        <td class="ht-score">{{ m.best_score }}</td>
+                        <td>{{ "%.0f" | format(m.best_accuracy | float * 100) }}%</td>
+                        <td>{{ m.matches }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="history-empty">{{ t('prof.no_scores', lang) }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Mis partidas -->
+        <div class="profile-section">
+            <h2>{{ t('prof.my_games', lang) }}</h2>
+
+            {% if game_counters %}
+            <div class="game-counters">
+                {% for game_type, count in game_counters.items() %}
+                <div class="game-counter-card">
+                    <div class="gc-count">{{ count }}</div>
+                    <div class="gc-label">{{ game_type | replace('-', ' ') }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="history-empty">{{ t('prof.no_scores', lang) }}</div>
+            {% endif %}
+
+            <h3 style="margin:20px 0 12px;font-size:0.95rem;font-weight:600;color:var(--gray-700);">{{ t('prof.games_per_day', lang) }}</h3>
+            {% if recent_matches_chart %}
+            <div style="position:relative;height:220px;">
+                <canvas id="games-chart"></canvas>
+            </div>
+            {% else %}
+            <div class="history-empty">{{ t('prof.no_scores', lang) }}</div>
+            {% endif %}
+        </div>
+
+    </div><!-- /tab-stats -->
 </div>
 
 <!-- Crop modal -->
@@ -169,8 +213,68 @@
 </div>
 
 <script src="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
 (function () {
+    /* ── Tabs ── */
+    function switchTab(name) {
+        document.querySelectorAll('.tab-btn').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.tab === name);
+        });
+        document.querySelectorAll('.tab-content').forEach(function(c) {
+            c.style.display = c.id === 'tab-' + name ? '' : 'none';
+        });
+    }
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
+    });
+    if (window.location.hash === '#stats') switchTab('stats');
+
+    /* ── Chart ── */
+    var matches = {{ recent_matches_chart | tojson | safe }};
+    if (matches.length && document.getElementById('games-chart')) {
+        // Group by date
+        var byDate = {};
+        var gameTypes = {};
+        matches.forEach(function(m) {
+            var d = m.date;
+            if (!byDate[d]) byDate[d] = { _total: 0 };
+            byDate[d]._total++;
+            byDate[d][m.game_type] = (byDate[d][m.game_type] || 0) + 1;
+            gameTypes[m.game_type] = true;
+        });
+        var labels = Object.keys(byDate).sort();
+        var palette = ['#1a73e8','#34a853','#fbbc04','#ea4335','#9c27b0','#00acc1','#ff7043'];
+        var datasets = [];
+        var gts = Object.keys(gameTypes);
+        gts.forEach(function(gt, i) {
+            datasets.push({
+                label: gt.replace(/-/g, ' '),
+                data: labels.map(function(d) { return byDate[d][gt] || 0; }),
+                backgroundColor: palette[i % palette.length],
+                stack: 'stack',
+                borderRadius: 3,
+            });
+        });
+        new Chart(document.getElementById('games-chart'), {
+            type: 'bar',
+            data: { labels: labels, datasets: datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12 } },
+                    tooltip: { mode: 'index' }
+                },
+                scales: {
+                    x: { stacked: true, ticks: { font: { size: 11 } } },
+                    y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1, font: { size: 11 } } }
+                }
+            }
+        });
+    }
+
+    /* ── Avatar crop ── */
     const input = document.getElementById('avatar-input');
     const cropModal = document.getElementById('crop-modal');
     const cropImg = document.getElementById('crop-img');

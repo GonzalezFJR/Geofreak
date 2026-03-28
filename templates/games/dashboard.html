@@ -15,7 +15,7 @@
     <h2 class="dashboard-category">GeoGames</h2>
     <div class="games-grid">
         {% for game in games %}
-        {% if game.enabled and game.type == 'solo' %}
+        {% if game.enabled and game.visible|default(true) and game.type == 'solo' %}
         <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
             <div class="game-card-icon">
                 <img src="/static/img/icons/{{ game.id }}.svg" width="72" height="72" alt="">
@@ -37,7 +37,7 @@
     <h3 class="dashboard-subcategory">{{ t('dash.subcat_adivina', lang) }}</h3>
     <div class="games-grid">
         {% for game in games %}
-        {% if game.enabled and game.subcategory == 'adivina_cual' %}
+        {% if game.enabled and game.visible|default(true) and game.subcategory == 'adivina_cual' %}
         <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
             <div class="game-card-icon">
                 <img src="/static/img/icons/{{ game.id }}.svg" width="72" height="72" alt="">
@@ -56,7 +56,7 @@
     <h3 class="dashboard-subcategory">{{ t('dash.subcat_mapa', lang) }}</h3>
     <div class="games-grid">
         {% for game in games %}
-        {% if game.enabled and game.subcategory == 'sobre_el_mapa' %}
+        {% if game.enabled and game.visible|default(true) and game.subcategory == 'sobre_el_mapa' %}
         <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
             <div class="game-card-icon">
                 <img src="/static/img/icons/{{ game.id }}.svg" width="72" height="72" alt="">

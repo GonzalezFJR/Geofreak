@@ -33,12 +33,11 @@
                 <span></span><span></span><span></span>
             </button>
             <div class="nav-links" id="nav-links">
-                <a href="/" class="nav-link">{{ t('nav.home', lang) }}</a>
                 <a href="/games" class="nav-link">{{ t('nav.games', lang) }}</a>
-                <a href="/ranking" class="nav-link">{{ t('nav.ranking', lang) }}</a>
-                {% if user %}
-                <a href="/duels" class="nav-link">{{ t('nav.duels', lang) }}</a>
-                <a href="/tournaments" class="nav-link">{{ t('nav.tournaments', lang) }}</a>
+                {% if request.session.get('authenticated') %}
+                <a href="/admin" class="nav-link">Admin</a>
+                <a href="/admin/logout" class="nav-link nav-logout">{{ t('nav.logout', lang) }}</a>
+                {% elif user %}
                 <a href="/friends" class="nav-link nav-friends" id="nav-friends">{{ t('soc.friends', lang) }}</a>
                 <a href="/profile" class="nav-link">{{ user.username }}</a>
                 <a href="/logout" class="nav-link nav-logout">{{ t('nav.logout', lang) }}</a>

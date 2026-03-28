@@ -18,7 +18,8 @@
       "subcategory": "adivina_cual",
       "defaults": { "time_limit": 600, "max_items": 30 },
       "has_continent_filter": true,
-      "enabled": true
+      "enabled": true,
+      "visible": true
     },
     {
       "id": "outline",
@@ -38,7 +39,8 @@
       "subcategory": "adivina_cual",
       "defaults": { "time_limit": 600, "max_items": 30 },
       "has_continent_filter": true,
-      "enabled": true
+      "enabled": true,
+      "visible": true
     },
     {
       "id": "map-challenge",
@@ -58,7 +60,8 @@
       "subcategory": "sobre_el_mapa",
       "defaults": { "time_limit": 600 },
       "has_continent_filter": true,
-      "enabled": true
+      "enabled": true,
+      "visible": true
     },
     {
       "id": "ordering",
@@ -77,7 +80,9 @@
       "type": "solo",
       "defaults": { "time_limit": 600, "max_items": 10 },
       "has_continent_filter": true,
-      "enabled": true
+      "enabled": true,
+      "visible": true,
+      "modes": { "solo": true, "duel": true, "tournament": true }
     },
     {
       "id": "comparison",
@@ -96,7 +101,9 @@
       "type": "solo",
       "defaults": { "time_limit": 600, "max_items": 10 },
       "has_continent_filter": true,
-      "enabled": true
+      "enabled": true,
+      "visible": true,
+      "modes": { "solo": true, "duel": true, "tournament": true }
     },
     {
       "id": "geostats",
@@ -116,7 +123,9 @@
       "has_difficulty": false,
       "defaults": { "time_limit": 600, "max_items": 10, "max_attempts": 5 },
       "has_continent_filter": true,
-      "enabled": true
+      "enabled": true,
+      "visible": true,
+      "modes": { "solo": true, "duel": true, "tournament": true }
     }
   ]
 }
