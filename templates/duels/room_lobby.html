@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}{{ game_field(game, 'name', lang) }} — {{ t('room.duel', lang) }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/duels.css">
+{% endblock %}
+
+{% block content %}
+<section class="room-lobby-page">
+    <div class="room-lobby-container">
+
+        <!-- Header -->
+        <div class="room-lobby-header">
+            <a href="/games" class="room-back">← {{ t('nav.games', lang) }}</a>
+            <div class="room-lobby-title-row">
+                <img src="/static/img/icons/{{ game.id }}.svg" width="48" height="48" alt="">
+                <div>
+                    <h1>{{ game_field(game, 'name', lang) }}</h1>
+                    <p class="room-lobby-subtitle">{{ t('room.duel_subtitle', lang) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two panels -->
+        <div class="room-panels">
+
+            <!-- ── Create ── -->
+            <div class="room-panel" id="panel-create">
+                <div class="room-panel-icon">⚔️</div>
+                <h2>{{ t('room.create_title', lang) }}</h2>
+                <p class="room-panel-desc">{{ t('room.create_desc', lang) }}</p>
+
+                <!-- Settings (hidden after creation) -->
+                <div id="create-settings">
+                    <div class="room-setting-group">
+                        <label class="room-setting-label">{{ t('room.n_items', lang) }}</label>
+                        <div class="room-n-btns" id="create-n-btns">
+                            {% for n in [5, 10, 15, 20] %}
+                            <button type="button" class="room-n-btn{% if n == 10 %} active{% endif %}" data-n="{{ n }}">{{ n }}</button>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" id="create-n" value="10">
+                    </div>
+
+                    <div class="room-setting-group">
+                        <label class="room-setting-label">{{ t('game.difficulty', lang) }}</label>
+                        <select id="create-difficulty" class="room-select">
+                            <option value="easy">{{ t('game.diff_easy', lang) }}</option>
+                            <option value="normal" selected>{{ t('game.diff_normal', lang) }}</option>
+                            <option value="hard">{{ t('game.diff_hard', lang) }}</option>
+                            <option value="very_hard">{{ t('game.diff_very_hard', lang) }}</option>
+                        </select>
+                    </div>
+
+                    {% if not user %}
+                    <div class="room-setting-group">
+                        <label class="room-setting-label">{{ t('room.your_name', lang) }}</label>
+                        <input type="text" id="create-guest-name" class="room-input"
+                               placeholder="{{ t('room.name_placeholder', lang) }}" maxlength="30">
+                    </div>
+                    {% endif %}
+
+                    <button class="room-primary-btn" id="btn-create" onclick="RoomLobby.create()">
+                        {{ t('room.create_btn', lang) }}
+                    </button>
+                    <p class="room-error" id="create-error" style="display:none"></p>
+                </div>
+
+                <!-- Code display (shown after creation) -->
+                <div id="create-code-display" style="display:none">
+                    <div class="room-code-box">
+                        <div class="room-code-label">{{ t('room.room_code', lang) }}</div>
+                        <div class="room-code-value" id="created-code">–</div>
+                        <button class="room-copy-btn" onclick="RoomLobby.copyCode()" title="{{ t('room.copy_code', lang) }}">
+                            {{ t('room.copy_code', lang) }}
+                        </button>
+                    </div>
+                    <a class="room-primary-btn room-go-btn" id="btn-go-room" href="#">
+                        {{ t('room.enter_room', lang) }}
+                    </a>
+                </div>
+            </div>
+
+            <!-- ── Join ── -->
+            <div class="room-panel" id="panel-join">
+                <div class="room-panel-icon">🚪</div>
+                <h2>{{ t('room.join_title', lang) }}</h2>
+                <p class="room-panel-desc">{{ t('room.join_desc', lang) }}</p>
+
+                <div class="room-setting-group">
+                    <label class="room-setting-label">{{ t('room.enter_code', lang) }}</label>
+                    <input type="text" id="join-code" class="room-input room-code-input"
+                           placeholder="AB3X7K2M" maxlength="8"
+                           oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+                </div>
+
+                {% if user %}
+                <div class="room-logged-as">
+                    {{ t('room.playing_as', lang) }} <strong>{{ user.username }}</strong>
+                </div>
+                {% else %}
+                <div class="room-setting-group">
+                    <label class="room-setting-label">{{ t('room.your_name', lang) }}</label>
+                    <input type="text" id="join-guest-name" class="room-input"
+                           placeholder="{{ t('room.name_placeholder', lang) }}" maxlength="30">
+                </div>
+                <div class="room-auth-hint">
+                    <a href="/login">{{ t('nav.login', lang) }}</a> {{ t('room.or', lang) }}
+                    <a href="/register">{{ t('room.register', lang) }}</a>
+                    {{ t('room.auth_hint', lang) }}
+                </div>
+                {% endif %}
+
+                <button class="room-secondary-btn" id="btn-join" onclick="RoomLobby.join()">
+                    {{ t('room.join_btn', lang) }}
+                </button>
+                <p class="room-error" id="join-error" style="display:none"></p>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+var ROOM_GAME_ID = {{ game.id | tojson }};
+var ROOM_USER = {{ (user.username if user else '') | tojson }};
+var ROOM_USER_ID = {{ (user.user_id if user else '') | tojson }};
+var ROOM_IS_LOGGED = {{ 'true' if user else 'false' }};
+var ROOM_T = {
+    creating: {{ t('room.creating', lang) | tojson }},
+    joining:  {{ t('room.joining', lang) | tojson }},
+    err_name: {{ t('room.err_name', lang) | tojson }},
+    err_code: {{ t('room.err_code', lang) | tojson }},
+    err_not_found: {{ t('room.err_not_found', lang) | tojson }},
+    err_full: {{ t('room.err_full', lang) | tojson }},
+    err_started: {{ t('room.err_started', lang) | tojson }},
+    err_generic: {{ t('room.err_generic', lang) | tojson }},
+    copied: {{ t('room.copied', lang) | tojson }},
+};
+</script>
+<script src="/static/js/duels/room-lobby.js"></script>
+{% endblock %}

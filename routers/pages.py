@@ -82,7 +82,7 @@ async def play_select(request: Request, mode: str, user=Depends(get_optional_use
         mode = "solo"
     lang = get_lang(request)
     games = [g.copy() for g in _games_svc.get_games() if g.get("type") in _PLAY_TYPES and g.get("enabled")]
-    href_prefix = {"solo": "/games/", "duel": "/duels?game=", "tournament": "/tournaments?game="}
+    href_prefix = {"solo": "/games/", "duel": "/duel/", "tournament": "/tournaments?game="}
     for g in games:
         g["_href"] = href_prefix[mode] + g["id"]
     return templates.TemplateResponse("games/select.html", {

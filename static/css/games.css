@@ -1233,6 +1233,17 @@
     position: relative;
     overflow: hidden;
 }
+/* Inner link for GeoGames cards (rest of card is still clickable for solo) */
+.game-card-inner-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+}
+.game-card-inner-link:hover ~ .game-card-actions .game-card-play-solo { opacity: 0.88; }
+/* Actions row */
+.game-card-body { padding-bottom: 4px; }
 
 .game-card::before {
     content: '';
@@ -1268,10 +1279,16 @@
 }
 
 .game-card-body {
-    padding: 16px 22px 22px;
+    padding: 16px 22px 12px;
     display: flex;
     flex-direction: column;
     flex: 1;
+}
+/* Solo/Duel action buttons (GeoGames cards) */
+.game-card .game-card-actions {
+    padding: 0 14px 16px;
+    display: flex;
+    gap: 8px;
 }
 
 .game-card h3 {

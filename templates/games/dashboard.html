@@ -16,16 +16,21 @@
     <div class="games-grid">
         {% for game in games %}
         {% if game.enabled and game.visible|default(true) and game.type == 'solo' %}
-        <a href="/games/{{ game.id }}" class="game-card" style="--card-color: {{ game.color }}">
-            <div class="game-card-icon">
-                <img src="/static/img/icons/{{ game.id }}.svg" width="72" height="72" alt="">
+        <div class="game-card" style="--card-color: {{ game.color }}">
+            <a href="/games/{{ game.id }}" class="game-card-inner-link">
+                <div class="game-card-icon">
+                    <img src="/static/img/icons/{{ game.id }}.svg" width="72" height="72" alt="">
+                </div>
+                <div class="game-card-body">
+                    <h3>{{ game_field(game, 'name', lang) }}</h3>
+                    <p>{{ game_field(game, 'description', lang) }}</p>
+                </div>
+            </a>
+            <div class="game-card-actions">
+                <a href="/games/{{ game.id }}" class="game-card-play-solo">{{ t('dash.play_solo', lang) }}</a>
+                <a href="/duel/{{ game.id }}" class="game-card-play-duel">{{ t('dash.play_duel', lang) }}</a>
             </div>
-            <div class="game-card-body">
-                <h3>{{ game_field(game, 'name', lang) }}</h3>
-                <p>{{ game_field(game, 'description', lang) }}</p>
-                <div class="game-card-play"><span>{{ t('dash.play', lang) }}</span></div>
-            </div>
-        </a>
+        </div>
         {% endif %}
         {% endfor %}
     </div>

@@ -22,7 +22,7 @@ def create_app():
     from fastapi.staticfiles import StaticFiles
     from starlette.middleware.sessions import SessionMiddleware
 
-    from routers import pages, api, games, admin, auth, social, duels, tournaments
+    from routers import pages, api, games, admin, auth, social, duels, tournaments, rooms
 
     settings = get_settings()
 
@@ -49,6 +49,7 @@ def create_app():
     app.include_router(games.router)
     app.include_router(social.router)
     app.include_router(duels.router)
+    app.include_router(rooms.router)
     app.include_router(tournaments.router)
     app.include_router(admin.router)
 
