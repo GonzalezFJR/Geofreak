@@ -60,12 +60,6 @@
     <div class="admin-defaults-section">
         <h4>{{ t('adm.defaults_title', lang) }}</h4>
         <div class="form-row">
-            <div>
-                <label>{{ t('adm.def_time', lang) }}</label>
-                <input type="number" name="time_limit_min"
-                       value="{{ (game.defaults.time_limit / 60)|int }}"
-                       min="1" max="999">
-            </div>
             {% if game.type in ['quiz', 'solo'] %}
             <div>
                 <label>{{ t('adm.def_q', lang) }}</label>

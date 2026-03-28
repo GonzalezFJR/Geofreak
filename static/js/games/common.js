@@ -860,6 +860,10 @@ var GeoResults = (function () {
         var replayBtn = actions.querySelector('.btn.btn-primary');
         if (replayBtn) replayBtn.remove();
 
+        // Remove the quiet stats pill added by build() — daily uses btn-daily-stats instead
+        var quietStats = actions.querySelector('.btn-results-stats');
+        if (quietStats) quietStats.remove();
+
         // Add countdown before the "other games" link
         var otherLink = actions.querySelector('.daily-other-games');
         var countdownWrap = document.createElement('div');
@@ -871,8 +875,25 @@ var GeoResults = (function () {
             actions.appendChild(countdownWrap);
         }
 
-        // For anon users: remove stats link, ensure register block exists
-        if (opts && opts.isAnon) {
+        // IS_LOGGED_IN is the ground truth — opts.isAnon can be wrong if the fetch failed
+        var loggedIn = typeof IS_LOGGED_IN !== 'undefined' && IS_LOGGED_IN;
+
+        if (loggedIn) {
+            // Logged-in: ensure no stray register block, show prominent stats link
+            var regBlock = actions.querySelector('.daily-register-block');
+            if (regBlock) regBlock.remove();
+            var statsLink = document.createElement('a');
+            statsLink.href = '/profile#stats';
+            statsLink.className = 'btn-daily-stats';
+            statsLink.textContent = T['daily.view_stats'] || '📊 Ver mis estadísticas';
+            var otherGames = actions.querySelector('.daily-other-games');
+            if (otherGames) {
+                actions.insertBefore(statsLink, otherGames);
+            } else {
+                actions.appendChild(statsLink);
+            }
+        } else {
+            // Truly anon: ensure register block exists
             var registerBlock = actions.querySelector('.daily-register-block');
             if (!registerBlock) {
                 var regHtml = '<div class="daily-register-block">' +
@@ -883,20 +904,6 @@ var GeoResults = (function () {
                         (T['daily.register_prompt'] || 'Register to save your progress!') +
                     '</p></div>';
                 actions.insertAdjacentHTML('beforeend', regHtml);
-            }
-        } else {
-            // Logged-in: replace register block with stats link
-            var regBlock = actions.querySelector('.daily-register-block');
-            if (regBlock) regBlock.remove();
-            var statsLink = document.createElement('a');
-            statsLink.href = '/profile';
-            statsLink.className = 'btn-daily-stats';
-            statsLink.textContent = T['daily.view_stats'] || '📊 View my stats';
-            var otherGames = actions.querySelector('.daily-other-games');
-            if (otherGames) {
-                actions.insertBefore(statsLink, otherGames);
-            } else {
-                actions.appendChild(statsLink);
             }
         }
     }

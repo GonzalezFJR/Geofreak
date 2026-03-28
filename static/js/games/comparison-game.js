@@ -46,9 +46,7 @@ var ComparisonGame = (function () {
     function showAlreadyPlayed(result) {
         document.getElementById('game-area').style.display = 'none';
         document.getElementById('game-hud').style.display = 'none';
-        var pct = result.total > 0 ? Math.round((result.score / result.total) * 100) : 0;
-        var icon = pct >= 80 ? '🏆' : pct >= 50 ? '👏' : '💪';
-        document.querySelector('.results-icon').textContent = icon;
+        document.querySelector('.results-icon').innerHTML = resultIcon(result.score, result.total);
         document.getElementById('results-overlay').style.display = 'flex';
         GeoResults.buildDaily(result.score, result.total, result.time_ms, { isAnon: false });
         startCountdown();

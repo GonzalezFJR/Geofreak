@@ -94,13 +94,6 @@ async def update_game(request: Request, game_id: str):
     # Build defaults — merge with existing to preserve unset fields
     game = games_service.get_game(game_id)
     defaults = dict(game.get("defaults", {})) if game else {}
-    time_min_str = form.get("time_limit_min")
-    if time_min_str is not None:
-        try:
-            mins = max(1, min(999, int(time_min_str)))
-            defaults["time_limit"] = mins * 60
-        except (ValueError, TypeError):
-            pass
     if form.get("max_items"):
         defaults["max_items"] = int(form.get("max_items", 20))
     if form.get("n_options"):
@@ -113,6 +106,9 @@ async def update_game(request: Request, game_id: str):
             defaults["secs_per_item"] = max(1, int(form.get("secs_per_item")))
         except (ValueError, TypeError):
             pass
+    # Auto-compute time_limit from secs_per_item × max_items
+    if defaults.get("secs_per_item") and defaults.get("max_items"):
+        defaults["time_limit"] = defaults["secs_per_item"] * defaults["max_items"]
     if form.get("secs_per_item_type"):
         try:
             defaults["secs_per_item_type"] = max(1, int(form.get("secs_per_item_type")))

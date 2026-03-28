@@ -1509,7 +1509,7 @@
 
     /* Results */
     .game-results-card { padding: 24px 20px; }
-    .results-icon { font-size: 2.5rem; }
+    .results-icon { width: 70px; height: 70px; }
     .game-results-card h2 { font-size: 1.4rem; margin-bottom: 16px; }
     .result-stat-value { font-size: 1.4rem; }
 
@@ -1641,6 +1641,20 @@
     .btn-daily-register { padding: 12px 24px; font-size: 0.95rem; }
     .btn-daily-stats { width: 100%; justify-content: center; }
 
+    /* Results icon — fixed size SVG, not emoji */
+    .results-icon { width: 64px; height: 64px; font-size: inherit; }
+
+    /* Comparison game — compact layout */
+    .comparison-container { padding: 12px 12px 8px; }
+    .comparison-header { margin-bottom: 16px; }
+    .comparison-prompt { font-size: 1rem; }
+    .comparison-cards { gap: 10px; flex-wrap: nowrap; margin-bottom: 14px; }
+    .comparison-card { min-width: 0; padding: 18px 12px; }
+    .comparison-flag { font-size: 2.2rem; margin-bottom: 8px; }
+    .comparison-name { font-size: 0.92rem; margin-bottom: 4px; }
+    .comparison-value { font-size: 1.05rem; margin-top: 4px; }
+    .comparison-feedback { font-size: 0.9rem; }
+
     /* Review nav on mobile */
     .review-nav { bottom: 12px; padding: 6px 12px; gap: 8px; }
     .review-nav-arrow { width: 34px; height: 34px; font-size: 1.3rem; }
@@ -1678,6 +1692,12 @@
 
     .game-hud { gap: 6px; }
     .hud-timer { min-width: 60px; font-size: 0.82rem; }
+
+    /* Comparison game — very small phones */
+    .comparison-card { padding: 14px 8px; }
+    .comparison-flag { font-size: 1.8rem; margin-bottom: 6px; }
+    .comparison-name { font-size: 0.82rem; }
+    .comparison-value { font-size: 0.92rem; }
 }
 
 /* ============================================================
