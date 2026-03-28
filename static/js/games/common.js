@@ -780,9 +780,9 @@ var GeoResults = (function () {
         text += '\n' + starsText(r.score, r.total);
         text += '\n⏱️ ' + fmtTime(r.timeMs);
         if (isDaily) {
-            text += '\nhttps://geofreak.app/games/daily';
+            text += '\nhttps://geofreak.net/games/daily';
         } else {
-            text += '\nhttps://geofreak.app/games';
+            text += '\nhttps://geofreak.net/games';
         }
         return text;
     }

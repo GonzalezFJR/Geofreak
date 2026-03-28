@@ -160,6 +160,13 @@ class DatasetService:
 
         if city_filter == "capitals":
             df = df[df["is_capital"] == True]  # noqa: E712
+        elif city_filter in ("capitals_country", "capitals_territory"):
+            df = df[df["is_capital"] == True]  # noqa: E712
+            countries_df = self._load_countries()
+            if not countries_df.empty:
+                et = "country" if city_filter == "capitals_country" else "territory"
+                iso_set = set(countries_df[countries_df["entity_type"] == et]["iso_a3"].tolist())
+                df = df[df["iso_a3"].isin(iso_set)]
         elif city_filter == "5m":
             df = df[df["population"] >= 5_000_000]
         elif city_filter == "1m":
@@ -313,11 +320,19 @@ class DatasetService:
             for _, row in df_countries_for_join[["iso_a3", "continent"]].iterrows():
                 iso3_continent[str(row["iso_a3"])] = str(row["continent"])
 
+        if not df_countries_for_join.empty:
+            _country_iso = set(df_countries_for_join[df_countries_for_join["entity_type"] == "country"]["iso_a3"].tolist())
+            _territory_iso = set(df_countries_for_join[df_countries_for_join["entity_type"] == "territory"]["iso_a3"].tolist())
+        else:
+            _country_iso, _territory_iso = set(), set()
+
         city_filters_fns: dict = {
-            "capitals": lambda df: df[df["is_capital"] == True],   # noqa: E712
-            "5m":       lambda df: df[df["population"] >= 5_000_000],
-            "1m":       lambda df: df[df["population"] >= 1_000_000],
-            "100k":     lambda df: df[df["population"] >= 100_000],
+            "capitals":           lambda df: df[df["is_capital"] == True],   # noqa: E712
+            "capitals_country":   lambda df, _c=_country_iso: df[(df["is_capital"] == True) & (df["iso_a3"].isin(_c))],   # noqa: E712
+            "capitals_territory": lambda df, _t=_territory_iso: df[(df["is_capital"] == True) & (df["iso_a3"].isin(_t))],  # noqa: E712
+            "5m":                 lambda df: df[df["population"] >= 5_000_000],
+            "1m":                 lambda df: df[df["population"] >= 1_000_000],
+            "100k":               lambda df: df[df["population"] >= 100_000],
         }
         counts_cities: dict[str, int] = {}
         for cf_key, cf_fn in city_filters_fns.items():

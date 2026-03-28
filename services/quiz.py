@@ -102,6 +102,9 @@ def _get_valid_countries(stat: str, continent: Optional[str] = None) -> list[dic
             "iso_a3": row["iso_a3"],
             "name": row["name"],
             "name_es": row.get("name_es", row["name"]),
+            "name_fr": row.get("name_fr", ""),
+            "name_it": row.get("name_it", ""),
+            "name_ru": row.get("name_ru", ""),
             "flag_emoji": row.get("flag_emoji", ""),
             "continent": row.get("continent", ""),
             "stat_value": val,
@@ -201,7 +204,7 @@ def generate_ordering_question(
     correct_order = [c["iso_a3"] for c in sorted_sample]
 
     # Shuffle for the player
-    display = [{"iso_a3": c["iso_a3"], "name": c["name"], "name_es": c["name_es"], "flag_emoji": c["flag_emoji"]} for c in sample]
+    display = [{"iso_a3": c["iso_a3"], "name": c["name"], "name_es": c["name_es"], "name_fr": c["name_fr"], "name_it": c["name_it"], "name_ru": c["name_ru"], "flag_emoji": c["flag_emoji"]} for c in sample]
     random.shuffle(display)
 
     return {
@@ -255,7 +258,7 @@ def generate_comparison_question(
         "stat": stat,
         "stat_info": quiz_stats[stat],
         "countries": [
-            {"iso_a3": c["iso_a3"], "name": c["name"], "name_es": c["name_es"], "flag_emoji": c["flag_emoji"]}
+            {"iso_a3": c["iso_a3"], "name": c["name"], "name_es": c["name_es"], "name_fr": c["name_fr"], "name_it": c["name_it"], "name_ru": c["name_ru"], "flag_emoji": c["flag_emoji"]}
             for c in pair
         ],
         "correct_iso": pair[0]["iso_a3"],

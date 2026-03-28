@@ -28,8 +28,8 @@
   <g class="arrow">
     <!-- Shaft -->
     <line x1="52" y1="12" x2="35" y2="29" stroke="#37474f" stroke-width="2.2" stroke-linecap="round"/>
-    <!-- Arrowhead -->
-    <path d="M35,29 L29,27 L32,21 Z" fill="#37474f"/>
+    <!-- Arrowhead: tip at (31,33), base wings at (38,32) and (32,26), midpoint of wings=(35,29) = shaft end -->
+    <path d="M31,33 L38,32 L32,26 Z" fill="#37474f"/>
     <!-- Fletching right -->
     <path d="M52,12 L56,9 L54,15" fill="#ef9a9a" opacity="0.85"/>
     <!-- Fletching left -->

@@ -26,6 +26,7 @@ var MapGame = (function () {
     var cityLocateTarget   = null;
     var cityLocateTempMarkers = [];
     var CITY_LOCATE_KM     = 400;  // acceptance threshold in km
+    var _cityTooltipTimer  = null;
 
     /* ── Map config per dataset ─────────────────────────────── */
     var DATASET_CONFIG = {
@@ -288,7 +289,8 @@ var MapGame = (function () {
             if (mode === 'type' && selectedId) {
                 var prev = selectedId;
                 selectedId = null;
-                refreshStyle(prev);
+                if (isCityDataset) refreshCityStyle(prev);
+                else refreshStyle(prev);
                 updateRevealButton();
             }
         });
@@ -389,6 +391,24 @@ var MapGame = (function () {
         activeTooltipLayer = lyr;
     }
 
+    /* ── City tooltip (timed) ───────────────────────────────── */
+    function showCityTooltip(id) {
+        var entity = entitiesData[id];
+        var marker = cityMarkers[id];
+        if (!entity || !marker) return;
+        // Close any open city tooltip
+        if (_cityTooltipTimer) { clearTimeout(_cityTooltipTimer); _cityTooltipTimer = null; }
+        Object.keys(cityMarkers).forEach(function (mid) {
+            try { cityMarkers[mid].closeTooltip(); cityMarkers[mid].unbindTooltip(); } catch (e) {}
+        });
+        var label = getEntityLabel(entity);
+        marker.bindTooltip(label, { permanent: true, className: 'reveal-tooltip', direction: 'top' }).openTooltip();
+        _cityTooltipTimer = setTimeout(function () {
+            try { marker.closeTooltip(); marker.unbindTooltip(); } catch (e) {}
+            _cityTooltipTimer = null;
+        }, 2500);
+    }
+
     /* ── Reveal button (type mode) ──────────────────────────── */
     function updateRevealButton() {
         if (mode !== 'type') return;
@@ -426,7 +446,10 @@ var MapGame = (function () {
 
     /* ── Click on city marker (type mode) ───────────────────── */
     function onClickCity(id) {
-        if (correctSet.has(id) || failedSet.has(id)) return;
+        if (correctSet.has(id) || failedSet.has(id)) {
+            showCityTooltip(id);
+            return;
+        }
         if (!targetSet.has(id)) return;
         var prevId = selectedId;
         selectedId = id;
