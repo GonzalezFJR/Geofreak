@@ -11,6 +11,7 @@ from __future__ import annotations
 import random
 import string
 from datetime import datetime, timezone, timedelta
+from decimal import Decimal
 from typing import Optional
 
 from core.aws import get_dynamodb_resource
@@ -18,6 +19,17 @@ from core.config import get_settings
 
 _ROOM_EXPIRY_HOURS = 2
 MAX_PLAYERS = 10
+
+
+def _to_decimal(obj):
+    """Recursively convert float values to Decimal for DynamoDB compatibility."""
+    if isinstance(obj, float):
+        return Decimal(str(obj))
+    if isinstance(obj, dict):
+        return {k: _to_decimal(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_to_decimal(v) for v in obj]
+    return obj
 _CODE_CHARS = string.ascii_uppercase + string.digits
 
 
@@ -150,7 +162,7 @@ def start_room(
         ExpressionAttributeNames={"#s": "status"},
         ExpressionAttributeValues={
             ":playing": "playing",
-            ":q": questions,
+            ":q": _to_decimal(questions),
             ":now": now_iso,
         },
     )
