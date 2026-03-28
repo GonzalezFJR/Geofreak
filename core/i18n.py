@@ -116,7 +116,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Dashboard
         "dash.title": "🎮 Juegos GeoFreak",
         "dash.subtitle": "Pon a prueba tus conocimientos del mundo",
-        "dash.play": "Jugar →",
+        "dash.play": "Jugar",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
         "dash.subcat_adivina": "Adivina cuál",
@@ -688,7 +688,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Dashboard
         "dash.title": "🎮 GeoFreak Games",
         "dash.subtitle": "Test your knowledge of the world",
-        "dash.play": "Play →",
+        "dash.play": "Play",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
         "dash.subcat_adivina": "Guess which",
@@ -1261,7 +1261,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Dashboard
         "dash.title": "🎮 Jeux GeoFreak",
         "dash.subtitle": "Testez vos connaissances du monde",
-        "dash.play": "Jouer →",
+        "dash.play": "Jouer",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
         "dash.subcat_adivina": "Devinez lequel",
@@ -1823,7 +1823,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Dashboard
         "dash.title": "🎮 Giochi GeoFreak",
         "dash.subtitle": "Metti alla prova le tue conoscenze del mondo",
-        "dash.play": "Gioca →",
+        "dash.play": "Gioca",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
         "dash.subcat_adivina": "Indovina quale",
@@ -2386,7 +2386,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Dashboard
         "dash.title": "🎮 GeoFreak Игры",
         "dash.subtitle": "Проверь свои знания о мире",
-        "dash.play": "Играть →",
+        "dash.play": "Играть",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
         "dash.subcat_adivina": "Угадай какой",

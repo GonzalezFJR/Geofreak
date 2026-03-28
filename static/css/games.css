@@ -1240,19 +1240,33 @@
 
 .game-card-play {
     margin-top: 16px;
-    font-weight: 600;
-    font-size: 0.82rem;
-    color: var(--card-color, var(--blue-500));
     display: flex;
+    justify-content: flex-end;
+}
+.game-card-play span {
+    display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: var(--card-color, var(--blue-500));
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    transition: filter 0.18s, transform 0.18s;
 }
-.game-card-play::after {
+.game-card-play span::after {
     content: '→';
-    transition: transform 0.2s;
+    font-size: 0.9em;
+    transition: transform 0.18s;
 }
-.game-card:hover .game-card-play::after {
-    transform: translateX(4px);
+.game-card:hover .game-card-play span {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+}
+.game-card:hover .game-card-play span::after {
+    transform: translateX(3px);
 }
 
 /* ─── Admin ────────────────────────────────────────────────── */
