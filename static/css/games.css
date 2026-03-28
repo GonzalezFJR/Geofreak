@@ -1233,13 +1233,12 @@
     position: relative;
     overflow: hidden;
 }
-/* Inner link for GeoGames cards */
-.game-card-inner-link {
+/* Inner content area for GeoGames cards (not clickable) */
+.game-card-inner {
     display: flex;
     flex-direction: column;
-    text-decoration: none;
-    color: inherit;
     flex: 1;
+    cursor: default;
 }
 .game-card-body { padding-bottom: 4px; }
 
@@ -1324,7 +1323,7 @@
     white-space: nowrap;
     transition: filter 0.18s, transform 0.18s;
 }
-.game-card:hover .gmt-play {
+.gmt-play:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);
 }
@@ -1337,7 +1336,7 @@
     background: var(--card-color, var(--blue-500));
 }
 
-.game-card:hover {
+a.game-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 16px 40px -8px rgba(0,0,0,0.15);
     border-color: transparent;
@@ -1352,7 +1351,7 @@
     transition: background 0.28s ease;
 }
 
-.game-card:hover .game-card-icon {
+a.game-card:hover .game-card-icon {
     background: color-mix(in srgb, var(--card-color, var(--blue-500)) 12%, transparent);
 }
 

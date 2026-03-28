@@ -29,16 +29,32 @@ MAP_GAME_CONFIG: dict = {}
 
 @router.get("/daily", response_class=HTMLResponse)
 async def daily_challenge(request: Request, user=Depends(get_optional_user)):
-    """Render the daily challenge page (comparison game with pre-generated questions)."""
+    """Render the daily challenge page, dispatching by game_type in the challenge JSON."""
+    from services.daily_challenge import get_daily_challenge
     lang = get_lang(request)
-    game = games_service.get_game("comparison")
+
+    challenge = get_daily_challenge()
+    game_type = (challenge or {}).get("game_type", "comparison")
+
+    game = games_service.get_game(game_type) or games_service.get_game("comparison")
     if not game:
         raise HTTPException(status_code=404, detail="Game not found")
+
     game_data = game.copy()
     game_data["daily"] = True
+    # Forward per-challenge overrides so the JS timer uses the right values
+    if challenge:
+        defaults = dict(game_data.get("defaults") or {})
+        if "secs_per_item" in challenge:
+            defaults["secs_per_item"] = challenge["secs_per_item"]
+        if "countdown" in challenge:
+            defaults["countdown"] = challenge["countdown"]
+        game_data["defaults"] = defaults
+
     game_json = json.dumps(game_data, ensure_ascii=False)
+    template = TEMPLATE_MAP.get(game_type, "games/comparison.html")
     ctx = {"request": request, "game": game_data, "game_json": game_json, "user": user, "lang": lang}
-    return templates.TemplateResponse("games/comparison.html", ctx)
+    return templates.TemplateResponse(template, ctx)
 
 
 @router.get("", response_class=HTMLResponse)

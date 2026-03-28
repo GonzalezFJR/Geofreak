@@ -17,7 +17,7 @@
         {% for game in games %}
         {% if game.enabled and game.visible|default(true) and game.type == 'solo' %}
         <div class="game-card" style="--card-color: {{ game.color }}">
-            <a href="/games/{{ game.id }}" class="game-card-inner-link">
+            <div class="game-card-inner">
                 <div class="game-card-icon">
                     <img src="/static/img/icons/{{ game.id }}.svg" width="72" height="72" alt="">
                 </div>
@@ -25,7 +25,7 @@
                     <h3>{{ game_field(game, 'name', lang) }}</h3>
                     <p>{{ game_field(game, 'description', lang) }}</p>
                 </div>
-            </a>
+            </div>
             <div class="game-card-footer">
                 <div class="gmt" data-solo="/games/{{ game.id }}" data-duel="/duel/{{ game.id }}">
                     <div class="gmt-track">

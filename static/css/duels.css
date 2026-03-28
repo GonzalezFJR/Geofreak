@@ -674,11 +674,16 @@
 
 /* ── Room Play page ──────────────────────────────────────────── */
 .room-play-page {
-    min-height: calc(100vh - 64px);
+    min-height: 100vh;
     background: var(--gray-50, #f9fafb);
-    padding: 24px 16px 64px;
+    padding-bottom: 64px;
 }
-.rp-section { max-width: 700px; margin: 0 auto; }
+/* Each scrollable section clears the fixed 64px navbar + 16px breathing room */
+.rp-section {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 80px 16px 0;
+}
 
 /* Lobby */
 .rp-lobby-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
@@ -756,93 +761,7 @@
 /* Inside .game-hud all text is white; progress is left-aligned */
 .rp-hud-progress { flex: 1; font-size: 0.9rem; }
 
-/* Prompt */
-.rp-prompt {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--gray-800, #1f2937);
-    text-align: center;
-    margin-bottom: 20px;
-    line-height: 1.4;
-}
-
-/* Feedback */
-.rp-feedback { margin-top: 12px; }
-.fb-correct { color: #16a34a; font-weight: 700; font-size: 1rem; }
-.fb-wrong   { color: #dc2626; font-weight: 700; font-size: 1rem; }
-.fb-partial { color: #d97706; font-weight: 700; font-size: 1rem; }
-
-/* Confirm / Next buttons */
-.rp-confirm-btn { margin-top: 16px; }
-.rp-next-btn    { margin-top: 10px; }
-
-/* ── Comparison ──────────────────────────────────────────────── */
-.rp-cmp-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 8px;
-}
-.rp-cmp-card {
-    background: var(--white, #fff);
-    border: 3px solid var(--gray-200, #e5e7eb);
-    border-radius: var(--radius-lg, 14px);
-    padding: 24px 16px;
-    cursor: pointer;
-    transition: border-color 0.15s, transform 0.1s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-}
-.rp-cmp-card:hover:not(:disabled) { border-color: var(--blue-400, #60a5fa); transform: translateY(-2px); }
-.rp-cmp-card:disabled { cursor: default; }
-.rp-cmp-card.rp-card-correct { border-color: #16a34a; background: #f0fdf4; }
-.rp-cmp-card.rp-card-wrong   { border-color: #dc2626; background: #fef2f2; }
-.rp-cmp-flag { font-size: 3.5rem; line-height: 1; }
-.rp-cmp-name { font-size: 1rem; font-weight: 600; color: var(--gray-800, #1f2937); text-align: center; }
-.rp-cmp-val  { font-size: 0.85rem; color: var(--gray-600, #4b5563); font-weight: 600; }
-
-/* ── Ordering ────────────────────────────────────────────────── */
-.rp-ord-list { list-style: none; padding: 0; margin: 0 0 8px; display: flex; flex-direction: column; gap: 8px; }
-.rp-ord-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--white, #fff);
-    border: 2px solid var(--gray-200, #e5e7eb);
-    border-radius: var(--radius-sm, 8px);
-    padding: 14px 16px;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    user-select: none;
-}
-.rp-ord-item:hover { border-color: var(--blue-300, #93c5fd); background: var(--blue-50, #eff6ff); }
-.rp-ord-item.rp-selected { border-color: var(--blue-500, #3b82f6); background: #dbeafe; }
-.rp-ord-handle { color: var(--gray-400, #9ca3af); font-size: 1rem; }
-.rp-ord-flag   { font-size: 1.5rem; }
-.rp-ord-name   { flex: 1; font-weight: 600; color: var(--gray-800, #1f2937); }
-
-/* Ordering solution */
-.rp-ord-solution { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
-.rp-ord-sol-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--gray-50, #f9fafb);
-    border-radius: 6px;
-    padding: 8px 12px;
-    border-left: 3px solid #16a34a;
-}
-.rp-ord-sol-item.rp-sol-mismatch { border-left-color: #dc2626; background: #fef2f2; }
-.rp-ord-sol-rank { font-weight: 700; color: var(--gray-500); min-width: 20px; font-size: 0.85rem; }
-.rp-ord-sol-flag { font-size: 1.2rem; }
-.rp-ord-sol-name { flex: 1; font-size: 0.9rem; font-weight: 600; }
-.rp-ord-sol-val  { font-size: 0.82rem; color: var(--gray-500); }
-
-/* ── Geostats ────────────────────────────────────────────────── */
+/* ── Geostats (duel-specific bar mechanic — prompt/feedback use games.css classes) ── */
 .rp-geo-target {
     font-size: 1.5rem;
     text-align: center;
@@ -886,7 +805,13 @@
 .rp-geo-guess   { background: #fbbf24; border-color: #d97706; }
 .rp-geo-correct { background: #4ade80; border-color: #16a34a; }
 .rp-geo-hint { font-size: 0.78rem; color: var(--gray-500); text-align: center; margin-top: 6px; }
-.rp-geo-answer { margin-top: 8px; font-size: 1rem; font-weight: 600; color: var(--gray-800); }
+
+/* Geostats-header in duel panel context (games.css .geostats-header has margin-bottom for standalone) */
+#rp-geo .geostats-header { margin-bottom: 12px; }
+#rp-geo .geostats-prompt { margin-bottom: 0; }
+
+/* btn spacing inside duel ordering/geostats panels */
+#rp-geo .btn { margin-top: 16px; }
 
 /* ── Waiting results ─────────────────────────────────────────── */
 .rp-wr-header {

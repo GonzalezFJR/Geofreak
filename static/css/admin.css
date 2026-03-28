@@ -481,6 +481,107 @@
     box-shadow: 0 1px 4px rgba(37, 99, 235, 0.3);
 }
 
+/* ── Daily challenge form extras ──────────────────────────────────────── */
+
+.dc-mode-toggle {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+.dc-mode-opt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    user-select: none;
+}
+.dc-mode-opt input[type="radio"] { display: none; }
+.dc-mode-opt:has(input:checked) {
+    border-color: var(--blue-600, #2563eb);
+    background: var(--blue-50, #eff6ff);
+    color: var(--blue-700, #1d4ed8);
+}
+.dc-chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 32px;
+    margin-bottom: 8px;
+}
+.dc-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    background: var(--blue-50, #eff6ff);
+    border: 1.5px solid var(--blue-200, #bfdbfe);
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--blue-700, #1d4ed8);
+}
+.dc-chip button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--blue-400, #60a5fa);
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0;
+}
+.dc-date-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.btn-dc-add {
+    padding: 6px 14px;
+    background: var(--gray-100);
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--gray-700);
+    transition: background 0.15s;
+}
+.btn-dc-add:hover { background: var(--gray-200); }
+.dc-checks-row {
+    display: flex;
+    gap: 20px;
+    margin: 12px 0;
+}
+.dc-check-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+}
+.badge-game {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.badge-comparison { background: #dbeafe; color: #1e40af; }
+.badge-ordering   { background: #dcfce7; color: #166534; }
+.badge-geostats   { background: #fef3c7; color: #92400e; }
+
 /* ── Admin language selector ───────────────────────────────────────────── */
 
 .admin-lang-selector {

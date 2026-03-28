@@ -67,29 +67,37 @@
         <!-- Game panels: reuses .game-area offset from games.css; scrollable for quiz games -->
         <div class="game-area rp-game-area">
 
-            <!-- Comparison game -->
-            <div id="rp-cmp" style="display:none">
-                <div class="rp-prompt" id="rp-cmp-prompt"></div>
-                <div class="rp-cmp-cards" id="rp-cmp-cards"></div>
-                <div class="rp-feedback" id="rp-cmp-fb"></div>
+            <!-- Comparison game — same HTML structure & classes as solo comparison.html -->
+            <div id="rp-cmp" class="comparison-container" style="display:none">
+                <div class="comparison-header">
+                    <div class="comparison-prompt" id="rp-cmp-prompt"></div>
+                </div>
+                <div class="comparison-cards" id="rp-cmp-cards"></div>
+                <div class="comparison-feedback" id="rp-cmp-fb"></div>
             </div>
 
-            <!-- Ordering game -->
-            <div id="rp-ord" style="display:none">
-                <div class="rp-prompt" id="rp-ord-prompt"></div>
-                <ul class="rp-ord-list" id="rp-ord-list"></ul>
-                <button class="room-primary-btn rp-confirm-btn" id="rp-ord-confirm" onclick="RoomPlay.confirmOrder()">
-                    {{ t('room.confirm', lang) }}
-                </button>
-                <div class="rp-feedback" id="rp-ord-fb"></div>
-                <button class="room-secondary-btn rp-next-btn" id="rp-ord-next" onclick="RoomPlay.nextQuestion()" style="display:none">
-                    {{ t('room.next', lang) }}
-                </button>
+            <!-- Ordering game — same HTML structure & classes as solo ordering.html -->
+            <div id="rp-ord" class="ordering-container" style="display:none">
+                <div class="ordering-header">
+                    <div class="ordering-prompt" id="rp-ord-prompt"></div>
+                </div>
+                <div class="ordering-items" id="rp-ord-list"></div>
+                <div class="ordering-actions">
+                    <button class="btn btn-primary" id="rp-ord-confirm" onclick="RoomPlay.confirmOrder()">
+                        {{ t('room.confirm', lang) }}
+                    </button>
+                    <button class="btn btn-primary" id="rp-ord-next" onclick="RoomPlay.nextQuestion()" style="display:none">
+                        {{ t('room.next', lang) }}
+                    </button>
+                </div>
+                <div class="ordering-feedback" id="rp-ord-fb"></div>
             </div>
 
-            <!-- Geostats game -->
+            <!-- Geostats game — shared prompt/feedback classes with solo; bar mechanic kept -->
             <div id="rp-geo" style="display:none">
-                <div class="rp-prompt" id="rp-geo-prompt"></div>
+                <div class="geostats-header">
+                    <div class="geostats-prompt" id="rp-geo-prompt"></div>
+                </div>
                 <div class="rp-geo-target" id="rp-geo-target"></div>
                 <div class="rp-geo-curve-wrap">
                     <div class="rp-geo-labels">
@@ -103,13 +111,15 @@
                     </div>
                     <div class="rp-geo-hint">{{ t('room.geo_hint', lang) }}</div>
                 </div>
-                <button class="room-primary-btn rp-confirm-btn" id="rp-geo-confirm" onclick="RoomPlay.confirmGeo()" style="display:none">
+                <button class="btn btn-primary" id="rp-geo-confirm" onclick="RoomPlay.confirmGeo()" style="display:none">
                     {{ t('room.confirm', lang) }}
                 </button>
-                <div class="rp-feedback" id="rp-geo-fb"></div>
-                <button class="room-secondary-btn rp-next-btn" id="rp-geo-next" onclick="RoomPlay.nextQuestion()" style="display:none">
-                    {{ t('room.next', lang) }}
-                </button>
+                <div class="geostats-feedback" id="rp-geo-fb"></div>
+                <div class="geostats-actions">
+                    <button class="btn btn-primary" id="rp-geo-next" onclick="RoomPlay.nextQuestion()" style="display:none">
+                        {{ t('room.next', lang) }}
+                    </button>
+                </div>
             </div>
 
         </div>

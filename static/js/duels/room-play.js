@@ -22,8 +22,11 @@
         pollInterval: null,
         finished: false,     // true once player has submitted their score
         geoGuessPos: null,   // 0-1 fraction for geostats
-        ordSelected: null,   // index of selected card for swap
     };
+
+    // ── Ordering drag/touch state (module-level, not per-question) ────────────
+    var ordDragSrc = null;
+    var ordTouchItem = null;
 
     // ── Init ──────────────────────────────────────────────────────────────────
     function init() {
@@ -172,54 +175,47 @@
         },
 
         // ── Ordering ────────────────────────────────────────────────────────────
-        ordClick: function (idx) {
-            var items = document.querySelectorAll('.rp-ord-item');
-            if (state.ordSelected === null) {
-                state.ordSelected = idx;
-                items[idx].classList.add('rp-selected');
-            } else if (state.ordSelected === idx) {
-                state.ordSelected = null;
-                items[idx].classList.remove('rp-selected');
-            } else {
-                // Swap
-                var a = state.ordSelected, b = idx;
-                items[a].classList.remove('rp-selected');
-                state.ordSelected = null;
-                swapOrdItems(a, b);
-            }
-        },
-
         confirmOrder: function () {
             var q = state.questions[state.qIndex];
             if (!q) return;
             document.getElementById('rp-ord-confirm').style.display = 'none';
-            var items = document.querySelectorAll('.rp-ord-item');
+
+            var items = document.querySelectorAll('#rp-ord-list .ordering-item');
             var submitted = Array.from(items).map(function (el) { return el.getAttribute('data-iso'); });
             var correct = q.correct_order || [];
             var isCorrect = JSON.stringify(submitted) === JSON.stringify(correct);
             if (isCorrect) state.score++;
             updateHud();
 
-            // Show feedback with correct order + values
+            // Show inline values + correct/wrong per item — same as solo ordering-game.js
+            var lang = CURRENT_LANG;
+            items.forEach(function (el, i) {
+                var iso = el.getAttribute('data-iso');
+                var correctIdx = correct.indexOf(iso);
+                var val = q.correct_values ? q.correct_values[iso] : '';
+                var formatted = val !== undefined && val !== '' ? formatVal(val, q.stat_info) : '';
+
+                if (formatted) {
+                    var badge = document.createElement('span');
+                    badge.className = 'ordering-value';
+                    badge.textContent = formatted;
+                    el.appendChild(badge);
+                }
+
+                var rank = el.querySelector('.ordering-rank');
+                if (rank) {
+                    rank.textContent = correctIdx + 1;
+                    rank.classList.add(iso === correct[i] ? 'rank-correct' : 'rank-wrong');
+                }
+                el.classList.add(iso === correct[i] ? 'correct' : 'wrong');
+                el.setAttribute('draggable', 'false');
+                el.style.cursor = 'default';
+            });
+
             var fbEl = document.getElementById('rp-ord-fb');
             if (fbEl) {
-                var lang = CURRENT_LANG;
-                fbEl.innerHTML = (isCorrect ? '<span class="fb-correct">' + ROOM_T.correct + '</span>' : '<span class="fb-wrong">' + ROOM_T.wrong + '</span>') +
-                    '<div class="rp-ord-solution">' +
-                    correct.map(function (iso, i) {
-                        var c = q.countries.find(function (x) { return x.iso_a3 === iso; });
-                        var name = c ? (c['name_' + lang] || c.name) : iso;
-                        var val = q.correct_values ? q.correct_values[iso] : '';
-                        var formatted = val !== undefined && val !== '' ? formatVal(val, q.stat_info) : '';
-                        return '<div class="rp-ord-sol-item' + (submitted[i] === iso ? '' : ' rp-sol-mismatch') + '">' +
-                            '<span class="rp-ord-sol-rank">' + (i + 1) + '</span>' +
-                            '<span class="rp-ord-sol-flag">' + (c ? c.flag_emoji : '') + '</span>' +
-                            '<span class="rp-ord-sol-name">' + esc(name) + '</span>' +
-                            (formatted ? '<span class="rp-ord-sol-val">' + formatted + '</span>' : '') +
-                            '</div>';
-                    }).join('') +
-                    '</div>';
-                fbEl.style.display = '';
+                fbEl.className = 'ordering-feedback ' + (isCorrect ? 'correct' : 'wrong');
+                fbEl.textContent = isCorrect ? ROOM_T.correct : ROOM_T.wrong;
             }
             document.getElementById('rp-ord-next').style.display = '';
         },
@@ -268,18 +264,15 @@
             if (fbEl) {
                 var lang = CURRENT_LANG;
                 var target = q.target_iso || '';
-                // Find country name from curve positions
                 var countries = q.countries_lookup || {};
                 var cData = countries[target] || {};
                 var cName = cData['name_' + lang] || cData.name || target;
                 var cFlag = cData.flag_emoji || '';
                 var cVal = q.curve ? q.curve[targetIdx] : '';
-                fbEl.innerHTML =
-                    (isCorrect ? '<span class="fb-correct">' + ROOM_T.geo_correct + '</span>' :
-                     dist <= 0.3 ? '<span class="fb-partial">' + ROOM_T.geo_close + '</span>' :
-                                   '<span class="fb-wrong">' + ROOM_T.geo_wrong + '</span>') +
-                    '<div class="rp-geo-answer">' + cFlag + ' ' + esc(cName) + ' — ' + formatVal(cVal, q.stat_info) + '</div>';
-                fbEl.style.display = '';
+                var cls = isCorrect ? 'correct' : (dist <= 0.3 ? 'warning' : 'wrong');
+                var msg = isCorrect ? ROOM_T.geo_correct : (dist <= 0.3 ? ROOM_T.geo_close : ROOM_T.geo_wrong);
+                fbEl.className = 'geostats-feedback ' + cls;
+                fbEl.textContent = msg + '  —  ' + cFlag + ' ' + cName + ' (' + formatVal(cVal, q.stat_info) + ')';
             }
             document.getElementById('rp-geo-next').style.display = '';
             // Disable further clicking
@@ -372,7 +365,7 @@
         }
     }
 
-    // ── Comparison ─────────────────────────────────────────────────────────────
+    // ── Comparison — same CSS classes & shuffle as solo comparison-game.js ─────
     function renderComparison(q) {
         var panel = document.getElementById('rp-cmp');
         if (!panel) return;
@@ -386,58 +379,62 @@
         var cardsEl = document.getElementById('rp-cmp-cards');
         if (cardsEl) {
             cardsEl.innerHTML = '';
-            q.countries.forEach(function (c) {
-                var btn = document.createElement('button');
-                btn.className = 'rp-cmp-card';
-                btn.setAttribute('data-iso', c.iso_a3);
+            // Randomise order — same as solo (Math.random < 0.5 → reverse)
+            var displayCountries = q.countries.slice();
+            if (Math.random() < 0.5) displayCountries.reverse();
+
+            displayCountries.forEach(function (c) {
+                var div = document.createElement('div');
+                div.className = 'comparison-card';
+                div.setAttribute('data-iso', c.iso_a3);
                 var cName = c['name_' + lang] || c.name;
-                btn.innerHTML =
-                    '<span class="rp-cmp-flag">' + (c.flag_emoji || '') + '</span>' +
-                    '<span class="rp-cmp-name">' + esc(cName) + '</span>';
-                btn.addEventListener('click', function () { handleCmpClick(q, c.iso_a3); });
-                cardsEl.appendChild(btn);
+                div.innerHTML =
+                    '<div class="comparison-flag">' + (c.flag_emoji || '') + '</div>' +
+                    '<div class="comparison-name">' + esc(cName) + '</div>' +
+                    '<div class="comparison-value" id="rp-val-' + c.iso_a3 + '" style="display:none"></div>';
+                div.addEventListener('click', function () { handleCmpClick(q, c.iso_a3); });
+                cardsEl.appendChild(div);
             });
         }
         var fbEl = document.getElementById('rp-cmp-fb');
-        if (fbEl) { fbEl.innerHTML = ''; fbEl.style.display = 'none'; }
+        if (fbEl) { fbEl.className = 'comparison-feedback'; fbEl.textContent = ''; }
     }
 
     function handleCmpClick(q, chosenIso) {
         // Disable all cards
-        document.querySelectorAll('.rp-cmp-card').forEach(function (btn) { btn.disabled = true; });
+        document.querySelectorAll('#rp-cmp-cards .comparison-card').forEach(function (div) {
+            div.style.pointerEvents = 'none';
+        });
 
         var isCorrect = (chosenIso === q.correct_iso);
         if (isCorrect) state.score++;
         updateHud();
 
-        // Show feedback on cards
-        var lang = CURRENT_LANG;
-        document.querySelectorAll('.rp-cmp-card').forEach(function (btn) {
-            var iso = btn.getAttribute('data-iso');
+        // Reveal values and mark correct/wrong — same pattern as solo
+        document.querySelectorAll('#rp-cmp-cards .comparison-card').forEach(function (div) {
+            var iso = div.getAttribute('data-iso');
             var val = q.values ? q.values[iso] : undefined;
             var valFmt = val !== undefined ? formatVal(val, q.stat_info) : '';
-            if (valFmt) btn.innerHTML += '<span class="rp-cmp-val">' + valFmt + '</span>';
-            if (iso === q.correct_iso) btn.classList.add('rp-card-correct');
-            else if (iso === chosenIso) btn.classList.add('rp-card-wrong');
+            var valEl = document.getElementById('rp-val-' + iso);
+            if (valEl && valFmt) { valEl.textContent = valFmt; valEl.style.display = ''; }
+            if (iso === q.correct_iso) div.classList.add('correct');
+            else if (iso === chosenIso) div.classList.add('wrong');
         });
 
         var fbEl = document.getElementById('rp-cmp-fb');
         if (fbEl) {
-            fbEl.innerHTML = isCorrect ?
-                '<span class="fb-correct">' + ROOM_T.correct + '</span>' :
-                '<span class="fb-wrong">' + ROOM_T.wrong + '</span>';
-            fbEl.style.display = '';
+            fbEl.className = 'comparison-feedback ' + (isCorrect ? 'correct' : 'wrong');
+            fbEl.textContent = isCorrect ? ROOM_T.correct : ROOM_T.wrong;
         }
 
-        setTimeout(function () { RoomPlay.nextQuestion(); }, 1200);
+        setTimeout(function () { RoomPlay.nextQuestion(); }, 1800);
     }
 
-    // ── Ordering ───────────────────────────────────────────────────────────────
+    // ── Ordering — same CSS classes, drag/drop & touch as solo ordering-game.js ─
     function renderOrdering(q) {
         var panel = document.getElementById('rp-ord');
         if (!panel) return;
         panel.style.display = '';
-        state.ordSelected = null;
 
         var lang = CURRENT_LANG;
         var statLabel = q.stat_info ? (q.stat_info['label_' + lang] || q.stat_info.label_en || q.stat) : q.stat;
@@ -451,44 +448,100 @@
         if (list) {
             list.innerHTML = '';
             q.countries.forEach(function (c, i) {
-                var li = document.createElement('li');
-                li.className = 'rp-ord-item';
-                li.setAttribute('data-iso', c.iso_a3);
-                li.setAttribute('data-idx', i);
+                var el = document.createElement('div');
+                el.className = 'ordering-item';
+                el.setAttribute('draggable', 'true');
+                el.setAttribute('data-iso', c.iso_a3);
                 var cName = c['name_' + lang] || c.name;
-                li.innerHTML =
-                    '<span class="rp-ord-handle">☰</span>' +
-                    '<span class="rp-ord-flag">' + (c.flag_emoji || '') + '</span>' +
-                    '<span class="rp-ord-name">' + esc(cName) + '</span>';
-                li.addEventListener('click', function () { RoomPlay.ordClick(i); });
-                list.appendChild(li);
+                el.innerHTML =
+                    '<span class="ordering-rank">' + (i + 1) + '</span>' +
+                    '<span class="ordering-handle">☰</span>' +
+                    '<span class="ordering-flag">' + (c.flag_emoji || '') + '</span>' +
+                    '<span class="ordering-name">' + esc(cName) + '</span>';
+                el.addEventListener('dragstart', ordDragStart);
+                el.addEventListener('dragover', ordDragOver);
+                el.addEventListener('drop', ordDrop);
+                el.addEventListener('dragend', ordDragEnd);
+                el.addEventListener('touchstart', ordTouchStart, { passive: false });
+                el.addEventListener('touchmove', ordTouchMove, { passive: false });
+                el.addEventListener('touchend', ordTouchEnd);
+                list.appendChild(el);
             });
         }
 
         var confirmBtn = document.getElementById('rp-ord-confirm');
-        if (confirmBtn) confirmBtn.style.display = '';
+        if (confirmBtn) { confirmBtn.style.display = ''; confirmBtn.disabled = false; }
         var fbEl = document.getElementById('rp-ord-fb');
-        if (fbEl) { fbEl.innerHTML = ''; fbEl.style.display = 'none'; }
+        if (fbEl) { fbEl.className = 'ordering-feedback'; fbEl.textContent = ''; }
         var nextBtn = document.getElementById('rp-ord-next');
         if (nextBtn) nextBtn.style.display = 'none';
     }
 
-    function swapOrdItems(a, b) {
-        var list = document.getElementById('rp-ord-list');
-        if (!list) return;
-        var items = Array.from(list.querySelectorAll('.rp-ord-item'));
-        var aEl = items[a], bEl = items[b];
-        if (!aEl || !bEl) return;
-        // Swap in DOM
-        var aNext = aEl.nextSibling;
-        list.insertBefore(aEl, bEl);
-        list.insertBefore(bEl, aNext);
-        // Re-assign click handlers with updated indices
-        var newItems = Array.from(list.querySelectorAll('.rp-ord-item'));
-        newItems.forEach(function (el, i) {
-            el.setAttribute('data-idx', i);
-            el.onclick = function () { RoomPlay.ordClick(i); };
+    // Drag handlers (same logic as ordering-game.js)
+    function ordDragStart(e) {
+        ordDragSrc = this;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', '');
+    }
+    function ordDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        var target = ordClosestItem(e.target);
+        if (target && target !== ordDragSrc) {
+            var list = document.getElementById('rp-ord-list');
+            var items = Array.from(list.children);
+            if (items.indexOf(ordDragSrc) < items.indexOf(target)) {
+                list.insertBefore(ordDragSrc, target.nextSibling);
+            } else {
+                list.insertBefore(ordDragSrc, target);
+            }
+        }
+    }
+    function ordDrop(e) { e.preventDefault(); }
+    function ordDragEnd() {
+        this.classList.remove('dragging');
+        ordDragSrc = null;
+        ordUpdateRanks();
+    }
+    function ordClosestItem(el) {
+        while (el && !el.classList.contains('ordering-item')) el = el.parentElement;
+        return el;
+    }
+    function ordUpdateRanks() {
+        document.querySelectorAll('#rp-ord-list .ordering-item').forEach(function (el, i) {
+            var rank = el.querySelector('.ordering-rank');
+            if (rank) rank.textContent = i + 1;
         });
+    }
+    // Touch handlers (same logic as ordering-game.js)
+    function ordTouchStart(e) {
+        ordTouchItem = this;
+        this.classList.add('dragging');
+        e.preventDefault();
+    }
+    function ordTouchMove(e) {
+        if (!ordTouchItem) return;
+        e.preventDefault();
+        var touch = e.touches[0];
+        var target = document.elementFromPoint(touch.clientX, touch.clientY);
+        var item = ordClosestItem(target);
+        if (item && item !== ordTouchItem) {
+            var list = document.getElementById('rp-ord-list');
+            var items = Array.from(list.children);
+            if (items.indexOf(ordTouchItem) < items.indexOf(item)) {
+                list.insertBefore(ordTouchItem, item.nextSibling);
+            } else {
+                list.insertBefore(ordTouchItem, item);
+            }
+        }
+    }
+    function ordTouchEnd() {
+        if (ordTouchItem) {
+            ordTouchItem.classList.remove('dragging');
+            ordTouchItem = null;
+            ordUpdateRanks();
+        }
     }
 
     // ── Geostats ──────────────────────────────────────────────────────────────
@@ -534,7 +587,7 @@
         var confirmBtn = document.getElementById('rp-geo-confirm');
         if (confirmBtn) confirmBtn.style.display = 'none';
         var fbEl = document.getElementById('rp-geo-fb');
-        if (fbEl) { fbEl.innerHTML = ''; fbEl.style.display = 'none'; }
+        if (fbEl) { fbEl.className = 'geostats-feedback'; fbEl.textContent = ''; }
         var nextBtn = document.getElementById('rp-geo-next');
         if (nextBtn) nextBtn.style.display = 'none';
     }

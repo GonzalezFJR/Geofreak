@@ -457,10 +457,19 @@ _DC_S3_PREFIX = "daily_challenges"
 
 
 def _list_daily_challenges_s3(max_keys: int = 200) -> list[dict]:
-    """List daily challenge files in S3."""
+    """List daily challenge files in S3, enriched with metadata from _index.json."""
     from core.aws import get_s3_client
     settings = get_settings()
     s3 = get_s3_client()
+
+    # Load metadata index (game_type, difficulty, num_questions per date)
+    index: dict = {}
+    try:
+        resp = s3.get_object(Bucket=settings.s3_bucket_name, Key=f"{_DC_S3_PREFIX}/_index.json")
+        index = json.loads(resp["Body"].read().decode("utf-8"))
+    except Exception:
+        pass
+
     try:
         resp = s3.list_objects_v2(
             Bucket=settings.s3_bucket_name,
@@ -471,12 +480,18 @@ def _list_daily_challenges_s3(max_keys: int = 200) -> list[dict]:
         for obj in resp.get("Contents", []):
             key = obj["Key"]
             date_part = key.replace(f"{_DC_S3_PREFIX}/", "").replace(".json", "")
+            if date_part == "_index":
+                continue
+            meta = index.get(date_part, {})
             files.append({
                 "key": key,
                 "date": date_part,
                 "size": obj["Size"],
                 "size_human": _human_size(obj["Size"]),
                 "last_modified": obj["LastModified"].isoformat() if obj.get("LastModified") else "",
+                "game_type": meta.get("game_type", "comparison"),
+                "difficulty": meta.get("difficulty", "—"),
+                "num_questions": meta.get("num_questions", "—"),
             })
         files.sort(key=lambda f: f["date"])
         return files
@@ -523,26 +538,49 @@ async def admin_daily(request: Request):
 @router.post("/daily/generate")
 async def admin_daily_generate(
     request: Request,
+    game: str = Form("comparison"),
+    mode: str = Form("range"),          # "range" | "dates"
     start: str = Form(""),
     days: int = Form(90),
+    dates: str = Form(""),              # comma-separated specific dates
     difficulty: str = Form("normal"),
+    num_questions: int = Form(10),
+    secs_per_item: int = Form(15),
+    countdown: str = Form("1"),         # "1" = yes, "0" = no
+    no_overwrite: str = Form(""),       # checkbox: non-empty = skip existing
 ):
     _require_auth(request)
     from datetime import datetime, timezone
-    if not start:
-        start = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    if game not in ("comparison", "ordering", "geostats"):
+        game = "comparison"
     if difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
         difficulty = "normal"
-    if days < 1:
-        days = 1
-    if days > 365:
-        days = 365
+    num_questions = max(1, min(50, num_questions))
+    secs_per_item = max(5, min(120, secs_per_item))
+
+    cmd = [
+        sys.executable, "-m", "scripts.generate_daily_challenges",
+        "--game", game,
+        "--difficulty", difficulty,
+        "--num-questions", str(num_questions),
+        "--secs-per-item", str(secs_per_item),
+    ]
+    if countdown != "1":
+        cmd.append("--no-countdown")
+    if no_overwrite:
+        cmd.append("--no-overwrite")
+
+    if mode == "dates" and dates.strip():
+        cmd += ["--dates", dates.strip()]
+    else:
+        if not start:
+            start = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        days = max(1, min(365, days))
+        cmd += ["--start", start, "--days", str(days)]
 
     try:
-        subprocess.Popen(
-            [sys.executable, "-m", "scripts.generate_daily_challenges",
-             "--start", start, "--days", str(days), "--difficulty", difficulty],
-        )
+        subprocess.Popen(cmd)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

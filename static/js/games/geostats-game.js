@@ -56,24 +56,71 @@ var GeoStatsGame = (function () {
     init();
 
     function loadData(settings) {
-        var num = settings.maxItems || 10;
-        var continent = settings.continent || 'all';
+        var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
         var defaults = (GAME_CONFIG && GAME_CONFIG.defaults) ? GAME_CONFIG.defaults : {};
         maxAttempts = defaults.max_attempts || 5;
 
-        fetch('/api/quiz/geostats?num=' + num + '&continent=' + continent)
-            .then(function (r) { return r.json(); })
-            .then(function (data) {
-                questions = data.questions || [];
-                countriesLookup = data.countries_lookup || {};
-                if (data.max_attempts) maxAttempts = data.max_attempts;
-                currentIdx = 0;
-                totalScore = 0;
-                answers = [];
-                GeoGame.setTotal(questions.length);
-                buildNameMap();
-                showQuestion();
-            });
+        if (isDaily) {
+            fetch('/api/daily-challenge')
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (data.already_played) {
+                        showAlreadyPlayed(data.result);
+                        return;
+                    }
+                    questions = data.questions || [];
+                    countriesLookup = data.countries_lookup || {};
+                    if (data.max_attempts) maxAttempts = data.max_attempts;
+                    currentIdx = 0;
+                    totalScore = 0;
+                    answers = [];
+                    GeoGame.setTotal(questions.length);
+                    buildNameMap();
+                    showQuestion();
+                });
+        } else {
+            var num = settings.maxItems || 10;
+            var continent = settings.continent || 'all';
+            fetch('/api/quiz/geostats?num=' + num + '&continent=' + continent)
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    questions = data.questions || [];
+                    countriesLookup = data.countries_lookup || {};
+                    if (data.max_attempts) maxAttempts = data.max_attempts;
+                    currentIdx = 0;
+                    totalScore = 0;
+                    answers = [];
+                    GeoGame.setTotal(questions.length);
+                    buildNameMap();
+                    showQuestion();
+                });
+        }
+    }
+
+    function showAlreadyPlayed(result) {
+        document.getElementById('game-area').style.display = 'none';
+        document.getElementById('game-hud').style.display = 'none';
+        document.querySelector('.results-icon').innerHTML = resultIcon(result.score, result.total);
+        document.getElementById('results-overlay').style.display = 'flex';
+        GeoResults.buildDaily(result.score, result.total, result.time_ms, { isAnon: false });
+        startCountdown();
+    }
+
+    function startCountdown() {
+        var el = document.getElementById('daily-countdown');
+        if (!el) return;
+        function update() {
+            var now = new Date();
+            var tomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+            var diff = tomorrow - now;
+            var h = Math.floor(diff / 3600000);
+            var m = Math.floor((diff % 3600000) / 60000);
+            var s = Math.floor((diff % 60000) / 1000);
+            el.textContent = (T['daily.next_in'] || 'Next challenge in') + ' ' +
+                (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+        }
+        update();
+        setInterval(update, 1000);
     }
 
     /* ── Show question ───────────────────────────────────── */
@@ -448,10 +495,11 @@ var GeoStatsGame = (function () {
     function saveResult() {
         renderSummary();
         var elapsed = Date.now() - GeoGame.startTime;
+        var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
         var avgScore = questions.length > 0 ? totalScore / questions.length : 0;
         var payload = {
             game_type: 'geostats',
-            mode: 'solo',
+            mode: isDaily ? 'daily' : 'solo',
             score: GeoGame.correct,
             total: GeoGame.total,
             accuracy: GeoGame.total > 0 ? GeoGame.correct / GeoGame.total : 0,
@@ -466,7 +514,18 @@ var GeoStatsGame = (function () {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
-        }).catch(function () {});
+        }).then(function (r) { return r.json(); }).then(function (data) {
+            if (isDaily) {
+                var isAnon = !data.saved;
+                GeoResults.buildDaily(GeoGame.correct, GeoGame.total, elapsed, { isAnon: isAnon });
+                startCountdown();
+            }
+        }).catch(function () {
+            if (isDaily) {
+                GeoResults.buildDaily(GeoGame.correct, GeoGame.total, elapsed, { isAnon: true });
+                startCountdown();
+            }
+        });
     }
 
     return { guess: guess, next: next };

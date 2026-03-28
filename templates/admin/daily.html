@@ -38,19 +38,61 @@
     <!-- Generate form -->
     <div class="admin-game-card">
         <h3>⚡ {{ t('adm.daily_generate', lang) }}</h3>
-        <form method="post" action="/admin/daily/generate">
-            <div class="form-row">
+        <form method="post" action="/admin/daily/generate" id="daily-gen-form">
+
+            <!-- Mode toggle -->
+            <div class="form-row" style="margin-bottom:8px;">
+                <div>
+                    <label>{{ t('adm.daily_mode', lang) }}</label>
+                    <div class="dc-mode-toggle">
+                        <label class="dc-mode-opt">
+                            <input type="radio" name="mode" value="range" id="mode-range" checked>
+                            <span>{{ t('adm.daily_mode_range', lang) }}</span>
+                        </label>
+                        <label class="dc-mode-opt">
+                            <input type="radio" name="mode" value="dates" id="mode-dates">
+                            <span>{{ t('adm.daily_mode_dates', lang) }}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Range inputs -->
+            <div id="range-fields" class="form-row">
                 <div>
                     <label>{{ t('adm.daily_start', lang) }}</label>
-                    <input type="date" name="start" value="{{ today }}">
+                    <input type="date" name="start" id="gen-start" value="{{ today }}">
                 </div>
                 <div>
                     <label>{{ t('adm.daily_days', lang) }}</label>
-                    <input type="number" name="days" value="90" min="1" max="365">
+                    <input type="number" name="days" id="gen-days" value="90" min="1" max="365">
+                </div>
+            </div>
+
+            <!-- Specific dates input -->
+            <div id="dates-field" style="display:none; margin-bottom:12px;">
+                <label>{{ t('adm.daily_specific_dates', lang) }}</label>
+                <div class="dc-chips-wrap" id="dc-chips"></div>
+                <div class="dc-date-input-row">
+                    <input type="date" id="dc-add-date">
+                    <button type="button" class="btn-dc-add" onclick="dcAddDate()">+ {{ t('adm.daily_add_date', lang) }}</button>
+                </div>
+                <input type="hidden" name="dates" id="dc-dates-hidden">
+            </div>
+
+            <!-- Game + difficulty row -->
+            <div class="form-row">
+                <div>
+                    <label>{{ t('adm.daily_game', lang) }}</label>
+                    <select name="game" id="gen-game">
+                        <option value="comparison">GeoFreaker</option>
+                        <option value="ordering">GeoOrder</option>
+                        <option value="geostats">GeoStats</option>
+                    </select>
                 </div>
                 <div>
                     <label>{{ t('adm.daily_difficulty', lang) }}</label>
-                    <select name="difficulty">
+                    <select name="difficulty" id="gen-difficulty">
                         <option value="easy">{{ t('game.diff_easy', lang) }}</option>
                         <option value="normal" selected>{{ t('game.diff_normal', lang) }}</option>
                         <option value="hard">{{ t('game.diff_hard', lang) }}</option>
@@ -59,7 +101,35 @@
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn-save">🚀 {{ t('adm.daily_generate_btn', lang) }}</button>
+
+            <!-- Questions + timer row -->
+            <div class="form-row">
+                <div>
+                    <label>{{ t('adm.daily_num_questions', lang) }}</label>
+                    <input type="number" name="num_questions" value="10" min="1" max="50">
+                </div>
+                <div>
+                    <label>{{ t('adm.daily_secs_per_item', lang) }}</label>
+                    <input type="number" name="secs_per_item" value="15" min="5" max="120">
+                </div>
+            </div>
+
+            <!-- Checkboxes row -->
+            <div class="dc-checks-row">
+                <label class="dc-check-label">
+                    <input type="checkbox" id="gen-countdown" checked>
+                    {{ t('adm.daily_countdown', lang) }}
+                </label>
+                <input type="hidden" name="countdown" value="1" id="gen-countdown-hidden">
+                <label class="dc-check-label">
+                    <input type="checkbox" name="no_overwrite" value="1" id="gen-no-overwrite">
+                    {{ t('adm.daily_no_overwrite', lang) }}
+                </label>
+            </div>
+
+            <div class="btn-save-row">
+                <button type="submit" class="btn-save">🚀 {{ t('adm.daily_generate_btn', lang) }}</button>
+            </div>
             <p style="font-size:0.8rem;color:var(--gray-500);margin-top:8px;">
                 {{ t('adm.daily_generate_note', lang) }}
             </p>
@@ -75,6 +145,8 @@
                 <thead>
                     <tr>
                         <th>{{ t('adm.daily_date', lang) }}</th>
+                        <th>{{ t('adm.daily_game_col', lang) }}</th>
+                        <th>{{ t('adm.daily_difficulty', lang) }}</th>
                         <th>{{ t('adm.daily_questions', lang) }}</th>
                         <th>{{ t('adm.daily_size', lang) }}</th>
                         <th></th>
@@ -84,10 +156,12 @@
                     {% for c in challenges_future %}
                     <tr class="{{ 'admin-row-today' if c.date == today }}">
                         <td>{{ c.date }}{% if c.date == today %} <span class="badge-today">{{ t('adm.daily_today', lang) }}</span>{% endif %}</td>
-                        <td>—</td>
+                        <td><span class="badge-game badge-{{ c.game_type }}">{{ c.game_type }}</span></td>
+                        <td>{{ c.difficulty }}</td>
+                        <td>{{ c.num_questions }}</td>
                         <td>{{ c.size_human }}</td>
                         <td>
-                            <button class="btn-preview" onclick="previewChallenge('{{ c.date }}')">
+                            <button class="btn-preview" onclick="previewChallenge('{{ c.date }}', '{{ c.game_type }}')">
                                 👁️ {{ t('adm.daily_preview', lang) }}
                             </button>
                         </td>
@@ -116,45 +190,143 @@
 </div>
 
 <script>
-function previewChallenge(date) {
+/* ── Mode toggle ── */
+document.querySelectorAll('input[name="mode"]').forEach(function(r) {
+    r.addEventListener('change', function() {
+        var isRange = document.getElementById('mode-range').checked;
+        document.getElementById('range-fields').style.display = isRange ? '' : 'none';
+        document.getElementById('dates-field').style.display = isRange ? 'none' : '';
+    });
+});
+
+/* ── Specific dates chip UI ── */
+var dcDates = [];
+
+function dcAddDate() {
+    var input = document.getElementById('dc-add-date');
+    var val = input.value;
+    if (!val || dcDates.indexOf(val) !== -1) return;
+    dcDates.push(val);
+    dcDates.sort();
+    dcRenderChips();
+    input.value = '';
+}
+
+function dcRemoveDate(date) {
+    dcDates = dcDates.filter(function(d) { return d !== date; });
+    dcRenderChips();
+}
+
+function dcRenderChips() {
+    var wrap = document.getElementById('dc-chips');
+    wrap.innerHTML = '';
+    dcDates.forEach(function(d) {
+        var chip = document.createElement('span');
+        chip.className = 'dc-chip';
+        chip.innerHTML = d + ' <button type="button" onclick="dcRemoveDate(\'' + d + '\')">&times;</button>';
+        wrap.appendChild(chip);
+    });
+    document.getElementById('dc-dates-hidden').value = dcDates.join(',');
+}
+
+/* Sync countdown checkbox → hidden field so unchecked still submits */
+document.getElementById('gen-countdown').addEventListener('change', function() {
+    document.getElementById('gen-countdown-hidden').value = this.checked ? '1' : '0';
+});
+
+/* Geostats has no difficulty parameter — grey it out */
+document.getElementById('gen-game').addEventListener('change', function() {
+    var diff = document.getElementById('gen-difficulty');
+    diff.disabled = this.value === 'geostats';
+});
+
+/* ── Preview modal ── */
+function previewChallenge(date, gameType) {
     var modal = document.getElementById('preview-modal');
     var body = document.getElementById('preview-body');
     var title = document.getElementById('preview-title');
-    title.textContent = '🎯 ' + date;
+    title.textContent = '🎯 ' + date + ' — ' + (gameType || 'comparison');
     body.innerHTML = '<p style="text-align:center;color:var(--gray-500)">Loading…</p>';
     modal.style.display = 'flex';
 
     fetch('/admin/daily/preview/' + date)
         .then(function(r) { return r.json(); })
         .then(function(data) {
+            var gt = data.game_type || gameType || 'comparison';
             var html = '<div class="preview-meta">' +
                 '<strong>Date:</strong> ' + (data.date || date) +
-                ' &nbsp;|&nbsp; <strong>Type:</strong> ' + (data.game_type || '—') +
+                ' &nbsp;|&nbsp; <strong>Game:</strong> ' + gt +
                 ' &nbsp;|&nbsp; <strong>Difficulty:</strong> ' + (data.difficulty || '—') +
                 ' &nbsp;|&nbsp; <strong>Questions:</strong> ' + (data.num_questions || 0) +
+                ' &nbsp;|&nbsp; <strong>Secs/item:</strong> ' + (data.secs_per_item || '—') +
+                ' &nbsp;|&nbsp; <strong>Countdown:</strong> ' + (data.countdown !== false ? 'yes' : 'no') +
                 '</div>';
-            html += '<table class="admin-table" style="margin-top:12px">';
-            html += '<thead><tr><th>#</th><th>Stat</th><th>Country A</th><th>Country B</th><th>Correct</th></tr></thead><tbody>';
-            var qs = data.questions || [];
-            for (var i = 0; i < qs.length; i++) {
-                var q = qs[i];
-                var labelKey = 'label_es';
-                var a = q.countries[0] || {};
-                var b = q.countries[1] || {};
-                html += '<tr>' +
-                    '<td>' + (i + 1) + '</td>' +
-                    '<td>' + (q.stat_info ? q.stat_info[labelKey] : q.stat) + '</td>' +
-                    '<td>' + (a.flag_emoji || '') + ' ' + (a.name_es || a.name || '') + '</td>' +
-                    '<td>' + (b.flag_emoji || '') + ' ' + (b.name_es || b.name || '') + '</td>' +
-                    '<td>' + (q.correct_iso || '') + '</td>' +
-                    '</tr>';
+
+            if (gt === 'comparison') {
+                html += buildComparisonPreview(data.questions || []);
+            } else if (gt === 'ordering') {
+                html += buildOrderingPreview(data.questions || []);
+            } else if (gt === 'geostats') {
+                html += buildGeostatsPreview(data.questions || []);
             }
-            html += '</tbody></table>';
+
             body.innerHTML = html;
         })
         .catch(function() {
             body.innerHTML = '<p style="color:red">Error loading challenge</p>';
         });
+}
+
+function buildComparisonPreview(qs) {
+    var html = '<table class="admin-table" style="margin-top:12px">';
+    html += '<thead><tr><th>#</th><th>Stat</th><th>Country A</th><th>Country B</th><th>Correct</th></tr></thead><tbody>';
+    for (var i = 0; i < qs.length; i++) {
+        var q = qs[i];
+        var a = q.countries[0] || {};
+        var b = q.countries[1] || {};
+        html += '<tr>' +
+            '<td>' + (i + 1) + '</td>' +
+            '<td>' + (q.stat_info ? q.stat_info['label_es'] : q.stat) + '</td>' +
+            '<td>' + (a.flag_emoji || '') + ' ' + (a.name_es || a.name || '') + '</td>' +
+            '<td>' + (b.flag_emoji || '') + ' ' + (b.name_es || b.name || '') + '</td>' +
+            '<td>' + (q.correct_iso || '') + '</td>' +
+            '</tr>';
+    }
+    html += '</tbody></table>';
+    return html;
+}
+
+function buildOrderingPreview(qs) {
+    var html = '<table class="admin-table" style="margin-top:12px">';
+    html += '<thead><tr><th>#</th><th>Stat</th><th>Direction</th><th>Countries</th></tr></thead><tbody>';
+    for (var i = 0; i < qs.length; i++) {
+        var q = qs[i];
+        var countries = (q.countries || []).map(function(c) { return (c.flag_emoji || '') + ' ' + (c.name_es || c.name || ''); }).join(', ');
+        html += '<tr>' +
+            '<td>' + (i + 1) + '</td>' +
+            '<td>' + (q.stat_info ? q.stat_info['label_es'] : q.stat) + '</td>' +
+            '<td>' + (q.ascending ? '↑ asc' : '↓ desc') + '</td>' +
+            '<td style="font-size:0.82rem">' + countries + '</td>' +
+            '</tr>';
+    }
+    html += '</tbody></table>';
+    return html;
+}
+
+function buildGeostatsPreview(qs) {
+    var html = '<table class="admin-table" style="margin-top:12px">';
+    html += '<thead><tr><th>#</th><th>Stat</th><th>Target ISO</th><th>Curve points</th></tr></thead><tbody>';
+    for (var i = 0; i < qs.length; i++) {
+        var q = qs[i];
+        html += '<tr>' +
+            '<td>' + (i + 1) + '</td>' +
+            '<td>' + (q.stat_info ? q.stat_info['label_es'] : q.stat) + '</td>' +
+            '<td>' + (q.target_iso || '') + '</td>' +
+            '<td>' + (q.curve ? q.curve.length : 0) + '</td>' +
+            '</tr>';
+    }
+    html += '</tbody></table>';
+    return html;
 }
 
 function closePreview(e) {
