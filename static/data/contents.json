@@ -16,10 +16,24 @@
       "color": "#4caf50",
       "type": "quiz",
       "subcategory": "adivina_cual",
-      "defaults": { "time_limit": 400, "max_items": 20, "n_options": [10, 20, 30, 50], "secs_per_item": 20 },
+      "defaults": {
+        "time_limit": 400,
+        "max_items": 20,
+        "n_options": [
+          10,
+          20,
+          30,
+          50
+        ],
+        "secs_per_item": 20
+      },
       "has_continent_filter": true,
       "enabled": true,
-      "visible": true
+      "visible": true,
+      "modes": {
+        "solo": true,
+        "duel": true
+      }
     },
     {
       "id": "outline",
@@ -37,10 +51,24 @@
       "color": "#1a73e8",
       "type": "quiz",
       "subcategory": "adivina_cual",
-      "defaults": { "time_limit": 400, "max_items": 20, "n_options": [10, 20, 30, 50], "secs_per_item": 20 },
+      "defaults": {
+        "time_limit": 400,
+        "max_items": 20,
+        "n_options": [
+          10,
+          20,
+          30,
+          50
+        ],
+        "secs_per_item": 20
+      },
       "has_continent_filter": true,
       "enabled": true,
-      "visible": true
+      "visible": true,
+      "modes": {
+        "solo": true,
+        "duel": true
+      }
     },
     {
       "id": "map-challenge",
@@ -58,7 +86,11 @@
       "color": "#ff9800",
       "type": "map",
       "subcategory": "sobre_el_mapa",
-      "defaults": { "time_limit": 600, "secs_per_item_type": 4, "secs_per_item_click": 6 },
+      "defaults": {
+        "time_limit": 600,
+        "secs_per_item_type": 4,
+        "secs_per_item_click": 6
+      },
       "has_continent_filter": true,
       "enabled": true,
       "visible": true
@@ -78,11 +110,25 @@
       "icon": "📊",
       "color": "#e65100",
       "type": "solo",
-      "defaults": { "time_limit": 400, "max_items": 20, "n_options": [10, 20, 30, 50], "secs_per_item": 20 },
+      "defaults": {
+        "time_limit": 400,
+        "max_items": 20,
+        "n_options": [
+          10,
+          20,
+          30,
+          50
+        ],
+        "secs_per_item": 20
+      },
       "has_continent_filter": true,
       "enabled": true,
       "visible": true,
-      "modes": { "solo": true, "duel": true, "tournament": true }
+      "modes": {
+        "solo": true,
+        "duel": true,
+        "tournament": true
+      }
     },
     {
       "id": "comparison",
@@ -99,11 +145,25 @@
       "icon": "⚖️",
       "color": "#6a1b9a",
       "type": "solo",
-      "defaults": { "time_limit": 400, "max_items": 20, "n_options": [10, 20, 30, 50], "secs_per_item": 20 },
+      "defaults": {
+        "time_limit": 400,
+        "max_items": 20,
+        "n_options": [
+          10,
+          20,
+          30,
+          50
+        ],
+        "secs_per_item": 20
+      },
       "has_continent_filter": true,
       "enabled": true,
       "visible": true,
-      "modes": { "solo": true, "duel": true, "tournament": true }
+      "modes": {
+        "solo": true,
+        "duel": true,
+        "tournament": true
+      }
     },
     {
       "id": "geostats",
@@ -121,11 +181,26 @@
       "color": "#00897b",
       "type": "solo",
       "has_difficulty": false,
-      "defaults": { "time_limit": 400, "max_items": 20, "n_options": [10, 20, 30, 50], "secs_per_item": 20, "max_attempts": 5 },
+      "defaults": {
+        "time_limit": 400,
+        "max_items": 20,
+        "n_options": [
+          10,
+          20,
+          30,
+          50
+        ],
+        "secs_per_item": 20,
+        "max_attempts": 5
+      },
       "has_continent_filter": true,
       "enabled": true,
       "visible": true,
-      "modes": { "solo": true, "duel": true, "tournament": true }
+      "modes": {
+        "solo": true,
+        "duel": true,
+        "tournament": true
+      }
     }
   ]
 }

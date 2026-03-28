@@ -411,6 +411,45 @@ def get_available_stats() -> dict:
     return get_quiz_stats()
 
 
+_QUIZ_CONTINENT_MAP = {
+    "europe": ["Europe"],
+    "asia": ["Asia"],
+    "africa": ["Africa"],
+    "america": ["North America", "South America"],
+    "oceania": ["Oceania"],
+}
+
+
+def generate_quiz_set(num_questions: int = 20, continent: Optional[str] = None) -> list[dict]:
+    """Generate a question set for flags/outline quiz games.
+
+    Each question is a country object with all name fields so the client can
+    render the visual (flag image or GeoJSON outline) and check text answers
+    with GeoUtils.getCountryNames() exactly as in solo mode.
+    """
+    df = _ds.get_countries()
+    if df.empty:
+        return []
+
+    if "entity_type" in df.columns:
+        df = df[df["entity_type"] == "country"]
+
+    if continent and continent != "all":
+        allowed = _QUIZ_CONTINENT_MAP.get(continent, [])
+        if allowed:
+            df = df[df["continent"].isin(allowed)]
+
+    df = df[df["iso_a3"].notna() & df["iso_a3"].ne("") & df["name"].notna() & df["name"].ne("")]
+
+    records = df.to_dict(orient="records")
+    random.shuffle(records)
+    selected = records[: min(num_questions, len(records))]
+
+    keep = ["iso_a3", "name", "name_es", "name_en", "name_fr", "name_it", "name_ru",
+            "flag_emoji", "name_official"]
+    return [{k: str(c.get(k) or "") for k in keep} for c in selected]
+
+
 def get_all_variables(dataset_id: str | None = None) -> list[dict]:
     """Return all variable definitions (enabled and disabled).
     If dataset_id is None, return variables for all datasets as a flat list.

@@ -13,6 +13,9 @@ CITIES_CSV = os.path.join(DATA_DIR, "cities.csv")
 US_STATES_CSV = os.path.join(DATA_DIR, "usastates.csv")
 SPAIN_PROVINCES_CSV = os.path.join(DATA_DIR, "spain_provinces.csv")
 RUSSIA_REGIONS_CSV = os.path.join(DATA_DIR, "russia_regions.csv")
+FRANCE_REGIONS_CSV = os.path.join(DATA_DIR, "france_regions.csv")
+ITALY_REGIONS_CSV = os.path.join(DATA_DIR, "italy_regions.csv")
+GERMANY_STATES_CSV = os.path.join(DATA_DIR, "germany_states.csv")
 
 # Maps filter key → continent values in the countries CSV
 CONTINENT_MAP: dict[str, list[str]] = {
@@ -33,6 +36,9 @@ class DatasetService:
         self._us_df: Optional[pd.DataFrame] = None
         self._spain_df: Optional[pd.DataFrame] = None
         self._russia_df: Optional[pd.DataFrame] = None
+        self._france_df: Optional[pd.DataFrame] = None
+        self._italy_df: Optional[pd.DataFrame] = None
+        self._germany_df: Optional[pd.DataFrame] = None
         self._map_game_counts: Optional[dict] = None
 
     # ── Countries ────────────────────────────────────────────
@@ -231,6 +237,30 @@ class DatasetService:
                 self._russia_df = pd.read_csv(RUSSIA_REGIONS_CSV, keep_default_na=False)
         return self._russia_df
 
+    def _load_france(self) -> pd.DataFrame:
+        if self._france_df is None:
+            if not os.path.exists(FRANCE_REGIONS_CSV):
+                self._france_df = pd.DataFrame()
+            else:
+                self._france_df = pd.read_csv(FRANCE_REGIONS_CSV, keep_default_na=False)
+        return self._france_df
+
+    def _load_italy(self) -> pd.DataFrame:
+        if self._italy_df is None:
+            if not os.path.exists(ITALY_REGIONS_CSV):
+                self._italy_df = pd.DataFrame()
+            else:
+                self._italy_df = pd.read_csv(ITALY_REGIONS_CSV, keep_default_na=False)
+        return self._italy_df
+
+    def _load_germany(self) -> pd.DataFrame:
+        if self._germany_df is None:
+            if not os.path.exists(GERMANY_STATES_CSV):
+                self._germany_df = pd.DataFrame()
+            else:
+                self._germany_df = pd.read_csv(GERMANY_STATES_CSV, keep_default_na=False)
+        return self._germany_df
+
     def get_us_states(self) -> list[dict]:
         df = self._load_us()
         if df.empty:
@@ -280,6 +310,75 @@ class DatasetService:
                     "id": str(row["code"]),
                     "name": str(row["name"]),
                     "name_es": str(row.get("name_es", row["name"])),
+                    "name_ru": str(row.get("name_ru", "")),
+                    "capital": str(row.get("capital", "")),
+                    "lat": float(row["lat"]),
+                    "lon": float(row["lon"]),
+                })
+            except (ValueError, TypeError):
+                continue
+        return records
+
+    def get_france_regions(self) -> list[dict]:
+        df = self._load_france()
+        if df.empty:
+            return []
+        records = []
+        for _, row in df.iterrows():
+            try:
+                records.append({
+                    "id": str(row["code"]),
+                    "name": str(row["name"]),
+                    "name_es": str(row.get("name_es", row["name"])),
+                    "name_en": str(row.get("name_en", row["name"])),
+                    "name_fr": str(row.get("name_fr", row["name"])),
+                    "name_it": str(row.get("name_it", row["name"])),
+                    "name_ru": str(row.get("name_ru", "")),
+                    "capital": str(row.get("capital", "")),
+                    "lat": float(row["lat"]),
+                    "lon": float(row["lon"]),
+                })
+            except (ValueError, TypeError):
+                continue
+        return records
+
+    def get_italy_regions(self) -> list[dict]:
+        df = self._load_italy()
+        if df.empty:
+            return []
+        records = []
+        for _, row in df.iterrows():
+            try:
+                records.append({
+                    "id": str(row["code"]),
+                    "name": str(row["name"]),
+                    "name_es": str(row.get("name_es", row["name"])),
+                    "name_en": str(row.get("name_en", row["name"])),
+                    "name_fr": str(row.get("name_fr", row["name"])),
+                    "name_it": str(row.get("name_it", row["name"])),
+                    "name_ru": str(row.get("name_ru", "")),
+                    "capital": str(row.get("capital", "")),
+                    "lat": float(row["lat"]),
+                    "lon": float(row["lon"]),
+                })
+            except (ValueError, TypeError):
+                continue
+        return records
+
+    def get_germany_states(self) -> list[dict]:
+        df = self._load_germany()
+        if df.empty:
+            return []
+        records = []
+        for _, row in df.iterrows():
+            try:
+                records.append({
+                    "id": str(row["code"]),
+                    "name": str(row["name"]),
+                    "name_es": str(row.get("name_es", row["name"])),
+                    "name_en": str(row.get("name_en", row["name"])),
+                    "name_fr": str(row.get("name_fr", row["name"])),
+                    "name_it": str(row.get("name_it", row["name"])),
                     "name_ru": str(row.get("name_ru", "")),
                     "capital": str(row.get("capital", "")),
                     "lat": float(row["lat"]),
@@ -354,6 +453,12 @@ class DatasetService:
         result["spain-provinces"] = {"all": int(len(df_spain)) if not df_spain.empty else 0}
         df_russia = self._load_russia()
         result["russia-regions"] = {"all": int(len(df_russia)) if not df_russia.empty else 0}
+        df_france = self._load_france()
+        result["france-regions"] = {"all": int(len(df_france)) if not df_france.empty else 0}
+        df_italy = self._load_italy()
+        result["italy-regions"] = {"all": int(len(df_italy)) if not df_italy.empty else 0}
+        df_germany = self._load_germany()
+        result["germany-states"] = {"all": int(len(df_germany)) if not df_germany.empty else 0}
 
         self._map_game_counts = result
         return result

@@ -562,6 +562,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.results_title": "Resultados finales",
         "room.play_again": "Jugar otra vez",
         "room.back_games": "Ir a juegos",
+        "room.quiz_prompt_flag": "¿De qué país es esta bandera?",
+        "room.quiz_prompt_outline": "¿Qué país es este contorno?",
+        "room.quiz_placeholder": "Escribe el nombre del país…",
+        "room.quiz_skip": "Pasar",
+        "room.quiz_correct": "✅ ¡Correcto! {name}",
+        "room.quiz_wrong": "❌ Incorrecto, inténtalo de nuevo",
+        "room.quiz_skipped": "⏭️ Era: {name}",
         "dash.play_solo": "Jugar solo",
         "dash.play_duel": "⚔️ Duelo",
 
@@ -1182,6 +1189,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.n_finished": "{n} of {total} players finished",
         "room.still_playing": "Playing…",
         "room.results_title": "Final results", "room.play_again": "Play again", "room.back_games": "Go to games",
+        "room.quiz_prompt_flag": "Which country does this flag belong to?",
+        "room.quiz_prompt_outline": "Which country is this outline?",
+        "room.quiz_placeholder": "Type the country name…",
+        "room.quiz_skip": "Skip",
+        "room.quiz_correct": "✅ Correct! {name}",
+        "room.quiz_wrong": "❌ Wrong, try again",
+        "room.quiz_skipped": "⏭️ It was: {name}",
         "dash.play_solo": "Play solo", "dash.play_duel": "⚔️ Duel",
 
         # Tournaments
@@ -1795,6 +1809,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.n_finished": "{n} sur {total} joueurs ont terminé",
         "room.still_playing": "En jeu…",
         "room.results_title": "Résultats finaux", "room.play_again": "Rejouer", "room.back_games": "Jeux",
+        "room.quiz_prompt_flag": "À quel pays appartient ce drapeau ?",
+        "room.quiz_prompt_outline": "Quel pays est ce contour ?",
+        "room.quiz_placeholder": "Tapez le nom du pays…",
+        "room.quiz_skip": "Passer",
+        "room.quiz_correct": "✅ Correct ! {name}",
+        "room.quiz_wrong": "❌ Incorrect, réessayez",
+        "room.quiz_skipped": "⏭️ C'était : {name}",
         "dash.play_solo": "Jouer solo", "dash.play_duel": "⚔️ Duel",
 
         # Tournaments
@@ -2405,6 +2426,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.n_finished": "{n} su {total} giocatori hanno finito",
         "room.still_playing": "Giocando…",
         "room.results_title": "Risultati finali", "room.play_again": "Gioca ancora", "room.back_games": "Giochi",
+        "room.quiz_prompt_flag": "A quale paese appartiene questa bandiera?",
+        "room.quiz_prompt_outline": "Quale paese è questo contorno?",
+        "room.quiz_placeholder": "Scrivi il nome del paese…",
+        "room.quiz_skip": "Salta",
+        "room.quiz_correct": "✅ Corretto! {name}",
+        "room.quiz_wrong": "❌ Sbagliato, riprova",
+        "room.quiz_skipped": "⏭️ Era: {name}",
         "dash.play_solo": "Gioca solo", "dash.play_duel": "⚔️ Duello",
 
         # Tournaments
@@ -3015,6 +3043,13 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "room.n_finished": "{n} из {total} игроков завершили",
         "room.still_playing": "Играет…",
         "room.results_title": "Финальные результаты", "room.play_again": "Играть снова", "room.back_games": "Игры",
+        "room.quiz_prompt_flag": "Чей это флаг?",
+        "room.quiz_prompt_outline": "Что за страна изображена?",
+        "room.quiz_placeholder": "Введите название страны…",
+        "room.quiz_skip": "Пропустить",
+        "room.quiz_correct": "✅ Верно! {name}",
+        "room.quiz_wrong": "❌ Неверно, попробуйте снова",
+        "room.quiz_skipped": "⏭️ Это была: {name}",
         "dash.play_solo": "Играть одному", "dash.play_duel": "⚔️ Дуэль",
 
         # Tournaments

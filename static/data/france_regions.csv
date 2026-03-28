@@ -1,0 +1,19 @@
+code,name,name_es,name_en,name_fr,name_it,name_ru,capital,lat,lon,population,area_km2,density_per_km2,gdp_usd,gdp_per_capita_usd,unemployment_rate,median_age,coastline_km,elevation_max_m,elevation_min_m,avg_elevation_m,avg_temperature_c,annual_precipitation_mm,life_expectancy,num_departments
+ARA,Auvergne-Rhône-Alpes,Auvernia-Ródano-Alpes,Auvergne-Rhône-Alpes,Auvergne-Rhône-Alpes,Alvernia-Rodano-Alpi,Овернь-Рона-Альпы,Lyon,45.45,4.40,8105677,69711,116.3,268000000000,33060,7.2,40.1,0,4808,118,700,11.5,920,83.1,12
+BFC,Bourgogne-Franche-Comté,Borgoña-Franco Condado,Burgundy-Franche-Comté,Bourgogne-Franche-Comté,Borgogna-Franco Contea,Бургундия-Франш-Конте,Dijon,47.27,4.99,2795301,47784,58.5,69000000000,24680,7.8,42.5,0,1643,168,370,11.0,780,82.5,8
+BRE,Bretagne,Bretaña,Brittany,Bretagne,Bretagna,Бретань,Rennes,48.20,-2.93,3411341,27208,125.4,81000000000,23730,6.2,40.8,2730,384,0,90,12.4,840,83.4,4
+CVL,Centre-Val de Loire,Centro-Valle del Loira,Centre-Val de Loire,Centre-Val de Loire,Centro-Valle della Loira,Центр — Долина Луары,Orléans,47.69,1.68,2589682,39151,66.1,61000000000,23550,7.5,42.3,0,566,40,130,11.9,680,82.8,6
+COR,Corse,Córcega,Corsica,Corse,Corsica,Корсика,Ajaccio,42.04,9.01,344679,8680,39.7,9200000000,26690,9.3,43.8,1047,2706,0,568,14.5,760,84.1,2
+GES,Grand Est,Gran Este,Grand Est,Grand Est,Grande Est,Гранд-Эст,Strasbourg,48.63,6.56,5562818,57433,96.8,154000000000,27680,7.9,41.5,0,1424,120,350,10.8,720,82.2,10
+HDF,Hauts-de-France,Altos de Francia,Hauts-de-France,Hauts-de-France,Hauts-de-France,О-де-Франс,Lille,50.34,2.79,6024241,31813,189.4,145000000000,24090,10.1,38.7,196,263,-1,95,10.9,710,81.0,5
+IDF,Île-de-France,Isla de Francia,Île-de-France,Île-de-France,Île-de-France,Иль-де-Франс,Paris,48.64,2.36,12294430,12012,1023.4,760000000000,61820,7.3,37.9,0,186,23,85,12.1,630,83.7,8
+NOR,Normandie,Normandía,Normandy,Normandie,Normandia,Нормандия,Rouen,49.00,0.70,3307682,29906,110.6,82000000000,24790,8.2,41.9,640,417,-5,115,11.2,760,82.1,5
+NAQ,Nouvelle-Aquitaine,Nueva Aquitania,New Aquitaine,Nouvelle-Aquitaine,Nuova Aquitania,Новая Аквитания,Bordeaux,44.59,-0.36,6110278,84036,72.7,179000000000,29300,7.6,41.5,720,2877,-3,215,13.5,850,83.5,12
+OCC,Occitanie,Occitania,Occitanie,Occitanie,Occitania,Окситания,Toulouse,43.60,2.36,6016468,72724,82.7,166000000000,27590,9.1,41.1,220,3298,-1,425,13.8,780,83.6,13
+PDL,Pays de la Loire,País del Loira,Pays de la Loire,Pays de la Loire,Paesi della Loira,Пеи-де-ла-Луар,Nantes,47.56,-0.56,3801797,32082,118.5,97000000000,25540,6.8,40.5,447,417,0,85,12.5,790,83.3,5
+PAC,Provence-Alpes-Côte d'Azur,Provenza-Alpes-Costa Azul,Provence-Alpes-Côte d'Azur,Provence-Alpes-Côte d'Azur,Provenza-Alpi-Costa Azzurra,Прованс-Альпы-Лазурный берег,Marseille,43.93,6.07,5124741,31400,163.2,147000000000,28680,9.8,41.3,895,4102,0,600,15.2,680,83.2,6
+GUA,Guadeloupe,Guadalupe,Guadeloupe,Guadeloupe,Guadalupa,Гваделупа,Basse-Terre,16.25,-61.58,387642,1628,238.1,11000000000,28380,22.0,37.2,306,1467,0,150,25.8,2800,80.5,1
+MTQ,Martinique,Martinica,Martinique,Martinique,Martinica,Мартиника,Fort-de-France,14.64,-61.02,349925,1128,310.2,10300000000,29430,18.5,42.8,350,1397,0,200,26.2,2100,82.4,1
+GUF,Guyane,Guayana Francesa,French Guiana,Guyane,Guiana Francese,Французская Гвиана,Cayenne,4.00,-53.00,294071,83534,3.5,5300000000,18030,22.3,27.6,378,851,0,150,26.0,3100,80.3,1
+REU,La Réunion,La Reunión,Réunion,La Réunion,Riunione,Реюньон,Saint-Denis,-21.12,55.54,885700,2512,352.6,23500000000,26530,22.5,34.8,207,3070,0,600,23.5,2900,81.8,1
+MYT,Mayotte,Mayotte,Mayotte,Mayotte,Mayotte,Майотта,Mamoudzou,-12.83,45.17,310133,374,829.8,3000000000,9670,36.0,18.5,186,660,0,200,26.5,2600,75.0,1

@@ -26,13 +26,14 @@ from core.auth import get_optional_user
 from core.i18n import get_lang
 from core.templates import templates
 from services.games import GamesService
-from services.quiz import generate_comparison_set, generate_ordering_set, generate_geostats_set
+from services.quiz import generate_comparison_set, generate_ordering_set, generate_geostats_set, generate_quiz_set
 from services.rooms import MAX_PLAYERS, create_room, get_room, join_room, start_room, submit_score
 
 router = APIRouter(tags=["rooms"])
 _games_svc = GamesService()
 
-_ALLOWED_GAMES = {"ordering", "comparison", "geostats"}
+_ALLOWED_GAMES = {"ordering", "comparison", "geostats", "flags", "outline"}
+_QUIZ_GAMES = {"flags", "outline"}
 
 
 # ── Pages ─────────────────────────────────────────────────────────────────────
@@ -94,7 +95,7 @@ async def api_create_room(
         raise HTTPException(status_code=400, detail="invalid_game")
     if not 3 <= payload.n_items <= 50:
         raise HTTPException(status_code=400, detail="n_items must be 3-50")
-    if payload.difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
+    if payload.game_id not in _QUIZ_GAMES and payload.difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
         raise HTTPException(status_code=400, detail="invalid_difficulty")
 
     if user:
@@ -203,6 +204,8 @@ async def api_start_room(
             qc = dict(q)
             qc["countries_lookup"] = countries_lookup
             questions.append(qc)
+    elif game_id in _QUIZ_GAMES:
+        questions = generate_quiz_set(num_questions=n, continent=continent)
     else:
         raise HTTPException(status_code=400, detail="invalid_game")
 

@@ -1,0 +1,17 @@
+code,name,name_es,name_en,name_fr,name_it,name_ru,capital,lat,lon,population,area_km2,density_per_km2,gdp_usd,gdp_per_capita_usd,unemployment_rate,median_age,coastline_km,elevation_max_m,elevation_min_m,avg_elevation_m,avg_temperature_c,annual_precipitation_mm,life_expectancy,num_districts
+BW,Baden-Württemberg,Baden-Wurtemberg,Baden-Württemberg,Bade-Wurtemberg,Baden-Württemberg,Баден-Вюртемберг,Stuttgart,48.58,8.97,11103043,35752,310.6,577000000000,51940,3.6,43.5,0,1493,85,530,9.8,970,82.2,44
+BY,Bayern,Baviera,Bavaria,Bavière,Baviera,Бавария,Munich,48.79,11.50,13176989,70542,186.8,762000000000,57830,3.3,43.7,0,2962,289,612,8.5,990,82.4,96
+BE,Berlin,Berlín,Berlin,Berlin,Berlino,Берлин,Berlin,52.52,13.40,3669491,892,4113.2,175000000000,47700,9.3,42.6,0,178,28,34,10.6,580,81.2,12
+BB,Brandenburg,Brandeburgo,Brandenburg,Brandebourg,Brandeburgo,Бранденбург,Potsdam,52.41,13.21,2537868,29654,85.6,83000000000,32700,6.2,47.2,0,178,0,58,10.0,560,81.4,18
+HB,Bremen,Bremen,Bremen,Brême,Brema,Бремен,Bremen,53.08,8.78,682986,419,1630.0,41000000000,60050,10.2,43.9,0,33,-1,5,10.5,720,80.4,2
+HH,Hamburg,Hamburgo,Hamburg,Hambourg,Amburgo,Гамбург,Hamburg,53.55,10.00,1853935,755,2455.2,143000000000,77120,7.4,42.9,0,116,-3,16,10.3,760,81.8,7
+HE,Hessen,Hesse,Hesse,Hesse,Assia,Гессен,Wiesbaden,50.65,9.16,6391618,21115,302.7,343000000000,53660,5.2,44.6,0,950,85,310,9.5,810,81.8,26
+MV,Mecklenburg-Vorpommern,Mecklemburgo-Pomerania Occidental,Mecklenburg-Western Pomerania,Mecklembourg-Poméranie-Occidentale,Meclemburgo-Pomerania Anteriore,Мекленбург-Передняя Померания,Schwerin,53.82,12.53,1628378,23213,70.1,48000000000,29480,7.3,47.6,1940,179,-1,32,9.6,600,80.8,8
+NI,Niedersachsen,Baja Sajonia,Lower Saxony,Basse-Saxe,Bassa Sassonia,Нижняя Саксония,Hanover,52.64,9.47,8003421,47710,167.8,340000000000,42480,5.5,44.8,724,971,-2,67,9.9,720,81.4,46
+NW,Nordrhein-Westfalen,Renania del Norte-Westfalia,North Rhine-Westphalia,Rhénanie-du-Nord-Westphalie,Renania Settentrionale-Vestfalia,Северный Рейн-Вестфалия,Düsseldorf,51.43,7.66,17924591,34110,525.5,817000000000,45580,7.3,43.8,0,843,17,130,10.4,870,81.2,53
+RP,Rheinland-Pfalz,Renania-Palatinado,Rhineland-Palatinate,Rhénanie-Palatinat,Renania-Palatinato,Рейнланд-Пфальц,Mainz,49.91,7.31,4106485,19847,206.9,167000000000,40670,4.3,44.7,0,816,53,280,10.2,820,81.7,36
+SL,Saarland,Sarre,Saarland,Sarre,Saarland,Саарланд,Saarbrücken,49.38,6.94,986887,2571,383.9,38000000000,38510,6.3,46.3,0,695,149,380,10.2,870,80.9,6
+SN,Sachsen,Sajonia,Saxony,Saxe,Sassonia,Саксония,Dresden,51.10,13.20,4075635,18449,220.9,152000000000,37290,6.7,47.8,0,1244,95,310,9.5,670,81.5,13
+ST,Sachsen-Anhalt,Sajonia-Anhalt,Saxony-Anhalt,Saxe-Anhalt,Sassonia-Anhalt,Саксония-Анхальт,Magdeburg,51.84,11.58,2180684,20454,106.6,69000000000,31640,7.9,48.1,0,1141,45,120,9.8,520,80.3,14
+SH,Schleswig-Holstein,Schleswig-Holstein,Schleswig-Holstein,Schleswig-Holstein,Schleswig-Holstein,Шлезвиг-Гольштейн,Kiel,54.33,9.79,2922005,15804,184.9,103000000000,35250,5.2,45.3,1370,168,-3,40,9.5,780,81.4,15
+TH,Thüringen,Turingia,Thuringia,Thuringe,Turingia,Тюрингия,Erfurt,50.91,11.03,2116911,16202,130.7,74000000000,34960,5.8,47.4,0,983,99,380,8.8,670,81.1,23

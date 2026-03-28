@@ -50,6 +50,7 @@
                     <input type="hidden" id="create-n" value="10">
                 </div>
 
+                {% if game.type != 'quiz' %}
                 <div class="room-setting-group">
                     <label class="room-setting-label">{{ t('game.difficulty', lang) }}</label>
                     <select id="create-difficulty" class="room-select">
@@ -59,6 +60,9 @@
                         <option value="very_hard">{{ t('game.diff_very_hard', lang) }}</option>
                     </select>
                 </div>
+                {% else %}
+                <input type="hidden" id="create-difficulty" value="normal">
+                {% endif %}
 
                 {% if not user %}
                 <div class="room-setting-group">

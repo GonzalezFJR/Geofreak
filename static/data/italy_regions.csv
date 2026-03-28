@@ -1,0 +1,21 @@
+code,name,name_es,name_en,name_fr,name_it,name_ru,capital,lat,lon,population,area_km2,density_per_km2,gdp_usd,gdp_per_capita_usd,unemployment_rate,median_age,coastline_km,elevation_max_m,elevation_min_m,avg_elevation_m,avg_temperature_c,annual_precipitation_mm,life_expectancy,num_provinces
+ABR,Abruzzo,Abruzos,Abruzzo,Abruzzes,Abruzzo,Абруццо,L'Aquila,42.17,13.73,1279761,10763,118.9,37000000000,28930,9.5,46.8,289,2912,0,694,12.5,690,83.6,4
+BAS,Basilicata,Basilicata,Basilicata,Basilicate,Basilicata,Базиликата,Potenza,40.50,15.97,543523,9995,54.4,12500000000,23000,14.1,47.5,66,2267,0,630,13.0,640,83.0,2
+CAL,Calabria,Calabria,Calabria,Calabre,Calabria,Калабрия,Catanzaro,38.91,16.60,1877728,15222,123.4,36000000000,19170,18.6,45.8,738,2267,0,601,15.8,800,82.6,5
+CAM,Campania,Campania,Campania,Campanie,Campania,Кампания,Naples,40.90,14.73,5624260,13671,411.4,112000000000,19920,20.7,42.3,573,2050,0,512,16.5,870,82.4,5
+EMR,Emilia-Romagna,Emilia-Romaña,Emilia-Romagna,Émilie-Romagne,Emilia-Romagna,Эмилия-Романья,Bologna,44.50,11.34,4495360,22446,200.3,193000000000,42930,5.4,46.0,135,2165,-4,248,13.3,720,83.8,9
+FVG,Friuli-Venezia Giulia,Friuli-Venecia Julia,Friuli-Venezia Giulia,Frioul-Vénétie Julienne,Friuli-Venezia Giulia,Фриули-Венеция-Джулия,Trieste,46.22,13.24,1200642,7858,152.8,44000000000,36650,5.0,47.8,98,2780,-1,504,12.2,1410,83.5,4
+LAZ,Lazio,Lacio,Lazio,Latium,Lazio,Лацио,Rome,41.88,12.87,5844596,17232,339.2,235000000000,40190,9.2,44.7,360,2458,-5,450,14.2,780,83.4,5
+LIG,Liguria,Liguria,Liguria,Ligurie,Liguria,Лигурия,Genoa,44.20,8.76,1524826,5416,281.6,61000000000,40000,7.8,50.2,350,2651,0,568,14.8,1100,83.9,4
+LOM,Lombardia,Lombardía,Lombardy,Lombardie,Lombardia,Ломбардия,Milan,45.47,9.73,10060574,23863,421.6,487000000000,48410,5.0,44.8,0,4049,48,597,12.2,1100,84.2,12
+MAR,Marche,Marcas,Marche,Marches,Marche,Марке,Ancona,43.62,13.51,1495676,9366,159.7,46000000000,30760,7.4,46.9,173,2476,0,476,13.5,780,83.5,5
+MOL,Molise,Molise,Molise,Molise,Molise,Молизе,Campobasso,41.55,14.67,292289,4438,65.9,7400000000,25320,13.5,47.9,36,2050,0,551,12.0,680,83.0,2
+PIE,Piemonte,Piamonte,Piedmont,Piémont,Piemonte,Пьемонт,Turin,45.05,7.68,4231334,25387,166.7,164000000000,38760,7.0,47.0,0,4634,95,763,11.5,870,83.5,8
+PUG,Puglia,Apulia,Apulia,Pouilles,Puglia,Апулия,Bari,41.12,16.42,3953503,19541,202.3,77000000000,19480,16.3,44.8,975,1152,0,316,16.5,570,83.0,6
+SAR,Sardegna,Cerdeña,Sardinia,Sardaigne,Sardegna,Сардиния,Cagliari,39.68,9.06,1576974,24090,65.5,36000000000,22830,14.0,46.8,1849,1834,0,336,16.2,620,83.5,8
+SIC,Sicilia,Sicilia,Sicily,Sicile,Sicilia,Сицилия,Palermo,37.60,14.02,4875290,25832,188.7,90000000000,18460,21.3,43.9,1637,3357,0,466,18.0,600,82.7,9
+TOS,Toscana,Toscana,Tuscany,Toscane,Toscana,Тоскана,Florence,43.47,11.22,3692740,22987,160.6,139000000000,37640,7.5,47.0,607,2165,-1,491,14.5,850,84.2,10
+TAA,Trentino-Alto Adige,Trentino-Alto Adigio,Trentino-South Tyrol,Trentin-Haut-Adige,Trentino-Alto Adige,Трентино-Альто-Адидже,Trento,46.40,11.12,1093740,13607,80.4,52000000000,47550,3.9,43.2,0,3905,65,1349,8.5,1100,84.3,2
+UMB,Umbria,Umbría,Umbria,Ombrie,Umbria,Умбрия,Perugia,43.00,12.36,866878,8464,102.4,24600000000,28380,8.7,47.2,0,2448,96,595,13.2,780,83.6,2
+VAO,Valle d'Aosta,Valle de Aosta,Aosta Valley,Vallée d'Aoste,Valle d'Aosta,Валле-д'Аоста,Aosta,45.74,7.43,125034,3261,38.3,5600000000,44780,6.5,44.8,0,4810,320,2100,6.0,740,84.0,1
+VEN,Veneto,Véneto,Veneto,Vénétie,Veneto,Венето,Venice,45.67,11.99,4879133,18407,265.1,212000000000,43440,4.8,45.6,159,3343,-1,424,13.0,980,83.9,7

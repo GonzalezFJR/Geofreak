@@ -28,6 +28,9 @@
     var ordDragSrc = null;
     var ordTouchItem = null;
 
+    // ── Outline map state ─────────────────────────────────────────────────────
+    var _outlineMap = null;
+
     // ── Init ──────────────────────────────────────────────────────────────────
     function init() {
         // Recover player identity from localStorage
@@ -119,11 +122,12 @@
         var cfgEl = document.getElementById('rp-config-summary');
         if (cfgEl) {
             var cfg = data.config || {};
+            var isQuiz = (ROOM_GAME_ID === 'flags' || ROOM_GAME_ID === 'outline');
             var diffKey = 'diff_' + (cfg.difficulty || 'normal');
             var diffLabel = ROOM_T[diffKey] || cfg.difficulty || 'normal';
             cfgEl.innerHTML =
                 '<span>' + ROOM_T.cfg_items + ': <b>' + (cfg.n_items || '?') + '</b></span>' +
-                '<span>' + ROOM_T.cfg_difficulty + ': <b>' + diffLabel + '</b></span>';
+                (isQuiz ? '' : '<span>' + ROOM_T.cfg_difficulty + ': <b>' + diffLabel + '</b></span>');
         }
 
         // Start / Wait buttons
@@ -287,6 +291,51 @@
                 renderQuestion();
             }
         },
+
+        // ── Quiz answer handlers ─────────────────────────────────────────────
+        quizCheck: function () {
+            var input = document.getElementById('rp-quiz-input');
+            if (!input) return;
+            var answer = input.value.trim();
+            if (!answer) return;
+
+            var q = state.questions[state.qIndex];
+            var acceptable = GeoUtils.getCountryNames(q);
+            var normalized = GeoUtils.normalize(answer);
+            var fb = document.getElementById('rp-quiz-fb');
+
+            if (acceptable.has(normalized)) {
+                state.score++;
+                updateHud();
+                input.className = 'correct';
+                if (fb) {
+                    fb.className = 'quiz-feedback correct';
+                    fb.textContent = (ROOM_T.quiz_correct || '✅ {name}').replace('{name}', getLocalName(q));
+                }
+                setTimeout(function () { RoomPlay.nextQuestion(); }, 800);
+            } else {
+                input.className = 'wrong';
+                if (fb) {
+                    fb.className = 'quiz-feedback wrong';
+                    fb.textContent = ROOM_T.quiz_wrong || '❌ Wrong, try again';
+                }
+                setTimeout(function () { if (input) input.className = ''; }, 400);
+                input.select();
+            }
+        },
+
+        quizSkip: function () {
+            var q = state.questions[state.qIndex];
+            var fb = document.getElementById('rp-quiz-fb');
+            var name = getLocalName(q);
+            if (fb) {
+                fb.className = 'quiz-feedback wrong';
+                fb.textContent = (ROOM_T.quiz_skipped || '⏭️ {name}').replace('{name}', name);
+            }
+            var input = document.getElementById('rp-quiz-input');
+            if (input) { input.value = name; input.className = 'wrong'; }
+            setTimeout(function () { RoomPlay.nextQuestion(); }, 1200);
+        },
     };
 
     // ── Load questions & start game ────────────────────────────────────────────
@@ -351,7 +400,7 @@
 
         var gameType = ROOM_GAME_ID;
         // Hide all game panels
-        ['rp-cmp', 'rp-ord', 'rp-geo'].forEach(function (id) {
+        ['rp-cmp', 'rp-ord', 'rp-geo', 'rp-quiz'].forEach(function (id) {
             var el = document.getElementById(id);
             if (el) el.style.display = 'none';
         });
@@ -362,6 +411,8 @@
             renderOrdering(q);
         } else if (gameType === 'geostats') {
             renderGeostats(q);
+        } else if (gameType === 'flags' || gameType === 'outline') {
+            renderQuiz(q, gameType);
         }
     }
 
@@ -590,6 +641,67 @@
         if (fbEl) { fbEl.className = 'geostats-feedback'; fbEl.textContent = ''; }
         var nextBtn = document.getElementById('rp-geo-next');
         if (nextBtn) nextBtn.style.display = 'none';
+    }
+
+    // ── Quiz (flags / outline) ────────────────────────────────────────────────
+    function getLocalName(q) {
+        var lang = CURRENT_LANG;
+        return q['name_' + lang] || q.name_en || q.name || q.iso_a3;
+    }
+
+    function renderQuiz(q, gameType) {
+        var panel = document.getElementById('rp-quiz');
+        if (!panel) return;
+        panel.style.display = '';
+
+        var promptEl = document.getElementById('rp-quiz-prompt');
+        if (promptEl) {
+            promptEl.textContent = gameType === 'flags'
+                ? ROOM_T.quiz_prompt_flag
+                : ROOM_T.quiz_prompt_outline;
+        }
+
+        var display = document.getElementById('rp-quiz-display');
+        if (display) {
+            display.innerHTML = '';
+            if (gameType === 'flags') {
+                var img = document.createElement('img');
+                img.className = 'quiz-flag';
+                img.src = '/static/data/images/flags/' + q.iso_a3 + '.svg';
+                img.onerror = function () { display.innerHTML = '<div style="padding:40px;color:#94a3b8;">🏳️</div>'; };
+                display.appendChild(img);
+            } else {
+                // outline — render Leaflet map
+                display.innerHTML = '<div class="outline-map-wrapper" id="rp-outline-map"></div>';
+                if (_outlineMap) { _outlineMap.remove(); _outlineMap = null; }
+                fetch('/api/geojson/' + q.iso_a3)
+                    .then(function (r) { return r.ok ? r.json() : null; })
+                    .then(function (geojson) {
+                        if (!geojson) { display.innerHTML = '<div style="padding:40px;color:#94a3b8;">🗺️</div>'; return; }
+                        _outlineMap = L.map('rp-outline-map', {
+                            zoomControl: false, attributionControl: false,
+                            dragging: false, scrollWheelZoom: false,
+                            doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false,
+                        });
+                        var layer = L.geoJSON(geojson, {
+                            style: { fillColor: '#1e293b', fillOpacity: 0.8, color: '#0f172a', weight: 2 }
+                        }).addTo(_outlineMap);
+                        _outlineMap.fitBounds(layer.getBounds(), { padding: [20, 20] });
+                    })
+                    .catch(function () { display.innerHTML = '<div style="padding:40px;color:#94a3b8;">🗺️</div>'; });
+            }
+        }
+
+        var input = document.getElementById('rp-quiz-input');
+        if (input) {
+            input.value = '';
+            input.className = '';
+            input.onkeydown = function (e) { if (e.key === 'Enter') RoomPlay.quizCheck(); };
+            input.focus();
+        }
+
+        var fb = document.getElementById('rp-quiz-fb');
+        if (fb) { fb.className = 'quiz-feedback'; fb.textContent = ''; }
     }
 
     // ── Finish game ───────────────────────────────────────────────────────────

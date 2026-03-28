@@ -93,6 +93,20 @@
                 <div class="ordering-feedback" id="rp-ord-fb"></div>
             </div>
 
+            <!-- Quiz game (flags / outline) — same CSS classes as solo quiz games -->
+            <div id="rp-quiz" class="quiz-container" style="display:none">
+                <div class="quiz-prompt" id="rp-quiz-prompt"></div>
+                <div class="quiz-display" id="rp-quiz-display"></div>
+                <div class="quiz-input-area">
+                    <input type="text" id="rp-quiz-input" autocomplete="off"
+                           placeholder="{{ t('room.quiz_placeholder', lang) }}">
+                    <button class="btn-skip" id="rp-quiz-skip-btn" onclick="RoomPlay.quizSkip()">
+                        {{ t('room.quiz_skip', lang) }}
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="rp-quiz-fb"></div>
+            </div>
+
             <!-- Geostats game — shared prompt/feedback classes with solo; bar mechanic kept -->
             <div id="rp-geo" style="display:none">
                 <div class="geostats-header">
@@ -203,6 +217,11 @@ var ROOM_T = {
     diff_hard: {{ t('game.diff_hard', lang) | tojson }},
     diff_very_hard: {{ t('game.diff_very_hard', lang) | tojson }},
     diff_extreme: {{ t('game.diff_extreme', lang) | tojson }},
+    quiz_prompt_flag: {{ t('room.quiz_prompt_flag', lang) | tojson }},
+    quiz_prompt_outline: {{ t('room.quiz_prompt_outline', lang) | tojson }},
+    quiz_correct: {{ t('room.quiz_correct', lang) | tojson }},
+    quiz_wrong: {{ t('room.quiz_wrong', lang) | tojson }},
+    quiz_skipped: {{ t('room.quiz_skipped', lang) | tojson }},
 };
 var CURRENT_LANG = {{ lang | tojson }};
 </script>
