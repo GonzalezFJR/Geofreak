@@ -351,6 +351,15 @@ var GeoGame = {
     /** Register game callbacks: { onStart(settings) } */
     init: function (callbacks) {
         this._callbacks = callbacks || {};
+        // Wire N-selector buttons if present
+        document.querySelectorAll('.n-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.n-btn').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                var nInput = document.getElementById('n-value');
+                if (nInput) nInput.value = btn.getAttribute('data-n');
+            });
+        });
     },
 
     /** Called when user clicks "Comenzar" */
@@ -363,13 +372,24 @@ var GeoGame = {
             difficulty: 'normal',
         };
 
+        // Read N selector
+        var nInput = document.getElementById('n-value');
+        if (nInput && nInput.value) {
+            s.maxItems = parseInt(nInput.value) || s.maxItems;
+        }
+
+        // Calculate time from N × secs_per_item if configured
+        if (defaults.secs_per_item && s.maxItems > 0) {
+            s.timeLimit = s.maxItems * defaults.secs_per_item;
+        }
+
         // Read difficulty selector
         var diffInput = document.getElementById('diff-value');
         if (diffInput) {
             s.difficulty = diffInput.value || 'normal';
         }
 
-        // Read countdown toggle
+        // Read countdown toggle (can disable timer entirely)
         var countdownEl = document.getElementById('countdown-toggle');
         if (countdownEl && !countdownEl.checked) {
             s.timeLimit = 0;
@@ -463,8 +483,7 @@ var GeoGame = {
         document.getElementById('result-pct').textContent = pct + '%';
         document.getElementById('result-time').textContent = m + ':' + (s < 10 ? '0' : '') + s;
 
-        var icon = pct >= 80 ? '🏆' : pct >= 50 ? '👏' : '💪';
-        document.querySelector('.results-icon').textContent = icon;
+        document.querySelector('.results-icon').innerHTML = resultIcon(this.correct, this.total);
 
         // Build enhanced results UI (stars + metrics + share + actions)
         GeoResults.build(this.correct, this.total, elapsedMs);
@@ -596,6 +615,117 @@ function bindTooltipTrigger(el) {
 }
 
 /* ============================================================
+   resultIcon — Animated SVG based on score (0–10 scale)
+   ============================================================ */
+function resultIcon(score, total) {
+    var n = total > 0 ? Math.round((score / total) * 10) : 0;
+    if (n <= 4) {
+        // Rain cloud — gray/blue, swaying cloud + falling drops
+        return '<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">' +
+            '<style>' +
+            '.ri-cld{animation:ri-sway 2.6s ease-in-out infinite;transform-origin:40px 38px}' +
+            '@keyframes ri-sway{0%,100%{transform:rotate(-4deg) translateX(-1px)}50%{transform:rotate(4deg) translateX(1px)}}' +
+            '.ri-r1{animation:ri-drop 1.1s 0s linear infinite}' +
+            '.ri-r2{animation:ri-drop 1.1s .38s linear infinite}' +
+            '.ri-r3{animation:ri-drop 1.1s .76s linear infinite}' +
+            '@keyframes ri-drop{0%{opacity:0;transform:translateY(-6px)}25%{opacity:1}80%{opacity:.8;transform:translateY(10px)}100%{opacity:0;transform:translateY(10px)}}' +
+            '</style>' +
+            '<g class="ri-cld">' +
+            '<ellipse cx="28" cy="40" rx="13" ry="11" fill="#94a3b8"/>' +
+            '<ellipse cx="40" cy="32" rx="15" ry="13" fill="#94a3b8"/>' +
+            '<ellipse cx="52" cy="40" rx="11" ry="9" fill="#94a3b8"/>' +
+            '<rect x="16" y="43" width="42" height="12" rx="6" fill="#94a3b8"/>' +
+            '</g>' +
+            '<g class="ri-r1"><line x1="26" y1="59" x2="23" y2="70" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round"/></g>' +
+            '<g class="ri-r2"><line x1="39" y1="59" x2="36" y2="70" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round"/></g>' +
+            '<g class="ri-r3"><line x1="52" y1="59" x2="49" y2="70" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round"/></g>' +
+            '</svg>';
+    }
+    if (n <= 6) {
+        // Speedometer at ~50% — orange needle swinging
+        return '<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">' +
+            '<style>' +
+            '.ri-ndl{animation:ri-swing 2s ease-in-out infinite;transform-origin:40px 50px}' +
+            '@keyframes ri-swing{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}' +
+            '.ri-arc{animation:ri-pulse 2s ease-in-out infinite}' +
+            '@keyframes ri-pulse{0%,100%{opacity:1}50%{opacity:.6}}' +
+            '</style>' +
+            '<circle cx="40" cy="40" r="31" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>' +
+            '<path d="M12 52 A28 28 0 0 1 68 52" fill="none" stroke="#e2e8f0" stroke-width="7" stroke-linecap="round"/>' +
+            '<path class="ri-arc" d="M12 52 A28 28 0 0 1 40 24" fill="none" stroke="#f97316" stroke-width="7" stroke-linecap="round"/>' +
+            '<circle cx="12" cy="52" r="3" fill="#cbd5e1"/>' +
+            '<circle cx="68" cy="52" r="3" fill="#cbd5e1"/>' +
+            '<circle cx="40" cy="24" r="3" fill="#f97316" opacity=".5"/>' +
+            '<g class="ri-ndl"><line x1="40" y1="50" x2="40" y2="27" stroke="#334155" stroke-width="3.5" stroke-linecap="round"/></g>' +
+            '<circle cx="40" cy="50" r="5" fill="#334155"/>' +
+            '<circle cx="40" cy="50" r="2.5" fill="#94a3b8"/>' +
+            '</svg>';
+    }
+    if (n <= 8) {
+        // Checkmark in circle — green, pop-in then glow pulse
+        return '<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">' +
+            '<style>' +
+            '.ri-ck{animation:ri-pop .55s cubic-bezier(.68,-.55,.27,1.55) both,ri-glow 2.2s .6s ease-in-out infinite}' +
+            '@keyframes ri-pop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}' +
+            '@keyframes ri-glow{0%,100%{filter:drop-shadow(0 0 4px #22c55e55)}50%{filter:drop-shadow(0 0 12px #22c55eaa)}}' +
+            '</style>' +
+            '<g class="ri-ck">' +
+            '<circle cx="40" cy="40" r="29" fill="#dcfce7" stroke="#22c55e" stroke-width="3"/>' +
+            '<polyline points="25,40 36,53 56,26" fill="none" stroke="#22c55e" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+            '</g>' +
+            '</svg>';
+    }
+    if (n === 9) {
+        // Shining star — gold, rotate-scale + ray pulse
+        return '<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">' +
+            '<style>' +
+            '.ri-rays{animation:ri-rpulse 1.6s ease-in-out infinite;transform-origin:40px 40px}' +
+            '@keyframes ri-rpulse{0%,100%{opacity:.45;transform:scale(.9) rotate(0deg)}50%{opacity:1;transform:scale(1.08) rotate(15deg)}}' +
+            '.ri-star{animation:ri-spulse 1.6s ease-in-out infinite;transform-origin:40px 40px}' +
+            '@keyframes ri-spulse{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.06) rotate(-8deg)}}' +
+            '</style>' +
+            '<g class="ri-rays">' +
+            '<line x1="40" y1="5" x2="40" y2="15" stroke="#fcd34d" stroke-width="3" stroke-linecap="round"/>' +
+            '<line x1="40" y1="65" x2="40" y2="75" stroke="#fcd34d" stroke-width="3" stroke-linecap="round"/>' +
+            '<line x1="5" y1="40" x2="15" y2="40" stroke="#fcd34d" stroke-width="3" stroke-linecap="round"/>' +
+            '<line x1="65" y1="40" x2="75" y2="40" stroke="#fcd34d" stroke-width="3" stroke-linecap="round"/>' +
+            '<line x1="13" y1="13" x2="20" y2="20" stroke="#fcd34d" stroke-width="2.5" stroke-linecap="round"/>' +
+            '<line x1="60" y1="60" x2="67" y2="67" stroke="#fcd34d" stroke-width="2.5" stroke-linecap="round"/>' +
+            '<line x1="67" y1="13" x2="60" y2="20" stroke="#fcd34d" stroke-width="2.5" stroke-linecap="round"/>' +
+            '<line x1="20" y1="60" x2="13" y2="67" stroke="#fcd34d" stroke-width="2.5" stroke-linecap="round"/>' +
+            '</g>' +
+            '<g class="ri-star">' +
+            '<polygon points="40,14 47,31 65,33 52,45 56,63 40,54 24,63 28,45 15,33 33,31" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5" stroke-linejoin="round"/>' +
+            '</g>' +
+            '</svg>';
+    }
+    // n === 10: Crown with sparkling gems
+    return '<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">' +
+        '<style>' +
+        '.ri-crown{animation:ri-float 2s ease-in-out infinite;transform-origin:40px 44px}' +
+        '@keyframes ri-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}' +
+        '.ri-sp1{animation:ri-spark 1.8s 0s ease-in-out infinite;transform-origin:16px 22px}' +
+        '.ri-sp2{animation:ri-spark 1.8s .6s ease-in-out infinite;transform-origin:64px 18px}' +
+        '.ri-sp3{animation:ri-spark 1.8s 1.2s ease-in-out infinite;transform-origin:68px 56px}' +
+        '@keyframes ri-spark{0%,100%{opacity:0;transform:scale(0)}35%{opacity:1;transform:scale(1.1)}70%{opacity:1;transform:scale(.9)}85%{opacity:0}}' +
+        '.ri-shine{animation:ri-gshine 2s ease-in-out infinite}' +
+        '@keyframes ri-gshine{0%,100%{filter:drop-shadow(0 0 4px #fbbf24aa)}50%{filter:drop-shadow(0 0 14px #fbbf24ee)}}' +
+        '</style>' +
+        '<g class="ri-sp1"><line x1="16" y1="18" x2="16" y2="26" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/><line x1="12" y1="22" x2="20" y2="22" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/></g>' +
+        '<g class="ri-sp2"><line x1="64" y1="14" x2="64" y2="22" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/><line x1="60" y1="18" x2="68" y2="18" stroke="#a78bfa" stroke-width="2.5" stroke-linecap="round"/></g>' +
+        '<g class="ri-sp3"><line x1="68" y1="52" x2="68" y2="60" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"/><line x1="64" y1="56" x2="72" y2="56" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"/></g>' +
+        '<g class="ri-shine ri-crown">' +
+        '<path d="M18 52 L18 36 L30 47 L40 22 L50 47 L62 36 L62 52 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5" stroke-linejoin="round"/>' +
+        '<rect x="16" y="52" width="48" height="11" rx="3.5" fill="#f59e0b"/>' +
+        '<circle cx="40" cy="57" r="3.5" fill="#ef4444"/>' +
+        '<circle cx="28" cy="57" r="2.8" fill="#3b82f6"/>' +
+        '<circle cx="52" cy="57" r="2.8" fill="#22c55e"/>' +
+        '<circle cx="40" cy="22" r="3" fill="#fef3c7"/>' +
+        '</g>' +
+        '</svg>';
+}
+
+/* ============================================================
    GeoResults — Enhanced results overlay (stars, share, actions)
    Used by ALL games.
    ============================================================ */
@@ -703,7 +833,7 @@ var GeoResults = (function () {
         html += '<a href="/games" class="daily-other-games">' +
             (T['game.others'] || 'Other games') + '</a>';
 
-        // Auth-dependent: register or stats
+        // Auth-dependent: register prompt or quiet stats link
         if (typeof IS_LOGGED_IN !== 'undefined' && !IS_LOGGED_IN) {
             html += '<div class="daily-register-block">' +
                 '<a href="/register" class="btn-daily-register">' +
@@ -712,6 +842,10 @@ var GeoResults = (function () {
                 '<p class="daily-register-hint">' +
                     (T['daily.register_prompt'] || 'Register to save your progress!') +
                 '</p></div>';
+        } else if (typeof IS_LOGGED_IN !== 'undefined' && IS_LOGGED_IN) {
+            html += '<a href="/profile#stats" class="btn-results-stats">' +
+                (T['game.view_stats'] || 'Ver mis estadísticas') +
+                '</a>';
         }
 
         actions.innerHTML = html;

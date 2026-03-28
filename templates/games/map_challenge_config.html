@@ -193,6 +193,8 @@
         mode: 'type',
     };
 
+    var SECS_TYPE  = {{ secs_per_item_type }};
+    var SECS_CLICK = {{ secs_per_item_click }};
     function calcMin(n, factor) { return Math.floor(n * factor / 60) + 1; }
 
     function getN() {
@@ -217,7 +219,7 @@
         if (nEl) nEl.textContent = getEntLabel(n);
         if (tEl) {
             var isType = (state.mode === 'type');
-            tEl.textContent = calcMin(n, isType ? 4 : 6) + ' ' + (isType ? TLABELS.name : TLABELS.locate);
+            tEl.textContent = calcMin(n, isType ? SECS_TYPE : SECS_CLICK) + ' ' + (isType ? TLABELS.name : TLABELS.locate);
         }
     }
 

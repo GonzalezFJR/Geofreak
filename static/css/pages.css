@@ -365,6 +365,44 @@
 .profile-detail:last-child { border-bottom: none; }
 .profile-detail .label { color: var(--gray-400); }
 
+.profile-email-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.profile-unverified-badge {
+    color: #f59e0b;
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+.profile-verify-form { display: inline; margin: 0; }
+.btn-resend-verify {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid #f59e0b;
+    background: #fffbeb;
+    color: #d97706;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, transform 0.15s;
+    padding: 0;
+    flex-shrink: 0;
+}
+.btn-resend-verify:hover {
+    background: #f59e0b;
+    color: #fff;
+    transform: scale(1.1);
+}
+.btn-resend-verify svg {
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+}
+
 /* History table */
 .history-table {
     width: 100%;

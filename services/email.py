@@ -125,6 +125,31 @@ def send_email_change_confirm(to: str, username: str, confirm_url: str, lang: st
     _send(to, subject, _BASE.format(content=content))
 
 
+def send_verify_email(to: str, username: str, confirm_url: str, lang: str = "es"):
+    """Resend the email-address verification link to an existing user."""
+    if lang == "es":
+        subject = "Verifica tu email — GeoFreak"
+        content = f"""
+        <h2 style="color:#1a73e8;margin-top:0;">Hola, {username}</h2>
+        <p style="color:#333;line-height:1.6;">Has solicitado verificar tu email. Haz clic en el botón para confirmar tu dirección:</p>
+        <div style="text-align:center;margin:28px 0;">
+          <a href="{confirm_url}" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:1rem;">Verificar email</a>
+        </div>
+        <p style="color:#888;font-size:.85rem;">El enlace caduca en 24 horas. Si no lo solicitaste, ignora este mensaje.</p>
+        """
+    else:
+        subject = "Verify your email — GeoFreak"
+        content = f"""
+        <h2 style="color:#1a73e8;margin-top:0;">Hi, {username}</h2>
+        <p style="color:#333;line-height:1.6;">You requested to verify your email address. Click the button below to confirm:</p>
+        <div style="text-align:center;margin:28px 0;">
+          <a href="{confirm_url}" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:1rem;">Verify email</a>
+        </div>
+        <p style="color:#888;font-size:.85rem;">This link expires in 24 hours. If you didn't request this, just ignore it.</p>
+        """
+    _send(to, subject, _BASE.format(content=content))
+
+
 def send_contact(name: str, email: str, message: str) -> bool:
     """Send a contact form message to the site admin."""
     import html as _html

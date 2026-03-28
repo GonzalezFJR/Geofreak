@@ -27,7 +27,7 @@ from services.users import (
     get_user_by_username,
     update_user,
 )
-from services.email import send_welcome, send_password_reset, send_email_change_confirm
+from services.email import send_welcome, send_password_reset, send_email_change_confirm, send_verify_email
 from services.analytics import track
 from services.user_stats import ensure_user_stats
 from services.friendships import get_friends
@@ -195,6 +195,33 @@ async def confirm_email(request: Request, token: str = ""):
     # Redirect to profile so the user can see the verified status immediately.
     # If not logged in, get_current_user will redirect them to /login.
     return RedirectResponse("/profile?verified=1", status_code=303)
+
+
+# ── Resend email verification ───────────────────────────────────────────────
+
+@router.post("/profile/resend-verification")
+async def resend_verification(request: Request, user=Depends(get_current_user)):
+    lang = get_lang(request)
+
+    if user.get("email_verified"):
+        return RedirectResponse("/profile", status_code=303)
+
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    resend_date = user.get("email_resend_date", "")
+    resend_count = int(user.get("email_resend_count", 0)) if resend_date == today else 0
+
+    if resend_date == today and resend_count >= 2:
+        return RedirectResponse("/profile?verify_error=limit", status_code=303)
+
+    token = create_email_confirm_token(user["user_id"])
+    url = f"{get_settings().base_url}/confirm-email?token={token}"
+    send_verify_email(user["email"], user["username"], url, lang)
+
+    update_user(user["user_id"], {
+        "email_resend_date": today,
+        "email_resend_count": resend_count + 1,
+    })
+    return RedirectResponse("/profile?verify_sent=1", status_code=303)
 
 
 # ── Password recovery ───────────────────────────────────────────────────────

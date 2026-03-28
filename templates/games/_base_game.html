@@ -41,6 +41,21 @@
             </div>
             {% endif %}
 
+            <!-- N items selector -->
+            {% if game.defaults.n_options %}
+            <div class="game-setting-group">
+                <label class="game-setting-label">{{ t('game.n_items', lang) }}</label>
+                <div class="n-btn-group" id="n-btn-group">
+                    {% for n in game.defaults.n_options %}
+                    <button type="button"
+                            class="n-btn{% if n == game.defaults.max_items %} active{% endif %}"
+                            data-n="{{ n }}">{{ n }}</button>
+                    {% endfor %}
+                </div>
+                <input type="hidden" id="n-value" value="{{ game.defaults.max_items }}">
+            </div>
+            {% endif %}
+
             <!-- Countdown toggle -->
             {% set def_cd = game.defaults.default_countdown|default('auto') %}
             {% if def_cd == 'on' %}
@@ -85,7 +100,7 @@
     <div class="game-results-overlay" id="results-overlay" style="display:none">
         <div class="game-results-card" id="results-card">
             <button class="results-close" id="results-close" onclick="document.getElementById('results-overlay').style.display='none'; GeoReview.activate();" aria-label="Close">&times;</button>
-            <div class="results-icon">🏆</div>
+            <div class="results-icon"></div>
             <h2>{{ t('game.end', lang) }}</h2>
 
             {# ── Enhanced results: stars + compact metrics (filled by JS) ── #}

@@ -177,7 +177,10 @@ var MapGame = (function () {
 
             var N = targetSet.size;
             if (GeoGame.settings.timeLimit > 0) {
-                var factor  = (mode === 'type') ? 4 : 6;
+                var mapDefaults = (window.GAME_CONFIG && window.GAME_CONFIG.defaults) ? window.GAME_CONFIG.defaults : {};
+                var secsType  = mapDefaults.secs_per_item_type  || 4;
+                var secsClick = mapDefaults.secs_per_item_click || 6;
+                var factor  = (mode === 'type') ? secsType : secsClick;
                 var minutes = Math.floor(N * factor / 60) + 1;
                 var secs = minutes * 60;
                 GeoGame.settings.timeLimit = secs;

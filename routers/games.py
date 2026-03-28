@@ -57,9 +57,12 @@ async def map_challenge_config(request: Request, user=Depends(get_optional_user)
     if not game:
         raise HTTPException(status_code=404, detail="Game not found")
     counts = _dataset_service.get_map_game_counts()
+    gd = game.get("defaults", {}) if game else {}
     ctx = {
         "request": request, "game": game, "user": user, "lang": lang,
         "map_game_counts_json": json.dumps(counts, ensure_ascii=False),
+        "secs_per_item_type":  gd.get("secs_per_item_type", 4),
+        "secs_per_item_click": gd.get("secs_per_item_click", 6),
     }
     return templates.TemplateResponse("games/map_challenge_config.html", ctx)
 

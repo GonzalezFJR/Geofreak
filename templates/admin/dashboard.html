@@ -69,7 +69,25 @@
             {% if game.type in ['quiz', 'solo'] %}
             <div>
                 <label>{{ t('adm.def_q', lang) }}</label>
-                <input type="number" name="max_items" value="{{ game.defaults.max_items|default(10) }}" min="1" max="250">
+                <input type="number" name="max_items" value="{{ game.defaults.max_items|default(20) }}" min="1" max="250">
+            </div>
+            <div>
+                <label>{{ t('adm.def_n_options', lang) }}</label>
+                <input type="text" name="n_options" value="{{ game.defaults.n_options|default([])|join(',') }}" placeholder="10,20,30,50">
+            </div>
+            <div>
+                <label>{{ t('adm.def_secs_per_item', lang) }}</label>
+                <input type="number" name="secs_per_item" value="{{ game.defaults.secs_per_item|default(20) }}" min="1" max="300">
+            </div>
+            {% endif %}
+            {% if game.type == 'map' %}
+            <div>
+                <label>{{ t('adm.def_secs_type', lang) }}</label>
+                <input type="number" name="secs_per_item_type" value="{{ game.defaults.secs_per_item_type|default(4) }}" min="1" max="60">
+            </div>
+            <div>
+                <label>{{ t('adm.def_secs_click', lang) }}</label>
+                <input type="number" name="secs_per_item_click" value="{{ game.defaults.secs_per_item_click|default(6) }}" min="1" max="60">
             </div>
             {% endif %}
             {% if game.type == 'solo' and game.has_difficulty|default(true) %}

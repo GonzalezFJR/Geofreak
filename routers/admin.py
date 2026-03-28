@@ -102,7 +102,27 @@ async def update_game(request: Request, game_id: str):
         except (ValueError, TypeError):
             pass
     if form.get("max_items"):
-        defaults["max_items"] = int(form.get("max_items", 10))
+        defaults["max_items"] = int(form.get("max_items", 20))
+    if form.get("n_options"):
+        try:
+            defaults["n_options"] = [int(x.strip()) for x in str(form.get("n_options")).split(",") if x.strip().isdigit()]
+        except (ValueError, TypeError):
+            pass
+    if form.get("secs_per_item"):
+        try:
+            defaults["secs_per_item"] = max(1, int(form.get("secs_per_item")))
+        except (ValueError, TypeError):
+            pass
+    if form.get("secs_per_item_type"):
+        try:
+            defaults["secs_per_item_type"] = max(1, int(form.get("secs_per_item_type")))
+        except (ValueError, TypeError):
+            pass
+    if form.get("secs_per_item_click"):
+        try:
+            defaults["secs_per_item_click"] = max(1, int(form.get("secs_per_item_click")))
+        except (ValueError, TypeError):
+            pass
     if form.get("default_difficulty"):
         val = form.get("default_difficulty", "normal")
         if val in ("easy", "normal", "hard", "very_hard", "extreme"):

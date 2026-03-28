@@ -83,8 +83,10 @@
     <script>window.LANG='{{ lang|default("es") }}';window.T={{ t_js(lang|default("es")) | safe }};</script>
     <script>
     (function(){var btn=document.getElementById('nav-hamburger'),links=document.getElementById('nav-links');
-    if(btn)btn.addEventListener('click',function(){links.classList.toggle('open');btn.classList.toggle('open');});
-    if(links)links.addEventListener('click',function(e){if(e.target===links){links.classList.remove('open');btn.classList.remove('open');}});
+    function closeMenu(){if(links)links.classList.remove('open');if(btn)btn.classList.remove('open');}
+    if(btn)btn.addEventListener('click',function(e){e.stopPropagation();links.classList.toggle('open');btn.classList.toggle('open');});
+    if(links)links.querySelectorAll('.nav-link').forEach(function(a){a.addEventListener('click',closeMenu);});
+    document.addEventListener('click',function(e){if(links&&links.classList.contains('open')&&!links.contains(e.target)&&e.target!==btn){closeMenu();}});
     // Language dropdown (may exist on landing page)
     var lb=document.getElementById('nav-lang-btn'),ld=document.getElementById('lang-dropdown');
     if(lb)lb.addEventListener('click',function(e){e.stopPropagation();ld.classList.toggle('open');});
