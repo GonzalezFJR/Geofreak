@@ -16,14 +16,56 @@
         return id;
     }
 
-    // ── Dataset selector: hide continent when non-countries ───────────────────
-    var _datasetSel = document.getElementById('create-dataset');
-    if (_datasetSel) {
-        _datasetSel.addEventListener('change', function () {
-            var row = document.getElementById('create-continent-row');
-            if (row) row.style.display = this.value === 'countries' ? '' : 'none';
-        });
+    // ── Lobby customization panel ─────────────────────────────────────────────
+    var _lobbyCustomState = { dataset: 'countries', continent: 'all' };
+
+    function _syncLobbyHidden() {
+        var dsEl = document.getElementById('create-dataset');
+        var ctEl = document.getElementById('create-continent');
+        if (dsEl) dsEl.value = _lobbyCustomState.dataset;
+        if (ctEl) ctEl.value = _lobbyCustomState.dataset === 'countries' ? _lobbyCustomState.continent : 'all';
     }
+
+    // Type tabs
+    document.querySelectorAll('#lobby-type-tabs .gcust-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            var type = tab.getAttribute('data-type');
+            _lobbyCustomState.dataset = type === 'regions'
+                ? (document.querySelector('#lobby-region-cards .mcfg-region-card.active') || {}).getAttribute('data-value') || 'us-states'
+                : 'countries';
+            document.querySelectorAll('#lobby-type-tabs .gcust-tab').forEach(function (t) {
+                t.classList.toggle('active', t.getAttribute('data-type') === type);
+            });
+            var optsC = document.getElementById('lobby-countries-opts');
+            var optsR = document.getElementById('lobby-regions-opts');
+            if (optsC) optsC.style.display = type === 'countries' ? '' : 'none';
+            if (optsR) optsR.style.display = type === 'regions' ? '' : 'none';
+            _syncLobbyHidden();
+        });
+    });
+
+    // Continent pills
+    document.querySelectorAll('#lobby-continent-pills .mcfg-pill').forEach(function (pill) {
+        pill.addEventListener('click', function () {
+            _lobbyCustomState.continent = pill.getAttribute('data-value');
+            document.querySelectorAll('#lobby-continent-pills .mcfg-pill').forEach(function (p) {
+                p.classList.toggle('active', p.getAttribute('data-value') === _lobbyCustomState.continent);
+            });
+            _syncLobbyHidden();
+        });
+    });
+
+    // Region cards
+    document.querySelectorAll('#lobby-region-cards .mcfg-region-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+            var val = card.getAttribute('data-value');
+            _lobbyCustomState.dataset = val;
+            document.querySelectorAll('#lobby-region-cards .mcfg-region-card').forEach(function (c) {
+                c.classList.toggle('active', c.getAttribute('data-value') === val);
+            });
+            _syncLobbyHidden();
+        });
+    });
 
     // ── N-items buttons ────────────────────────────────────────────────────────
     document.querySelectorAll('#create-n-btns .room-n-btn').forEach(function (btn) {
@@ -162,6 +204,15 @@
                     btn.disabled = false;
                     showError('join-error', ROOM_T.err_generic);
                 });
+        },
+
+        toggleCustom: function () {
+            var panel = document.getElementById('lobby-cust-panel');
+            var btn = document.getElementById('lobby-gear-btn');
+            if (!panel) return;
+            var open = panel.style.display !== 'none' && panel.style.display !== '';
+            panel.style.display = open ? 'none' : '';
+            if (btn) btn.classList.toggle('active', !open);
         },
 
         switchTab: function (tab) {

@@ -1,6 +1,6 @@
 /* ============================================================
    GeoFreak — Game Customization Module
-   Manages dataset/filter selection for GeoGames and Outline.
+   Inline expandable panel for GeoGames and Outline quiz.
    Exposes window.GeoCustomize.
    ============================================================ */
 var GeoCustomize = (function () {
@@ -26,121 +26,102 @@ var GeoCustomize = (function () {
                  continent: state.continent, entityType: state.entityType };
     }
 
-    /** Returns the effective dataset string for API ?dataset= param. */
     function getApiDataset() {
         return state.dataset === 'countries' ? 'countries' : state.subDataset;
     }
 
-    /** Build the extra query string fragment for quiz API calls. */
     function buildApiParams() {
         var ds = getApiDataset();
         var p = '&dataset=' + encodeURIComponent(ds);
         if (ds === 'countries') {
-            if (state.continent && state.continent !== 'all') {
+            if (state.continent && state.continent !== 'all')
                 p += '&continent=' + encodeURIComponent(state.continent);
-            }
-            if (state.entityType && state.entityType !== 'all') {
+            if (state.entityType && state.entityType !== 'all')
                 p += '&entity_type=' + encodeURIComponent(state.entityType);
-            }
         }
         return p;
     }
 
-    function isSubnational() {
-        return state.dataset === 'regions';
+    function isSubnational() { return state.dataset === 'regions'; }
+
+    /* ── Panel toggle ──────────────────────────────────────── */
+
+    function togglePanel() {
+        var panel = document.getElementById('gcust-panel');
+        if (!panel) return;
+        var open = panel.style.display !== 'none' && panel.style.display !== '';
+        panel.style.display = open ? 'none' : '';
+        var gearBtn = document.getElementById('gcust-gear-btn');
+        if (gearBtn) gearBtn.classList.toggle('active', !open);
     }
 
-    /* ── Modal control ─────────────────────────────────────── */
+    /* ── Deprecated aliases (kept for backward compat) ─────── */
+    function openModal()  { togglePanel(); }
+    function closeModal() { togglePanel(); }
 
-    function openModal() {
-        var modal = document.getElementById('customize-modal');
-        if (!modal) return;
-        _syncModalToState();
-        modal.style.display = 'flex';
+    /* ── Sync UI to state ──────────────────────────────────── */
+
+    function _syncTypeTabs() {
+        var tabs = document.querySelectorAll('#gcust-type-tabs .gcust-tab');
+        tabs.forEach(function (t) {
+            t.classList.toggle('active', t.getAttribute('data-type') === state.dataset);
+        });
+        var optsC = document.getElementById('gcust-countries-opts');
+        var optsR = document.getElementById('gcust-regions-opts');
+        if (optsC) optsC.style.display = state.dataset === 'countries' ? '' : 'none';
+        if (optsR) optsR.style.display = state.dataset === 'regions'   ? '' : 'none';
     }
 
-    function closeModal() {
-        var modal = document.getElementById('customize-modal');
-        if (modal) modal.style.display = 'none';
+    function _syncContinentPills() {
+        document.querySelectorAll('#gcust-continent-pills .mcfg-pill').forEach(function (p) {
+            p.classList.toggle('active', p.getAttribute('data-value') === state.continent);
+        });
     }
 
-    function applyAndClose() {
-        _readModalToState();
-        closeModal();
-    }
-
-    /* ── Sync helpers ──────────────────────────────────────── */
-
-    function _syncModalToState() {
-        var radC = document.getElementById('cust-radio-countries');
-        var radR = document.getElementById('cust-radio-regions');
-        if (!radC) return;
-        var isCountries = state.dataset === 'countries';
-        radC.checked = isCountries;
-        radR.checked = !isCountries;
-        _toggleSubPanels(isCountries);
-
-        var selContinent = document.getElementById('cust-continent');
-        if (selContinent) selContinent.value = state.continent;
-
-        var selEntityType = document.getElementById('cust-entity-type');
-        if (selEntityType) selEntityType.value = state.entityType;
-
-        var selSub = document.getElementById('cust-sub-dataset');
-        if (selSub) selSub.value = state.subDataset;
-    }
-
-    function _readModalToState() {
-        var radC = document.getElementById('cust-radio-countries');
-        if (!radC) return;
-        var isCountries = radC.checked;
-        state.dataset = isCountries ? 'countries' : 'regions';
-
-        var selContinent = document.getElementById('cust-continent');
-        if (selContinent) state.continent = selContinent.value || 'all';
-
-        var selEntityType = document.getElementById('cust-entity-type');
-        if (selEntityType) state.entityType = selEntityType.value || 'all';
-
-        var selSub = document.getElementById('cust-sub-dataset');
-        if (selSub) state.subDataset = selSub.value || 'us-states';
-    }
-
-    function _toggleSubPanels(isCountries) {
-        var panelC = document.getElementById('cust-countries-options');
-        var panelR = document.getElementById('cust-regions-options');
-        if (panelC) panelC.style.display = isCountries ? '' : 'none';
-        if (panelR) panelR.style.display = isCountries ? 'none' : '';
+    function _syncRegionCards() {
+        document.querySelectorAll('#gcust-region-cards .mcfg-region-card').forEach(function (c) {
+            c.classList.toggle('active', c.getAttribute('data-value') === state.subDataset);
+        });
     }
 
     /* ── Init ──────────────────────────────────────────────── */
 
     function init() {
-        var modal = document.getElementById('customize-modal');
-        if (!modal) return;
-
-        // Backdrop click to close
-        modal.addEventListener('click', function (e) {
-            if (e.target === modal) closeModal();
+        // Type tabs
+        document.querySelectorAll('#gcust-type-tabs .gcust-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                state.dataset = tab.getAttribute('data-type');
+                _syncTypeTabs();
+            });
         });
 
-        // Radio buttons
-        var radC = document.getElementById('cust-radio-countries');
-        var radR = document.getElementById('cust-radio-regions');
-        if (radC) radC.addEventListener('change', function () { _toggleSubPanels(true); });
-        if (radR) radR.addEventListener('change', function () { _toggleSubPanels(false); });
+        // Continent pills
+        document.querySelectorAll('#gcust-continent-pills .mcfg-pill').forEach(function (pill) {
+            pill.addEventListener('click', function () {
+                state.continent = pill.getAttribute('data-value');
+                _syncContinentPills();
+            });
+        });
+
+        // Region cards
+        document.querySelectorAll('#gcust-region-cards .mcfg-region-card').forEach(function (card) {
+            card.addEventListener('click', function () {
+                state.subDataset = card.getAttribute('data-value');
+                _syncRegionCards();
+            });
+        });
     }
 
     /* ── Public API ────────────────────────────────────────── */
     return {
-        getState:      getState,
-        getApiDataset: getApiDataset,
-        buildApiParams: buildApiParams,
-        isSubnational: isSubnational,
-        openModal:     openModal,
-        closeModal:    closeModal,
-        applyAndClose: applyAndClose,
-        init:          init,
+        getState:        getState,
+        getApiDataset:   getApiDataset,
+        buildApiParams:  buildApiParams,
+        isSubnational:   isSubnational,
+        togglePanel:     togglePanel,
+        openModal:       openModal,
+        closeModal:      closeModal,
+        init:            init,
         REGION_DATASETS: REGION_DATASETS,
     };
 }());

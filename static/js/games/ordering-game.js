@@ -14,9 +14,37 @@ var OrderingGame = (function () {
     }
     init();
 
+    function _dailyTodayKey() {
+        var d = new Date();
+        var m = d.getUTCMonth() + 1;
+        var day = d.getUTCDate();
+        return 'gf_daily_' + d.getUTCFullYear() + '-' + (m < 10 ? '0' + m : m) + '-' + (day < 10 ? '0' + day : day);
+    }
+    function _getDailyCache() {
+        var r = null;
+        try { r = JSON.parse(localStorage.getItem(_dailyTodayKey())); } catch (e) {}
+        if (!r || typeof r.score === 'undefined') {
+            try {
+                var cm = document.cookie.match(/(?:^|;)\s*gf_daily=([^;]*)/);
+                if (cm) r = JSON.parse(decodeURIComponent(cm[1]));
+            } catch (e) {}
+        }
+        return (r && typeof r.score !== 'undefined') ? r : null;
+    }
+    function _setDailyCache(score, total, timeMs) {
+        var data = JSON.stringify({ score: score, total: total, time_ms: timeMs });
+        try { localStorage.setItem(_dailyTodayKey(), data); } catch (e) {}
+        try {
+            var exp = new Date(); exp.setDate(exp.getDate() + 2);
+            document.cookie = 'gf_daily=' + encodeURIComponent(data) + '; expires=' + exp.toUTCString() + '; path=/; SameSite=Lax';
+        } catch (e) {}
+    }
+
     function loadData(settings) {
         var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
         if (isDaily) {
+            var cached = _getDailyCache();
+            if (cached) { showAlreadyPlayed(cached); return; }
             fetch('/api/daily-challenge')
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
@@ -352,6 +380,7 @@ var OrderingGame = (function () {
                 avg_score: Math.round(avgScore * 10) / 10
             }
         };
+        if (isDaily) { _setDailyCache(GeoGame.correct, GeoGame.total, elapsed); }
         fetch('/api/matches/result', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -11,7 +11,7 @@
     <div class="game-settings-overlay" id="settings-overlay">
         <div class="game-settings-card">
             {% if not game.daily %}
-            <button class="gear-btn" onclick="GeoCustomize.openModal()"
+            <button class="gear-btn" id="gcust-gear-btn" onclick="GeoCustomize.togglePanel()"
                     title="{{ t('cust.title', lang) }}" aria-label="{{ t('cust.title', lang) }}">⚙</button>
             {% endif %}
             <div class="game-settings-icon">
@@ -80,6 +80,10 @@
             </div>
             {% endif %}{# not game.daily #}
 
+            {% if not game.daily %}
+            {% include "games/_customize_panel.html" %}
+            {% endif %}
+
             <button class="btn btn-primary game-start-btn" onclick="GeoGame.start()">
                 {{ t('game.start', lang) }}
             </button>
@@ -143,7 +147,6 @@
         </div>
     </div>
 
-    {% include "games/_customize_panel.html" %}
 </div>
 {% endblock %}
 
