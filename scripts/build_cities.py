@@ -429,14 +429,14 @@ def fetch_elevations(
         return {}
 
     results: dict[int, float] = {}
-    rows = needs[["geonameid", "latitude", "longitude"]].to_dict("records")
+    rows = needs[["geonameid", "lat", "lon"]].to_dict("records")
     BATCH = 100
     print(f"    Fetching elevations for {len(rows):,} cities…")
 
     for i in range(0, len(rows), BATCH):
         batch = rows[i : i + BATCH]
-        lats = ",".join(str(r["latitude"]) for r in batch)
-        lons = ",".join(str(r["longitude"]) for r in batch)
+        lats = ",".join(str(r["lat"]) for r in batch)
+        lons = ",".join(str(r["lon"]) for r in batch)
         try:
             resp = requests.get(
                 "https://api.open-meteo.com/v1/elevation",
@@ -565,7 +565,7 @@ def fetch_climate_normals(
         print(f"    ✓ Climate cache: {len(cached):,} entries")
         return {int(k): v for k, v in cached.items()}
 
-    rows = cities_df[["geonameid", "latitude", "longitude"]].to_dict("records")
+    rows = cities_df[["geonameid", "lat", "lon"]].to_dict("records")
     print(f"    Fetching climate normals for {len(rows):,} cities "
           f"({CLIMATE_WORKERS} workers)…")
 
@@ -576,7 +576,7 @@ def fetch_climate_normals(
     with ThreadPoolExecutor(max_workers=CLIMATE_WORKERS) as pool:
         futures = {
             pool.submit(_fetch_climate_one, r["geonameid"],
-                        r["latitude"], r["longitude"]): r["geonameid"]
+                        r["lat"], r["lon"]): r["geonameid"]
             for r in rows
         }
         for fut in as_completed(futures):
@@ -970,8 +970,8 @@ def update_countries_csv(cities_df: pd.DataFrame, countries_df: pd.DataFrame) ->
             cities_list.append({
                 "name":       row["name"],
                 "population": int(row["population"]),
-                "lat":        round(float(row["latitude"]), 4),
-                "lon":        round(float(row["longitude"]), 4),
+                "lat":        round(float(row["lat"]), 4),
+                "lon":        round(float(row["lon"]), 4),
                 "is_capital": row["is_capital"] in ("national", "admin1"),
             })
         top_cities_map[iso3] = json.dumps(cities_list, ensure_ascii=False)

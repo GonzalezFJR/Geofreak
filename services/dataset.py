@@ -390,6 +390,11 @@ class DatasetService:
 
     def get_dataset_df(self, dataset_id: str) -> pd.DataFrame:
         """Return the full DataFrame for any dataset by ID."""
+        if dataset_id == "cities":
+            df = self._load_cities().copy()
+            if not df.empty and "geonameid" in df.columns:
+                df["code"] = df["geonameid"].astype(str)
+            return df
         loaders: dict[str, Any] = {
             "countries":       self._load_countries,
             "us-states":       self._load_us,

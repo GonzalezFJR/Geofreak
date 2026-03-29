@@ -81,7 +81,9 @@ class CreateRoomPayload(BaseModel):
     n_items: int = 10
     difficulty: str = "normal"
     countdown: bool = True
+    dataset: str = "countries"
     continent: str = "all"
+    country_filter: str = ""
     guest_id: Optional[str] = None
     guest_name: Optional[str] = None
 
@@ -91,12 +93,15 @@ async def api_create_room(
     payload: CreateRoomPayload,
     user: Optional[dict] = Depends(get_optional_user),
 ):
+    _ALLOWED_DATASETS = {"countries", "cities", "us-states", "spain-provinces", "russia-regions", "france-regions", "italy-regions", "germany-states"}
     if payload.game_id not in _ALLOWED_GAMES:
         raise HTTPException(status_code=400, detail="invalid_game")
     if not 3 <= payload.n_items <= 50:
         raise HTTPException(status_code=400, detail="n_items must be 3-50")
     if payload.game_id not in _QUIZ_GAMES and payload.difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
         raise HTTPException(status_code=400, detail="invalid_difficulty")
+    if payload.dataset not in _ALLOWED_DATASETS:
+        raise HTTPException(status_code=400, detail="invalid_dataset")
 
     if user:
         player_id = user["user_id"]
@@ -115,7 +120,9 @@ async def api_create_room(
         "n_items": payload.n_items,
         "difficulty": payload.difficulty,
         "countdown": payload.countdown,
+        "dataset": payload.dataset,
         "continent": payload.continent,
+        "country_filter": payload.country_filter,
     }
     room = create_room(
         game_id=payload.game_id,
@@ -189,14 +196,16 @@ async def api_start_room(
     cfg = room.get("config", {})
     n = int(cfg.get("n_items", 10))
     difficulty = cfg.get("difficulty", "normal")
+    dataset = cfg.get("dataset", "countries")
     continent = cfg.get("continent") if cfg.get("continent") != "all" else None
+    country_filter = cfg.get("country_filter") or None
 
     if game_id == "ordering":
-        questions = generate_ordering_set(num_questions=n, continent=continent, difficulty=difficulty)
+        questions = generate_ordering_set(num_questions=n, continent=continent, difficulty=difficulty, dataset=dataset, country_filter=country_filter)
     elif game_id == "comparison":
-        questions = generate_comparison_set(num_questions=n, continent=continent, difficulty=difficulty)
+        questions = generate_comparison_set(num_questions=n, continent=continent, difficulty=difficulty, dataset=dataset, country_filter=country_filter)
     elif game_id == "geostats":
-        result = generate_geostats_set(num_questions=n, continent=continent)
+        result = generate_geostats_set(num_questions=n, continent=continent, dataset=dataset, country_filter=country_filter)
         countries_lookup = result.get("countries_lookup", {})
         # Embed countries_lookup into each question so clients can render names
         questions = []

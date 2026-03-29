@@ -17,34 +17,71 @@
     }
 
     // ── Lobby customization panel ─────────────────────────────────────────────
-    var _lobbyCustomState = { dataset: 'countries', continent: 'all' };
+    var _lobbyCustomState = { dataset: 'countries', continent: 'all', country_filter: '' };
 
     function _syncLobbyHidden() {
         var dsEl = document.getElementById('create-dataset');
         var ctEl = document.getElementById('create-continent');
+        var cfEl = document.getElementById('create-country-filter');
         if (dsEl) dsEl.value = _lobbyCustomState.dataset;
-        if (ctEl) ctEl.value = _lobbyCustomState.dataset === 'countries' ? _lobbyCustomState.continent : 'all';
+        if (ctEl) ctEl.value = _lobbyCustomState.continent;
+        if (cfEl) cfEl.value = _lobbyCustomState.country_filter;
+    }
+
+    // Populate cities country select (lazy — once)
+    var _countriesLoaded = false;
+    function _loadCountriesSelect() {
+        if (_countriesLoaded) return;
+        _countriesLoaded = true;
+        fetch('/api/countries')
+            .then(function (r) { return r.json(); })
+            .then(function (list) {
+                var sel = document.getElementById('lobby-cities-country');
+                if (!sel) return;
+                list.sort(function (a, b) { return (a.name || '').localeCompare(b.name || ''); });
+                list.forEach(function (c) {
+                    var opt = document.createElement('option');
+                    opt.value = c.iso_a3;
+                    opt.textContent = (c.flag_emoji ? c.flag_emoji + ' ' : '') + (c.name || c.iso_a3);
+                    sel.appendChild(opt);
+                });
+            })
+            .catch(function () {});
     }
 
     // Type tabs
     document.querySelectorAll('#lobby-type-tabs .gcust-tab').forEach(function (tab) {
         tab.addEventListener('click', function () {
             var type = tab.getAttribute('data-type');
-            _lobbyCustomState.dataset = type === 'regions'
-                ? (document.querySelector('#lobby-region-cards .mcfg-region-card.active') || {}).getAttribute('data-value') || 'us-states'
-                : 'countries';
+            if (type === 'regions') {
+                _lobbyCustomState.dataset = (document.querySelector('#lobby-region-cards .mcfg-region-card.active') || {}).getAttribute('data-value') || 'us-states';
+            } else if (type === 'cities') {
+                _lobbyCustomState.dataset = 'cities';
+                _loadCountriesSelect();
+            } else {
+                _lobbyCustomState.dataset = 'countries';
+            }
+            _lobbyCustomState.continent = 'all';
+            _lobbyCustomState.country_filter = '';
             document.querySelectorAll('#lobby-type-tabs .gcust-tab').forEach(function (t) {
                 t.classList.toggle('active', t.getAttribute('data-type') === type);
             });
-            var optsC = document.getElementById('lobby-countries-opts');
-            var optsR = document.getElementById('lobby-regions-opts');
-            if (optsC) optsC.style.display = type === 'countries' ? '' : 'none';
-            if (optsR) optsR.style.display = type === 'regions' ? '' : 'none';
+            document.getElementById('lobby-countries-opts').style.display = type === 'countries' ? '' : 'none';
+            document.getElementById('lobby-cities-opts').style.display    = type === 'cities'    ? '' : 'none';
+            document.getElementById('lobby-regions-opts').style.display   = type === 'regions'   ? '' : 'none';
+            // Reset pills
+            ['#lobby-continent-pills .mcfg-pill', '#lobby-cities-continent-pills .mcfg-pill'].forEach(function (sel) {
+                document.querySelectorAll(sel).forEach(function (p) {
+                    p.classList.toggle('active', p.getAttribute('data-value') === 'all');
+                });
+            });
+            var citiesSel = document.getElementById('lobby-cities-country');
+            if (citiesSel) citiesSel.value = '';
             _syncLobbyHidden();
         });
     });
 
-    // Continent pills
+    // Countries continent pills
     document.querySelectorAll('#lobby-continent-pills .mcfg-pill').forEach(function (pill) {
         pill.addEventListener('click', function () {
             _lobbyCustomState.continent = pill.getAttribute('data-value');
@@ -54,6 +91,37 @@
             _syncLobbyHidden();
         });
     });
+
+    // Cities continent pills
+    document.querySelectorAll('#lobby-cities-continent-pills .mcfg-pill').forEach(function (pill) {
+        pill.addEventListener('click', function () {
+            _lobbyCustomState.continent = pill.getAttribute('data-value');
+            document.querySelectorAll('#lobby-cities-continent-pills .mcfg-pill').forEach(function (p) {
+                p.classList.toggle('active', p.getAttribute('data-value') === _lobbyCustomState.continent);
+            });
+            // Clear country filter when continent selected
+            _lobbyCustomState.country_filter = '';
+            var citiesSel = document.getElementById('lobby-cities-country');
+            if (citiesSel) citiesSel.value = '';
+            _syncLobbyHidden();
+        });
+    });
+
+    // Cities country select
+    var citiesCountrySel = document.getElementById('lobby-cities-country');
+    if (citiesCountrySel) {
+        citiesCountrySel.addEventListener('change', function () {
+            _lobbyCustomState.country_filter = citiesCountrySel.value;
+            // When a specific country is chosen, reset continent filter
+            if (citiesCountrySel.value) {
+                _lobbyCustomState.continent = 'all';
+                document.querySelectorAll('#lobby-cities-continent-pills .mcfg-pill').forEach(function (p) {
+                    p.classList.toggle('active', p.getAttribute('data-value') === 'all');
+                });
+            }
+            _syncLobbyHidden();
+        });
+    }
 
     // Region cards
     document.querySelectorAll('#lobby-region-cards .mcfg-region-card').forEach(function (card) {
@@ -102,13 +170,15 @@
             var difficulty = document.getElementById('create-difficulty').value;
             var dataset = (document.getElementById('create-dataset') || {}).value || 'countries';
             var continent = (document.getElementById('create-continent') || {}).value || 'all';
+            var countryFilter = (document.getElementById('create-country-filter') || {}).value || '';
             var body = {
                 game_id: ROOM_GAME_ID,
                 n_items: nItems,
                 difficulty: difficulty,
                 countdown: true,
                 dataset: dataset,
-                continent: dataset === 'countries' ? continent : 'all',
+                continent: continent,
+                country_filter: countryFilter,
             };
             if (!ROOM_IS_LOGGED) {
                 var name = (document.getElementById('create-guest-name') || {}).value || '';

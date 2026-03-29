@@ -439,9 +439,11 @@
                 div.className = 'comparison-card';
                 div.setAttribute('data-iso', c.iso_a3);
                 var cName = c['name_' + lang] || c.name;
+                var subtitle = c.country_name ? '<div class="comparison-country">' + esc(c.flag_emoji || '') + ' ' + esc(c.country_name) + '</div>' : '';
                 div.innerHTML =
-                    '<div class="comparison-flag">' + (c.flag_emoji || '') + '</div>' +
+                    '<div class="comparison-flag">' + (c.country_name ? '' : (c.flag_emoji || '')) + '</div>' +
                     '<div class="comparison-name">' + esc(cName) + '</div>' +
+                    subtitle +
                     '<div class="comparison-value" id="rp-val-' + c.iso_a3 + '" style="display:none"></div>';
                 div.addEventListener('click', function () { handleCmpClick(q, c.iso_a3); });
                 cardsEl.appendChild(div);
@@ -504,11 +506,18 @@
                 el.setAttribute('draggable', 'true');
                 el.setAttribute('data-iso', c.iso_a3);
                 var cName = c['name_' + lang] || c.name;
+                var flagSpan = c.country_name
+                    ? '<span class="ordering-flag">' + (c.flag_emoji || '') + '</span>'
+                    : '<span class="ordering-flag">' + (c.flag_emoji || '') + '</span>';
+                var countrySpan = c.country_name
+                    ? '<span class="ordering-country">' + esc(c.country_name) + '</span>'
+                    : '';
                 el.innerHTML =
                     '<span class="ordering-rank">' + (i + 1) + '</span>' +
                     '<span class="ordering-handle">☰</span>' +
-                    '<span class="ordering-flag">' + (c.flag_emoji || '') + '</span>' +
-                    '<span class="ordering-name">' + esc(cName) + '</span>';
+                    flagSpan +
+                    '<span class="ordering-name">' + esc(cName) + '</span>' +
+                    countrySpan;
                 el.addEventListener('dragstart', ordDragStart);
                 el.addEventListener('dragover', ordDragOver);
                 el.addEventListener('drop', ordDrop);
@@ -613,12 +622,14 @@
         var cData = countries_lookup[target] || {};
         var cName = cData['name_' + lang] || cData.name || target;
         var cFlag = cData.flag_emoji || '';
+        var cCountry = cData.country_name || '';
 
         var promptEl = document.getElementById('rp-geo-prompt');
         if (promptEl) promptEl.innerHTML = ROOM_T.geo_prompt.replace('{stat}', '<em>' + esc(statLabel) + '</em>');
 
         var targetEl = document.getElementById('rp-geo-target');
-        if (targetEl) targetEl.innerHTML = '<span class="rp-geo-flag">' + cFlag + '</span> <span class="rp-geo-cname">' + esc(cName) + '</span>';
+        var countryHtml = cCountry ? ' <span class="rp-geo-country">(' + esc(cFlag) + ' ' + esc(cCountry) + ')</span>' : '';
+        if (targetEl) targetEl.innerHTML = '<span class="rp-geo-flag">' + (cCountry ? '' : cFlag) + '</span> <span class="rp-geo-cname">' + esc(cName) + '</span>' + countryHtml;
 
         // Min/max labels
         var curve = q.curve || [];

@@ -118,6 +118,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.advanced": "Opciones avanzadas",
         "cust.regions": "Regiones",
         "cust.region_set": "Conjunto de regiones",
+        "cust.cities": "Ciudades",
+        "cust.fil_country": "País",
 
         # Dashboard
         "dash.title": "🎮 Juegos GeoFreak",
@@ -784,6 +786,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.advanced": "Advanced options",
         "cust.regions": "Regions",
         "cust.region_set": "Region set",
+        "cust.cities": "Cities",
+        "cust.fil_country": "Country",
 
         # Dashboard
         "dash.title": "🎮 GeoFreak Games",
@@ -1419,6 +1423,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.advanced": "Options avancées",
         "cust.regions": "Régions",
         "cust.region_set": "Ensemble de régions",
+        "cust.cities": "Villes",
+        "cust.fil_country": "Pays",
 
         # Dashboard
         "dash.title": "🎮 Jeux GeoFreak",
@@ -2043,6 +2049,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.advanced": "Opzioni avanzate",
         "cust.regions": "Regioni",
         "cust.region_set": "Insieme di regioni",
+        "cust.cities": "Città",
+        "cust.fil_country": "Paese",
 
         # Dashboard
         "dash.title": "🎮 Giochi GeoFreak",
@@ -2668,6 +2676,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.advanced": "Доп. настройки",
         "cust.regions": "Регионы",
         "cust.region_set": "Набор регионов",
+        "cust.cities": "Города",
+        "cust.fil_country": "Страна",
 
         # Dashboard
         "dash.title": "🎮 GeoFreak Игры",
