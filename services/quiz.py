@@ -160,7 +160,9 @@ def _get_valid_cities(
 
     # Country filter
     if country_filter and country_filter != "all":
-        df = df[df["iso_a3"] == country_filter.upper()]
+        # Support comma-separated list (OR logic) or single iso_a3
+        iso_set = {c.strip().upper() for c in country_filter.split(",") if c.strip()}
+        df = df[df["iso_a3"].isin(iso_set)]
 
     df = df[df[stat].notna() & (df[stat] != "")]
 

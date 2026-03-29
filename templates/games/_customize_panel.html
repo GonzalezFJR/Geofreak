@@ -7,6 +7,9 @@
         <button class="gcust-tab active" data-type="countries">
             🌍 {{ t('mg.dataset_countries', lang) }}
         </button>
+        <button class="gcust-tab" data-type="cities">
+            🏙️ {{ t('cust.cities', lang) }}
+        </button>
         <button class="gcust-tab" data-type="regions">
             🗺️ {{ t('cust.regions', lang) }}
         </button>
@@ -24,6 +27,34 @@
                 <button class="mcfg-pill" data-value="americas">{{ t('mg.cont_americas', lang) }}</button>
                 <button class="mcfg-pill" data-value="oceania">{{ t('mg.cont_oceania', lang) }}</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Cities options -->
+    <div id="gcust-cities-opts" style="display:none">
+        <div class="gcust-group">
+            <div class="gcust-group-label">{{ t('mg.fil_continent', lang) }}</div>
+            <div class="mcfg-pills" id="gcust-cities-continent-pills">
+                <button class="mcfg-pill active" data-value="all">{{ t('mg.cont_all', lang) }}</button>
+                <button class="mcfg-pill" data-value="europe">{{ t('mg.cont_europe', lang) }}</button>
+                <button class="mcfg-pill" data-value="asia">{{ t('mg.cont_asia', lang) }}</button>
+                <button class="mcfg-pill" data-value="africa">{{ t('mg.cont_africa', lang) }}</button>
+                <button class="mcfg-pill" data-value="americas">{{ t('mg.cont_americas', lang) }}</button>
+                <button class="mcfg-pill" data-value="oceania">{{ t('mg.cont_oceania', lang) }}</button>
+            </div>
+        </div>
+        <div class="gcust-group">
+            <div class="gcust-group-label">{{ t('mg.fil_cities', lang) }}</div>
+            <div class="mcfg-pills" id="gcust-city-pop-pills">
+                <button class="mcfg-pill active" data-value="1m">{{ t('mg.city_1m', lang) }}</button>
+                <button class="mcfg-pill" data-value="500k">{{ t('mg.city_500k', lang) }}</button>
+                <button class="mcfg-pill" data-value="200k">{{ t('mg.city_200k', lang) }}</button>
+                <button class="mcfg-pill" data-value="100k">{{ t('mg.city_100k', lang) }}</button>
+            </div>
+        </div>
+        <div class="gcust-group">
+            <div class="gcust-group-label" id="gcust-city-countries-label">{{ t('cust.city_countries', lang) }}</div>
+            <div id="gcust-city-country-select"></div>
         </div>
     </div>
 

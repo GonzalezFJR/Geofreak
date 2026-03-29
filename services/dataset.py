@@ -154,11 +154,12 @@ class DatasetService:
                 continue
         return records
 
-    def get_cities_for_map(self, city_filter: str = "capitals", continent: str = "all") -> list[dict]:
+    def get_cities_for_map(self, city_filter: str = "capitals", continent: str = "all", country_filter: list[str] | None = None) -> list[dict]:
         """Return cities for the map game with optional filter and continent.
 
-        city_filter: 'capitals' | '5m' | '1m' | '100k'
+        city_filter: 'capitals' | '5m' | '1m' | '500k' | '200k' | '100k'
         continent: 'all' | 'europe' | 'asia' | 'africa' | 'americas' | 'oceania'
+        country_filter: list of iso_a3 codes (OR logic) or None
         """
         df = self._load_cities()
         if df.empty:
@@ -177,6 +178,10 @@ class DatasetService:
             df = df[df["population"] >= 5_000_000]
         elif city_filter == "1m":
             df = df[df["population"] >= 1_000_000]
+        elif city_filter == "500k":
+            df = df[df["population"] >= 500_000]
+        elif city_filter == "200k":
+            df = df[df["population"] >= 200_000]
         elif city_filter == "100k":
             df = df[df["population"] >= 100_000]
 
@@ -189,6 +194,9 @@ class DatasetService:
                         countries_df[countries_df["continent"].isin(continent_values)]["iso_a3"].tolist()
                     )
                     df = df[df["iso_a3"].isin(iso_set)]
+
+        if country_filter:
+            df = df[df["iso_a3"].isin(country_filter)]
 
         records = []
         for _, row in df.iterrows():
@@ -450,6 +458,8 @@ class DatasetService:
             "capitals_territory": lambda df, _t=_territory_iso: df[(df["is_capital"] == True) & (df["iso_a3"].isin(_t))],  # noqa: E712
             "5m":                 lambda df: df[df["population"] >= 5_000_000],
             "1m":                 lambda df: df[df["population"] >= 1_000_000],
+            "500k":               lambda df: df[df["population"] >= 500_000],
+            "200k":               lambda df: df[df["population"] >= 200_000],
             "100k":               lambda df: df[df["population"] >= 100_000],
         }
         counts_cities: dict[str, int] = {}

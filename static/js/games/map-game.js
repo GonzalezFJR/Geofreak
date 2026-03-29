@@ -128,6 +128,7 @@ var MapGame = (function () {
         var entityType = (document.getElementById('map-entity-type-value')     || {}).value || 'all';
         var cityFilter = (document.getElementById('map-city-filter-value')     || {}).value || 'capitals';
         var cityContinent = (document.getElementById('map-city-continent-value') || {}).value || 'all';
+        var cityCountries = (document.getElementById('map-city-countries-value') || {}).value || '';
 
         // Build data API URL
         var dataUrl = '/api/map-game/data?dataset=' + encodeURIComponent(dataset);
@@ -138,6 +139,7 @@ var MapGame = (function () {
         if (dataset === 'cities') {
             dataUrl += '&city_filter=' + encodeURIComponent(cityFilter);
             if (cityContinent && cityContinent !== 'all') dataUrl += '&continent=' + encodeURIComponent(cityContinent);
+            if (cityCountries) dataUrl += '&country_filter=' + encodeURIComponent(cityCountries);
         }
 
         return { dataUrl: dataUrl, continent: continent, entityType: entityType };

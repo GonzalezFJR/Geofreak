@@ -92,6 +92,7 @@ async def play_map_challenge(
     entity_type: str = "all",
     city_filter: str = "capitals",
     city_continent: str = "all",
+    city_countries: str = "",
     user=Depends(get_optional_user),
 ):
     lang = get_lang(request)
@@ -107,6 +108,7 @@ async def play_map_challenge(
         "map_entity_type": entity_type,
         "map_city_filter": city_filter,
         "map_city_continent": city_continent,
+        "map_city_countries": city_countries,
     }
     return templates.TemplateResponse("games/map_game.html", ctx)
 

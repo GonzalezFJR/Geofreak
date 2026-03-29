@@ -136,6 +136,126 @@ var GeoUtils = {
         }
         return String(val);
     },
+
+    /**
+     * Build a country multi-select widget (search + chips, lazy-loaded).
+     * opts: { container: HTMLElement, placeholder: string, lang: string, onChange: fn(isoList) }
+     */
+    buildCountrySelect: function (opts) {
+        var container = opts.container;
+        var placeholder = opts.placeholder || 'Search country...';
+        var lang = opts.lang || 'en';
+        var onChange = opts.onChange || function () {};
+
+        var _all = [];       // [{iso_a3, name, flag_emoji}]
+        var _selected = [];  // [iso_a3, ...]
+        var _loaded = false;
+
+        // Build HTML
+        container.classList.add('cs-widget');
+        container.innerHTML =
+            '<div class="cs-search-row">' +
+                '<input class="cs-input room-input" type="text" placeholder="' + placeholder + '" autocomplete="off">' +
+                '<div class="cs-dropdown" style="display:none"></div>' +
+            '</div>' +
+            '<div class="cs-chips"></div>';
+
+        var input    = container.querySelector('.cs-input');
+        var dropdown = container.querySelector('.cs-dropdown');
+        var chipsEl  = container.querySelector('.cs-chips');
+
+        function escapeHtml(s) {
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        function _renderChips() {
+            chipsEl.innerHTML = '';
+            _selected.forEach(function (iso) {
+                var c = _all.find(function (x) { return x.iso_a3 === iso; });
+                var label = c ? ((c.flag_emoji ? c.flag_emoji + ' ' : '') + (c['name_' + lang] || c.name || iso)) : iso;
+                var chip = document.createElement('span');
+                chip.className = 'cs-chip';
+                chip.innerHTML = escapeHtml(label) + '<button class="cs-chip-rm" data-iso="' + iso + '" type="button">×</button>';
+                chipsEl.appendChild(chip);
+            });
+        }
+
+        function _addCountry(iso) {
+            if (_selected.indexOf(iso) === -1) {
+                _selected.push(iso);
+                _renderChips();
+                onChange(_selected.slice());
+            }
+            input.value = '';
+            dropdown.style.display = 'none';
+        }
+
+        function _removeCountry(iso) {
+            _selected = _selected.filter(function (x) { return x !== iso; });
+            _renderChips();
+            onChange(_selected.slice());
+        }
+
+        function _showDropdown(query) {
+            if (!query) { dropdown.style.display = 'none'; return; }
+            var q = query.toLowerCase();
+            var matches = _all.filter(function (c) {
+                return (c.name || '').toLowerCase().indexOf(q) !== -1 ||
+                       (c['name_' + lang] || '').toLowerCase().indexOf(q) !== -1 ||
+                       (c['name_es'] || '').toLowerCase().indexOf(q) !== -1;
+            }).slice(0, 8);
+            if (!matches.length) { dropdown.style.display = 'none'; return; }
+            dropdown.innerHTML = '';
+            matches.forEach(function (c) {
+                var label = (c.flag_emoji ? c.flag_emoji + ' ' : '') + (c['name_' + lang] || c.name || c.iso_a3);
+                var li = document.createElement('div');
+                li.className = 'cs-option';
+                li.textContent = label;
+                li.addEventListener('mousedown', function (e) {
+                    e.preventDefault();
+                    _addCountry(c.iso_a3);
+                });
+                dropdown.appendChild(li);
+            });
+            dropdown.style.display = '';
+        }
+
+        input.addEventListener('input', function () {
+            if (!_loaded) return;
+            _showDropdown(input.value.trim());
+        });
+        input.addEventListener('blur', function () {
+            setTimeout(function () { dropdown.style.display = 'none'; }, 150);
+        });
+        input.addEventListener('focus', function () {
+            if (!_loaded) _load(function () { _showDropdown(input.value.trim()); });
+            else _showDropdown(input.value.trim());
+        });
+
+        chipsEl.addEventListener('click', function (e) {
+            var btn = e.target.closest('.cs-chip-rm');
+            if (btn) _removeCountry(btn.getAttribute('data-iso'));
+        });
+
+        function _load(cb) {
+            if (_loaded) { if (cb) cb(); return; }
+            fetch('/api/countries')
+                .then(function (r) { return r.json(); })
+                .then(function (list) {
+                    _all = list.sort(function (a, b) { return (a.name || '').localeCompare(b.name || ''); });
+                    _loaded = true;
+                    if (cb) cb();
+                })
+                .catch(function () { _loaded = true; });
+        }
+
+        return {
+            getSelected:    function () { return _selected.slice(); },
+            getSelectedCsv: function () { return _selected.join(','); },
+            reset:          function () { _selected = []; _renderChips(); onChange([]); },
+            load:           function (cb) { _load(cb); },
+        };
+    },
 };
 
 /* ── Hard-coded aliases ────────────────────────────────────── */

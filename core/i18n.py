@@ -120,6 +120,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.region_set": "Conjunto de regiones",
         "cust.cities": "Ciudades",
         "cust.fil_country": "País",
+        "cust.city_countries": "Países",
+        "cust.city_countries_placeholder": "Buscar país...",
 
         # Dashboard
         "dash.title": "🎮 Juegos GeoFreak",
@@ -190,6 +192,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.city_capitals_territory": "Capitales territorios",
         "mg.city_5m": "Más de 5M hab.",
         "mg.city_1m": "Más de 1M hab.",
+        "mg.city_500k": "Más de 500K hab.",
+        "mg.city_200k": "Más de 200K hab.",
         "mg.city_100k": "Más de 100K hab.",
         "mg.preview_name": "min. nombrando",
         "mg.preview_locate": "min. situando",
@@ -788,6 +792,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.region_set": "Region set",
         "cust.cities": "Cities",
         "cust.fil_country": "Country",
+        "cust.city_countries": "Countries",
+        "cust.city_countries_placeholder": "Search country...",
 
         # Dashboard
         "dash.title": "🎮 GeoFreak Games",
@@ -858,6 +864,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.city_capitals_territory": "Territory capitals",
         "mg.city_5m": "More than 5M pop.",
         "mg.city_1m": "More than 1M pop.",
+        "mg.city_500k": "More than 500K pop.",
+        "mg.city_200k": "More than 200K pop.",
         "mg.city_100k": "More than 100K pop.",
         "mg.preview_name": "min. naming",
         "mg.preview_locate": "min. locating",
@@ -1425,6 +1433,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.region_set": "Ensemble de régions",
         "cust.cities": "Villes",
         "cust.fil_country": "Pays",
+        "cust.city_countries": "Pays",
+        "cust.city_countries_placeholder": "Rechercher pays...",
 
         # Dashboard
         "dash.title": "🎮 Jeux GeoFreak",
@@ -1495,6 +1505,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.city_capitals_territory": "Capitales de territoires",
         "mg.city_5m": "Plus de 5M hab.",
         "mg.city_1m": "Plus de 1M hab.",
+        "mg.city_500k": "Plus de 500K hab.",
+        "mg.city_200k": "Plus de 200K hab.",
         "mg.city_100k": "Plus de 100K hab.",
         "mg.preview_name": "min. nommer",
         "mg.preview_locate": "min. situer",
@@ -2051,6 +2063,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.region_set": "Insieme di regioni",
         "cust.cities": "Città",
         "cust.fil_country": "Paese",
+        "cust.city_countries": "Paesi",
+        "cust.city_countries_placeholder": "Cerca paese...",
 
         # Dashboard
         "dash.title": "🎮 Giochi GeoFreak",
@@ -2121,6 +2135,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.city_capitals_territory": "Capitali di territori",
         "mg.city_5m": "Più di 5M ab.",
         "mg.city_1m": "Più di 1M ab.",
+        "mg.city_500k": "Più di 500K ab.",
+        "mg.city_200k": "Più di 200K ab.",
         "mg.city_100k": "Più di 100K ab.",
         "mg.preview_name": "min. nominare",
         "mg.preview_locate": "min. localizzare",
@@ -2678,6 +2694,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.region_set": "Набор регионов",
         "cust.cities": "Города",
         "cust.fil_country": "Страна",
+        "cust.city_countries": "Страны",
+        "cust.city_countries_placeholder": "Найти страну...",
 
         # Dashboard
         "dash.title": "🎮 GeoFreak Игры",
@@ -2748,6 +2766,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "mg.city_capitals_territory": "Столицы территорий",
         "mg.city_5m": "Более 5М жит.",
         "mg.city_1m": "Более 1М жит.",
+        "mg.city_500k": "Более 500K жит.",
+        "mg.city_200k": "Более 200К жит.",
         "mg.city_100k": "Более 100К жит.",
         "mg.preview_name": "мин. называть",
         "mg.preview_locate": "мин. находить",

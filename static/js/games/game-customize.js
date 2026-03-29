@@ -8,10 +8,13 @@ var GeoCustomize = (function () {
 
     /* ── State ─────────────────────────────────────────────── */
     var state = {
-        dataset:    'countries',   // 'countries' | 'regions'
-        subDataset: 'us-states',   // active when dataset === 'regions'
-        continent:  'all',
-        entityType: 'all',
+        dataset:       'countries',   // 'countries' | 'cities' | 'regions'
+        subDataset:    'us-states',   // active when dataset === 'regions'
+        continent:     'all',
+        entityType:    'all',
+        cityContinent: 'all',
+        cityFilter:    '1m',
+        cityCountries: [],            // list of iso_a3
     };
 
     var REGION_DATASETS = [
@@ -19,14 +22,25 @@ var GeoCustomize = (function () {
         'france-regions', 'italy-regions', 'germany-states',
     ];
 
+    // Module-scope reference so continent pills handler can reset it
+    var _cityCountrySelect = null;
+
     /* ── Accessors ─────────────────────────────────────────── */
 
     function getState() {
-        return { dataset: state.dataset, subDataset: state.subDataset,
-                 continent: state.continent, entityType: state.entityType };
+        return {
+            dataset:       state.dataset,
+            subDataset:    state.subDataset,
+            continent:     state.continent,
+            entityType:    state.entityType,
+            cityContinent: state.cityContinent,
+            cityFilter:    state.cityFilter,
+            cityCountries: state.cityCountries.slice(),
+        };
     }
 
     function getApiDataset() {
+        if (state.dataset === 'cities') return 'cities';
         return state.dataset === 'countries' ? 'countries' : state.subDataset;
     }
 
@@ -38,11 +52,21 @@ var GeoCustomize = (function () {
                 p += '&continent=' + encodeURIComponent(state.continent);
             if (state.entityType && state.entityType !== 'all')
                 p += '&entity_type=' + encodeURIComponent(state.entityType);
+        } else if (ds === 'cities') {
+            if (state.cityContinent && state.cityContinent !== 'all')
+                p += '&continent=' + encodeURIComponent(state.cityContinent);
+            if (state.cityFilter)
+                p += '&city_filter=' + encodeURIComponent(state.cityFilter);
+            if (state.cityCountries.length)
+                p += '&country_filter=' + encodeURIComponent(state.cityCountries.join(','));
         }
         return p;
     }
 
     function isSubnational() { return state.dataset === 'regions'; }
+
+    function getCityFilter()    { return state.cityFilter; }
+    function getCityCountries() { return state.cityCountries.slice(); }
 
     /* ── Panel toggle ──────────────────────────────────────── */
 
@@ -66,10 +90,12 @@ var GeoCustomize = (function () {
         tabs.forEach(function (t) {
             t.classList.toggle('active', t.getAttribute('data-type') === state.dataset);
         });
-        var optsC = document.getElementById('gcust-countries-opts');
-        var optsR = document.getElementById('gcust-regions-opts');
-        if (optsC) optsC.style.display = state.dataset === 'countries' ? '' : 'none';
-        if (optsR) optsR.style.display = state.dataset === 'regions'   ? '' : 'none';
+        var optsC   = document.getElementById('gcust-countries-opts');
+        var optsR   = document.getElementById('gcust-regions-opts');
+        var optsCit = document.getElementById('gcust-cities-opts');
+        if (optsC)   optsC.style.display   = state.dataset === 'countries' ? '' : 'none';
+        if (optsR)   optsR.style.display   = state.dataset === 'regions'   ? '' : 'none';
+        if (optsCit) optsCit.style.display = state.dataset === 'cities'    ? '' : 'none';
     }
 
     function _syncContinentPills() {
@@ -84,6 +110,18 @@ var GeoCustomize = (function () {
         });
     }
 
+    function _syncCitiesContinentPills() {
+        document.querySelectorAll('#gcust-cities-continent-pills .mcfg-pill').forEach(function (p) {
+            p.classList.toggle('active', p.getAttribute('data-value') === state.cityContinent);
+        });
+    }
+
+    function _syncCityPopPills() {
+        document.querySelectorAll('#gcust-city-pop-pills .mcfg-pill').forEach(function (p) {
+            p.classList.toggle('active', p.getAttribute('data-value') === state.cityFilter);
+        });
+    }
+
     /* ── Init ──────────────────────────────────────────────── */
 
     function init() {
@@ -95,7 +133,7 @@ var GeoCustomize = (function () {
             });
         });
 
-        // Continent pills
+        // Continent pills (countries)
         document.querySelectorAll('#gcust-continent-pills .mcfg-pill').forEach(function (pill) {
             pill.addEventListener('click', function () {
                 state.continent = pill.getAttribute('data-value');
@@ -110,6 +148,46 @@ var GeoCustomize = (function () {
                 _syncRegionCards();
             });
         });
+
+        // Cities continent pills
+        document.querySelectorAll('#gcust-cities-continent-pills .mcfg-pill').forEach(function (pill) {
+            pill.addEventListener('click', function () {
+                state.cityContinent = pill.getAttribute('data-value');
+                _syncCitiesContinentPills();
+                // clear country filter when continent changes
+                state.cityCountries = [];
+                if (_cityCountrySelect) _cityCountrySelect.reset();
+            });
+        });
+
+        // City population pills
+        document.querySelectorAll('#gcust-city-pop-pills .mcfg-pill').forEach(function (pill) {
+            pill.addEventListener('click', function () {
+                state.cityFilter = pill.getAttribute('data-value');
+                _syncCityPopPills();
+            });
+        });
+
+        // Country multi-select for cities
+        if (typeof GeoUtils !== 'undefined' && GeoUtils.buildCountrySelect) {
+            var csContainer = document.getElementById('gcust-city-country-select');
+            if (csContainer) {
+                var pageLang = document.documentElement.lang || 'es';
+                _cityCountrySelect = GeoUtils.buildCountrySelect({
+                    container: csContainer,
+                    placeholder: pageLang === 'es' ? 'Buscar país...' : 'Search country...',
+                    lang: pageLang,
+                    onChange: function (isoList) {
+                        state.cityCountries = isoList;
+                        // clear continent filter when countries are selected
+                        if (isoList.length > 0) {
+                            state.cityContinent = 'all';
+                            _syncCitiesContinentPills();
+                        }
+                    }
+                });
+            }
+        }
     }
 
     /* ── Public API ────────────────────────────────────────── */
@@ -118,6 +196,8 @@ var GeoCustomize = (function () {
         getApiDataset:   getApiDataset,
         buildApiParams:  buildApiParams,
         isSubnational:   isSubnational,
+        getCityFilter:   getCityFilter,
+        getCityCountries: getCityCountries,
         togglePanel:     togglePanel,
         openModal:       openModal,
         closeModal:      closeModal,

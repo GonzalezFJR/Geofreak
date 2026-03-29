@@ -111,13 +111,15 @@ async def map_game_data(
     dataset: str = Query("countries", description="Dataset: countries|cities|us-states|spain-provinces|russia-regions"),
     continent: str = Query("all", description="Continent filter (countries/cities only)"),
     entity_type: str = Query("all", description="Entity type filter (countries only): all|country|territory"),
-    city_filter: str = Query("capitals", description="City filter: capitals|5m|1m|100k"),
+    city_filter: str = Query("capitals", description="City filter: capitals|5m|1m|500k|200k|100k"),
+    country_filter: str = Query("", description="Comma-separated iso_a3 codes to filter cities by country"),
 ):
     """Return entity list for the map game based on dataset and filters."""
     if dataset == "countries":
         return dataset_service.get_countries_for_map(continent=continent, entity_type=entity_type)
     elif dataset == "cities":
-        return dataset_service.get_cities_for_map(city_filter=city_filter, continent=continent)
+        cf_list = [c.strip().upper() for c in country_filter.split(",") if c.strip()] if country_filter else None
+        return dataset_service.get_cities_for_map(city_filter=city_filter, continent=continent, country_filter=cf_list)
     elif dataset == "us-states":
         return dataset_service.get_us_states()
     elif dataset == "spain-provinces":
@@ -164,12 +166,14 @@ async def quiz_ordering(
     difficulty: str = Query("normal"),
     dataset: str = Query("countries"),
     entity_type: str = Query("all"),
+    country_filter: str = Query(""),
 ):
     """Generate a set of ordering questions."""
     if difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
         difficulty = "normal"
+    cf = country_filter.strip() or None
     questions = generate_ordering_set(
-        num_questions=num, continent=continent, difficulty=difficulty, dataset=dataset
+        num_questions=num, continent=continent, difficulty=difficulty, dataset=dataset, country_filter=cf
     )
     if not questions:
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
@@ -183,12 +187,14 @@ async def quiz_comparison(
     difficulty: str = Query("normal"),
     dataset: str = Query("countries"),
     entity_type: str = Query("all"),
+    country_filter: str = Query(""),
 ):
     """Generate a set of comparison questions."""
     if difficulty not in ("easy", "normal", "hard", "very_hard", "extreme"):
         difficulty = "normal"
+    cf = country_filter.strip() or None
     questions = generate_comparison_set(
-        num_questions=num, continent=continent, difficulty=difficulty, dataset=dataset
+        num_questions=num, continent=continent, difficulty=difficulty, dataset=dataset, country_filter=cf
     )
     if not questions:
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
@@ -201,9 +207,11 @@ async def quiz_geostats(
     continent: Optional[str] = Query(None),
     dataset: str = Query("countries"),
     entity_type: str = Query("all"),
+    country_filter: str = Query(""),
 ):
     """Generate a set of geostats questions (guess entity from stat curve)."""
-    data = generate_geostats_set(num_questions=num, continent=continent, dataset=dataset)
+    cf = country_filter.strip() or None
+    data = generate_geostats_set(num_questions=num, continent=continent, dataset=dataset, country_filter=cf)
     if not data or not data.get("questions"):
         raise HTTPException(status_code=400, detail="Not enough data for quiz")
     return data

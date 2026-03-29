@@ -89,6 +89,8 @@
                     <button type="button" class="mcfg-pill" data-value="capitals_territory">{{ t('mg.city_capitals_territory', lang) }}</button>
                     <button type="button" class="mcfg-pill" data-value="5m">{{ t('mg.city_5m', lang) }}</button>
                     <button type="button" class="mcfg-pill" data-value="1m">{{ t('mg.city_1m', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="500k">{{ t('mg.city_500k', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="200k">{{ t('mg.city_200k', lang) }}</button>
                     <button type="button" class="mcfg-pill" data-value="100k">{{ t('mg.city_100k', lang) }}</button>
                 </div>
             </div>
@@ -102,6 +104,10 @@
                     <button type="button" class="mcfg-pill" data-value="africa">{{ t('mg.cont_africa', lang) }}</button>
                     <button type="button" class="mcfg-pill" data-value="oceania">{{ t('mg.cont_oceania', lang) }}</button>
                 </div>
+            </div>
+            <div class="mcfg-filter-group" id="cities-country-filter-group">
+                <span class="mcfg-filter-label">{{ t('cust.city_countries', lang) }}</span>
+                <div id="mcfg-city-country-select"></div>
             </div>
         </div>
 
@@ -184,6 +190,7 @@
     </div>
 </section>
 
+<script src="/static/js/games/common.js"></script>
 <script>
 (function () {
     var COUNTS = {{ map_game_counts_json | safe }};
@@ -210,6 +217,7 @@
         entityType: 'all',
         cityFilter: 'capitals',
         cityContinent: 'all',
+        cityCountries: [],
         region: 'us-states',
         mode: 'type',
     };
@@ -219,6 +227,7 @@
     function calcMin(n, factor) { return Math.floor(n * factor / 60) + 1; }
 
     function getN() {
+        if (state.dataset === 'cities' && state.cityCountries.length > 0) return -1; // unknown
         var ds = state.dataset === 'regions' ? state.region : state.dataset;
         var dc = COUNTS[ds];
         if (!dc) return 0;
@@ -237,6 +246,11 @@
         var n = getN();
         var nEl  = document.getElementById('preview-n');
         var tEl  = document.getElementById('preview-time');
+        if (n === -1) {
+            if (nEl) nEl.textContent = '? ' + (TLABELS.ent['cities'] || '');
+            if (tEl) tEl.textContent = '–';
+            return;
+        }
         if (nEl) nEl.textContent = getEntLabel(n);
         if (tEl) {
             var isType = (state.mode === 'type');
@@ -298,6 +312,23 @@
     wirePills('cities-size-pills',         'cityFilter', updatePreview);
     wirePills('cities-continent-pills',    'cityContinent', updatePreview);
 
+    // Country multi-select for cities
+    var _cityCountrySelect = null;
+    if (typeof GeoUtils !== 'undefined' && GeoUtils.buildCountrySelect) {
+        var csContainer = document.getElementById('mcfg-city-country-select');
+        if (csContainer) {
+            _cityCountrySelect = GeoUtils.buildCountrySelect({
+                container: csContainer,
+                placeholder: {{ t('cust.city_countries_placeholder', lang) | tojson }},
+                lang: {{ lang | tojson }},
+                onChange: function(isoList) {
+                    state.cityCountries = isoList;
+                    updatePreview();
+                }
+            });
+        }
+    }
+
     updatePreview();
 
     document.getElementById('mcfg-play-btn').addEventListener('click', function () {
@@ -310,6 +341,9 @@
             city_filter:   state.cityFilter,
             city_continent: state.cityContinent,
         });
+        if (state.cityCountries && state.cityCountries.length) {
+            params.set('city_countries', state.cityCountries.join(','));
+        }
         window.location.href = '/games/map-challenge/play?' + params.toString();
     });
 }());
