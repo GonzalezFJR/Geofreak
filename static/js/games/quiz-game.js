@@ -45,6 +45,7 @@ var QuizGame = (function () {
                     queue = max > 0 ? entities.slice(0, max) : entities;
                     currentIdx = 0;
                     GeoGame.setTotal(queue.length);
+                    GeoGame.beginPlay();
                     showNext();
                 });
         } else {
@@ -65,6 +66,7 @@ var QuizGame = (function () {
                     queue = max > 0 ? filtered.slice(0, max) : filtered;
                     currentIdx = 0;
                     GeoGame.setTotal(queue.length);
+                    GeoGame.beginPlay();
                     showNext();
                 });
         }

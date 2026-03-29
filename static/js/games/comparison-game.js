@@ -54,6 +54,7 @@ var ComparisonGame = (function () {
                     questions = data.questions || [];
                     currentIdx = 0;
                     GeoGame.setTotal(questions.length);
+                    GeoGame.beginPlay();
                     showQuestion();
                 });
         } else {
@@ -68,12 +69,14 @@ var ComparisonGame = (function () {
                     questions = data.questions || [];
                     currentIdx = 0;
                     GeoGame.setTotal(questions.length);
+                    GeoGame.beginPlay();
                     showQuestion();
                 });
         }
     }
 
     function showAlreadyPlayed(result) {
+        document.getElementById('settings-overlay').style.display = 'none';
         document.getElementById('game-area').style.display = 'none';
         document.getElementById('game-hud').style.display = 'none';
         document.querySelector('.results-icon').innerHTML = resultIcon(result.score, result.total);

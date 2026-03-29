@@ -104,6 +104,7 @@ var GeoStatsGame = (function () {
                     answers = [];
                     GeoGame.setTotal(questions.length);
                     buildNameMap();
+                    GeoGame.beginPlay();
                     showQuestion();
                 });
         } else {
@@ -122,12 +123,14 @@ var GeoStatsGame = (function () {
                     answers = [];
                     GeoGame.setTotal(questions.length);
                     buildNameMap();
+                    GeoGame.beginPlay();
                     showQuestion();
                 });
         }
     }
 
     function showAlreadyPlayed(result) {
+        document.getElementById('settings-overlay').style.display = 'none';
         document.getElementById('game-area').style.display = 'none';
         document.getElementById('game-hud').style.display = 'none';
         document.querySelector('.results-icon').innerHTML = resultIcon(result.score, result.total);

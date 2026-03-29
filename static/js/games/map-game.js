@@ -177,6 +177,7 @@ var MapGame = (function () {
             inputEl.placeholder = T[phKey] || '';
         }
 
+        GeoGame.beginPlay();
         showSpinner();
 
         var geojsonUrl = '/api/map-game/geojson?dataset=' + encodeURIComponent(dataset);

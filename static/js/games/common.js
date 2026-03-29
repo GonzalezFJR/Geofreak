@@ -519,16 +519,27 @@ var GeoGame = {
         this.correct = 0;
         this.total = 0;
 
+        // Show loading spinner on start button; game screen shown only after data is ready
+        var startBtn = document.querySelector('.game-start-btn');
+        if (startBtn) {
+            startBtn.disabled = true;
+            startBtn.innerHTML = '<span class="btn-spinner"></span>';
+        }
+
+        if (this._callbacks.onStart) this._callbacks.onStart(s);
+    },
+
+    /** Called by each game once question data is loaded — transitions to the game screen. */
+    beginPlay: function () {
         // Hide settings, show HUD + game area
         document.getElementById('settings-overlay').style.display = 'none';
         document.getElementById('game-hud').style.display = 'flex';
         document.getElementById('game-area').style.display = '';
 
         // Timer — if delayTimer is set, defer until startTimer() is called
-        this.timeRemaining = s.timeLimit;
+        this.timeRemaining = this.settings.timeLimit || 0;
         if (this._callbacks.delayTimer) {
-            // Show paused timer display
-            if (s.timeLimit > 0) {
+            if (this.settings.timeLimit > 0) {
                 this._updateTimer();
             } else {
                 document.getElementById('hud-timer').textContent = '⏱️ ∞';
@@ -536,8 +547,6 @@ var GeoGame = {
         } else {
             this._beginTimer();
         }
-
-        if (this._callbacks.onStart) this._callbacks.onStart(s);
     },
 
     /** Start (or resume) the countdown timer. Called automatically unless delayTimer is set. */
