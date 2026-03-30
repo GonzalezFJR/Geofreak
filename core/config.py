@@ -53,6 +53,10 @@ class Settings(BaseSettings):
     # Public URL (for email links)
     base_url: str = "https://geofreak.net"
 
+    # Captcha (Cloudflare Turnstile)
+    captcha_site_key: str = ""
+    captcha_secret_key: str = ""
+
     # Docker (read from .env but only used by docker-compose)
     docker_container_name: str = "geofreak-app"
     docker_image_name: str = "geofreak"

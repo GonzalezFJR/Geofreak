@@ -3,10 +3,12 @@
 import logging
 from typing import Optional
 
+import httpx
 from fastapi import APIRouter, Depends, Form, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from core.auth import get_optional_user
+from core.config import get_settings
 from core.i18n import get_lang, SUPPORTED_LANGS
 from core.templates import templates
 from services.email import send_contact
@@ -21,6 +23,7 @@ from services.quiz import get_sources, get_all_variables
 log = logging.getLogger(__name__)
 router = APIRouter()
 _games_svc = GamesService()
+_settings = get_settings()
 
 # Game types shown in each selection page
 _PLAY_TYPES = {"solo"}             # ordering + comparison
@@ -107,6 +110,7 @@ async def contact_page(request: Request, user=Depends(get_optional_user)):
     return templates.TemplateResponse("contact.html", {
         "request": request, "user": user, "lang": lang,
         "sent": False, "error": False,
+        "captcha_site_key": _settings.captcha_site_key,
     })
 
 
@@ -119,11 +123,43 @@ async def contact_submit(
     user=Depends(get_optional_user),
 ):
     lang = get_lang(request)
-    ok = send_contact(name, email, message)
-    return templates.TemplateResponse("contact.html", {
+    ctx = {
         "request": request, "user": user, "lang": lang,
-        "sent": ok, "error": not ok,
-    })
+        "captcha_site_key": _settings.captcha_site_key,
+    }
+
+    # Verify Turnstile captcha if configured
+    if _settings.captcha_secret_key:
+        form = await request.form()
+        token = form.get("cf-turnstile-response", "")
+        if not await _verify_turnstile(token, request.client.host if request.client else ""):
+            log.warning("Captcha verification failed for contact form")
+            return templates.TemplateResponse("contact.html", {**ctx, "sent": False, "error": True})
+
+    ok = send_contact(name, email, message)
+    return templates.TemplateResponse("contact.html", {**ctx, "sent": ok, "error": not ok})
+
+
+async def _verify_turnstile(token: str, ip: str) -> bool:
+    """Verify Turnstile token with Cloudflare API."""
+    if not token:
+        return False
+    try:
+        async with httpx.AsyncClient() as client:
+            resp = await client.post(
+                "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+                data={
+                    "secret": _settings.captcha_secret_key,
+                    "response": token,
+                    "remoteip": ip,
+                },
+                timeout=10.0,
+            )
+            result = resp.json()
+            return result.get("success", False)
+    except Exception as e:
+        log.error(f"Turnstile verification error: {e}")
+        return False
 
 
 @router.get("/sources", response_class=HTMLResponse)
