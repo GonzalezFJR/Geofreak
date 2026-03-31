@@ -742,7 +742,7 @@
           "label_ru": "PM10",
           "unit": "µg/m³",
           "format": "decimal",
-          "enabled": true
+          "enabled": false
         }
       ]
     },
@@ -838,7 +838,7 @@
           "description_en": "Median household income in annual US dollars.",
           "unit": "USD",
           "format": "money",
-          "enabled": false,
+          "enabled": true,
           "source": "us_census"
         },
         {
@@ -852,7 +852,7 @@
           "description_en": "State unemployment rate.",
           "unit": "%",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "bls"
         },
         {
@@ -866,7 +866,7 @@
           "description_en": "Highest point above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "usgs"
         },
         {
@@ -894,7 +894,7 @@
           "description_en": "Annual average temperature in °C.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "noaa"
         },
         {
@@ -908,7 +908,7 @@
           "description_en": "Average annual precipitation in mm.",
           "unit": "mm",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "noaa"
         },
         {
@@ -1047,7 +1047,7 @@
           "description_en": "Age dividing the province population into two equal halves.",
           "unit": "años",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "ine"
         },
         {
@@ -1075,7 +1075,7 @@
           "description_en": "Highest point above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "ign_es"
         },
         {
@@ -1103,7 +1103,7 @@
           "description_en": "Average elevation above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "ign_es"
         },
         {
@@ -1117,7 +1117,7 @@
           "description_en": "Annual average temperature in °C.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "aemet"
         },
         {
@@ -1131,7 +1131,7 @@
           "description_en": "Average annual precipitation in mm.",
           "unit": "mm",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "aemet"
         },
         {
@@ -1326,7 +1326,7 @@
           "description_en": "Highest point above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "rosstat"
         },
         {
@@ -1354,7 +1354,7 @@
           "description_en": "Average elevation above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "rosstat"
         },
         {
@@ -1368,7 +1368,7 @@
           "description_en": "Annual average temperature in °C.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "roshydromet"
         },
         {
@@ -1382,7 +1382,7 @@
           "description_en": "Average annual precipitation in mm.",
           "unit": "mm",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "roshydromet"
         },
         {
@@ -1552,7 +1552,7 @@
           "description_en": "Highest point above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "ign_fr"
         },
         {
@@ -1580,7 +1580,7 @@
           "description_en": "Average elevation above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "ign_fr"
         },
         {
@@ -1594,7 +1594,7 @@
           "description_en": "Annual average temperature in °C.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "meteofrance"
         },
         {
@@ -1608,7 +1608,7 @@
           "description_en": "Average annual precipitation in mm.",
           "unit": "mm",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "meteofrance"
         },
         {
@@ -1976,7 +1976,7 @@
           "description_en": "Age dividing the state population into two equal halves.",
           "unit": "años",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "destatis"
         },
         {
@@ -2004,7 +2004,7 @@
           "description_en": "Highest point above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "bkg"
         },
         {
@@ -2032,7 +2032,7 @@
           "description_en": "Average elevation above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "bkg"
         },
         {
@@ -2046,7 +2046,7 @@
           "description_en": "Annual average temperature in °C.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "dwd"
         },
         {
@@ -2060,7 +2060,7 @@
           "description_en": "Average annual precipitation in mm.",
           "unit": "mm",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "dwd"
         },
         {
@@ -2202,7 +2202,7 @@
           "description_en": "Life expectancy at birth.",
           "unit": "años",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "inegi"
         },
         {
@@ -2216,7 +2216,7 @@
           "description_en": "Annual average temperature in °C.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "smn_mexico"
         },
         {
@@ -2230,7 +2230,7 @@
           "description_en": "Highest point above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "inegi"
         }
       ]
@@ -2344,7 +2344,7 @@
           "description_en": "Life expectancy at birth.",
           "unit": "años",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "indec"
         },
         {
@@ -2358,7 +2358,7 @@
           "description_en": "Annual average temperature in °C.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "smn_argentina"
         },
         {
@@ -2372,7 +2372,7 @@
           "description_en": "Highest point above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "ign_argentina"
         }
       ]
@@ -2486,7 +2486,7 @@
           "description_en": "Life expectancy at birth.",
           "unit": "años",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "ibge"
         },
         {
@@ -2500,7 +2500,7 @@
           "description_en": "Annual average temperature in °C.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "inmet"
         },
         {
@@ -2514,7 +2514,7 @@
           "description_en": "Highest point above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "ibge"
         }
       ]
