@@ -34,6 +34,11 @@ var QuizGame = (function () {
         if (revealBtn) {
             revealBtn.addEventListener('mousedown', function (e) { e.preventDefault(); });
         }
+        // Prevent skip button from closing keyboard
+        var skipBtn = document.querySelector('.btn-skip');
+        if (skipBtn) {
+            skipBtn.addEventListener('mousedown', function (e) { e.preventDefault(); });
+        }
     }
 
     function loadData(settings) {
@@ -85,7 +90,7 @@ var QuizGame = (function () {
         }
     }
 
-    function showNext() {
+    function showNext(focusInput) {
         // Check if we finished the main queue
         if (currentIdx >= queue.length) {
             // If there are skipped items, cycle back to them
@@ -118,7 +123,10 @@ var QuizGame = (function () {
         var input = document.getElementById('answer-input');
         input.value = '';
         input.className = '';
-        input.focus();
+        // Only focus input if requested (default: true)
+        if (focusInput !== false) {
+            input.focus();
+        }
         clearFeedback();
     }
 
@@ -175,26 +183,29 @@ var QuizGame = (function () {
     function skip() {
         var country = queue[currentIdx];
         skipped.push(country);
-        // Refocus input to keep keyboard open
         var input = document.getElementById('answer-input');
-        if (input) setTimeout(function() { input.focus(); }, 50);
+        // Only focus if keyboard was already open (input had focus)
+        var hadFocus = document.activeElement === input;
         currentIdx++;
-        showNext();
+        showNext(hadFocus);
     }
 
     /** Reveal: show the answer and count as failed */
     function reveal() {
         var country = queue[currentIdx];
         var input = document.getElementById('answer-input');
+        // Only focus if keyboard was already open (input had focus)
+        var hadFocus = document.activeElement === input;
         var localName = GeoUtils.getLocalName(country);
         input.value = localName;
         input.className = 'wrong';
         showFeedback('wrong', (T['js.revealed'] || '👁️ {name}').replace('{name}', localName));
         GeoReview.snapshot();
-        // Refocus input to keep keyboard open
-        if (input) setTimeout(function() { input.focus(); }, 50);
         // Count as seen but NOT correct (it's a fail)
-        setTimeout(function () { currentIdx++; showNext(); }, 1500);
+        setTimeout(function () {
+            currentIdx++;
+            showNext(hadFocus);
+        }, 1500);
     }
 
     function showFeedback(cls, text) {

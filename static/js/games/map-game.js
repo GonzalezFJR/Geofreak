@@ -40,7 +40,7 @@ var MapGame = (function () {
                               maxBounds: [[-19,    8], [85, 200]] },
         'france-regions':   { center: [46,   2], zoom: 5, minZoom: 4,
                               maxBounds: null },
-        'italy-regions':    { center: [42,  12], zoom: 5, minZoom: 4,
+        'italy-provinces':    { center: [42,  12], zoom: 5, minZoom: 4,
                               maxBounds: [[35,   6], [48,  19]] },
         'germany-states':   { center: [51,  10], zoom: 5, minZoom: 4,
                               maxBounds: [[46,   5], [56,  16]] },
@@ -71,7 +71,7 @@ var MapGame = (function () {
         'spain-provinces': 'mg.ph_type_province',
         'russia-regions':  'mg.ph_type_region',
         'france-regions':  'mg.ph_type_region',
-        'italy-regions':   'mg.ph_type_region',
+        'italy-provinces':   'mg.ph_type_province',
         'germany-states':  'mg.ph_type_state',
     };
     var PH_CLICK_KEY = {
@@ -81,7 +81,7 @@ var MapGame = (function () {
         'spain-provinces': 'mg.ph_province',
         'russia-regions':  'mg.ph_region',
         'france-regions':  'mg.ph_region',
-        'italy-regions':   'mg.ph_region',
+        'italy-provinces':   'mg.ph_province',
         'germany-states':  'mg.ph_state',
     };
     var WHAT_KEY = {
@@ -91,7 +91,7 @@ var MapGame = (function () {
         'spain-provinces': 'mg.what_province',
         'russia-regions':  'mg.what_region',
         'france-regions':  'mg.what_region',
-        'italy-regions':   'mg.what_region',
+        'italy-provinces':   'mg.what_province',
         'germany-states':  'mg.what_state',
     };
 

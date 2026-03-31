@@ -1,0 +1,111 @@
+code,name,name_es,name_en,name_fr,name_it,name_ru,region,capital,lat,lon,population,area_km2,density_per_km2,gdp_usd,gdp_per_capita_usd,unemployment_rate,median_age,coastline_km,elevation_max_m,elevation_min_m,avg_elevation_m,avg_temperature_c,annual_precipitation_mm,life_expectancy,num_municipalities
+AG,Agrigento,Agrigento,Agrigento,Agrigente,Agrigento,Агридженто,Sicilia,Agrigento,37.31,13.58,418366,3042,137.5,6800000000,16260,22.5,45.2,130,1979,0,420,17.2,540,82.2,43
+AL,Alessandria,Alessandría,Alessandria,Alexandrie,Alessandria,Алессандрия,Piemonte,Alessandria,44.91,8.62,410192,3560,115.2,15200000000,37050,7.5,48.2,0,1702,68,300,12.8,720,83.2,190
+AN,Ancona,Ancona,Ancona,Ancône,Ancona,Анкона,Marche,Ancona,43.62,13.51,470603,1940,242.6,17500000000,37190,6.8,46.5,173,1701,0,350,14.2,780,83.8,47
+AO,Aosta,Aosta,Aosta,Aoste,Aosta,Аоста,Valle d'Aosta,Aosta,45.74,7.43,125034,3261,38.3,5600000000,44780,6.5,44.8,0,4810,320,2100,6.0,740,84.0,74
+AP,Ascoli Piceno,Ascoli Piceno,Ascoli Piceno,Ascoli Piceno,Ascoli Piceno,Асколи-Пичено,Marche,Ascoli Piceno,42.85,13.57,203014,1228,165.3,6200000000,30540,8.2,47.8,41,2458,0,520,13.5,780,83.5,33
+AQ,L'Aquila,L'Aquila,L'Aquila,L'Aquila,L'Aquila,Л'Аквила,Abruzzo,L'Aquila,42.35,13.40,293839,5035,58.4,8500000000,28930,9.8,47.2,0,2912,390,1100,10.5,750,83.5,108
+AR,Arezzo,Arezzo,Arezzo,Arezzo,Arezzo,Ареццо,Toscana,Arezzo,43.46,11.88,334374,3232,103.5,12500000000,37390,7.0,47.2,0,1657,132,450,13.5,920,84.0,36
+AT,Asti,Asti,Asti,Asti,Asti,Асти,Piemonte,Asti,44.90,8.21,210275,1511,139.2,7200000000,34240,7.2,48.0,0,549,95,250,13.0,680,83.2,118
+AV,Avellino,Avellino,Avellino,Avellino,Avellino,Авеллино,Campania,Avellino,40.91,14.79,404245,2792,144.8,7200000000,17810,14.5,45.5,0,1809,240,650,12.8,1050,82.8,118
+BA,Bari,Bari,Bari,Bari,Bari,Бари,Puglia,Bari,41.12,16.87,1230205,3821,322.0,28500000000,23170,13.5,44.2,46,679,0,250,16.5,580,83.2,41
+BG,Bergamo,Bérgamo,Bergamo,Bergame,Bergamo,Бергамо,Lombardia,Bergamo,45.69,9.67,1108126,2723,406.9,48000000000,43320,4.5,44.5,0,3052,162,500,12.5,1180,84.2,243
+BI,Biella,Biella,Biella,Biella,Biella,Биелла,Piemonte,Biella,45.57,8.05,173089,913,189.6,5800000000,33510,6.8,49.0,0,2400,240,680,11.5,1120,83.5,74
+BL,Belluno,Belluno,Belluno,Belluno,Belluno,Беллуно,Veneto,Belluno,46.14,12.22,198834,3678,54.1,7200000000,36220,4.2,47.5,0,3343,320,1100,8.5,1480,84.0,61
+BN,Benevento,Benevento,Benevento,Bénévent,Benevento,Беневенто,Campania,Benevento,41.13,14.78,271213,2071,130.9,5200000000,19180,16.5,46.0,0,1809,150,520,14.0,850,82.5,78
+BO,Bologna,Bolonia,Bologna,Bologne,Bologna,Болонья,Emilia-Romagna,Bologna,44.49,11.34,1018673,3702,275.2,52000000000,51060,5.0,46.2,0,2165,8,280,13.8,780,84.0,55
+BR,Brindisi,Brindisi,Brindisi,Brindisi,Brindisi,Бриндизи,Puglia,Brindisi,40.64,17.94,378588,1839,205.9,6800000000,17960,15.2,44.5,105,396,0,120,17.0,580,82.8,20
+BS,Brescia,Brescia,Brescia,Brescia,Brescia,Брешиа,Lombardia,Brescia,45.54,10.21,1254974,4784,262.3,55000000000,43830,4.8,45.2,0,3554,65,600,12.2,1050,84.0,205
+BT,Barletta-Andria-Trani,Barletta-Andria-Trani,Barletta-Andria-Trani,Barletta-Andria-Trani,Barletta-Andria-Trani,Барлетта-Андрия-Трани,Puglia,Andria,41.23,16.30,386069,1543,250.2,6200000000,16060,17.5,43.8,45,679,0,180,16.8,560,82.5,10
+BZ,Bolzano,Bolzano,Bolzano,Bolzano,Bolzano,Больцано,Trentino-Alto Adige,Bolzano,46.50,11.35,535774,7400,72.4,28500000000,53200,3.5,43.0,0,3905,210,1760,8.0,700,85.0,116
+CA,Cagliari,Cagliari,Cagliari,Cagliari,Cagliari,Кальяри,Sardegna,Cagliari,39.22,9.11,421688,1248,337.9,14500000000,34390,14.5,46.5,280,1116,0,180,17.5,450,83.5,17
+CB,Campobasso,Campobasso,Campobasso,Campobasso,Campobasso,Кампобассо,Molise,Campobasso,41.56,14.66,216080,2909,74.3,4800000000,22210,13.8,48.2,36,2050,150,700,12.5,720,83.0,84
+CE,Caserta,Caserta,Caserta,Caserte,Caserta,Казерта,Campania,Caserta,41.07,14.33,916467,2639,347.3,14200000000,15490,19.5,41.8,31,1923,0,350,16.0,850,82.0,104
+CH,Chieti,Chieti,Chieti,Chieti,Chieti,Кьети,Abruzzo,Chieti,42.35,14.17,375193,2588,145.0,10200000000,27190,9.2,46.5,72,2793,0,480,13.5,680,83.5,104
+CI,Carbonia-Iglesias,Carbonia-Iglesias,Carbonia-Iglesias,Carbonia-Iglesias,Carbonia-Iglesias,Карбония-Иглезиас,Sardegna,Carbonia,39.17,8.52,118106,1495,79.0,2200000000,18630,18.5,47.8,180,1236,0,250,16.8,580,82.8,23
+CL,Caltanissetta,Caltanissetta,Caltanissetta,Caltanissetta,Caltanissetta,Кальтаниссетта,Sicilia,Caltanissetta,37.49,14.06,252003,2128,118.4,4200000000,16670,23.0,45.5,0,948,0,450,16.5,500,81.8,22
+CN,Cuneo,Cuneo,Cuneo,Coni,Cuneo,Кунео,Piemonte,Cuneo,44.38,7.54,584898,6903,84.7,24500000000,41890,5.5,46.5,0,3841,320,750,11.0,920,83.8,247
+CO,Como,Como,Como,Côme,Como,Комо,Lombardia,Como,45.81,9.08,594441,1288,461.5,25000000000,42050,5.2,45.5,0,2609,198,560,11.8,1520,84.2,148
+CR,Cremona,Cremona,Cremona,Crémone,Cremona,Кремона,Lombardia,Cremona,45.13,10.03,352762,1770,199.3,14500000000,41110,5.0,47.0,0,148,17,52,13.2,780,83.8,113
+CS,Cosenza,Cosenza,Cosenza,Cosenza,Cosenza,Козенца,Calabria,Cosenza,39.30,16.25,690503,6650,103.8,11500000000,16660,20.5,45.8,228,2267,0,700,14.8,1020,82.5,150
+CT,Catania,Catania,Catania,Catane,Catania,Катания,Sicilia,Catania,37.50,15.09,1078766,3553,303.6,20500000000,19010,20.5,43.5,78,3357,0,400,18.5,550,82.5,58
+CZ,Catanzaro,Catanzaro,Catanzaro,Catanzaro,Catanzaro,Катандзаро,Calabria,Catanzaro,38.91,16.60,349418,2391,146.1,6200000000,17740,18.2,45.5,120,1765,0,500,16.0,850,82.5,80
+EN,Enna,Enna,Enna,Enna,Enna,Энна,Sicilia,Enna,37.57,14.28,158237,2562,61.8,2500000000,15800,24.0,47.0,0,1192,320,650,14.5,580,81.5,20
+FC,Forlì-Cesena,Forlì-Cesena,Forlì-Cesena,Forlì-Cesena,Forlì-Cesena,Форли-Чезена,Emilia-Romagna,Forlì,44.22,12.05,394327,2378,165.8,15200000000,38560,5.5,46.0,18,1654,0,350,13.5,780,83.8,30
+FE,Ferrara,Ferrara,Ferrara,Ferrare,Ferrara,Феррара,Emilia-Romagna,Ferrara,44.84,11.62,343452,2631,130.5,12200000000,35530,6.8,48.0,22,11,-4,5,13.5,680,83.5,21
+FG,Foggia,Foggia,Foggia,Foggia,Foggia,Фоджа,Puglia,Foggia,41.46,15.55,586083,6966,84.1,10500000000,17910,18.5,44.8,184,1152,0,380,16.0,520,82.5,61
+FI,Firenze,Florencia,Florence,Florence,Firenze,Флоренция,Toscana,Firenze,43.77,11.25,992555,3514,282.4,48500000000,48870,6.5,46.5,0,1654,15,380,14.8,900,84.5,41
+FM,Fermo,Fermo,Fermo,Fermo,Fermo,Фермо,Marche,Fermo,43.16,13.72,170591,859,198.6,5500000000,32240,7.5,47.0,22,1740,0,420,14.0,750,83.5,40
+FR,Frosinone,Frosinone,Frosinone,Frosinone,Frosinone,Фрозиноне,Lazio,Frosinone,41.64,13.35,476369,3244,146.8,11800000000,24770,12.5,46.0,0,2458,90,520,13.5,920,83.0,91
+GE,Genova,Génova,Genoa,Gênes,Genova,Генуя,Liguria,Genova,44.41,8.93,823154,1834,448.9,38500000000,46780,7.2,49.5,125,1183,0,450,15.2,1180,84.0,67
+GO,Gorizia,Gorizia,Gorizia,Gorizia,Gorizia,Гориция,Friuli-Venezia Giulia,Gorizia,45.94,13.62,138420,466,297.0,5200000000,37580,5.5,47.5,10,643,0,180,12.8,1350,83.5,25
+GR,Grosseto,Grosseto,Grosseto,Grosseto,Grosseto,Гроссето,Toscana,Grosseto,42.76,11.11,217519,4504,48.3,7800000000,35860,8.2,48.5,230,1738,0,320,15.0,680,84.0,28
+IM,Imperia,Imperia,Imperia,Imperia,Imperia,Империя,Liguria,Imperia,43.89,7.98,211507,1156,183.0,6500000000,30740,8.5,50.5,70,2651,0,650,15.5,820,83.5,66
+IS,Isernia,Isernia,Isernia,Isernia,Isernia,Изерния,Molise,Isernia,41.59,14.23,79854,1529,52.2,1800000000,22540,12.5,47.5,0,2050,280,750,11.5,720,83.0,52
+KR,Crotone,Crotone,Crotone,Crotone,Crotone,Кротоне,Calabria,Crotone,39.08,17.12,165178,1717,96.2,2500000000,15140,23.5,44.0,110,1765,0,350,17.0,650,82.0,27
+LC,Lecco,Lecco,Lecco,Lecco,Lecco,Лекко,Lombardia,Lecco,45.85,9.39,334976,816,410.5,14500000000,43290,4.8,45.0,0,2609,198,650,11.5,1480,84.0,84
+LE,Lecce,Lecce,Lecce,Lecce,Lecce,Лечче,Puglia,Lecce,40.35,18.17,786714,2759,285.1,13500000000,17160,14.8,45.0,158,198,0,90,17.2,620,83.0,97
+LI,Livorno,Livorno,Livorno,Livourne,Livorno,Ливорно,Toscana,Livorno,43.55,10.31,329923,1218,270.9,12500000000,37890,7.8,47.5,157,1060,0,220,15.5,750,84.0,19
+LO,Lodi,Lodi,Lodi,Lodi,Lodi,Лоди,Lombardia,Lodi,45.31,9.50,228773,783,292.2,9200000000,40220,5.2,45.8,0,104,48,72,13.0,780,83.8,60
+LT,Latina,Latina,Latina,Latina,Latina,Латина,Lazio,Latina,41.47,12.90,568882,2251,252.7,14200000000,24960,11.5,44.0,97,2458,0,250,16.0,880,83.2,33
+LU,Lucca,Lucca,Lucca,Lucques,Lucca,Лукка,Toscana,Lucca,43.84,10.50,381974,1773,215.4,14000000000,36650,7.5,47.0,52,1895,0,420,14.2,1120,84.0,33
+MB,Monza e Brianza,Monza y Brianza,Monza and Brianza,Monza-et-Brianza,Monza e Brianza,Монца-э-Брианца,Lombardia,Monza,45.58,9.27,875065,405,2160.7,38000000000,43420,5.0,44.8,0,370,150,280,12.8,1050,84.2,55
+MC,Macerata,Macerata,Macerata,Macerata,Macerata,Мачерата,Marche,Macerata,43.30,13.45,309846,2774,111.7,9800000000,31630,7.2,47.2,41,1704,0,480,13.5,850,83.5,55
+ME,Messina,Mesina,Messina,Messine,Messina,Мессина,Sicilia,Messina,38.19,15.55,603229,3266,184.7,11200000000,18570,19.5,45.5,352,3323,0,550,17.0,850,82.5,108
+MI,Milano,Milán,Milan,Milan,Milano,Милан,Lombardia,Milano,45.46,9.19,3279944,1575,2082.2,180000000000,54880,5.2,44.5,0,521,102,280,13.2,1050,84.5,133
+MN,Mantova,Mantua,Mantua,Mantoue,Mantova,Мантуя,Lombardia,Mantova,45.16,10.78,406088,2339,173.6,17500000000,43100,4.5,47.0,0,104,8,25,13.0,720,83.8,64
+MO,Modena,Módena,Modena,Modène,Modena,Модена,Emilia-Romagna,Modena,44.65,10.93,706248,2689,262.6,35000000000,49560,5.2,45.8,0,2165,8,250,13.5,780,84.0,47
+MS,Massa-Carrara,Massa-Carrara,Massa-Carrara,Massa-Carrara,Massa-Carrara,Масса-Каррара,Toscana,Massa,44.04,10.14,189058,1157,163.4,5800000000,30680,9.0,48.0,38,1895,0,650,13.8,1350,83.5,17
+MT,Matera,Matera,Matera,Matera,Matera,Матера,Basilicata,Matera,40.67,16.60,193812,3447,56.2,4200000000,21670,14.5,47.2,38,1086,0,420,15.0,620,83.0,31
+NA,Napoli,Nápoles,Naples,Naples,Napoli,Неаполь,Campania,Napoli,40.85,14.27,2967117,1171,2533.8,52500000000,17700,21.5,41.0,145,1281,0,180,17.0,920,82.2,92
+NO,Novara,Novara,Novara,Novare,Novara,Новара,Piemonte,Novara,45.45,8.62,365604,1339,273.0,14500000000,39670,6.5,46.8,0,2166,152,380,12.5,1020,83.5,87
+NU,Nuoro,Nuoro,Nuoro,Nuoro,Nuoro,Нуоро,Sardegna,Nuoro,40.32,9.33,149968,3934,38.1,2800000000,18670,17.0,48.0,52,1834,0,650,14.5,780,83.0,52
+OG,Ogliastra,Ольястра,Ogliastra,Ogliastra,Ogliastra,Ольястра,Sardegna,Lanusei,39.87,9.55,54873,1854,29.6,1000000000,18230,16.5,48.5,85,1834,0,580,15.0,720,83.5,23
+OR,Oristano,Oristán,Oristano,Oristano,Oristano,Ористано,Sardegna,Oristano,39.90,8.59,154215,3040,50.7,2800000000,18160,17.5,48.2,145,1236,0,280,16.5,520,83.0,87
+OT,Olbia-Tempio,Olbia-Tempio,Olbia-Tempio,Olbia-Tempio,Olbia-Tempio,Ольбия-Темпио,Sardegna,Olbia,40.92,9.50,161356,3397,47.5,4500000000,27890,12.0,45.5,480,1359,0,350,16.0,620,83.2,26
+PA,Palermo,Palermo,Palermo,Palerme,Palermo,Палермо,Sicilia,Palermo,38.12,13.36,1249577,5009,249.5,23500000000,18810,20.0,43.8,345,1979,0,450,18.0,620,82.5,82
+PC,Piacenza,Plasencia,Piacenza,Plaisance,Piacenza,Пьяченца,Emilia-Romagna,Piacenza,45.05,9.70,285922,2589,110.4,12500000000,43720,5.5,47.5,0,1748,40,420,12.5,850,83.5,46
+PD,Padova,Padua,Padua,Padoue,Padova,Падуя,Veneto,Padova,45.41,11.88,930886,2141,434.8,42000000000,45120,4.5,45.5,0,601,-1,15,13.0,820,84.0,102
+PE,Pescara,Pescara,Pescara,Pescara,Pescara,Пескара,Abruzzo,Pescara,42.46,14.21,316880,1225,258.7,10200000000,32190,9.0,46.0,17,2793,0,320,14.5,720,83.8,46
+PG,Perugia,Perugia,Perugia,Pérouse,Perugia,Перуджа,Umbria,Perugia,43.11,12.39,650414,6334,102.7,19500000000,29980,8.5,47.0,0,2448,96,550,13.5,850,83.8,59
+PI,Pisa,Pisa,Pisa,Pise,Pisa,Пиза,Toscana,Pisa,43.72,10.40,415696,2444,170.1,16200000000,38980,7.2,46.5,28,1060,0,280,14.5,850,84.2,37
+PN,Pordenone,Pordenone,Pordenone,Pordenone,Pordenone,Порденоне,Friuli-Venezia Giulia,Pordenone,45.96,12.66,308696,2273,135.8,13500000000,43740,4.8,46.5,0,2780,12,350,12.5,1520,84.0,50
+PO,Prato,Prato,Prato,Prato,Prato,Прато,Toscana,Prato,43.88,11.10,259425,365,710.8,10500000000,40480,7.0,44.5,0,1060,35,250,14.5,920,83.8,7
+PR,Parma,Parma,Parma,Parme,Parma,Парма,Emilia-Romagna,Parma,44.80,10.33,452054,3449,131.1,21000000000,46460,5.0,46.5,0,2165,18,380,13.0,820,84.0,44
+PT,Pistoia,Pistoya,Pistoia,Pistoia,Pistoia,Пистойя,Toscana,Pistoia,43.93,10.92,290830,965,301.4,10200000000,35080,7.5,46.8,0,1946,15,380,14.0,1320,84.0,20
+PU,Pesaro e Urbino,Pesaro y Urbino,Pesaro and Urbino,Pesaro-Urbino,Pesaro e Urbino,Пезаро-и-Урбино,Marche,Pesaro,43.91,12.90,351622,2564,137.1,12500000000,35550,7.0,47.0,42,1701,0,480,13.8,880,83.5,53
+PV,Pavia,Pavía,Pavia,Pavie,Pavia,Павия,Lombardia,Pavia,45.18,9.16,538816,2965,181.7,21500000000,39900,5.5,48.0,0,1785,48,180,12.8,850,83.5,186
+PZ,Potenza,Potenza,Potenza,Potenza,Potenza,Потенца,Basilicata,Potenza,40.64,15.80,349711,6548,53.4,8500000000,24310,14.0,47.8,28,2267,0,800,12.5,720,83.0,100
+RA,Ravenna,Rávena,Ravenna,Ravenne,Ravenna,Равенна,Emilia-Romagna,Ravenna,44.42,12.20,388817,1858,209.3,16500000000,42440,5.8,47.0,95,431,-4,18,13.8,680,83.8,18
+RC,Reggio Calabria,Reggio Calabria,Reggio Calabria,Reggio de Calabre,Reggio Calabria,Реджо-ди-Калабрия,Calabria,Reggio Calabria,38.11,15.65,519824,3183,163.3,8500000000,16350,20.8,44.8,210,1955,0,520,18.0,780,82.5,97
+RE,Reggio Emilia,Reggio Emilia,Reggio Emilia,Reggio d'Émilie,Reggio Emilia,Реджо-Эмилия,Emilia-Romagna,Reggio Emilia,44.70,10.63,530343,2291,231.5,25500000000,48090,5.0,45.2,0,2165,18,320,13.2,750,84.0,42
+RG,Ragusa,Ragusa,Ragusa,Raguse,Ragusa,Рагуза,Sicilia,Ragusa,36.93,14.73,321780,1614,199.4,6500000000,20200,18.5,43.8,90,986,0,350,17.5,520,82.8,12
+RI,Rieti,Rieti,Rieti,Rieti,Rieti,Риети,Lazio,Rieti,42.40,12.86,151573,2749,55.1,4200000000,27710,10.5,47.5,0,2458,350,780,12.5,920,83.0,73
+RM,Roma,Roma,Rome,Rome,Roma,Рим,Lazio,Roma,41.90,12.50,4253314,5352,794.7,185000000000,43500,8.5,44.5,140,2213,-5,350,15.2,820,83.5,121
+RN,Rimini,Rímini,Rimini,Rimini,Rimini,Римини,Emilia-Romagna,Rimini,44.07,12.57,340050,863,394.0,13500000000,39700,6.2,46.0,35,787,0,180,14.5,720,83.8,27
+RO,Rovigo,Rovigo,Rovigo,Rovigo,Rovigo,Ровиго,Veneto,Rovigo,45.07,11.79,230915,1789,129.1,8200000000,35510,6.5,48.2,95,18,-1,5,13.5,680,83.2,50
+SA,Salerno,Salerno,Salerno,Salerne,Salerno,Салерно,Campania,Salerno,40.68,14.77,1072397,4954,216.5,18500000000,17250,18.0,43.5,218,1899,0,580,16.5,980,82.5,158
+SI,Siena,Siena,Siena,Sienne,Siena,Сиена,Toscana,Siena,43.32,11.33,266313,3821,69.7,10500000000,39430,6.8,48.0,0,1738,90,480,14.0,850,84.5,35
+SO,Sondrio,Sondrio,Sondrio,Sondrio,Sondrio,Сондрио,Lombardia,Sondrio,46.17,9.87,178784,3212,55.7,6800000000,38030,4.5,46.5,0,4049,260,1650,8.5,1080,84.0,77
+SP,La Spezia,La Spezia,La Spezia,La Spezia,La Spezia,Ла-Специя,Liguria,La Spezia,44.11,9.83,216527,881,245.8,7500000000,34640,7.5,49.2,70,1748,0,480,15.0,1180,83.8,32
+SR,Siracusa,Siracusa,Syracuse,Syracuse,Siracusa,Сиракузы,Sicilia,Siracusa,37.07,15.29,391432,2109,185.6,7200000000,18400,19.0,44.2,170,986,0,280,18.2,520,82.5,21
+SS,Sassari,Sassari,Sassari,Sassari,Sassari,Сассари,Sardegna,Sassari,40.73,8.56,327390,7692,42.6,8500000000,25970,12.5,46.0,648,1359,0,350,16.0,580,83.2,66
+SV,Savona,Savona,Savona,Savone,Savona,Савона,Liguria,Savona,44.31,8.48,268503,1545,173.8,9200000000,34270,8.0,50.0,85,1386,0,520,14.8,950,83.8,69
+TA,Taranto,Tarento,Taranto,Tarente,Taranto,Таранто,Puglia,Taranto,40.48,17.23,553843,2467,224.5,9500000000,17160,17.0,44.5,142,623,0,180,17.0,580,82.5,29
+TE,Teramo,Teramo,Teramo,Teramo,Teramo,Терамо,Abruzzo,Teramo,42.66,13.70,299849,1915,156.6,8800000000,29350,9.5,46.2,48,2912,0,520,13.5,720,83.8,47
+TN,Trento,Trento,Trento,Trente,Trento,Тренто,Trentino-Alto Adige,Trento,46.07,11.12,545425,6207,87.9,24000000000,43990,4.2,43.5,0,3764,65,980,10.0,980,85.0,166
+TO,Torino,Turín,Turin,Turin,Torino,Турин,Piemonte,Torino,45.07,7.69,2205081,6830,322.8,92000000000,41720,7.5,46.5,0,4061,220,750,12.0,920,83.5,312
+TP,Trapani,Trapani,Trapani,Trapani,Trapani,Трапани,Sicilia,Trapani,37.96,12.51,418852,2460,170.3,7200000000,17190,20.5,45.2,312,751,0,280,18.5,480,82.2,24
+TR,Terni,Terni,Terni,Terni,Terni,Терни,Umbria,Terni,42.56,12.65,216464,2122,102.0,5200000000,24020,9.0,47.5,0,1290,96,480,13.5,920,83.2,33
+TS,Trieste,Trieste,Trieste,Trieste,Trieste,Триест,Friuli-Venezia Giulia,Trieste,45.65,13.78,230020,212,1085.0,10500000000,45650,5.2,48.5,45,643,0,180,13.5,1050,84.0,6
+TV,Treviso,Treviso,Treviso,Trévise,Treviso,Тревизо,Veneto,Treviso,45.67,12.24,884062,2480,356.5,40000000000,45250,4.2,45.0,0,1775,5,180,13.0,1120,84.2,94
+UD,Udine,Udine,Udine,Udine,Udine,Удине,Friuli-Venezia Giulia,Udine,46.07,13.24,524506,4907,106.9,20500000000,39090,5.0,47.2,43,2780,0,650,11.8,1580,83.8,136
+VA,Varese,Varese,Varese,Varèse,Varese,Варезе,Lombardia,Varese,45.82,8.83,880578,1199,734.4,36500000000,41450,5.5,45.2,0,2301,240,450,12.0,1480,84.0,138
+VB,Verbano-Cusio-Ossola,Verbano-Cusio-Ossola,Verbano-Cusio-Ossola,Verbano-Cusio-Ossola,Verbano-Cusio-Ossola,Вербано-Кузьо-Оссола,Piemonte,Verbania,46.00,8.45,156274,2255,69.3,5200000000,33280,6.2,48.5,0,4634,193,1150,10.5,1680,83.5,74
+VC,Vercelli,Vercelli,Vercelli,Verceil,Vercelli,Верчелли,Piemonte,Vercelli,45.33,8.42,166328,2088,79.7,5800000000,34870,6.8,48.5,0,4559,130,520,12.0,920,83.2,82
+VE,Venezia,Venecia,Venice,Venise,Venezia,Венеция,Veneto,Venezia,45.44,12.32,848370,2462,344.6,38500000000,45380,5.0,46.0,159,0,-1,5,13.5,820,83.8,44
+VI,Vicenza,Vicenza,Vicenza,Vicence,Vicenza,Виченца,Veneto,Vicenza,45.55,11.55,859205,2722,315.7,40500000000,47130,4.0,45.2,0,2105,18,280,13.2,1020,84.2,114
+VR,Verona,Verona,Verona,Vérone,Verona,Верона,Veneto,Verona,45.44,10.99,926497,3096,299.2,42000000000,45330,4.5,45.5,0,2218,18,180,13.5,850,84.0,98
+VS,Medio Campidano,Medio Campidano,Medio Campidano,Medio Campidano,Medio Campidano,Медио-Кампидано,Sardegna,Sanluri,39.57,8.90,94763,1516,62.5,1500000000,15830,19.0,48.5,25,1236,0,250,16.8,520,82.5,28
+VT,Viterbo,Viterbo,Viterbo,Viterbe,Viterbo,Витербо,Lazio,Viterbo,42.42,12.11,309541,3612,85.7,7800000000,25200,11.0,46.5,0,1053,0,380,14.0,850,83.0,60
+VV,Vibo Valentia,Vibo Valentia,Vibo Valentia,Vibo Valentia,Vibo Valentia,Вибо-Валентия,Calabria,Vibo Valentia,38.68,16.10,151932,1139,133.4,2500000000,16450,21.5,45.2,70,1423,0,420,16.5,780,82.0,50

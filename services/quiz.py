@@ -19,7 +19,7 @@ QUIZ_DATASET_TO_VAR_CONFIG: dict[str, str] = {
     "spain-provinces": "spain_provinces",
     "russia-regions":  "russia_regions",
     "france-regions":  "france_regions",
-    "italy-regions":   "italy_regions",
+    "italy-provinces":   "italy_provinces",
     "germany-states":  "germany_states",
 }
 

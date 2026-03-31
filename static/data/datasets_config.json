@@ -123,12 +123,12 @@
         "geostats": true
       }
     },
-    "italy-regions": {
-      "id": "italy-regions",
-      "label_es": "Regiones de Italia",
-      "label_en": "Italy Regions",
-      "csv_file": "italy_regions.csv",
-      "geojson_dir": "geojson_italy",
+    "italy-provinces": {
+      "id": "italy-provinces",
+      "label_es": "Provincias de Italia",
+      "label_en": "Italy Provinces",
+      "csv_file": "italy_provinces.csv",
+      "geojson_dir": "geojson_italy_provinces",
       "images_dir": null,
       "exists": true,
       "visible": true,

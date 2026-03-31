@@ -19,7 +19,7 @@ var GeoCustomize = (function () {
 
     var REGION_DATASETS = [
         'us-states', 'spain-provinces', 'russia-regions',
-        'france-regions', 'italy-regions', 'germany-states',
+        'france-regions', 'italy-provinces', 'germany-states',
     ];
 
     // Module-scope reference so continent pills handler can reset it

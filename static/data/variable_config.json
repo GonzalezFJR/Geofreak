@@ -1641,15 +1641,15 @@
         }
       ]
     },
-    "italy_regions": {
-      "id": "italy_regions",
-      "label_es": "Regiones de Italia",
-      "label_en": "Italian Regions",
-      "label_fr": "Régions d'Italie",
-      "label_it": "Regioni d'Italia",
-      "label_ru": "Регионы Италии",
-      "csv": "italy_regions.csv",
-      "geojson_dir": "geojson_italy",
+    "italy_provinces": {
+      "id": "italy_provinces",
+      "label_es": "Provincias de Italia",
+      "label_en": "Italian Provinces",
+      "label_fr": "Provinces d'Italie",
+      "label_it": "Province d'Italia",
+      "label_ru": "Провинции Италии",
+      "csv": "italy_provinces.csv",
+      "geojson_dir": "geojson_italy_provinces",
       "images_dir": null,
       "id_field": "code",
       "name_field": "name",

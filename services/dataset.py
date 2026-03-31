@@ -14,7 +14,7 @@ US_STATES_CSV = os.path.join(DATA_DIR, "usastates.csv")
 SPAIN_PROVINCES_CSV = os.path.join(DATA_DIR, "spain_provinces.csv")
 RUSSIA_REGIONS_CSV = os.path.join(DATA_DIR, "russia_regions.csv")
 FRANCE_REGIONS_CSV = os.path.join(DATA_DIR, "france_regions.csv")
-ITALY_REGIONS_CSV = os.path.join(DATA_DIR, "italy_regions.csv")
+ITALY_PROVINCES_CSV = os.path.join(DATA_DIR, "italy_provinces.csv")
 GERMANY_STATES_CSV = os.path.join(DATA_DIR, "germany_states.csv")
 
 # Maps filter key → continent values in the countries CSV
@@ -255,10 +255,10 @@ class DatasetService:
 
     def _load_italy(self) -> pd.DataFrame:
         if self._italy_df is None:
-            if not os.path.exists(ITALY_REGIONS_CSV):
+            if not os.path.exists(ITALY_PROVINCES_CSV):
                 self._italy_df = pd.DataFrame()
             else:
-                self._italy_df = pd.read_csv(ITALY_REGIONS_CSV, keep_default_na=False)
+                self._italy_df = pd.read_csv(ITALY_PROVINCES_CSV, keep_default_na=False)
         return self._italy_df
 
     def _load_germany(self) -> pd.DataFrame:
@@ -350,7 +350,7 @@ class DatasetService:
                 continue
         return records
 
-    def get_italy_regions(self) -> list[dict]:
+    def get_italy_provinces(self) -> list[dict]:
         df = self._load_italy()
         if df.empty:
             return []
@@ -409,7 +409,7 @@ class DatasetService:
             "spain-provinces": self._load_spain,
             "russia-regions":  self._load_russia,
             "france-regions":  self._load_france,
-            "italy-regions":   self._load_italy,
+            "italy-provinces":   self._load_italy,
             "germany-states":  self._load_germany,
         }
         loader = loaders.get(dataset_id)
@@ -485,7 +485,7 @@ class DatasetService:
         df_france = self._load_france()
         result["france-regions"] = {"all": int(len(df_france)) if not df_france.empty else 0}
         df_italy = self._load_italy()
-        result["italy-regions"] = {"all": int(len(df_italy)) if not df_italy.empty else 0}
+        result["italy-provinces"] = {"all": int(len(df_italy)) if not df_italy.empty else 0}
         df_germany = self._load_germany()
         result["germany-states"] = {"all": int(len(df_germany)) if not df_germany.empty else 0}
 
