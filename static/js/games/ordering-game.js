@@ -107,6 +107,10 @@ var OrderingGame = (function () {
 
     function showQuestion() {
         if (currentIdx >= questions.length) {
+            // Calculate normalized score (average of 0-10 per question)
+            var avgScore = questions.length > 0 ? totalScore / questions.length : 0;
+            avgScore = Math.round(avgScore * 10) / 10; // 1 decimal
+            GeoGame.setNormalizedScore(avgScore);
             saveResult();
             GeoGame.endGame();
             return;

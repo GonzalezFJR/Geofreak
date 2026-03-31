@@ -467,6 +467,7 @@ var GeoGame = {
     timeRemaining: 0,
     settings: {},
     _callbacks: {},
+    normalizedScore: null,  // For games with 0-10 per-question scoring
 
     /** Register game callbacks: { onStart(settings) } */
     init: function (callbacks) {
@@ -591,6 +592,11 @@ var GeoGame = {
         this._updateHudScore();
     },
 
+    /** Set normalized score (0-10) for games like ordering/geostats */
+    setNormalizedScore: function (score) {
+        this.normalizedScore = score;
+    },
+
     _updateHudScore: function () {
         var c = document.getElementById('hud-correct');
         var t = document.getElementById('hud-total');
@@ -612,10 +618,19 @@ var GeoGame = {
         document.getElementById('result-pct').textContent = pct + '%';
         document.getElementById('result-time').textContent = m + ':' + (s < 10 ? '0' : '') + s;
 
-        document.querySelector('.results-icon').innerHTML = resultIcon(this.correct, this.total);
+        // For games with normalized scoring (0-10), use that for icon and results
+        var useNorm = this.normalizedScore !== null;
+        document.querySelector('.results-icon').innerHTML = useNorm
+            ? resultIcon(this.normalizedScore, 10)
+            : resultIcon(this.correct, this.total);
 
         // Build enhanced results UI (stars + metrics + share + actions)
-        GeoResults.build(this.correct, this.total, elapsedMs);
+        GeoResults.build(this.correct, this.total, elapsedMs, {
+            normalizedScore: this.normalizedScore
+        });
+
+        // Reset for next game
+        this.normalizedScore = null;
 
         document.getElementById('results-overlay').style.display = 'flex';
         this._saveResult(elapsed);
@@ -882,8 +897,15 @@ var GeoResults = (function () {
             '<polygon points="'+pts+'" fill="none" stroke="#d1d5db" stroke-width="1.2" stroke-linejoin="round"/></svg>';
     }
 
-    function renderStarsHTML(score, total) {
-        var stars = total > 0 ? (score / total) * 5 : 0;
+    function renderStarsHTML(score, total, opts) {
+        opts = opts || {};
+        var stars;
+        if (opts.normalizedScore !== null && opts.normalizedScore !== undefined) {
+            // Normalized 0-10 score: map to 0-5 stars
+            stars = opts.normalizedScore / 2;
+        } else {
+            stars = total > 0 ? (score / total) * 5 : 0;
+        }
         var full = Math.floor(stars);
         var half = (stars - full) >= 0.5 ? 1 : 0;
         var empty = 5 - full - half;
@@ -895,8 +917,14 @@ var GeoResults = (function () {
         return html;
     }
 
-    function starsText(score, total) {
-        var stars = total > 0 ? (score / total) * 5 : 0;
+    function starsText(score, total, opts) {
+        opts = opts || {};
+        var stars;
+        if (opts.normalizedScore !== null && opts.normalizedScore !== undefined) {
+            stars = opts.normalizedScore / 2;
+        } else {
+            stars = total > 0 ? (score / total) * 5 : 0;
+        }
         var full = Math.floor(stars);
         var half = (stars - full) >= 0.5 ? 1 : 0;
         var empty = 5 - full - half;
@@ -915,21 +943,33 @@ var GeoResults = (function () {
     }
 
     /* ── Build enhanced results ───────────────────────────── */
-    function build(score, total, timeMs) {
-        _lastResult = { score: score, total: total, timeMs: timeMs };
+    function build(score, total, timeMs, opts) {
+        opts = opts || {};
+        var normScore = (opts.normalizedScore !== null && opts.normalizedScore !== undefined)
+            ? opts.normalizedScore : null;
+
+        _lastResult = { score: score, total: total, timeMs: timeMs, normalizedScore: normScore };
 
         // Hide normal stats grid, show enhanced section
         var normalStats = document.getElementById('results-stats-normal');
         if (normalStats) normalStats.style.display = 'none';
 
+        // Format score display: X.X/10 for normalized, N/M for standard
+        var scoreDisplay = normScore !== null
+            ? normScore.toFixed(1) + '/10'
+            : score + '/' + total;
+        var scoreLabel = normScore !== null
+            ? (T['game.score'] || 'Score')
+            : (T['daily.hits'] || 'Correct');
+
         var section = document.getElementById('results-enhanced');
         section.style.display = '';
         section.innerHTML =
-            renderStarsHTML(score, total) +
+            renderStarsHTML(score, total, opts) +
             '<div class="daily-metrics">' +
                 '<div class="daily-metric">' +
-                    '<span class="daily-metric-value">' + score + '/' + total + '</span>' +
-                    '<span class="daily-metric-label">' + (T['daily.hits'] || 'Correct') + '</span>' +
+                    '<span class="daily-metric-value">' + scoreDisplay + '</span>' +
+                    '<span class="daily-metric-label">' + scoreLabel + '</span>' +
                 '</div>' +
                 '<div class="daily-metric">' +
                     '<span class="daily-metric-value">' + fmtTime(timeMs) + '</span>' +
@@ -1043,11 +1083,22 @@ var GeoResults = (function () {
         var r = _lastResult;
         var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
         var gameName = (GAME_CONFIG && GAME_CONFIG.name) || 'GeoFreak';
-        var template = isDaily
-            ? (T['daily.share_text'] || 'I got {score}/{total} on today\'s GeoFreak daily challenge')
-            : (T['game.share_text'] || 'I got {score}/{total} on GeoFreak — {game}');
-        var text = template.replace('{score}', r.score).replace('{total}', r.total).replace('{game}', gameName);
-        text += '\n' + starsText(r.score, r.total);
+        var hasNorm = r.normalizedScore !== null && r.normalizedScore !== undefined;
+
+        var template, scoreText;
+        if (hasNorm) {
+            template = isDaily
+                ? (T['daily.share_text_norm'] || 'I scored {score}/10 on today\'s GeoFreak daily challenge')
+                : (T['game.share_text_norm'] || 'I scored {score}/10 on GeoFreak — {game}');
+            scoreText = r.normalizedScore.toFixed(1);
+        } else {
+            template = isDaily
+                ? (T['daily.share_text'] || 'I got {score}/{total} on today\'s GeoFreak daily challenge')
+                : (T['game.share_text'] || 'I got {score}/{total} on GeoFreak — {game}');
+            scoreText = r.score;
+        }
+        var text = template.replace('{score}', scoreText).replace('{total}', r.total).replace('{game}', gameName);
+        text += '\n' + starsText(r.score, r.total, { normalizedScore: r.normalizedScore });
         text += '\n⏱️ ' + fmtTime(r.timeMs);
         if (isDaily) {
             text += '\nhttps://geofreak.net/games/daily';
@@ -1227,3 +1278,60 @@ document.addEventListener('keydown', function (e) {
         if (e.key === 'ArrowRight') { e.preventDefault(); GeoReview.navigate(1); }
     }
 });
+
+/* ── Mobile Keyboard Viewport Handler ────────────────────────
+   Uses visualViewport API to handle virtual keyboard showing/hiding.
+   When keyboard opens, the viewport shrinks, and we adjust the
+   game-area height so the flag/map shrinks but input stays visible.
+   ─────────────────────────────────────────────────────────────── */
+(function () {
+    'use strict';
+    if (!window.visualViewport) return;  // Not supported (desktop)
+
+    var gameArea = null;
+    var quizContainer = null;
+    var originalHeight = null;
+    var isKeyboardOpen = false;
+
+    function init() {
+        gameArea = document.getElementById('game-area');
+        quizContainer = document.querySelector('.quiz-container');
+        if (!gameArea || !quizContainer) return;
+
+        window.visualViewport.addEventListener('resize', handleViewportResize);
+    }
+
+    function handleViewportResize() {
+        if (!gameArea || !quizContainer) return;
+
+        var vv = window.visualViewport;
+        var windowHeight = window.innerHeight;
+        var keyboardHeight = windowHeight - vv.height;
+
+        // Keyboard considered open if more than 150px hidden
+        var nowOpen = keyboardHeight > 150;
+
+        if (nowOpen && !isKeyboardOpen) {
+            // Keyboard just opened
+            isKeyboardOpen = true;
+            originalHeight = gameArea.style.height;
+            gameArea.style.height = vv.height + 'px';
+            document.body.classList.add('keyboard-open');
+        } else if (!nowOpen && isKeyboardOpen) {
+            // Keyboard closed
+            isKeyboardOpen = false;
+            gameArea.style.height = originalHeight || '';
+            document.body.classList.remove('keyboard-open');
+        } else if (nowOpen) {
+            // Keyboard still open, update height
+            gameArea.style.height = vv.height + 'px';
+        }
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();

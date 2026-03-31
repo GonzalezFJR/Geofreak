@@ -3,6 +3,7 @@
 from functools import lru_cache
 from typing import Optional
 
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings
 
 
@@ -53,9 +54,15 @@ class Settings(BaseSettings):
     # Public URL (for email links)
     base_url: str = "https://geofreak.net"
 
-    # Captcha (Cloudflare Turnstile)
-    captcha_site_key: str = ""
-    captcha_secret_key: str = ""
+    # Captcha (Cloudflare Turnstile) - accepts both CAPTCHA_ and CAPCHA_ prefixes
+    captcha_site_key: str = Field(
+        default="",
+        validation_alias=AliasChoices("captcha_site_key", "capcha_site_key"),
+    )
+    captcha_secret_key: str = Field(
+        default="",
+        validation_alias=AliasChoices("captcha_secret_key", "capcha_secret_key"),
+    )
 
     # Docker (read from .env but only used by docker-compose)
     docker_container_name: str = "geofreak-app"

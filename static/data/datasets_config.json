@@ -1,0 +1,93 @@
+{
+  "last_updated": null,
+  "datasets": {
+    "countries": {
+      "id": "countries",
+      "label_es": "Países",
+      "label_en": "Countries",
+      "csv_file": "countries.csv",
+      "geojson_dir": "geojson",
+      "images_dir": "images/flags",
+      "exists": true,
+      "visible": true,
+      "entity_count": null
+    },
+    "cities": {
+      "id": "cities",
+      "label_es": "Ciudades",
+      "label_en": "Cities",
+      "csv_file": "cities.csv",
+      "geojson_dir": null,
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null
+    },
+    "us-states": {
+      "id": "us-states",
+      "label_es": "Estados de EE.UU.",
+      "label_en": "US States",
+      "csv_file": "usastates.csv",
+      "geojson_dir": "geojson_us",
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null
+    },
+    "spain-provinces": {
+      "id": "spain-provinces",
+      "label_es": "Provincias de España",
+      "label_en": "Spain Provinces",
+      "csv_file": "spain_provinces.csv",
+      "geojson_dir": "geojson_spain",
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null
+    },
+    "russia-regions": {
+      "id": "russia-regions",
+      "label_es": "Regiones de Rusia",
+      "label_en": "Russia Regions",
+      "csv_file": "russia_regions.csv",
+      "geojson_dir": "geojson_russia",
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null
+    },
+    "france-regions": {
+      "id": "france-regions",
+      "label_es": "Regiones de Francia",
+      "label_en": "France Regions",
+      "csv_file": "france_regions.csv",
+      "geojson_dir": "geojson_france",
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null
+    },
+    "italy-regions": {
+      "id": "italy-regions",
+      "label_es": "Regiones de Italia",
+      "label_en": "Italy Regions",
+      "csv_file": "italy_regions.csv",
+      "geojson_dir": "geojson_italy",
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null
+    },
+    "germany-states": {
+      "id": "germany-states",
+      "label_es": "Estados de Alemania",
+      "label_en": "Germany States",
+      "csv_file": "germany_states.csv",
+      "geojson_dir": "geojson_germany",
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null
+    }
+  }
+}

@@ -15,6 +15,8 @@ var GeoStatsGame = (function () {
     var resolved = false;
     var bestDistPct = Infinity;   // closest wrong guess (% of stat range)
     var answers = [];             // track per-question results for summary
+    var isLogScale = true;        // logarithmic scale by default
+    var currentQuestion = null;   // track current question for scale toggle
 
     /* ── Name → ISO reverse map ──────────────────────────── */
     var nameToIso = null;
@@ -160,6 +162,10 @@ var GeoStatsGame = (function () {
 
     function showQuestion() {
         if (currentIdx >= questions.length) {
+            // Calculate normalized score (average of 0-10 per question)
+            var avgScore = questions.length > 0 ? totalScore / questions.length : 0;
+            avgScore = Math.round(avgScore * 10) / 10; // 1 decimal
+            GeoGame.setNormalizedScore(avgScore);
             saveResult();
             GeoGame.endGame();
             return;
@@ -209,6 +215,7 @@ var GeoStatsGame = (function () {
 
     function renderChart(q) {
         if (chart) { chart.destroy(); chart = null; }
+        currentQuestion = q;
 
         var canvas = document.getElementById('geostats-chart');
         var ctx = canvas.getContext('2d');
@@ -218,6 +225,10 @@ var GeoStatsGame = (function () {
         gradient.addColorStop(1, 'rgba(26, 115, 232, 0.01)');
 
         var labels = q.curve.map(function (_, i) { return i; });
+
+        // Ensure scale toggle button exists
+        ensureScaleToggle();
+        updateScaleToggleText();
 
         chart = new Chart(ctx, {
             type: 'line',
@@ -247,6 +258,7 @@ var GeoStatsGame = (function () {
                         border: { display: true, color: 'rgba(0,0,0,0.08)' }
                     },
                     y: {
+                        type: isLogScale ? 'logarithmic' : 'linear',
                         display: true,
                         grid: { color: 'rgba(0,0,0,0.04)' },
                         border: { display: false },
@@ -296,6 +308,48 @@ var GeoStatsGame = (function () {
                 }
             }
         });
+    }
+
+    /* ── Scale toggle ───────────────────────────────────── */
+
+    function ensureScaleToggle() {
+        var wrapper = document.querySelector('.geostats-chart-wrapper');
+        if (!wrapper) return;
+        if (wrapper.querySelector('.scale-toggle')) return;
+
+        var btn = document.createElement('button');
+        btn.className = 'scale-toggle';
+        btn.type = 'button';
+        btn.onclick = function () { toggleScale(); };
+        wrapper.appendChild(btn);
+    }
+
+    function updateScaleToggleText() {
+        var btn = document.querySelector('.scale-toggle');
+        if (btn) {
+            btn.textContent = isLogScale ? 'LOG' : 'LIN';
+            btn.title = isLogScale
+                ? (T['gs.scale_log'] || 'Logarithmic scale (click to switch)')
+                : (T['gs.scale_lin'] || 'Linear scale (click to switch)');
+        }
+    }
+
+    function toggleScale() {
+        isLogScale = !isLogScale;
+        if (chart && currentQuestion) {
+            // Preserve annotations before re-rendering
+            var annotations = chart.options.plugins.annotation.annotations;
+            renderChart(currentQuestion);
+            // Restore annotations
+            if (chart) {
+                for (var key in annotations) {
+                    if (key !== 'targetLine') {
+                        chart.options.plugins.annotation.annotations[key] = annotations[key];
+                    }
+                }
+                chart.update();
+            }
+        }
     }
 
     /* ── Guess ───────────────────────────────────────────── */

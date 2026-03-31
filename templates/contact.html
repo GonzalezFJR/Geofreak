@@ -18,7 +18,7 @@
             <input type="email" name="email" placeholder="{{ t('contact.email', lang) }}" required maxlength="200">
             <textarea name="message" placeholder="{{ t('contact.message', lang) }}" required maxlength="2000"></textarea>
             {% if captcha_site_key %}
-            <div class="cf-turnstile" data-sitekey="{{ captcha_site_key }}" data-appearance="interaction-only"></div>
+            <div class="cf-turnstile" data-sitekey="{{ captcha_site_key }}"></div>
             {% endif %}
             <button type="submit">{{ t('contact.send', lang) }}</button>
         </form>

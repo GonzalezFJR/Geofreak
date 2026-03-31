@@ -28,6 +28,7 @@
         "secs_per_item": 20
       },
       "has_continent_filter": true,
+      "allowed_datasets": ["countries"],
       "enabled": true,
       "visible": true,
       "modes": {
@@ -63,6 +64,7 @@
         "secs_per_item": 20
       },
       "has_continent_filter": true,
+      "allowed_datasets": ["countries"],
       "enabled": true,
       "visible": true,
       "modes": {

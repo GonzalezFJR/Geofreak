@@ -15,6 +15,7 @@ from core.templates import templates
 from services.analytics import get_counters, get_recent_events, count_s3_events_today, list_s3_event_files
 from services.games import GamesService
 from services.quiz import get_all_variables, get_datasets, get_sources, toggle_variable, reload_var_config
+from services.dataset_config import get_dataset_config_service
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -594,3 +595,53 @@ async def admin_daily_preview(request: Request, date_str: str):
     if not data:
         raise HTTPException(status_code=404, detail="Challenge not found")
     return JSONResponse(content=data)
+
+
+# ── Dataset Configuration ────────────────────────────────────────────────────
+
+@router.get("/dataset-config", response_class=HTMLResponse)
+async def admin_dataset_config(request: Request, saved: str = ""):
+    if not is_authenticated(request):
+        return RedirectResponse("/admin/login", status_code=303)
+    lang = get_lang(request)
+
+    svc = get_dataset_config_service()
+    datasets = svc.get_all_datasets()
+    last_updated = svc.get_last_updated()
+
+    return templates.TemplateResponse("admin/dataset_config.html", {
+        "request": request, "lang": lang, "section": "dataset-config",
+        "datasets": datasets,
+        "last_updated": last_updated,
+        "saved": saved == "1",
+    })
+
+
+@router.post("/dataset-config/update-state")
+async def admin_update_dataset_state(request: Request):
+    _require_auth(request)
+    svc = get_dataset_config_service()
+    summary = svc.update_existence_state()
+    return JSONResponse(content=summary)
+
+
+@router.post("/dataset-config/{dataset_id}/visibility")
+async def admin_toggle_dataset_visibility(request: Request, dataset_id: str):
+    _require_auth(request)
+    form = await request.form()
+    visible = form.get("visible") == "1"
+    svc = get_dataset_config_service()
+    svc.toggle_visibility(dataset_id, visible)
+    return RedirectResponse("/admin/dataset-config?saved=1", status_code=303)
+
+
+@router.get("/api/datasets-config")
+async def api_get_datasets_config(request: Request):
+    """API endpoint to get visible datasets for frontend."""
+    svc = get_dataset_config_service()
+    visible = svc.get_visible_datasets()
+    all_datasets = svc.get_all_datasets()
+    return JSONResponse(content={
+        "visible": visible,
+        "datasets": {k: {"label_es": v.get("label_es"), "label_en": v.get("label_en"), "visible": v.get("visible"), "exists": v.get("exists")} for k, v in all_datasets.items()}
+    })
