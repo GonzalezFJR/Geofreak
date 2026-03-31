@@ -176,7 +176,7 @@
           "description_en": "Percentage of people aged 15+ who can read and write.",
           "unit": "%",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "worldbank"
         },
         {
@@ -190,7 +190,7 @@
           "description_en": "Percentage of the population born abroad.",
           "unit": "%",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "un_desa"
         },
         {
@@ -232,7 +232,7 @@
           "description_en": "Percentage of the labour force actively seeking employment.",
           "unit": "%",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "worldbank"
         },
         {
@@ -260,7 +260,7 @@
           "description_en": "Annual number of international tourist arrivals.",
           "unit": "",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "worldbank"
         },
         {
@@ -288,7 +288,7 @@
           "description_en": "Percentage of energy consumption from renewable sources.",
           "unit": "%",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "worldbank"
         },
         {
@@ -302,7 +302,7 @@
           "description_en": "Percentage of land area covered by forests (FAO).",
           "unit": "%",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "worldbank"
         },
         {
@@ -330,7 +330,7 @@
           "description_en": "Age dividing the population into two equal halves.",
           "unit": "años",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "cia_factbook"
         },
         {
@@ -358,7 +358,7 @@
           "description_en": "Highest point above sea level, in metres.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "cia_factbook"
         },
         {
@@ -386,7 +386,7 @@
           "description_en": "Annual average temperature in °C, area-weighted.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "worldbank_climate"
         },
         {
@@ -428,7 +428,7 @@
           "description_en": "Average annual precipitation (rain and snow) in mm.",
           "unit": "mm",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "worldbank_climate"
         },
         {
@@ -498,7 +498,7 @@
           "description_en": "Average elevation above sea level in metres.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "cia_factbook"
         },
         {
@@ -554,7 +554,7 @@
           "description_en": "Agricultural sector value added as a percentage of GDP (World Bank).",
           "unit": "%",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "worldbank"
         },
         {
@@ -568,7 +568,7 @@
           "description_en": "Industrial sector value added as a percentage of GDP (World Bank).",
           "unit": "%",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "worldbank"
         },
         {
@@ -1750,7 +1750,7 @@
           "description_en": "Age dividing the region population into two equal halves.",
           "unit": "años",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "istat"
         },
         {
@@ -1806,7 +1806,7 @@
           "description_en": "Average elevation above sea level.",
           "unit": "m",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "istat"
         },
         {
@@ -1820,7 +1820,7 @@
           "description_en": "Annual average temperature in °C.",
           "unit": "°C",
           "format": "float1",
-          "enabled": false,
+          "enabled": true,
           "source": "ispra"
         },
         {
@@ -1834,7 +1834,7 @@
           "description_en": "Average annual precipitation in mm.",
           "unit": "mm",
           "format": "int",
-          "enabled": false,
+          "enabled": true,
           "source": "ispra"
         },
         {
