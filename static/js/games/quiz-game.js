@@ -25,6 +25,18 @@ var QuizGame = (function () {
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') checkAnswer();
         });
+
+        // Prevent buttons from stealing focus (keeps keyboard open on mobile)
+        _preventFocusLoss('.btn-skip');
+        _preventFocusLoss('.btn-reveal');
+    }
+
+    /** Prevent an element from taking focus on touch/click */
+    function _preventFocusLoss(selector) {
+        var el = document.querySelector(selector);
+        if (!el) return;
+        el.addEventListener('mousedown', function (e) { e.preventDefault(); });
+        el.addEventListener('touchstart', function (e) { e.preventDefault(); }, { passive: false });
     }
 
     function loadData(settings) {
@@ -119,6 +131,9 @@ var QuizGame = (function () {
         var country = queue[currentIdx];
         showFeedback('skipped', (T['js.skipped'] || '⏭️ It was: {name}').replace('{name}', GeoUtils.getLocalName(country)));
         GeoReview.snapshot();
+        // Refocus input to keep keyboard open
+        var input = document.getElementById('answer-input');
+        if (input) input.focus();
         setTimeout(function () { currentIdx++; showNext(); }, 1200);
     }
 
@@ -130,6 +145,8 @@ var QuizGame = (function () {
         input.className = 'wrong';
         showFeedback('wrong', (T['js.revealed'] || '👁️ {name}').replace('{name}', localName));
         GeoReview.snapshot();
+        // Refocus input to keep keyboard open
+        if (input) input.focus();
         // Count as seen but NOT correct (it's a fail)
         setTimeout(function () { currentIdx++; showNext(); }, 1500);
     }

@@ -54,7 +54,19 @@ var GeoStatsGame = (function () {
 
     function init() {
         GeoGame.init({ onStart: loadData });
+        // Prevent buttons from stealing focus (keeps keyboard open on mobile)
+        _preventFocusLoss('#btn-guess');
+        _preventFocusLoss('#btn-gs-next');
     }
+
+    /** Prevent an element from taking focus on touch/click */
+    function _preventFocusLoss(selector) {
+        var el = document.querySelector(selector);
+        if (!el) return;
+        el.addEventListener('mousedown', function (e) { e.preventDefault(); });
+        el.addEventListener('touchstart', function (e) { e.preventDefault(); }, { passive: false });
+    }
+
     init();
 
     function _dailyTodayKey() {
@@ -366,17 +378,20 @@ var GeoStatsGame = (function () {
         if (!iso) {
             showFeedback('warning', T['gs.not_found'] || 'Country not recognized');
             input.value = '';
+            input.focus();
             return;
         }
         if (guessedIsos[iso]) {
             showFeedback('warning', T['gs.already'] || 'Already guessed');
             input.value = '';
+            input.focus();
             return;
         }
         if (!(iso in q.positions)) {
             var cName = getDisplayName(iso);
             showFeedback('warning', (T['gs.no_data'] || 'No data for {name}').replace('{name}', cName));
             input.value = '';
+            input.focus();
             return;
         }
 
@@ -390,6 +405,7 @@ var GeoStatsGame = (function () {
         }
         updateStatus();
         input.value = '';
+        input.focus();
     }
 
     function onCorrect(q) {

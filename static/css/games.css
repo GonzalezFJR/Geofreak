@@ -1637,6 +1637,7 @@ a.game-card:hover .game-card-icon {
 
     .game-area {
         padding-top: calc(48px + 32px);
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
         height: 100vh;
         height: 100dvh;  /* Dynamic viewport for mobile browsers */
         display: flex;
@@ -1648,7 +1649,7 @@ a.game-card:hover .game-card-icon {
         flex: 1;
         min-height: 0;
         height: auto;
-        padding: 6px 10px 4px;
+        padding: 6px 10px calc(env(safe-area-inset-bottom, 0px) + 8px);
         max-width: 100%;
     }
 
@@ -1697,6 +1698,8 @@ a.game-card:hover .game-card-icon {
     /* ── Map on phone ─── */
     .map-game-container {
         height: calc(100vh - 48px - 32px);
+        height: calc(100dvh - 48px - 32px);
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 12px);
     }
 
     .map-game-prompt {
@@ -1963,7 +1966,8 @@ body:has(.game-page) {
     /* GeoStats mobile fit */
     body:has(.game-page) .geostats-container {
         height: calc(100vh - 40px - 30px);
-        padding: 8px 10px 6px;
+        height: calc(100dvh - 40px - 30px);
+        padding: 8px 10px calc(env(safe-area-inset-bottom, 0px) + 6px);
         overflow: hidden;
     }
     body:has(.game-page) .geostats-header {
@@ -2252,6 +2256,19 @@ body:has(.game-page) {
 .ordering-feedback.correct { color: #4caf50; }
 .ordering-feedback.wrong { color: #ef5350; }
 
+/* ── Ordering mobile ─── */
+@media (max-width: 640px) {
+    .ordering-container {
+        padding: 12px 10px calc(env(safe-area-inset-bottom, 0px) + 12px);
+    }
+    .ordering-header { margin-bottom: 12px; }
+    .ordering-prompt { font-size: 1rem; }
+    .ordering-item { padding: 10px 12px; gap: 8px; }
+    .ordering-rank { width: 24px; height: 24px; font-size: 0.8rem; }
+    .ordering-flag { font-size: 1.2rem; }
+    .ordering-name { font-size: 0.9rem; }
+}
+
 /* ============================================================
    Comparison Game
    ============================================================ */
@@ -2341,6 +2358,19 @@ body:has(.game-page) {
 }
 .comparison-feedback.correct { color: #4caf50; }
 .comparison-feedback.wrong { color: #ef5350; }
+
+/* ── Comparison mobile ─── */
+@media (max-width: 640px) {
+    .comparison-container {
+        padding: 12px 10px calc(env(safe-area-inset-bottom, 0px) + 12px);
+    }
+    .comparison-header { margin-bottom: 16px; }
+    .comparison-prompt { font-size: 1rem; }
+    .comparison-cards { gap: 10px; }
+    .comparison-card { padding: 20px 16px; min-width: 140px; }
+    .comparison-flag { font-size: 2rem; }
+    .comparison-name { font-size: 0.95rem; }
+}
 
 /* ─── Outline Game Map ─────────────────────────────────────── */
 .outline-map-wrapper {
