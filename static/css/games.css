@@ -1637,7 +1637,7 @@ a.game-card:hover .game-card-icon {
 
     .game-area {
         padding-top: calc(48px + 32px);
-        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 32px);
         height: 100vh;
         height: 100dvh;  /* Dynamic viewport for mobile browsers */
         display: flex;
@@ -1649,7 +1649,7 @@ a.game-card:hover .game-card-icon {
         flex: 1;
         min-height: 0;
         height: auto;
-        padding: 6px 10px calc(env(safe-area-inset-bottom, 0px) + 8px);
+        padding: 6px 10px calc(env(safe-area-inset-bottom, 0px) + 24px);
         max-width: 100%;
     }
 

@@ -7,6 +7,7 @@
 var QuizGame = (function () {
     var queue = [];
     var skipped = [];       // items skipped to retry later
+    var allCountries = [];  // all loaded countries for validation
     var currentIdx = 0;
     var displayFn = null;
     var answerFn = null;
@@ -27,6 +28,12 @@ var QuizGame = (function () {
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') checkAnswer();
         });
+
+        // Prevent reveal button from closing keyboard
+        var revealBtn = document.querySelector('.btn-reveal');
+        if (revealBtn) {
+            revealBtn.addEventListener('mousedown', function (e) { e.preventDefault(); });
+        }
     }
 
     function loadData(settings) {
@@ -44,9 +51,10 @@ var QuizGame = (function () {
                     var entities = data.map(function (e) {
                         return Object.assign({}, e, { iso_a3: e.id, entity_type: 'country', flag_emoji: '' });
                     });
+                    allCountries = entities;
                     GeoUtils.shuffle(entities);
                     var max = settings.maxItems || 0;
-                    queue = max > 0 ? entities.slice(0, max) : entities;
+                    queue = max > 0 ? entities.slice(0, max) : entities.slice();
                     currentIdx = 0;
                     GeoGame.setTotal(queue.length);
                     GeoGame.beginPlay();
@@ -58,6 +66,7 @@ var QuizGame = (function () {
             fetch('/api/countries')
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
+                    allCountries = data;
                     var filtered = GeoUtils.filterByContinent(data, continent);
                     filtered = filtered.filter(function (c) {
                         if (!c.iso_a3 || !c.name) return false;
@@ -67,7 +76,7 @@ var QuizGame = (function () {
                     });
                     GeoUtils.shuffle(filtered);
                     var max = settings.maxItems || 0;
-                    queue = max > 0 ? filtered.slice(0, max) : filtered;
+                    queue = max > 0 ? filtered.slice(0, max) : filtered.slice();
                     currentIdx = 0;
                     GeoGame.setTotal(queue.length);
                     GeoGame.beginPlay();
@@ -113,6 +122,18 @@ var QuizGame = (function () {
         clearFeedback();
     }
 
+    /** Check if input matches any known country, return the matched country or null */
+    function findMatchingCountry(normalised) {
+        for (var i = 0; i < allCountries.length; i++) {
+            var c = allCountries[i];
+            var names = answerFn(c);
+            if (names.has(normalised)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
     function checkAnswer() {
         var input = document.getElementById('answer-input');
         var answer = input.value.trim();
@@ -123,16 +144,30 @@ var QuizGame = (function () {
         var normalised = GeoUtils.normalize(answer);
 
         if (acceptable.has(normalised)) {
+            // CORRECT
             GeoGame.addCorrect();
             input.className = 'correct';
             showFeedback('correct', (T['js.correct_name'] || '✅ Correct! {name}').replace('{name}', GeoUtils.getLocalName(country)));
             GeoReview.snapshot();
             setTimeout(function () { currentIdx++; showNext(); }, 800);
         } else {
-            input.className = 'wrong';
-            showFeedback('wrong', T['js.wrong_retry'] || '❌ Wrong, try again');
-            setTimeout(function () { input.className = ''; }, 400);
-            input.select();
+            // Check if it's a valid country name (but wrong answer)
+            var matched = findMatchingCountry(normalised);
+            if (matched) {
+                // Valid country, but WRONG - reveal correct answer and move on
+                var localName = GeoUtils.getLocalName(country);
+                input.value = localName;
+                input.className = 'wrong';
+                showFeedback('wrong', (T['js.wrong_answer'] || '❌ It was: {name}').replace('{name}', localName));
+                GeoReview.snapshot();
+                setTimeout(function () { currentIdx++; showNext(); }, 1500);
+            } else {
+                // Not a recognized country - let them try again
+                input.className = 'wrong';
+                showFeedback('wrong', T['js.not_recognized'] || '❓ Country not recognized');
+                setTimeout(function () { input.className = ''; }, 400);
+                input.select();
+            }
         }
     }
 

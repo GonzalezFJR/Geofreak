@@ -3250,8 +3250,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
 # ── JS-only keys (shipped to the browser) ─────────────────────
 _JS_KEYS = [
     # Quiz / common feedback
-    "js.correct", "js.correct_name", "js.wrong_retry", "js.skipped",
-    "js.revealed", "js.no_match",
+    "js.correct", "js.correct_name", "js.wrong_retry", "js.wrong_answer",
+    "js.not_recognized", "js.skipped", "js.revealed", "js.no_match",
     # Ordering
     "ord.prompt_asc", "ord.prompt_desc", "ord.correct", "ord.wrong", "ord.score",
     # Comparison
@@ -3319,6 +3319,8 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "js.correct": "✅ ¡Correcto!",
         "js.correct_name": "✅ ¡Correcto! {name}",
         "js.wrong_retry": "❌ Incorrecto, intenta de nuevo",
+        "js.wrong_answer": "❌ Era: {name}",
+        "js.not_recognized": "❓ País no reconocido",
         "js.skipped": "⏭️ Era: {name}",
         "js.revealed": "👁️ {name}",
         "js.no_match": "❌ No coincide",
@@ -3349,6 +3351,8 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "js.correct": "✅ Correct!",
         "js.correct_name": "✅ Correct! {name}",
         "js.wrong_retry": "❌ Wrong, try again",
+        "js.wrong_answer": "❌ It was: {name}",
+        "js.not_recognized": "❓ Country not recognized",
         "js.skipped": "⏭️ It was: {name}",
         "js.revealed": "👁️ {name}",
         "js.no_match": "❌ No match",
@@ -3379,6 +3383,8 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "js.correct": "✅ Correct !",
         "js.correct_name": "✅ Correct ! {name}",
         "js.wrong_retry": "❌ Incorrect, réessayez",
+        "js.wrong_answer": "❌ C'était : {name}",
+        "js.not_recognized": "❓ Pays non reconnu",
         "js.skipped": "⏭️ C'était : {name}",
         "js.revealed": "👁️ {name}",
         "js.no_match": "❌ Pas de correspondance",
@@ -3409,6 +3415,8 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "js.correct": "✅ Corretto!",
         "js.correct_name": "✅ Corretto! {name}",
         "js.wrong_retry": "❌ Sbagliato, riprova",
+        "js.wrong_answer": "❌ Era: {name}",
+        "js.not_recognized": "❓ Paese non riconosciuto",
         "js.skipped": "⏭️ Era: {name}",
         "js.revealed": "👁️ {name}",
         "js.no_match": "❌ Nessuna corrispondenza",
@@ -3439,6 +3447,8 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
         "js.correct": "✅ Верно!",
         "js.correct_name": "✅ Верно! {name}",
         "js.wrong_retry": "❌ Неверно, попробуйте ещё",
+        "js.wrong_answer": "❌ Это было: {name}",
+        "js.not_recognized": "❓ Страна не распознана",
         "js.skipped": "⏭️ Это было: {name}",
         "js.revealed": "👁️ {name}",
         "js.no_match": "❌ Не совпадает",
