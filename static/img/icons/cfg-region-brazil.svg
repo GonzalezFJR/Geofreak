@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" fill="none">
+  <defs>
+    <clipPath id="flag-clip-br">
+      <rect x="2" y="2" width="36" height="36" rx="3"/>
+    </clipPath>
+  </defs>
+
+  <!-- Green background -->
+  <rect x="2" y="2" width="36" height="36" fill="#009B3A" clip-path="url(#flag-clip-br)"/>
+
+  <!-- Yellow diamond -->
+  <polygon points="20,5 36,20 20,35 4,20" fill="#FEDF00" clip-path="url(#flag-clip-br)"/>
+
+  <!-- Blue circle -->
+  <circle cx="20" cy="20" r="7" fill="#002776" clip-path="url(#flag-clip-br)"/>
+
+  <!-- Light gray border -->
+  <rect x="2" y="2" width="36" height="36" rx="3" stroke="#d1d5db" stroke-width="1" fill="none"/>
+</svg>

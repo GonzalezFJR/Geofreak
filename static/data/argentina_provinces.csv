@@ -1,0 +1,25 @@
+code,name,name_es,name_en,capital,lat,lon,population,area_km2,density_per_km2,gdp_usd,gdp_per_capita_usd,unemployment_rate,median_age,coastline_km,elevation_max_m,elevation_min_m,avg_elevation_m,avg_temperature_c,annual_precipitation_mm,life_expectancy,num_departments
+AR-B,Buenos Aires,Buenos Aires,Buenos Aires,La Plata,-36.62,-60.00,17541141,307571,57.0,185000000000,10550,8.5,33.5,1280,1243,-42,150,15.5,1020,77.8,135
+AR-C,Ciudad Autónoma de Buenos Aires,Ciudad Autónoma de Buenos Aires,Buenos Aires City,Buenos Aires,-34.60,-58.38,3075646,203,15150.0,92000000000,29920,7.8,38.5,0,25,0,20,17.5,1150,78.5,15
+AR-K,Catamarca,Catamarca,Catamarca,San Fernando del Valle de Catamarca,-28.47,-65.78,415438,102602,4.0,3200000000,7700,5.5,29.5,0,6380,450,1850,18.5,350,76.2,16
+AR-H,Chaco,Chaco,Chaco,Resistencia,-27.45,-59.02,1143201,99633,11.5,5800000000,5070,6.2,28.2,0,390,45,120,22.5,1100,74.5,25
+AR-U,Chubut,Chubut,Chubut,Rawson,-43.78,-68.52,618994,224686,2.8,8500000000,13730,5.8,32.5,1540,2220,0,580,9.5,220,77.5,15
+AR-X,Córdoba,Córdoba,Córdoba,Córdoba,-32.14,-64.35,3760450,165321,22.7,32500000000,8640,8.2,33.2,0,2884,80,420,17.5,780,78.2,26
+AR-W,Corrientes,Corrientes,Corrientes,Corrientes,-28.47,-58.83,1120801,88199,12.7,4800000000,4280,6.5,28.5,0,390,35,85,21.5,1350,75.8,25
+AR-E,Entre Ríos,Entre Ríos,Entre Ríos,Paraná,-32.06,-59.20,1385961,78781,17.6,8200000000,5920,7.2,32.8,0,390,0,65,18.2,1050,77.2,17
+AR-P,Formosa,Formosa,Formosa,Formosa,-26.19,-58.18,605193,72066,8.4,2200000000,3640,5.8,26.8,0,470,55,130,23.5,1280,74.2,9
+AR-Y,Jujuy,Jujuy,Jujuy,San Salvador de Jujuy,-24.19,-65.30,770881,53219,14.5,3800000000,4930,5.2,28.2,0,6200,350,2200,17.8,680,75.5,16
+AR-L,La Pampa,La Pampa,La Pampa,Santa Rosa,-36.62,-64.29,358428,143440,2.5,4200000000,11720,4.5,34.5,0,1180,80,280,15.2,620,78.0,22
+AR-F,La Rioja,La Rioja,La Rioja,La Rioja,-29.41,-66.85,393531,89680,4.4,2500000000,6350,5.8,30.2,0,6250,450,1150,18.5,320,76.0,18
+AR-M,Mendoza,Mendoza,Mendoza,Mendoza,-33.95,-68.85,1990338,148827,13.4,15800000000,7940,6.5,33.5,0,6959,450,1450,16.2,220,77.8,18
+AR-N,Misiones,Misiones,Misiones,Posadas,-26.92,-54.98,1261294,29801,42.3,5200000000,4120,5.2,27.2,0,843,150,420,21.5,1850,75.2,17
+AR-Q,Neuquén,Neuquén,Neuquén,Neuquén,-38.95,-68.06,664057,94078,7.1,12500000000,18820,6.2,31.8,0,3776,260,980,12.5,250,78.2,16
+AR-R,Río Negro,Río Negro,Río Negro,Viedma,-40.82,-67.95,747610,203013,3.7,6800000000,9100,6.5,33.2,450,3478,0,520,11.8,280,78.0,13
+AR-A,Salta,Salta,Salta,Salta,-25.12,-65.47,1440672,155488,9.3,6800000000,4720,6.8,27.8,0,6380,280,1850,18.5,720,75.2,23
+AR-J,San Juan,San Juan,San Juan,San Juan,-31.54,-68.52,765620,89651,8.5,4800000000,6270,5.5,31.2,0,6380,550,1350,17.5,120,77.2,19
+AR-D,San Luis,San Luis,San Luis,San Luis,-33.68,-66.45,508328,76748,6.6,4200000000,8260,4.8,32.5,0,2150,480,850,17.2,520,77.5,9
+AR-Z,Santa Cruz,Santa Cruz,Santa Cruz,Río Gallegos,-49.32,-69.22,365698,243943,1.5,5800000000,15860,5.2,32.8,1185,3375,0,580,6.5,180,78.5,7
+AR-S,Santa Fe,Santa Fe,Santa Fe,Santa Fe de la Vera Cruz,-31.25,-60.93,3536418,133007,26.6,32500000000,9190,8.5,33.5,0,390,0,45,18.5,980,77.8,19
+AR-G,Santiago del Estero,Santiago del Estero,Santiago del Estero,Santiago del Estero,-27.78,-64.26,978313,136351,7.2,3200000000,3270,5.2,27.8,0,680,80,280,21.5,580,74.8,27
+AR-V,Tierra del Fuego,Tierra del Fuego,Tierra del Fuego,Ushuaia,-54.25,-67.15,173432,21571,8.0,2800000000,16150,6.5,31.5,2892,1490,0,380,4.5,550,78.5,4
+AR-T,Tucumán,Tucumán,Tucumán,San Miguel de Tucumán,-26.81,-65.22,1687305,22524,74.9,8500000000,5040,8.2,29.5,0,5450,280,1150,19.5,980,75.5,17

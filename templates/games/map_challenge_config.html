@@ -150,6 +150,24 @@
                     </div>
                     <span class="mcfg-region-card-label">{{ t('mg.dataset_germany', lang) }}</span>
                 </button>
+                <button type="button" class="mcfg-region-card" data-value="mexico-states">
+                    <div class="mcfg-region-card-icon">
+                        <img src="/static/img/icons/cfg-region-mexico.svg" width="40" height="40" alt="">
+                    </div>
+                    <span class="mcfg-region-card-label">{{ t('mg.dataset_mexico', lang) }}</span>
+                </button>
+                <button type="button" class="mcfg-region-card" data-value="argentina-provinces">
+                    <div class="mcfg-region-card-icon">
+                        <img src="/static/img/icons/cfg-region-argentina.svg" width="40" height="40" alt="">
+                    </div>
+                    <span class="mcfg-region-card-label">{{ t('mg.dataset_argentina', lang) }}</span>
+                </button>
+                <button type="button" class="mcfg-region-card" data-value="brazil-states">
+                    <div class="mcfg-region-card-icon">
+                        <img src="/static/img/icons/cfg-region-brazil.svg" width="40" height="40" alt="">
+                    </div>
+                    <span class="mcfg-region-card-label">{{ t('mg.dataset_brazil', lang) }}</span>
+                </button>
             </div>
         </div>
 
@@ -208,6 +226,9 @@
             'france-regions':    {{ t('mg.entities_region', lang) | tojson }},
             'italy-provinces':     {{ t('mg.entities_province', lang) | tojson }},
             'germany-states':    {{ t('mg.entities_state', lang) | tojson }},
+            'mexico-states':     {{ t('mg.entities_state', lang) | tojson }},
+            'argentina-provinces': {{ t('mg.entities_province', lang) | tojson }},
+            'brazil-states':     {{ t('mg.entities_state', lang) | tojson }},
         },
     };
 

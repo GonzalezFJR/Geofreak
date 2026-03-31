@@ -132,6 +132,12 @@ async def map_game_data(
         return dataset_service.get_italy_provinces()
     elif dataset == "germany-states":
         return dataset_service.get_germany_states()
+    elif dataset == "mexico-states":
+        return dataset_service.get_mexico_states()
+    elif dataset == "argentina-provinces":
+        return dataset_service.get_argentina_provinces()
+    elif dataset == "brazil-states":
+        return dataset_service.get_brazil_states()
     else:
         raise HTTPException(status_code=400, detail="Unknown dataset")
 
@@ -144,7 +150,8 @@ async def map_game_geojson(
     if dataset == "countries":
         data = geodata_service.get_simple_geojson()
     elif dataset in ("us-states", "spain-provinces", "russia-regions",
-                     "france-regions", "italy-provinces", "germany-states"):
+                     "france-regions", "italy-provinces", "germany-states",
+                     "mexico-states", "argentina-provinces", "brazil-states"):
         data = geodata_service.get_subnational_geojson(dataset)
     else:
         raise HTTPException(status_code=400, detail="No GeoJSON for dataset: " + dataset)

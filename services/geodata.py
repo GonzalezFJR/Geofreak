@@ -15,6 +15,9 @@ SUBNATIONAL_DIRS: dict[str, str] = {
     "france-regions":   os.path.join(_DATA_DIR, "geojson_france"),
     "italy-provinces":    os.path.join(_DATA_DIR, "geojson_italy_provinces"),
     "germany-states":   os.path.join(_DATA_DIR, "geojson_germany"),
+    "mexico-states":    os.path.join(_DATA_DIR, "geojson_mexico"),
+    "argentina-provinces": os.path.join(_DATA_DIR, "geojson_argentina"),
+    "brazil-states":    os.path.join(_DATA_DIR, "geojson_brazil"),
 }
 
 
