@@ -21,6 +21,9 @@ QUIZ_DATASET_TO_VAR_CONFIG: dict[str, str] = {
     "france-regions":  "france_regions",
     "italy-provinces":   "italy_provinces",
     "germany-states":  "germany_states",
+    "mexico-states":   "mexico_states",
+    "argentina-provinces": "argentina_provinces",
+    "brazil-states":   "brazil_states",
 }
 
 # ── Variable config loader ───────────────────────────────────────────────

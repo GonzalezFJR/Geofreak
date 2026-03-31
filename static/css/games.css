@@ -1889,20 +1889,13 @@ body:has(.game-page) {
     overscroll-behavior: none;
 }
 
-/* Mobile games: minimal navbar with discreet hamburger */
+/* Mobile games: consistent navbar with home page */
 @media (max-width: 640px) {
     body:has(.game-page) .navbar {
-        height: 40px;
-        padding: 0 10px;
+        height: 56px;
+        padding: 0 16px;
     }
-    /* Hide site name, keep only small logo */
-    body:has(.game-page) .nav-title {
-        display: none;
-    }
-    body:has(.game-page) .nav-logo {
-        width: 26px !important;
-        height: 26px !important;
-    }
+    /* Keep logo and title same as home page - no hiding */
     /* Discreet hamburger — visible but subdued */
     body:has(.game-page) .nav-hamburger {
         display: flex;
@@ -1924,6 +1917,7 @@ body:has(.game-page) {
     body:has(.game-page) .nav-links {
         background: rgba(15, 23, 42, 0.95);
         backdrop-filter: blur(16px);
+        top: 56px;
     }
     body:has(.game-page) .nav-links.open {
         display: flex;
@@ -1943,30 +1937,30 @@ body:has(.game-page) {
     body:has(.game-page) .nav-links .nav-logout {
         color: #ef5350 !important;
     }
-    /* HUD & game area sizing */
+    /* HUD & game area sizing - adjusted for 56px navbar */
     body:has(.game-page) .game-hud {
-        top: 40px;
+        top: 56px;
         padding: 4px 8px;
         gap: 8px;
         font-size: 0.78rem;
     }
     body:has(.game-page) .game-area {
-        padding-top: calc(40px + 30px);
+        padding-top: calc(56px + 30px);
         height: 100vh;
     }
     body:has(.game-page) .quiz-container {
-        height: calc(100vh - 40px - 30px);
+        height: calc(100vh - 56px - 30px);
     }
     body:has(.game-page) .map-game-container {
-        height: calc(100vh - 40px - 30px);
+        height: calc(100vh - 56px - 30px);
     }
     body:has(.game-page) .game-settings-overlay {
-        min-height: calc(100vh - 40px);
+        min-height: calc(100vh - 56px);
     }
     /* GeoStats mobile fit */
     body:has(.game-page) .geostats-container {
-        height: calc(100vh - 40px - 30px);
-        height: calc(100dvh - 40px - 30px);
+        height: calc(100vh - 56px - 30px);
+        height: calc(100dvh - 56px - 30px);
         padding: 8px 10px calc(env(safe-area-inset-bottom, 0px) + 6px);
         overflow: hidden;
     }
@@ -1980,7 +1974,7 @@ body:has(.game-page) {
         padding: 8px;
         margin-bottom: 6px;
         /* Limit chart height on mobile to fit everything */
-        max-height: calc(100vh - 40px - 30px - 160px);
+        max-height: calc(100vh - 56px - 30px - 160px);
         min-height: 120px;
     }
     body:has(.game-page) .geostats-input-area {

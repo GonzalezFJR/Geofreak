@@ -93,7 +93,7 @@ async def api_create_room(
     payload: CreateRoomPayload,
     user: Optional[dict] = Depends(get_optional_user),
 ):
-    _ALLOWED_DATASETS = {"countries", "cities", "us-states", "spain-provinces", "russia-regions", "france-regions", "italy-provinces", "germany-states"}
+    _ALLOWED_DATASETS = {"countries", "cities", "us-states", "spain-provinces", "russia-regions", "france-regions", "italy-provinces", "germany-states", "mexico-states", "argentina-provinces", "brazil-states"}
     if payload.game_id not in _ALLOWED_GAMES:
         raise HTTPException(status_code=400, detail="invalid_game")
     if not 3 <= payload.n_items <= 50:

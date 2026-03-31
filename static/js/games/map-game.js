@@ -44,6 +44,12 @@ var MapGame = (function () {
                               maxBounds: [[35,   6], [48,  19]] },
         'germany-states':   { center: [51,  10], zoom: 5, minZoom: 4,
                               maxBounds: [[46,   5], [56,  16]] },
+        'mexico-states':    { center: [23, -102], zoom: 5, minZoom: 4,
+                              maxBounds: [[14, -118], [33, -86]] },
+        'argentina-provinces': { center: [-38, -64], zoom: 4, minZoom: 3,
+                              maxBounds: [[-56, -76], [-21, -52]] },
+        'brazil-states':    { center: [-14, -52], zoom: 4, minZoom: 3,
+                              maxBounds: [[-34, -75], [6, -34]] },
     };
 
     /* ── Map config per continent (countries dataset filtered) ── */
@@ -73,6 +79,9 @@ var MapGame = (function () {
         'france-regions':  'mg.ph_type_region',
         'italy-provinces':   'mg.ph_type_province',
         'germany-states':  'mg.ph_type_state',
+        'mexico-states':   'mg.ph_type_state',
+        'argentina-provinces': 'mg.ph_type_province',
+        'brazil-states':   'mg.ph_type_state',
     };
     var PH_CLICK_KEY = {
         'countries':       'mg.ph_country',
@@ -83,6 +92,9 @@ var MapGame = (function () {
         'france-regions':  'mg.ph_region',
         'italy-provinces':   'mg.ph_province',
         'germany-states':  'mg.ph_state',
+        'mexico-states':   'mg.ph_state',
+        'argentina-provinces': 'mg.ph_province',
+        'brazil-states':   'mg.ph_state',
     };
     var WHAT_KEY = {
         'countries':       'mg.what_country',
@@ -93,6 +105,9 @@ var MapGame = (function () {
         'france-regions':  'mg.what_region',
         'italy-provinces':   'mg.what_province',
         'germany-states':  'mg.what_state',
+        'mexico-states':   'mg.what_state',
+        'argentina-provinces': 'mg.what_province',
+        'brazil-states':   'mg.what_state',
     };
 
     /* ── Init ───────────────────────────────────────────────── */

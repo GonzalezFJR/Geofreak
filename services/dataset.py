@@ -16,6 +16,9 @@ RUSSIA_REGIONS_CSV = os.path.join(DATA_DIR, "russia_regions.csv")
 FRANCE_REGIONS_CSV = os.path.join(DATA_DIR, "france_regions.csv")
 ITALY_PROVINCES_CSV = os.path.join(DATA_DIR, "italy_provinces.csv")
 GERMANY_STATES_CSV = os.path.join(DATA_DIR, "germany_states.csv")
+MEXICO_STATES_CSV = os.path.join(DATA_DIR, "mexico_states.csv")
+ARGENTINA_PROVINCES_CSV = os.path.join(DATA_DIR, "argentina_provinces.csv")
+BRAZIL_STATES_CSV = os.path.join(DATA_DIR, "brazil_states.csv")
 
 # Maps filter key → continent values in the countries CSV
 CONTINENT_MAP: dict[str, list[str]] = {
@@ -39,6 +42,9 @@ class DatasetService:
         self._france_df: Optional[pd.DataFrame] = None
         self._italy_df: Optional[pd.DataFrame] = None
         self._germany_df: Optional[pd.DataFrame] = None
+        self._mexico_df: Optional[pd.DataFrame] = None
+        self._argentina_df: Optional[pd.DataFrame] = None
+        self._brazil_df: Optional[pd.DataFrame] = None
         self._map_game_counts: Optional[dict] = None
 
     # ── Countries ────────────────────────────────────────────
@@ -269,6 +275,30 @@ class DatasetService:
                 self._germany_df = pd.read_csv(GERMANY_STATES_CSV, keep_default_na=False)
         return self._germany_df
 
+    def _load_mexico(self) -> pd.DataFrame:
+        if self._mexico_df is None:
+            if not os.path.exists(MEXICO_STATES_CSV):
+                self._mexico_df = pd.DataFrame()
+            else:
+                self._mexico_df = pd.read_csv(MEXICO_STATES_CSV, keep_default_na=False)
+        return self._mexico_df
+
+    def _load_argentina(self) -> pd.DataFrame:
+        if self._argentina_df is None:
+            if not os.path.exists(ARGENTINA_PROVINCES_CSV):
+                self._argentina_df = pd.DataFrame()
+            else:
+                self._argentina_df = pd.read_csv(ARGENTINA_PROVINCES_CSV, keep_default_na=False)
+        return self._argentina_df
+
+    def _load_brazil(self) -> pd.DataFrame:
+        if self._brazil_df is None:
+            if not os.path.exists(BRAZIL_STATES_CSV):
+                self._brazil_df = pd.DataFrame()
+            else:
+                self._brazil_df = pd.read_csv(BRAZIL_STATES_CSV, keep_default_na=False)
+        return self._brazil_df
+
     def get_us_states(self) -> list[dict]:
         df = self._load_us()
         if df.empty:
@@ -396,6 +426,67 @@ class DatasetService:
                 continue
         return records
 
+    def get_mexico_states(self) -> list[dict]:
+        df = self._load_mexico()
+        if df.empty:
+            return []
+        records = []
+        for _, row in df.iterrows():
+            try:
+                records.append({
+                    "id": str(row["code"]),
+                    "name": str(row["name"]),
+                    "name_es": str(row.get("name_es", row["name"])),
+                    "name_en": str(row.get("name_en", row["name"])),
+                    "capital": str(row.get("capital", "")),
+                    "lat": float(row["lat"]),
+                    "lon": float(row["lon"]),
+                })
+            except (ValueError, TypeError):
+                continue
+        return records
+
+    def get_argentina_provinces(self) -> list[dict]:
+        df = self._load_argentina()
+        if df.empty:
+            return []
+        records = []
+        for _, row in df.iterrows():
+            try:
+                records.append({
+                    "id": str(row["code"]),
+                    "name": str(row["name"]),
+                    "name_es": str(row.get("name_es", row["name"])),
+                    "name_en": str(row.get("name_en", row["name"])),
+                    "capital": str(row.get("capital", "")),
+                    "lat": float(row["lat"]),
+                    "lon": float(row["lon"]),
+                })
+            except (ValueError, TypeError):
+                continue
+        return records
+
+    def get_brazil_states(self) -> list[dict]:
+        df = self._load_brazil()
+        if df.empty:
+            return []
+        records = []
+        for _, row in df.iterrows():
+            try:
+                records.append({
+                    "id": str(row["code"]),
+                    "name": str(row["name"]),
+                    "name_es": str(row.get("name_es", row["name"])),
+                    "name_en": str(row.get("name_en", row["name"])),
+                    "name_pt": str(row.get("name_pt", row["name"])),
+                    "capital": str(row.get("capital", "")),
+                    "lat": float(row["lat"]),
+                    "lon": float(row["lon"]),
+                })
+            except (ValueError, TypeError):
+                continue
+        return records
+
     def get_dataset_df(self, dataset_id: str) -> pd.DataFrame:
         """Return the full DataFrame for any dataset by ID."""
         if dataset_id == "cities":
@@ -411,6 +502,9 @@ class DatasetService:
             "france-regions":  self._load_france,
             "italy-provinces":   self._load_italy,
             "germany-states":  self._load_germany,
+            "mexico-states":   self._load_mexico,
+            "argentina-provinces": self._load_argentina,
+            "brazil-states":   self._load_brazil,
         }
         loader = loaders.get(dataset_id)
         return loader() if loader else pd.DataFrame()
@@ -488,6 +582,12 @@ class DatasetService:
         result["italy-provinces"] = {"all": int(len(df_italy)) if not df_italy.empty else 0}
         df_germany = self._load_germany()
         result["germany-states"] = {"all": int(len(df_germany)) if not df_germany.empty else 0}
+        df_mexico = self._load_mexico()
+        result["mexico-states"] = {"all": int(len(df_mexico)) if not df_mexico.empty else 0}
+        df_argentina = self._load_argentina()
+        result["argentina-provinces"] = {"all": int(len(df_argentina)) if not df_argentina.empty else 0}
+        df_brazil = self._load_brazil()
+        result["brazil-states"] = {"all": int(len(df_brazil)) if not df_brazil.empty else 0}
 
         self._map_game_counts = result
         return result

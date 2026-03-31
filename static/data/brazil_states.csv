@@ -1,0 +1,28 @@
+code,name,name_es,name_en,name_pt,capital,lat,lon,population,area_km2,density_per_km2,gdp_usd,gdp_per_capita_usd,unemployment_rate,median_age,coastline_km,elevation_max_m,elevation_min_m,avg_elevation_m,avg_temperature_c,annual_precipitation_mm,life_expectancy,num_municipalities
+AC,Acre,Acre,Acre,Acre,Rio Branco,-9.02,-70.81,894470,164123,5.5,3200000000,3580,12.5,26.8,0,750,100,280,25.5,1950,74.2,22
+AL,Alagoas,Alagoas,Alagoas,Alagoas,Maceió,-9.57,-36.78,3351543,27848,120.3,12800000000,3820,14.5,29.5,229,1295,0,320,25.8,1450,72.8,102
+AP,Amapá,Amapá,Amapá,Amapá,Macapá,1.03,-51.95,861773,142828,6.0,4200000000,4870,15.2,27.5,380,685,0,150,27.2,2850,74.5,16
+AM,Amazonas,Amazonas,Amazonas,Amazonas,Manaus,-3.12,-60.02,4207714,1559167,2.7,28500000000,6770,13.8,27.2,0,2995,20,120,27.5,2100,73.8,62
+BA,Bahia,Bahía,Bahia,Bahia,Salvador,-12.97,-38.50,14930634,564760,26.4,68500000000,4590,14.8,31.5,1183,2033,0,580,24.5,1150,74.2,417
+CE,Ceará,Ceará,Ceará,Ceará,Fortaleza,-3.72,-38.52,9187103,148894,61.7,35800000000,3900,11.5,30.2,573,1154,0,280,26.8,850,74.8,184
+DF,Distrito Federal,Distrito Federal,Federal District,Distrito Federal,Brasília,-15.78,-47.93,3055149,5760,530.4,62500000000,20460,10.2,32.8,0,1349,750,1100,21.2,1550,78.2,1
+ES,Espírito Santo,Espíritu Santo,Espírito Santo,Espírito Santo,Vitória,-20.32,-40.34,4064052,46095,88.2,38500000000,9480,10.5,34.2,521,2892,0,420,23.5,1250,78.5,78
+GO,Goiás,Goiás,Goiás,Goiás,Goiânia,-16.68,-49.25,7113540,340242,20.9,52800000000,7420,9.8,32.5,0,1676,180,620,23.8,1520,76.2,246
+MA,Maranhão,Maranhão,Maranhão,Maranhão,São Luís,-2.53,-44.27,7114598,331937,21.4,22500000000,3160,13.5,27.5,640,804,0,180,27.2,1750,72.5,217
+MT,Mato Grosso,Mato Grosso,Mato Grosso,Mato Grosso,Cuiabá,-12.63,-56.09,3526220,903207,3.9,48200000000,13670,8.5,31.2,0,1118,100,380,25.5,1480,75.2,141
+MS,Mato Grosso do Sul,Mato Grosso del Sur,Mato Grosso do Sul,Mato Grosso do Sul,Campo Grande,-20.45,-54.62,2809394,357145,7.9,28500000000,10150,8.2,33.5,0,1065,80,420,23.8,1450,76.5,79
+MG,Minas Gerais,Minas Gerais,Minas Gerais,Minas Gerais,Belo Horizonte,-19.92,-43.94,21292666,586522,36.3,165000000000,7750,11.2,34.8,0,2892,100,680,21.5,1480,77.2,853
+PA,Pará,Pará,Pará,Pará,Belém,-1.46,-48.50,8690745,1245870,7.0,48500000000,5580,11.8,27.8,562,893,0,150,27.2,2250,73.5,144
+PB,Paraíba,Paraíba,Paraíba,Paraíba,João Pessoa,-7.12,-34.86,4039277,56468,71.5,18500000000,4580,12.5,30.8,130,1197,0,380,25.2,1050,73.8,223
+PR,Paraná,Paraná,Paraná,Paraná,Curitiba,-25.43,-49.27,11597484,199307,58.2,128500000000,11080,7.5,34.5,98,1877,0,650,18.5,1580,77.8,399
+PE,Pernambuco,Pernambuco,Pernambuco,Pernambuco,Recife,-8.05,-34.88,9616621,98076,98.1,52500000000,5460,14.2,31.2,187,1260,0,420,25.5,1250,74.5,185
+PI,Piauí,Piauí,Piauí,Piauí,Teresina,-5.09,-42.80,3289290,251756,13.1,12800000000,3890,10.8,28.5,66,865,0,280,27.5,1150,72.2,224
+RJ,Río de Janeiro,Río de Janeiro,Rio de Janeiro,Rio de Janeiro,Rio de Janeiro,-22.91,-43.17,17366189,43750,396.9,185000000000,10650,13.5,36.2,636,2792,0,420,23.2,1150,76.5,92
+RN,Rio Grande do Norte,Río Grande del Norte,Rio Grande do Norte,Rio Grande do Norte,Natal,-5.80,-35.21,3534165,52810,66.9,18500000000,5230,12.8,31.5,410,868,0,280,26.5,850,75.2,167
+RS,Rio Grande do Sul,Río Grande del Sur,Rio Grande do Sul,Rio Grande do Sul,Porto Alegre,-30.03,-51.23,11422973,281707,40.5,118500000000,10370,7.8,35.8,622,1398,0,380,17.5,1650,78.2,497
+RO,Rondônia,Rondonia,Rondônia,Rondônia,Porto Velho,-8.76,-63.90,1796460,237765,7.6,12500000000,6960,9.8,29.5,0,1230,70,280,25.8,2050,74.5,52
+RR,Roraima,Roraima,Roraima,Roraima,Boa Vista,2.82,-60.67,652713,224300,2.9,3800000000,5820,11.5,27.2,0,2734,40,150,27.5,1650,73.2,15
+SC,Santa Catarina,Santa Catarina,Santa Catarina,Santa Catarina,Florianópolis,-27.60,-48.55,7338473,95730,76.7,82500000000,11240,5.2,34.5,561,1827,0,580,18.2,1680,79.5,295
+SP,São Paulo,São Paulo,São Paulo,São Paulo,São Paulo,-23.55,-46.64,46289333,248219,186.5,585000000000,12640,11.5,36.5,622,2797,0,580,20.5,1350,78.8,645
+SE,Sergipe,Sergipe,Sergipe,Sergipe,Aracaju,-10.91,-37.07,2338474,21926,106.6,12200000000,5220,14.5,30.8,163,1014,0,280,26.2,1250,73.5,75
+TO,Tocantins,Tocantins,Tocantins,Tocantins,Palmas,-10.17,-48.33,1607363,277720,5.8,12500000000,7770,9.5,28.8,0,1340,100,320,26.5,1650,74.8,139

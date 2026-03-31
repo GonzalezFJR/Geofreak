@@ -160,6 +160,63 @@
         "comparison": true,
         "geostats": true
       }
+    },
+    "mexico-states": {
+      "id": "mexico-states",
+      "label_es": "Estados de México",
+      "label_en": "Mexico States",
+      "csv_file": "mexico_states.csv",
+      "geojson_dir": "geojson_mexico",
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
+    },
+    "argentina-provinces": {
+      "id": "argentina-provinces",
+      "label_es": "Provincias de Argentina",
+      "label_en": "Argentina Provinces",
+      "csv_file": "argentina_provinces.csv",
+      "geojson_dir": "geojson_argentina",
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
+    },
+    "brazil-states": {
+      "id": "brazil-states",
+      "label_es": "Estados de Brasil",
+      "label_en": "Brazil States",
+      "csv_file": "brazil_states.csv",
+      "geojson_dir": "geojson_brazil",
+      "images_dir": null,
+      "exists": true,
+      "visible": true,
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
     }
   }
 }
