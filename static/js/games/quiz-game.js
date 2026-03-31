@@ -6,9 +6,11 @@
 
 var QuizGame = (function () {
     var queue = [];
+    var skipped = [];       // items skipped to retry later
     var currentIdx = 0;
     var displayFn = null;
     var answerFn = null;
+    var inRetryMode = false;
 
     /**
      * @param {Object} config
@@ -25,18 +27,6 @@ var QuizGame = (function () {
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') checkAnswer();
         });
-
-        // Prevent buttons from stealing focus (keeps keyboard open on mobile)
-        _preventFocusLoss('.btn-skip');
-        _preventFocusLoss('.btn-reveal');
-    }
-
-    /** Prevent an element from taking focus on touch/click */
-    function _preventFocusLoss(selector) {
-        var el = document.querySelector(selector);
-        if (!el) return;
-        el.addEventListener('mousedown', function (e) { e.preventDefault(); });
-        el.addEventListener('touchstart', function (e) { e.preventDefault(); }, { passive: false });
     }
 
     function loadData(settings) {
@@ -44,11 +34,13 @@ var QuizGame = (function () {
         var isSubnational = cust.dataset === 'regions';
         var apiDataset = isSubnational ? cust.subDataset : 'countries';
 
+        skipped = [];
+        inRetryMode = false;
+
         if (isSubnational) {
             fetch('/api/map-game/data?dataset=' + encodeURIComponent(apiDataset))
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
-                    // map-game/data returns {id, name, name_es, ...}; expose iso_a3 for quiz engine
                     var entities = data.map(function (e) {
                         return Object.assign({}, e, { iso_a3: e.id, entity_type: 'country', flag_emoji: '' });
                     });
@@ -85,10 +77,27 @@ var QuizGame = (function () {
     }
 
     function showNext() {
+        // Check if we finished the main queue
         if (currentIdx >= queue.length) {
-            GeoGame.endGame();
-            return;
+            // If there are skipped items, cycle back to them
+            if (skipped.length > 0 && !inRetryMode) {
+                inRetryMode = true;
+                queue = skipped.slice();
+                skipped = [];
+                currentIdx = 0;
+                GeoGame.setTotal(queue.length);
+            } else if (skipped.length > 0) {
+                // Already in retry mode, cycle again
+                queue = skipped.slice();
+                skipped = [];
+                currentIdx = 0;
+                GeoGame.setTotal(queue.length);
+            } else {
+                GeoGame.endGame();
+                return;
+            }
         }
+
         var country = queue[currentIdx];
         var display = document.getElementById('quiz-display');
         display.innerHTML = '';
@@ -127,16 +136,18 @@ var QuizGame = (function () {
         }
     }
 
+    /** Next: skip current item and add to retry queue */
     function skip() {
         var country = queue[currentIdx];
-        showFeedback('skipped', (T['js.skipped'] || '⏭️ It was: {name}').replace('{name}', GeoUtils.getLocalName(country)));
-        GeoReview.snapshot();
+        skipped.push(country);
         // Refocus input to keep keyboard open
         var input = document.getElementById('answer-input');
-        if (input) input.focus();
-        setTimeout(function () { currentIdx++; showNext(); }, 1200);
+        if (input) setTimeout(function() { input.focus(); }, 50);
+        currentIdx++;
+        showNext();
     }
 
+    /** Reveal: show the answer and count as failed */
     function reveal() {
         var country = queue[currentIdx];
         var input = document.getElementById('answer-input');
@@ -146,7 +157,7 @@ var QuizGame = (function () {
         showFeedback('wrong', (T['js.revealed'] || '👁️ {name}').replace('{name}', localName));
         GeoReview.snapshot();
         // Refocus input to keep keyboard open
-        if (input) input.focus();
+        if (input) setTimeout(function() { input.focus(); }, 50);
         // Count as seen but NOT correct (it's a fail)
         setTimeout(function () { currentIdx++; showNext(); }, 1500);
     }

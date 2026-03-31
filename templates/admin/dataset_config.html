@@ -8,8 +8,8 @@
 <div class="admin-dashboard">
     <div class="admin-header">
         <div>
-            <h1>{{ t('adm.dataset_config_title', lang)|default('Dataset Configuration') }}</h1>
-            <p class="admin-subtitle">{{ t('adm.dataset_config_desc', lang)|default('Manage dataset availability and visibility') }}</p>
+            <h1>{{ t('adm.dataset_config_title', lang) }}</h1>
+            <p class="admin-subtitle">{{ t('adm.dataset_config_desc', lang) }}</p>
         </div>
         <a href="/admin/logout" class="admin-logout">{{ t('adm.logout', lang) }}</a>
     </div>
@@ -17,32 +17,43 @@
     {% include "admin/_nav.html" %}
 
     {% if saved %}
-    <div style="background:#e8f5e9;border:1px solid #a5d6a7;border-radius:8px;padding:12px 16px;margin-bottom:20px;color:#2e7d32;font-weight:600;">
+    <div class="admin-alert admin-alert-success">
         {{ t('adm.saved', lang) }}
     </div>
     {% endif %}
 
+    <!-- Game Selector -->
+    <div class="admin-filter-bar">
+        <label for="game-filter">{{ t('adm.select_game', lang) }}:</label>
+        <select id="game-filter" class="admin-select" onchange="filterByGame(this.value)">
+            <option value="all">{{ t('adm.all_games', lang) }}</option>
+            {% for game in games %}
+            <option value="{{ game.id }}">{{ game.icon }} {{ game.name_es if lang == 'es' else game.name_en }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
     <!-- Update State Button -->
     <div class="admin-action-bar">
         <button type="button" class="btn btn-primary" id="btn-update-state" onclick="updateDatasetState()">
-            🔄 {{ t('adm.update_state', lang)|default('Update State') }}
+            🔄 {{ t('adm.update_state', lang) }}
         </button>
         <span class="admin-last-updated">
             {% if last_updated %}
-            {{ t('adm.last_checked', lang)|default('Last checked') }}: {{ last_updated[:19].replace('T', ' ') }}
+            {{ t('adm.last_checked', lang) }}: {{ last_updated[:19].replace('T', ' ') }}
             {% else %}
-            {{ t('adm.never_checked', lang)|default('Never checked') }}
+            {{ t('adm.never_checked', lang) }}
             {% endif %}
         </span>
     </div>
 
     <!-- Update Status Message -->
-    <div id="update-status" style="display:none; margin-bottom:20px; padding:12px 16px; border-radius:8px;"></div>
+    <div id="update-status" class="admin-alert" style="display:none;"></div>
 
     <!-- Dataset Cards -->
     <div class="admin-dataset-grid">
         {% for ds_id, ds in datasets.items() %}
-        <div class="admin-dataset-card {% if not ds.exists %}missing{% endif %}">
+        <div class="admin-dataset-card {% if not ds.exists %}missing{% endif %}" data-dataset="{{ ds_id }}">
             <div class="admin-dataset-header">
                 <h3>
                     {% if ds_id == 'countries' %}🌍
@@ -51,7 +62,7 @@
                     {{ ds.label_es if lang == 'es' else ds.label_en }}
                 </h3>
                 <span class="admin-dataset-status {% if ds.exists %}exists{% else %}missing{% endif %}">
-                    {% if ds.exists %}✓ {{ t('adm.ds_exists', lang)|default('Exists') }}{% else %}✗ {{ t('adm.ds_missing', lang)|default('Missing') }}{% endif %}
+                    {% if ds.exists %}✓ {{ t('adm.ds_exists', lang) }}{% else %}✗ {{ t('adm.ds_missing', lang) }}{% endif %}
                 </span>
             </div>
 
@@ -68,27 +79,86 @@
                 {% endif %}
                 {% if ds.entity_count %}
                 <div class="admin-dataset-row">
-                    <span class="label">{{ t('adm.entities', lang)|default('Entities') }}:</span>
+                    <span class="label">{{ t('adm.entities', lang) }}:</span>
                     <span class="value">{{ ds.entity_count }}</span>
                 </div>
                 {% endif %}
             </div>
 
-            <form method="post" action="/admin/dataset-config/{{ ds_id }}/visibility" class="admin-dataset-visibility">
-                <label class="switch">
-                    <input type="checkbox" name="visible" value="1" {% if ds.visible %}checked{% endif %} onchange="this.form.submit()">
-                    <span class="switch-slider"></span>
-                </label>
-                <span class="visibility-label">
-                    {% if ds.visible %}{{ t('adm.visible_on', lang) }}{% else %}{{ t('adm.visible_off', lang) }}{% endif %}
-                </span>
-            </form>
+            <!-- Global Visibility -->
+            <div class="admin-visibility-section">
+                <div class="admin-visibility-header">
+                    <span class="visibility-title">{{ t('adm.global_visibility', lang) }}</span>
+                    <form method="post" action="/admin/dataset-config/{{ ds_id }}/visibility" class="admin-dataset-visibility">
+                        <label class="switch">
+                            <input type="checkbox" name="visible" value="1" {% if ds.visible %}checked{% endif %} onchange="this.form.submit()">
+                            <span class="switch-slider"></span>
+                        </label>
+                        <span class="visibility-label">
+                            {% if ds.visible %}{{ t('adm.visible_on', lang) }}{% else %}{{ t('adm.visible_off', lang) }}{% endif %}
+                        </span>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Game Visibility -->
+            <div class="admin-game-visibility">
+                <div class="admin-game-visibility-title">{{ t('adm.game_visibility', lang) }}</div>
+                <div class="admin-game-toggles">
+                    {% for game in games %}
+                    {% set game_visible = ds.games_visibility.get(game.id, true) if ds.games_visibility else true %}
+                    <div class="admin-game-toggle" data-game="{{ game.id }}">
+                        <label class="game-toggle-label" title="{{ game.name_es if lang == 'es' else game.name_en }}">
+                            <input type="checkbox"
+                                   data-dataset="{{ ds_id }}"
+                                   data-game="{{ game.id }}"
+                                   {% if game_visible %}checked{% endif %}
+                                   onchange="toggleGameVisibility('{{ ds_id }}', '{{ game.id }}', this.checked)">
+                            <span class="game-icon">{{ game.icon }}</span>
+                            <span class="game-name">{{ game.name_es if lang == 'es' else game.name_en }}</span>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
         {% endfor %}
     </div>
 </div>
 
 <style>
+.admin-alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+.admin-alert-success {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+}
+.admin-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: var(--radius-lg);
+}
+.admin-filter-bar label {
+    font-weight: 600;
+    color: var(--gray-700);
+}
+.admin-select {
+    padding: 8px 12px;
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    background: var(--white);
+    min-width: 200px;
+}
 .admin-action-bar {
     display: flex;
     align-items: center;
@@ -104,7 +174,7 @@
 }
 .admin-dataset-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 16px;
 }
 .admin-dataset-card {
@@ -116,6 +186,9 @@
 .admin-dataset-card.missing {
     border-color: #ef5350;
     background: #fff8f8;
+}
+.admin-dataset-card.hidden-by-filter {
+    display: none;
 }
 .admin-dataset-header {
     display: flex;
@@ -160,36 +233,157 @@
     color: var(--gray-700);
     font-family: var(--font-mono);
 }
+.admin-visibility-section {
+    padding: 12px 0;
+    border-top: 1px solid var(--gray-100);
+}
+.admin-visibility-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.visibility-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
 .admin-dataset-visibility {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding-top: 12px;
-    border-top: 1px solid var(--gray-100);
 }
 .visibility-label {
     font-size: 0.85rem;
     color: var(--gray-600);
 }
+.admin-game-visibility {
+    padding-top: 12px;
+    border-top: 1px solid var(--gray-100);
+}
+.admin-game-visibility-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 10px;
+}
+.admin-game-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.admin-game-toggle {
+    flex: 0 0 auto;
+}
+.game-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    background: var(--gray-100);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+}
+.game-toggle-label:has(input:checked) {
+    background: #e3f2fd;
+    border: 1px solid #64b5f6;
+}
+.game-toggle-label:has(input:not(:checked)) {
+    opacity: 0.6;
+}
+.game-toggle-label input {
+    display: none;
+}
+.game-icon {
+    font-size: 1rem;
+}
+.game-name {
+    color: var(--gray-700);
+}
+.admin-game-toggle.highlight {
+    animation: highlight-pulse 0.5s ease-out;
+}
+@keyframes highlight-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
 </style>
 
 <script>
+function filterByGame(gameId) {
+    var cards = document.querySelectorAll('.admin-dataset-card');
+    cards.forEach(function(card) {
+        if (gameId === 'all') {
+            card.classList.remove('hidden-by-filter');
+            // Remove highlights
+            card.querySelectorAll('.admin-game-toggle').forEach(function(t) {
+                t.classList.remove('highlight');
+            });
+        } else {
+            var checkbox = card.querySelector('input[data-game="' + gameId + '"]');
+            if (checkbox && checkbox.checked) {
+                card.classList.remove('hidden-by-filter');
+            } else {
+                card.classList.add('hidden-by-filter');
+            }
+            // Highlight the selected game toggle
+            card.querySelectorAll('.admin-game-toggle').forEach(function(t) {
+                if (t.dataset.game === gameId) {
+                    t.classList.add('highlight');
+                } else {
+                    t.classList.remove('highlight');
+                }
+            });
+        }
+    });
+}
+
+function toggleGameVisibility(datasetId, gameId, visible) {
+    var formData = new FormData();
+    formData.append('visible', visible ? '1' : '0');
+
+    fetch('/admin/dataset-config/' + datasetId + '/game/' + gameId + '/visibility', {
+        method: 'POST',
+        body: formData
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (!data.success) {
+            alert('Error saving visibility');
+        }
+        // Re-apply filter if needed
+        var filter = document.getElementById('game-filter');
+        if (filter.value !== 'all') {
+            filterByGame(filter.value);
+        }
+    })
+    .catch(function(err) {
+        alert('Error: ' + err.message);
+    });
+}
+
 function updateDatasetState() {
     var btn = document.getElementById('btn-update-state');
     var status = document.getElementById('update-status');
     btn.disabled = true;
-    btn.textContent = '⏳ Checking...';
+    btn.textContent = '⏳ Comprobando...';
     status.style.display = 'none';
 
     fetch('/admin/dataset-config/update-state', { method: 'POST' })
         .then(function(r) { return r.json(); })
         .then(function(data) {
             status.style.display = 'block';
-            status.style.background = data.missing > 0 ? '#fff3e0' : '#e8f5e9';
-            status.style.borderColor = data.missing > 0 ? '#ffb74d' : '#a5d6a7';
-            status.style.border = '1px solid';
-            status.style.color = data.missing > 0 ? '#e65100' : '#2e7d32';
-            status.innerHTML = '✓ Checked ' + data.checked + ' datasets: ' + data.exists + ' exist, ' + data.missing + ' missing';
+            if (data.missing > 0) {
+                status.className = 'admin-alert';
+                status.style.background = '#fff3e0';
+                status.style.border = '1px solid #ffb74d';
+                status.style.color = '#e65100';
+            } else {
+                status.className = 'admin-alert admin-alert-success';
+            }
+            status.innerHTML = '✓ Comprobados ' + data.checked + ' datasets: ' + data.exists + ' existen, ' + data.missing + ' no encontrados';
             setTimeout(function() { location.reload(); }, 1500);
         })
         .catch(function(err) {
@@ -199,7 +393,7 @@ function updateDatasetState() {
             status.style.color = '#c62828';
             status.textContent = 'Error: ' + err.message;
             btn.disabled = false;
-            btn.textContent = '🔄 Update State';
+            btn.textContent = '🔄 Actualizar estado';
         });
 }
 </script>

@@ -54,17 +54,6 @@ var GeoStatsGame = (function () {
 
     function init() {
         GeoGame.init({ onStart: loadData });
-        // Prevent buttons from stealing focus (keeps keyboard open on mobile)
-        _preventFocusLoss('#btn-guess');
-        _preventFocusLoss('#btn-gs-next');
-    }
-
-    /** Prevent an element from taking focus on touch/click */
-    function _preventFocusLoss(selector) {
-        var el = document.querySelector(selector);
-        if (!el) return;
-        el.addEventListener('mousedown', function (e) { e.preventDefault(); });
-        el.addEventListener('touchstart', function (e) { e.preventDefault(); }, { passive: false });
     }
 
     init();
@@ -219,6 +208,7 @@ var GeoStatsGame = (function () {
         input.focus();
         document.getElementById('btn-guess').disabled = false;
         document.getElementById('btn-guess').style.display = '';
+        document.getElementById('btn-gs-reveal').style.display = '';
         document.getElementById('btn-gs-next').style.display = 'none';
         clearFeedback();
     }
@@ -526,8 +516,47 @@ var GeoStatsGame = (function () {
         resolved = true;
         document.getElementById('geostats-input').disabled = true;
         document.getElementById('btn-guess').style.display = 'none';
+        document.getElementById('btn-gs-reveal').style.display = 'none';
         document.getElementById('btn-gs-next').style.display = '';
         GeoReview.snapshot();
+    }
+
+    /** Reveal answer without guessing (counts as 0 points) */
+    function reveal() {
+        if (resolved) return;
+
+        var q = questions[currentIdx];
+        var tName = getDisplayName(q.target_iso);
+        var tFlag = (countriesLookup[q.target_iso] || {}).flag_emoji || '';
+
+        // Reveal on chart
+        var ann = chart.options.plugins.annotation.annotations;
+        ann.targetLine.label.content = tFlag + ' ' + tName;
+        ann.targetLine.borderDash = [];
+        ann.targetLine.borderColor = '#ff9800';  // Orange for revealed
+        ann.targetLine.label.backgroundColor = '#ff9800';
+        chart.update();
+
+        var msg = (T['gs.answer'] || 'The answer was: {name}')
+            .replace('{name}', tFlag + ' ' + tName) +
+            '  —  ' + (T['gs.score'] || 'Score') + ': 0/10';
+        showFeedback('wrong', msg);
+
+        var labelKey = T['stat.label_key'] || 'label_es';
+        answers.push({
+            stat: q.stat_info[labelKey],
+            correct_iso: q.target_iso,
+            correct_name: tName,
+            correct_flag: tFlag,
+            guessed_iso: null,
+            guessed_name: '—',
+            guessed_flag: '',
+            is_correct: false,
+            score: 0,
+            attempts: currentAttempts,
+        });
+
+        endQuestion();
     }
 
     function next() {
@@ -632,7 +661,7 @@ var GeoStatsGame = (function () {
         });
     }
 
-    return { guess: guess, next: next };
+    return { guess: guess, next: next, reveal: reveal };
 })();
 
 /* ── Bind Enter key on input ─────────────────────────────── */

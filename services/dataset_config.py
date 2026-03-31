@@ -59,6 +59,39 @@ class DatasetConfigService:
             data["datasets"][dataset_id]["visible"] = visible
             self._save(data)
 
+    def get_games(self) -> list[dict]:
+        """Return list of available games."""
+        return self._load().get("games", [])
+
+    def toggle_game_visibility(self, dataset_id: str, game_id: str, visible: bool):
+        """Toggle visibility of a dataset for a specific game."""
+        data = self._load()
+        if dataset_id in data["datasets"]:
+            if "games_visibility" not in data["datasets"][dataset_id]:
+                data["datasets"][dataset_id]["games_visibility"] = {}
+            data["datasets"][dataset_id]["games_visibility"][game_id] = visible
+            self._save(data)
+
+    def is_visible_for_game(self, dataset_id: str, game_id: str) -> bool:
+        """Check if a dataset is visible for a specific game."""
+        ds = self.get_dataset(dataset_id)
+        if not ds:
+            return False
+        if not ds.get("visible", True) or not ds.get("exists", True):
+            return False
+        games_visibility = ds.get("games_visibility", {})
+        return games_visibility.get(game_id, True)
+
+    def get_visible_datasets_for_game(self, game_id: str) -> list[str]:
+        """Return list of dataset IDs that are visible for a specific game."""
+        result = []
+        for ds_id, ds_info in self.get_all_datasets().items():
+            if ds_info.get("visible", True) and ds_info.get("exists", True):
+                games_visibility = ds_info.get("games_visibility", {})
+                if games_visibility.get(game_id, True):
+                    result.append(ds_id)
+        return result
+
     def update_existence_state(self) -> dict:
         """Check all datasets for existence and update state. Returns summary."""
         data = self._load()

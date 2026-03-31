@@ -1,5 +1,13 @@
 {
   "last_updated": null,
+  "games": [
+    {"id": "flags", "name_es": "Banderas", "name_en": "Flags", "icon": "🏳️"},
+    {"id": "outline", "name_es": "Contornos", "name_en": "Outlines", "icon": "🗺️"},
+    {"id": "map-challenge", "name_es": "Mapa", "name_en": "Map", "icon": "🌍"},
+    {"id": "ordering", "name_es": "GeoRankings", "name_en": "GeoRankings", "icon": "📊"},
+    {"id": "comparison", "name_es": "GeoFreaker", "name_en": "GeoFreaker", "icon": "⚖️"},
+    {"id": "geostats", "name_es": "GeoStats", "name_en": "GeoStats", "icon": "📈"}
+  ],
   "datasets": {
     "countries": {
       "id": "countries",
@@ -10,7 +18,15 @@
       "images_dir": "images/flags",
       "exists": true,
       "visible": true,
-      "entity_count": null
+      "entity_count": null,
+      "games_visibility": {
+        "flags": true,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
     },
     "cities": {
       "id": "cities",
@@ -21,7 +37,15 @@
       "images_dir": null,
       "exists": true,
       "visible": true,
-      "entity_count": null
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": false,
+        "map-challenge": true,
+        "ordering": false,
+        "comparison": false,
+        "geostats": false
+      }
     },
     "us-states": {
       "id": "us-states",
@@ -32,7 +56,15 @@
       "images_dir": null,
       "exists": true,
       "visible": true,
-      "entity_count": null
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
     },
     "spain-provinces": {
       "id": "spain-provinces",
@@ -43,7 +75,15 @@
       "images_dir": null,
       "exists": true,
       "visible": true,
-      "entity_count": null
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
     },
     "russia-regions": {
       "id": "russia-regions",
@@ -54,7 +94,15 @@
       "images_dir": null,
       "exists": true,
       "visible": true,
-      "entity_count": null
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
     },
     "france-regions": {
       "id": "france-regions",
@@ -65,7 +113,15 @@
       "images_dir": null,
       "exists": true,
       "visible": true,
-      "entity_count": null
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
     },
     "italy-regions": {
       "id": "italy-regions",
@@ -76,7 +132,15 @@
       "images_dir": null,
       "exists": true,
       "visible": true,
-      "entity_count": null
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
     },
     "germany-states": {
       "id": "germany-states",
@@ -87,7 +151,15 @@
       "images_dir": null,
       "exists": true,
       "visible": true,
-      "entity_count": null
+      "entity_count": null,
+      "games_visibility": {
+        "flags": false,
+        "outline": true,
+        "map-challenge": true,
+        "ordering": true,
+        "comparison": true,
+        "geostats": true
+      }
     }
   }
 }

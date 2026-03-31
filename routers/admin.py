@@ -607,11 +607,13 @@ async def admin_dataset_config(request: Request, saved: str = ""):
 
     svc = get_dataset_config_service()
     datasets = svc.get_all_datasets()
+    games = svc.get_games()
     last_updated = svc.get_last_updated()
 
     return templates.TemplateResponse("admin/dataset_config.html", {
         "request": request, "lang": lang, "section": "dataset-config",
         "datasets": datasets,
+        "games": games,
         "last_updated": last_updated,
         "saved": saved == "1",
     })
@@ -633,6 +635,16 @@ async def admin_toggle_dataset_visibility(request: Request, dataset_id: str):
     svc = get_dataset_config_service()
     svc.toggle_visibility(dataset_id, visible)
     return RedirectResponse("/admin/dataset-config?saved=1", status_code=303)
+
+
+@router.post("/dataset-config/{dataset_id}/game/{game_id}/visibility")
+async def admin_toggle_game_visibility(request: Request, dataset_id: str, game_id: str):
+    _require_auth(request)
+    form = await request.form()
+    visible = form.get("visible") == "1"
+    svc = get_dataset_config_service()
+    svc.toggle_game_visibility(dataset_id, game_id, visible)
+    return JSONResponse(content={"success": True, "visible": visible})
 
 
 @router.get("/api/datasets-config")
