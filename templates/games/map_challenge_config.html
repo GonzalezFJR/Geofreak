@@ -278,19 +278,31 @@
         return n + ' ' + (TLABELS.ent[key] || '');
     }
 
-    function updatePreview() {
-        var n = getN();
+    var _countFetchId = 0;
+
+    function fetchCityCountryCount() {
+        var url = '/api/map-game/data?count_only=true&dataset=cities'
+            + '&city_filter=' + encodeURIComponent(state.cityFilter)
+            + '&continent=' + encodeURIComponent(state.cityContinent)
+            + '&country_filter=' + encodeURIComponent(state.cityCountries.join(','));
+        var fetchId = ++_countFetchId;
+        fetch(url)
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (fetchId !== _countFetchId) return;
+                showPreview(data.count || 0);
+            })
+            .catch(function () {
+                if (fetchId !== _countFetchId) return;
+                showPreview(0);
+            });
+    }
+
+    function showPreview(n) {
         var nEl   = document.getElementById('preview-n');
         var tEl   = document.getElementById('preview-time');
         var btn   = document.getElementById('mcfg-play-btn');
         var hint  = document.getElementById('mcfg-register-hint');
-        if (n === -1) {
-            if (nEl) nEl.textContent = '? ' + (TLABELS.ent['cities'] || '');
-            if (tEl) tEl.textContent = '–';
-            if (btn)  btn.disabled = false;
-            if (hint) hint.style.display = 'none';
-            return;
-        }
         if (nEl) nEl.textContent = getEntLabel(n);
         if (tEl) {
             var isType = (state.mode === 'type');
@@ -299,6 +311,15 @@
         var blocked = !IS_LOGGED_IN && n > MAX_ANON_ITEMS;
         if (btn)  btn.disabled = blocked || n === 0;
         if (hint) hint.style.display = blocked ? '' : 'none';
+    }
+
+    function updatePreview() {
+        var n = getN();
+        if (n === -1) {
+            fetchCityCountryCount();
+            return;
+        }
+        showPreview(n);
     }
 
     function wireCards(containerId, stateKey, onChange) {
