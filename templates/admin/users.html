@@ -29,7 +29,7 @@
                         <th>{{ t('adm.users_username', lang) }}</th>
                         <th>{{ t('adm.users_email', lang) }}</th>
                         <th>{{ t('adm.users_status', lang) }}</th>
-                        <th>{{ t('adm.users_plan', lang) }}</th>
+                        <th>{{ t('adm.users_role', lang) }}</th>
                         <th>{{ t('adm.users_created', lang) }}</th>
                         <th>{{ t('adm.users_actions', lang) }}</th>
                     </tr>
@@ -45,7 +45,14 @@
                         <td>
                             <span class="status-badge {{ u.status }}">{{ u.status }}</span>
                         </td>
-                        <td>{{ u.plan | default('free') }}</td>
+                        <td>
+                            <form method="post" action="/admin/users/{{ u.user_id }}/role" class="inline-form">
+                                <select name="role" class="role-select" onchange="this.form.submit()">
+                                    <option value="free" {{ 'selected' if (u.role or u.plan or 'free') == 'free' }}>free</option>
+                                    <option value="editor" {{ 'selected' if (u.role or u.plan or 'free') == 'editor' }}>editor</option>
+                                </select>
+                            </form>
+                        </td>
                         <td class="ts">{{ u.created_at[:10] if u.created_at else '—' }}</td>
                         <td class="actions-cell">
                             <form method="post" action="/admin/users/{{ u.user_id }}/status" class="inline-form">
@@ -98,7 +105,7 @@
             <div class="um-section">
                 <h3>Cuenta</h3>
                 <div class="um-grid">
-                    <div class="um-item"><span class="um-label">Plan</span><span id="um-plan"></span></div>
+                    <div class="um-item"><span class="um-label">Rol</span><span id="um-plan"></span></div>
                     <div class="um-item"><span class="um-label">País</span><span id="um-country"></span></div>
                     <div class="um-item"><span class="um-label">Idioma</span><span id="um-language"></span></div>
                     <div class="um-item"><span class="um-label">Registro</span><span id="um-created"></span></div>
@@ -196,7 +203,7 @@
         badges.innerHTML = verBadge + statusBadge;
 
         // Account info
-        document.getElementById('um-plan').textContent = u.plan || 'free';
+        document.getElementById('um-plan').textContent = u.role || u.plan || 'free';
         document.getElementById('um-country').textContent = u.country || '—';
         document.getElementById('um-language').textContent = u.language || '—';
         document.getElementById('um-created').textContent = u.created_at ? u.created_at.slice(0, 10) : '—';

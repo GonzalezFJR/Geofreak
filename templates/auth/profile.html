@@ -108,8 +108,8 @@
                 </span>
             </div>
             <div class="profile-detail">
-                <span class="label">{{ t('prof.plan', lang) }}</span>
-                <span>{{ user.plan | capitalize }}</span>
+                <span class="label">{{ t('prof.role', lang) }}</span>
+                <span>{{ (user.role or user.plan or 'free') | capitalize }}</span>
             </div>
         </div>
 

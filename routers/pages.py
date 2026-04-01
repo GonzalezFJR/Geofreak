@@ -44,7 +44,13 @@ async def landing(request: Request, user=Depends(get_optional_user)):
 async def map_viewer(request: Request, user=Depends(get_optional_user)):
     lang = get_lang(request)
     track("page_view", {"page": "map"})
-    return templates.TemplateResponse("map.html", {"request": request, "user": user, "lang": lang})
+    can_edit = False
+    if request.session.get("authenticated", False):
+        can_edit = True  # Admin
+    elif user:
+        from services.users import get_user_role
+        can_edit = get_user_role(user) == "editor"
+    return templates.TemplateResponse("map.html", {"request": request, "user": user, "lang": lang, "can_edit": can_edit})
 
 
 @router.get("/relief", response_class=HTMLResponse)

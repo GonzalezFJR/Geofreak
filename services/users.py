@@ -27,6 +27,7 @@ def create_user(username: str, email: str, password_hash: str, language: str = "
         "created_at": now,
         "updated_at": now,
         "plan": "free",
+        "role": "free",
         "status": "active",
         "country": "",
         "language": language,
@@ -37,6 +38,11 @@ def create_user(username: str, email: str, password_hash: str, language: str = "
 
 
 # ── Read ─────────────────────────────────────────────────────────────────────
+
+def get_user_role(user: dict) -> str:
+    """Return the user's role, falling back to legacy 'plan' field."""
+    return user.get("role") or user.get("plan", "free")
+
 
 def get_user_by_id(user_id: str) -> Optional[dict]:
     resp = _table().get_item(Key={"user_id": user_id})

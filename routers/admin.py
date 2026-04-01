@@ -11,6 +11,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, JSON
 
 from core.config import get_settings
 from core.i18n import get_lang
+from core.auth import _user_from_token
 from core.templates import templates
 from services.analytics import (
     get_counters, get_recent_events, get_daily_counters, get_total_events,
@@ -19,6 +20,7 @@ from services.analytics import (
 from services.games import GamesService
 from services.quiz import get_all_variables, get_datasets, get_sources, toggle_variable, reload_var_config
 from services.dataset_config import get_dataset_config_service
+from services.users import get_user_role, update_user
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -26,14 +28,59 @@ games_service = GamesService()
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "static", "data")
 
+# Dataset categories for the selector UI
+DATASET_CATEGORIES = [
+    {"key": "countries", "label_key": "adm.cat_countries", "datasets": ["countries"]},
+    {"key": "cities", "label_key": "adm.cat_cities", "datasets": ["cities"]},
+    {"key": "regions", "label_key": "adm.cat_regions", "datasets": [
+        "usastates", "spain_provinces", "russia_regions", "france_regions",
+        "italy_provinces", "germany_states", "mexico_states",
+        "argentina_provinces", "brazil_states",
+    ]},
+]
+
+# Map variable_config IDs (underscore) → datasets_config IDs (hyphenated)
+VAR_TO_CONFIG_ID = {
+    "countries": "countries",
+    "cities": "cities",
+    "usastates": "us-states",
+    "spain_provinces": "spain-provinces",
+    "russia_regions": "russia-regions",
+    "france_regions": "france-regions",
+    "italy_provinces": "italy-provinces",
+    "germany_states": "germany-states",
+    "mexico_states": "mexico-states",
+    "argentina_provinces": "argentina-provinces",
+    "brazil_states": "brazil-states",
+}
+CONFIG_TO_VAR_ID = {v: k for k, v in VAR_TO_CONFIG_ID.items()}
+
+
+def _get_admin_context(request: Request) -> dict:
+    """Check admin session or JWT editor. Returns auth context dict."""
+    if request.session.get("authenticated", False):
+        return {"is_admin": True, "is_editor": False, "authenticated": True}
+    token = request.cookies.get("access_token")
+    if token:
+        user = _user_from_token(token)
+        if user and get_user_role(user) == "editor":
+            return {"is_admin": False, "is_editor": True, "authenticated": True}
+    return {"is_admin": False, "is_editor": False, "authenticated": False}
+
 
 def is_authenticated(request: Request) -> bool:
-    return request.session.get("authenticated", False)
+    return _get_admin_context(request)["authenticated"]
 
 
 def _require_auth(request: Request):
     if not is_authenticated(request):
         raise HTTPException(status_code=403, detail="Not authenticated")
+
+
+def _require_admin(request: Request):
+    """Require superadmin (hardcoded env var account), not just editor."""
+    if not _get_admin_context(request)["is_admin"]:
+        raise HTTPException(status_code=403, detail="Admin only")
 
 
 # ── Auth ─────────────────────────────────────────────────────────────────────
@@ -68,12 +115,13 @@ async def logout(request: Request):
 
 @router.get("", response_class=HTMLResponse)
 async def admin_dashboard(request: Request, saved: str = ""):
-    if not is_authenticated(request):
+    ctx = _get_admin_context(request)
+    if not ctx["authenticated"]:
         return RedirectResponse("/admin/login", status_code=303)
     lang = get_lang(request)
     games = games_service.get_games()
     return templates.TemplateResponse(
-        "admin/dashboard.html", {"request": request, "games": games, "lang": lang, "section": "games", "saved": saved == "1"}
+        "admin/dashboard.html", {"request": request, "games": games, "lang": lang, "section": "games", "saved": saved == "1", "is_admin": ctx["is_admin"]}
     )
 
 
@@ -149,8 +197,9 @@ async def update_game(request: Request, game_id: str):
 
 @router.get("/users", response_class=HTMLResponse)
 async def admin_users(request: Request):
-    if not is_authenticated(request):
-        return RedirectResponse("/admin/login", status_code=303)
+    ctx = _get_admin_context(request)
+    if not ctx["is_admin"]:
+        return RedirectResponse("/admin", status_code=303)
     lang = get_lang(request)
 
     from core.aws import get_dynamodb_resource
@@ -165,28 +214,37 @@ async def admin_users(request: Request):
         u.pop("password_hash", None)
 
     return templates.TemplateResponse(
-        "admin/users.html", {"request": request, "users": users, "lang": lang, "section": "users"}
+        "admin/users.html", {"request": request, "users": users, "lang": lang, "section": "users", "is_admin": True}
     )
 
 
 @router.post("/users/{user_id}/status")
 async def admin_toggle_user_status(request: Request, user_id: str):
-    _require_auth(request)
+    _require_admin(request)
     form = await request.form()
     new_status = form.get("status", "active")
     if new_status not in ("active", "disabled"):
         raise HTTPException(status_code=400, detail="Invalid status")
-
-    from services.users import update_user
     update_user(user_id, {"status": new_status})
     return RedirectResponse("/admin/users", status_code=303)
 
 
 @router.post("/users/{user_id}/delete")
 async def admin_delete_user(request: Request, user_id: str):
-    _require_auth(request)
+    _require_admin(request)
     from services.users import delete_user
     delete_user(user_id)
+    return RedirectResponse("/admin/users", status_code=303)
+
+
+@router.post("/users/{user_id}/role")
+async def admin_update_user_role(request: Request, user_id: str):
+    _require_admin(request)
+    form = await request.form()
+    new_role = form.get("role", "free")
+    if new_role not in ("free", "editor"):
+        raise HTTPException(status_code=400, detail="Invalid role")
+    update_user(user_id, {"role": new_role})
     return RedirectResponse("/admin/users", status_code=303)
 
 
@@ -251,8 +309,9 @@ async def admin_user_details(request: Request, user_id: str):
 
 @router.get("/analytics", response_class=HTMLResponse)
 async def admin_analytics(request: Request):
-    if not is_authenticated(request):
-        return RedirectResponse("/admin/login", status_code=303)
+    ctx = _get_admin_context(request)
+    if not ctx["is_admin"]:
+        return RedirectResponse("/admin", status_code=303)
     lang = get_lang(request)
 
     counters = get_counters()
@@ -285,6 +344,7 @@ async def admin_analytics(request: Request):
         "event_types": base_types, "sub_types": sub_types,
         "daily": daily, "recent": recent,
         "s3_today": s3_today, "s3_files": s3_files,
+        "is_admin": True,
     })
 
 
@@ -379,6 +439,17 @@ async def admin_datasets(request: Request, dataset: str = Query("countries")):
             "label_en": ds_info.get("label_en", ds_id),
         })
 
+    # Visibility config for this dataset
+    ctx = _get_admin_context(request)
+    config_id = VAR_TO_CONFIG_ID.get(dataset)
+    ds_config_data = None
+    games_for_visibility = []
+    if config_id:
+        svc = get_dataset_config_service()
+        all_ds_configs = svc.get_all_datasets()
+        ds_config_data = all_ds_configs.get(config_id)
+        games_for_visibility = svc.get_games()
+
     return templates.TemplateResponse("admin/datasets.html", {
         "request": request, "lang": lang, "section": "datasets",
         "datasets": datasets_info,
@@ -390,6 +461,11 @@ async def admin_datasets(request: Request, dataset: str = Query("countries")):
         "current_dataset": dataset,
         "dataset_list": dataset_list,
         "csv_summary": csv_summary,
+        "dataset_categories": DATASET_CATEGORIES,
+        "config_dataset_id": config_id,
+        "ds_config": ds_config_data,
+        "games_for_visibility": games_for_visibility,
+        "is_admin": ctx["is_admin"],
     })
 
 
@@ -546,12 +622,14 @@ async def admin_daily(request: Request):
     future = [c for c in challenges if c["date"] >= today]
     past = [c for c in challenges if c["date"] < today]
 
+    ctx = _get_admin_context(request)
     return templates.TemplateResponse("admin/daily.html", {
         "request": request, "lang": lang, "section": "daily",
         "challenges_future": future,
         "challenges_past": past,
         "today": today,
         "total_challenges": len(challenges),
+        "is_admin": ctx["is_admin"],
     })
 
 
@@ -618,24 +696,10 @@ async def admin_daily_preview(request: Request, date_str: str):
 
 # ── Dataset Configuration ────────────────────────────────────────────────────
 
-@router.get("/dataset-config", response_class=HTMLResponse)
-async def admin_dataset_config(request: Request, saved: str = ""):
-    if not is_authenticated(request):
-        return RedirectResponse("/admin/login", status_code=303)
-    lang = get_lang(request)
-
-    svc = get_dataset_config_service()
-    datasets = svc.get_all_datasets()
-    games = svc.get_games()
-    last_updated = svc.get_last_updated()
-
-    return templates.TemplateResponse("admin/dataset_config.html", {
-        "request": request, "lang": lang, "section": "dataset-config",
-        "datasets": datasets,
-        "games": games,
-        "last_updated": last_updated,
-        "saved": saved == "1",
-    })
+@router.get("/dataset-config")
+async def admin_dataset_config(request: Request):
+    """Redirect old Config Datasets route to merged Datasets page."""
+    return RedirectResponse("/admin/datasets", status_code=303)
 
 
 @router.post("/dataset-config/update-state")
@@ -653,7 +717,8 @@ async def admin_toggle_dataset_visibility(request: Request, dataset_id: str):
     visible = form.get("visible") == "1"
     svc = get_dataset_config_service()
     svc.toggle_visibility(dataset_id, visible)
-    return RedirectResponse("/admin/dataset-config?saved=1", status_code=303)
+    var_id = CONFIG_TO_VAR_ID.get(dataset_id, "countries")
+    return RedirectResponse(f"/admin/datasets?dataset={var_id}", status_code=303)
 
 
 @router.post("/dataset-config/{dataset_id}/game/{game_id}/visibility")

@@ -4,6 +4,7 @@
         <span class="admin-tab-icon">🎮</span>
         {{ t('adm.tab_games', lang) }}
     </a>
+    {% if is_admin %}
     <a href="/admin/users" class="admin-tab {{ 'active' if section == 'users' }}">
         <span class="admin-tab-icon">👥</span>
         {{ t('adm.tab_users', lang) }}
@@ -12,13 +13,10 @@
         <span class="admin-tab-icon">📊</span>
         {{ t('adm.tab_analytics', lang) }}
     </a>
+    {% endif %}
     <a href="/admin/datasets" class="admin-tab {{ 'active' if section == 'datasets' }}">
         <span class="admin-tab-icon">📁</span>
         {{ t('adm.tab_datasets', lang) }}
-    </a>
-    <a href="/admin/dataset-config" class="admin-tab {{ 'active' if section == 'dataset-config' }}">
-        <span class="admin-tab-icon">⚙️</span>
-        {{ t('adm.tab_dataset_config', lang) }}
     </a>
     <a href="/admin/daily" class="admin-tab {{ 'active' if section == 'daily' }}">
         <span class="admin-tab-icon">🎯</span>

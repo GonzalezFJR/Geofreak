@@ -16,14 +16,25 @@
 
     {% include "admin/_nav.html" %}
 
-    <!-- Dataset selector -->
-    <div class="dataset-selector">
-        {% for ds in dataset_list %}
-        <a href="/admin/datasets?dataset={{ ds.id }}"
-           class="dataset-tab {{ 'active' if ds.id == current_dataset }}">
-            {% if ds.id == 'countries' %}🌍{% elif ds.id == 'cities' %}🏙️{% elif ds.id == 'usastates' %}🇺🇸{% endif %}
-            {{ ds.label_es if lang == 'es' else ds.label_en }}
-        </a>
+    <!-- Dataset selector grouped by category -->
+    <div class="dataset-selector" style="flex-direction:column;gap:12px;">
+        {% for cat in dataset_categories %}
+        <div class="dataset-category-group">
+            <div class="dataset-category-label">
+                {% if cat.key == 'countries' %}🌍{% elif cat.key == 'cities' %}🏙️{% elif cat.key == 'regions' %}🗺️{% endif %}
+                {{ t(cat.label_key, lang) }}
+            </div>
+            <div class="dataset-category-items">
+                {% for ds in dataset_list %}
+                    {% if ds.id in cat.datasets %}
+                    <a href="/admin/datasets?dataset={{ ds.id }}"
+                       class="dataset-tab {{ 'active' if ds.id == current_dataset }}">
+                        {{ ds.label_es if lang == 'es' else ds.label_en }}
+                    </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
         {% endfor %}
     </div>
 
@@ -46,6 +57,50 @@
             <div class="analytics-card-label">{{ t('adm.ds_images', lang) }}</div>
         </div>
     </div>
+
+    <!-- Visibility section -->
+    {% if ds_config and config_dataset_id %}
+    <div class="admin-section">
+        <h2 class="admin-section-title">{{ t('adm.ds_visibility', lang) }}</h2>
+
+        <!-- Global Visibility -->
+        <div class="admin-visibility-section" style="border-top:none;padding-top:0;">
+            <div class="admin-visibility-header">
+                <span class="visibility-title">{{ t('adm.global_visibility', lang) }}</span>
+                <form method="post" action="/admin/dataset-config/{{ config_dataset_id }}/visibility" class="admin-dataset-visibility">
+                    <label class="switch">
+                        <input type="checkbox" name="visible" value="1" {% if ds_config.visible %}checked{% endif %} onchange="this.form.submit()">
+                        <span class="switch-slider"></span>
+                    </label>
+                    <span class="visibility-label">
+                        {% if ds_config.visible %}{{ t('adm.visible_on', lang) }}{% else %}{{ t('adm.visible_off', lang) }}{% endif %}
+                    </span>
+                </form>
+            </div>
+        </div>
+
+        <!-- Game Visibility -->
+        <div class="admin-game-visibility">
+            <div class="admin-game-visibility-title">{{ t('adm.game_visibility', lang) }}</div>
+            <div class="admin-game-toggles">
+                {% for game in games_for_visibility %}
+                {% set game_visible = ds_config.games_visibility.get(game.id, true) if ds_config.games_visibility else true %}
+                <div class="admin-game-toggle">
+                    <label class="game-toggle-label" title="{{ game.name_es if lang == 'es' else game.name_en }}">
+                        <input type="checkbox"
+                               data-dataset="{{ config_dataset_id }}"
+                               data-game="{{ game.id }}"
+                               {% if game_visible %}checked{% endif %}
+                               onchange="toggleGameVisibility('{{ config_dataset_id }}', '{{ game.id }}', this.checked)">
+                        <span class="game-icon">{{ game.icon }}</span>
+                        <span class="game-name">{{ game.name_es if lang == 'es' else game.name_en }}</span>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
     <!-- Variables config section -->
     <div class="admin-section">
@@ -253,4 +308,25 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleGameVisibility(datasetId, gameId, visible) {
+    var formData = new FormData();
+    formData.append('visible', visible ? '1' : '0');
+
+    fetch('/admin/dataset-config/' + datasetId + '/game/' + gameId + '/visibility', {
+        method: 'POST',
+        body: formData
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (!data.success) {
+            alert('Error saving visibility');
+        }
+    })
+    .catch(function(err) {
+        alert('Error: ' + err.message);
+    });
+}
+</script>
 {% endblock %}

@@ -1752,8 +1752,10 @@
 
             // Build UI controls
             buildLayersControl();
-            buildEditControl();
-            buildEditPanel();
+            if (window.CAN_EDIT) {
+                buildEditControl();
+                buildEditPanel();
+            }
 
             // Apply initial preset (political)
             applyPreset("political");

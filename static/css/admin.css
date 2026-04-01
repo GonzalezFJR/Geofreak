@@ -1303,3 +1303,112 @@
 .users-table tbody tr { cursor: pointer; }
 .users-table tbody tr:hover { background: var(--gray-50); }
 
+/* ── Dataset visibility (merged from dataset_config) ─────────────────── */
+
+.admin-visibility-section {
+    padding: 12px 0;
+    border-top: 1px solid var(--gray-100);
+}
+.admin-visibility-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.visibility-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+.admin-dataset-visibility {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.visibility-label {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+}
+.admin-game-visibility {
+    padding-top: 12px;
+    border-top: 1px solid var(--gray-100);
+}
+.admin-game-visibility-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 10px;
+}
+.admin-game-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.admin-game-toggle {
+    flex: 0 0 auto;
+}
+.game-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 10px;
+    background: var(--gray-100);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+}
+.game-toggle-label:has(input:checked) {
+    background: #e3f2fd;
+    border: 1px solid #64b5f6;
+}
+.game-toggle-label:has(input:not(:checked)) {
+    opacity: 0.6;
+}
+.game-toggle-label input {
+    display: none;
+}
+.game-icon {
+    font-size: 1rem;
+}
+.game-name {
+    color: var(--gray-700);
+}
+
+/* ── Dataset category groups ──────────────────────────────────────────── */
+
+.dataset-category-group {
+    margin-bottom: 4px;
+}
+.dataset-category-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 6px;
+    padding-left: 4px;
+}
+.dataset-category-items {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* ── Role select in users table ──────────────────────────────────────── */
+
+.role-select {
+    padding: 4px 8px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 500;
+    background: var(--white);
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+.role-select:focus {
+    outline: none;
+    border-color: var(--blue-400, #60a5fa);
+}
+
