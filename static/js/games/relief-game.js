@@ -113,7 +113,7 @@ var ReliefGame = (function () {
                     GeoGame._updateTimer();
                 }
 
-                initMap(s.continent);
+                initMap(features);
                 initMarkers(features);
                 hideSpinner();
                 GeoGame.startTimer();
@@ -171,44 +171,48 @@ var ReliefGame = (function () {
     }
 
     /* ── Map init ─────────────────────────────────────── */
-    function initMap(continent) {
-        var cfg = { center: [20, 0], zoom: 2, minZoom: 2 };
-        var CONT = {
-            europe:          { center: [54,  15], zoom: 4, minZoom: 3 },
-            asia:            { center: [35,  90], zoom: 3, minZoom: 2 },
-            africa:          { center: [ 5,  20], zoom: 3, minZoom: 2 },
-            north_america:   { center: [48, -100], zoom: 3, minZoom: 2 },
-            central_america: { center: [15, -85],  zoom: 5, minZoom: 4 },
-            south_america:   { center: [-18, -58], zoom: 3, minZoom: 2 },
-            oceania:         { center: [-25, 145], zoom: 4, minZoom: 3 },
-        };
-        if (continent && continent !== "all" && CONT[continent]) cfg = CONT[continent];
+    function initMap(features) {
+        /* Compute bounds from features with 20% padding */
+        var latMin = 90, latMax = -90, lonMin = 180, lonMax = -180;
+        features.forEach(function (f) {
+            if (f.lat < latMin) latMin = f.lat;
+            if (f.lat > latMax) latMax = f.lat;
+            if (f.lon < lonMin) lonMin = f.lon;
+            if (f.lon > lonMax) lonMax = f.lon;
+        });
+        var latPad = Math.max((latMax - latMin) * 0.2, 2);
+        var lonPad = Math.max((lonMax - lonMin) * 0.2, 2);
+        var sw = L.latLng(Math.max(latMin - latPad, -85), lonMin - lonPad);
+        var ne = L.latLng(Math.min(latMax + latPad, 85),  lonMax + lonPad);
+        var bounds = L.latLngBounds(sw, ne);
 
         map = L.map("game-map", {
-            center: cfg.center, zoom: cfg.zoom,
-            minZoom: cfg.minZoom || 2, maxZoom: 14,
+            maxBounds: bounds,
+            maxBoundsViscosity: 0.8,
+            minZoom: 2, maxZoom: 14,
             zoomControl: true, worldCopyJump: true,
         });
+        map.fitBounds(bounds);
 
-        /* Tile layers: blank (default), terrain (no labels), satellite */
-        var blankLayer = L.tileLayer(
-            "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
-            { attribution: "&copy; CARTO", subdomains: "abcd", maxZoom: 19 }
-        );
+        /* Tile layers: terrain (default), blank, satellite */
         var terrainLayer = L.tileLayer(
             "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
             { attribution: "&copy; Esri", maxZoom: 13 }
+        );
+        var blankLayer = L.tileLayer(
+            "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+            { attribution: "&copy; CARTO", subdomains: "abcd", maxZoom: 19 }
         );
         var satelliteLayer = L.tileLayer(
             "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
             { attribution: "&copy; Esri", maxZoom: 18 }
         );
 
-        blankLayer.addTo(map);
+        terrainLayer.addTo(map);
         L.control.layers({
-            "Mapa": blankLayer,
             "Terreno": terrainLayer,
-            "Satélite": satelliteLayer,
+            "Mapa": blankLayer,
+            "\u{1F6F0}\uFE0F Sat\u00E9lite": satelliteLayer,
         }, null, { position: "topright" }).addTo(map);
 
         map.on("click", function (e) {
