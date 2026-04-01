@@ -86,6 +86,42 @@ async def get_relief_features(
     return dataset_service.get_relief_features(feature_type=feature_type)
 
 
+class ReliefFeatureCreate(BaseModel):
+    name: str
+    type: str
+    lat: float
+    lon: float
+    name_es: str = ""
+    name_en: str = ""
+    name_fr: str = ""
+    name_it: str = ""
+    name_ru: str = ""
+    country_codes: str = ""
+    elevation_m: float | None = None
+    length_km: float | None = None
+    area_km2: float | None = None
+    geojson: dict | None = None
+
+
+@router.post("/relief-features")
+async def create_relief_feature(payload: ReliefFeatureCreate):
+    """Create a new relief feature. Appends to CSV and optionally saves GeoJSON."""
+    return dataset_service.create_relief_feature(payload.model_dump())
+
+
+class GeojsonAssociate(BaseModel):
+    geojson: dict
+
+
+@router.post("/relief-features/{wikidata_id}/geojson")
+async def associate_geojson(wikidata_id: str, payload: GeojsonAssociate):
+    """Associate a GeoJSON geometry with an existing relief feature."""
+    success = dataset_service.save_relief_geojson(wikidata_id, payload.geojson)
+    if not success:
+        raise HTTPException(status_code=404, detail="Feature not found")
+    return {"status": "ok", "wikidata_id": wikidata_id}
+
+
 @router.get("/relief-game/data")
 async def relief_game_data(
     category: str = Query("all", description="Category: all|relief|water|coast or single type"),
@@ -118,6 +154,22 @@ async def get_cities(
         capitals_only=capitals_only,
     )
     return cities
+
+
+@router.get("/cities/tier/{tier}")
+async def get_cities_tier(tier: int):
+    """Return cities for a specific population tier (map display).
+
+    Tiers:
+      1 = Capitals + 5M+
+      2 = 1M-5M
+      3 = 500K-1M
+      4 = 100K-500K
+      5 = 50K-100K
+    """
+    if tier < 1 or tier > 5:
+        raise HTTPException(status_code=400, detail="Tier must be 1-5")
+    return dataset_service.get_cities_for_tier(tier)
 
 
 @router.get("/cities/{iso_code}")

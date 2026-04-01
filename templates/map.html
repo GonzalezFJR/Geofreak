@@ -22,23 +22,6 @@
         <button class="map-preset" data-preset="custom">{{ t('map.preset_custom', lang) }} ▾</button>
     </div>
 
-    <!-- Custom layers panel -->
-    <div class="map-custom-panel" id="custom-panel">
-        <div class="mcp-section">{{ t('map.section_political', lang) }}</div>
-        <label><input type="checkbox" data-layer="countries" checked> {{ t('map.layer_countries', lang) }}</label>
-        <label><input type="checkbox" data-layer="capitals" checked> {{ t('map.layer_capitals', lang) }}</label>
-        <label><input type="checkbox" data-layer="cities5m" checked> {{ t('map.layer_cities_5m', lang) }}</label>
-        <label><input type="checkbox" data-layer="cities1m" checked> {{ t('map.layer_cities_1m', lang) }}</label>
-        <label><input type="checkbox" data-layer="cities500k"> {{ t('map.layer_cities_500k', lang) }}</label>
-        <label><input type="checkbox" data-layer="cities100k"> {{ t('map.layer_cities_100k', lang) }}</label>
-        <label><input type="checkbox" data-layer="citiesOther"> {{ t('map.layer_cities_other', lang) }}</label>
-        <div class="mcp-section">{{ t('map.section_relief', lang) }}</div>
-        <label><input type="checkbox" data-layer="reliefAll"> {{ t('map.layer_relief_all', lang) }}</label>
-        <label><input type="checkbox" data-layer="reliefLand"> {{ t('map.layer_relief_land', lang) }}</label>
-        <label><input type="checkbox" data-layer="reliefWater"> {{ t('map.layer_relief_water', lang) }}</label>
-        <label><input type="checkbox" data-layer="reliefCoast"> {{ t('map.layer_relief_coast', lang) }}</label>
-    </div>
-
     <!-- Loading overlay -->
     <div class="loading-overlay" id="loading">
         <div class="spinner"></div>
@@ -58,6 +41,70 @@
             </div>
             <div class="modal-body" id="modal-body">
                 <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit feature modal -->
+    <div class="modal-overlay" id="edit-modal-overlay">
+        <div class="modal" id="edit-modal" style="max-width:480px">
+            <div class="modal-header">
+                <div>
+                    <div class="modal-country-name" id="edit-modal-title"></div>
+                </div>
+                <button class="modal-close" id="edit-modal-close">✕</button>
+            </div>
+            <div class="modal-body" id="edit-modal-body">
+                <!-- Tabs -->
+                <div class="edit-tabs">
+                    <button class="edit-tab active" data-tab="new" id="edit-tab-new"></button>
+                    <button class="edit-tab" data-tab="associate" id="edit-tab-assoc"></button>
+                </div>
+
+                <!-- Tab: Create new -->
+                <div class="edit-tab-content active" id="edit-pane-new">
+                    <div class="edit-form-row">
+                        <label class="edit-label" id="edit-label-name"></label>
+                        <input type="text" id="edit-name" class="edit-input" required>
+                    </div>
+                    <div class="edit-form-row">
+                        <label class="edit-label" id="edit-label-type"></label>
+                        <div class="edit-type-display" id="edit-type-display"></div>
+                    </div>
+                    <div class="edit-form-row edit-row-2col">
+                        <div><label class="edit-label">Lat</label><input type="number" step="any" id="edit-lat" class="edit-input"></div>
+                        <div><label class="edit-label">Lon</label><input type="number" step="any" id="edit-lon" class="edit-input"></div>
+                    </div>
+                    <details class="edit-optional">
+                        <summary id="edit-optional-label"></summary>
+                        <div class="edit-form-row"><label class="edit-label">Name ES</label><input type="text" id="edit-name-es" class="edit-input"></div>
+                        <div class="edit-form-row"><label class="edit-label">Name EN</label><input type="text" id="edit-name-en" class="edit-input"></div>
+                        <div class="edit-form-row"><label class="edit-label">Name FR</label><input type="text" id="edit-name-fr" class="edit-input"></div>
+                        <div class="edit-form-row"><label class="edit-label">Name IT</label><input type="text" id="edit-name-it" class="edit-input"></div>
+                        <div class="edit-form-row"><label class="edit-label">Name RU</label><input type="text" id="edit-name-ru" class="edit-input"></div>
+                        <div class="edit-form-row"><label class="edit-label" id="edit-label-country"></label><input type="text" id="edit-country" class="edit-input" placeholder="ESP,FRA"></div>
+                        <div class="edit-form-row edit-row-3col">
+                            <div><label class="edit-label">Elev. (m)</label><input type="number" step="any" id="edit-elev" class="edit-input"></div>
+                            <div><label class="edit-label">Length (km)</label><input type="number" step="any" id="edit-length" class="edit-input"></div>
+                            <div><label class="edit-label">Area (km²)</label><input type="number" step="any" id="edit-area" class="edit-input"></div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Tab: Associate with existing -->
+                <div class="edit-tab-content" id="edit-pane-assoc">
+                    <div class="edit-form-row">
+                        <label class="edit-label" id="edit-label-search"></label>
+                        <input type="text" id="edit-search" class="edit-input" autocomplete="off">
+                        <div class="edit-search-results" id="edit-search-results"></div>
+                    </div>
+                    <div class="edit-selected-feature" id="edit-selected-feature" style="display:none"></div>
+                </div>
+
+                <div class="edit-form-actions">
+                    <button class="edit-btn edit-btn-cancel" id="edit-form-cancel"></button>
+                    <button class="edit-btn edit-btn-submit" id="edit-form-submit"></button>
+                </div>
             </div>
         </div>
     </div>

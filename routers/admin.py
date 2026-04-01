@@ -12,7 +12,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, JSON
 from core.config import get_settings
 from core.i18n import get_lang
 from core.templates import templates
-from services.analytics import get_counters, get_recent_events, count_s3_events_today, list_s3_event_files
+from services.analytics import get_counters, get_recent_events, count_s3_events_today, list_s3_event_files, load_recent_events_s3
 from services.games import GamesService
 from services.quiz import get_all_variables, get_datasets, get_sources, toggle_variable, reload_var_config
 from services.dataset_config import get_dataset_config_service
@@ -253,9 +253,16 @@ async def admin_analytics(request: Request):
     lang = get_lang(request)
 
     counters = get_counters()
-    recent = get_recent_events(limit=30)
     s3_today = count_s3_events_today()
     s3_files = list_s3_event_files(days=7, max_keys=50)
+
+    # Merge in-memory recent events with S3 historical events
+    memory_events = get_recent_events(limit=50)
+    s3_events = load_recent_events_s3(limit=50)
+    # Use oldest in-memory ts as cutoff to avoid duplicates
+    oldest_mem_ts = memory_events[-1]["ts"] if memory_events else ""
+    s3_only = [e for e in s3_events if e.get("ts", "") < oldest_mem_ts] if oldest_mem_ts else s3_events
+    recent = (memory_events + s3_only)[:50]
 
     # Compute some summary stats
     total_events = sum(counters.values())

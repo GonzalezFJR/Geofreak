@@ -40,6 +40,9 @@ class Settings(BaseSettings):
     s3_bucket_name: str = "geofreak-assets"
     s3_endpoint_url: Optional[str] = None
 
+    # Analytics
+    analytics_flush_size: int = 50
+
     # SMTP
     smtp_host: str = ""
     smtp_port: int = 587
