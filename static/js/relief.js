@@ -21,6 +21,9 @@
         river:          "#4169E1",
     };
 
+    // ─── SVG icon paths ──────────────────────────────────────────────
+    var ICON_BASE = "/static/img/icons/relief/";
+
     // Translated type labels (keyed by type, value per lang)
     var TYPE_LABELS = {
         mountain:       { es: "Montaña",      en: "Mountain",       fr: "Montagne",     it: "Montagna",     ru: "Гора" },
@@ -94,7 +97,21 @@
     var activeTypes = new Set(Object.keys(TYPE_COLORS));
     var searchQuery = "";
     var geojsonCache = {};               // wikidata_id → GeoJSON geometry (or null)
+    var geojsonLoading = {};             // wikidata_id → true (currently fetching)
     var GEOJSON_BASE = "/static/data/relief_geojson/";
+    var GEOJSON_ZOOM = 6;               // show GeoJSON shapes at this zoom level+
+    var filteredFeatures = [];           // features that pass current filters
+
+    // ─── SVG icon creation for markers ──────────────────────────────
+    function createSvgIcon(type) {
+        return L.divIcon({
+            className: "relief-svg-icon",
+            html: '<img src="' + ICON_BASE + type + '.svg" width="20" height="20" style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3))">',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+            popupAnchor: [0, -12],
+        });
+    }
 
     // ─── Popup HTML builder ──────────────────────────────────────────
     function popupHtml(f) {
@@ -116,22 +133,15 @@
         return html;
     }
 
-    // ─── Marker creation (circle fallback) ───────────────────────────
-    function createCircleMarker(f) {
-        var color = TYPE_COLORS[f.type] || "#999";
-        var marker = L.circleMarker([f.lat, f.lon], {
-            radius: 6,
-            fillColor: color,
-            color: "#fff",
-            weight: 1.5,
-            opacity: 1,
-            fillOpacity: 0.85,
-        });
+    // ─── Marker creation (SVG icon) ─────────────────────────────────
+    function createIconMarker(f) {
+        var icon = createSvgIcon(f.type);
+        var marker = L.marker([f.lat, f.lon], { icon: icon });
         var langKey = "name_" + LANG;
         var displayName = f[langKey] || f.name_en || f.name;
         marker.bindPopup(popupHtml(f));
         marker.bindTooltip(displayName, {
-            direction: "top", offset: [0, -8],
+            direction: "top", offset: [0, -12],
             className: "country-tooltip-wrapper",
         });
         marker._featureData = f;
@@ -142,15 +152,40 @@
     function createGeoJsonLayer(f, geojson) {
         var color = TYPE_COLORS[f.type] || "#999";
         var isLine = (geojson.type === "LineString" || geojson.type === "MultiLineString");
-        var layer = L.geoJSON(geojson, {
-            style: {
+        var isRiver = (f.type === "river");
+        var baseStyle;
+
+        if (isRiver) {
+            // Brush-stroke style for rivers
+            baseStyle = {
                 color: color,
-                weight: isLine ? 2.5 : 1.5,
-                opacity: 0.9,
+                weight: 4,
+                opacity: 0.55,
+                lineCap: "round",
+                lineJoin: "round",
+                fillOpacity: 0,
+            };
+        } else if (isLine) {
+            baseStyle = {
+                color: color,
+                weight: 3,
+                opacity: 0.8,
+                lineCap: "round",
+                lineJoin: "round",
+                fillOpacity: 0,
+            };
+        } else {
+            // Polygons: thicker outline for better hover/click target
+            baseStyle = {
+                color: color,
+                weight: 2.5,
+                opacity: 0.8,
                 fillColor: color,
-                fillOpacity: isLine ? 0 : 0.25,
-            },
-        });
+                fillOpacity: 0.2,
+            };
+        }
+
+        var layer = L.geoJSON(geojson, { style: baseStyle });
         var langKey = "name_" + LANG;
         var displayName = f[langKey] || f.name_en || f.name;
         layer.bindPopup(popupHtml(f));
@@ -159,16 +194,28 @@
             className: "country-tooltip-wrapper",
         });
         layer._featureData = f;
+
+        // Hover effect for polygons and lines
+        layer.eachLayer(function (sub) {
+            sub.on("mouseover", function () {
+                sub.setStyle({
+                    weight: isRiver ? 6 : (isLine ? 4.5 : 4),
+                    opacity: 1,
+                    fillOpacity: isLine ? 0 : 0.35,
+                });
+            });
+            sub.on("mouseout", function () {
+                sub.setStyle(baseStyle);
+            });
+        });
+
         return layer;
     }
 
-    // ─── Filtering ─────────────────────────────────────────────────────
-    function rebuildMarkers() {
-        markers.clearLayers();
-        geoJsonLayer.clearLayers();
-        var count = 0;
+    // ─── Filtering & rebuilding ──────────────────────────────────────
+    function getFilteredFeatures() {
         var q = searchQuery.toLowerCase();
-
+        var result = [];
         for (var i = 0; i < allFeatures.length; i++) {
             var f = allFeatures[i];
             if (!activeTypes.has(f.type)) continue;
@@ -181,17 +228,109 @@
                     (f.name_ru || "").toLowerCase().indexOf(q) >= 0;
                 if (!match) continue;
             }
-            var cached = geojsonCache[f.wikidata_id];
-            if (cached) {
-                geoJsonLayer.addLayer(createGeoJsonLayer(f, cached));
-            } else {
-                markers.addLayer(createCircleMarker(f));
-            }
-            count++;
+            result.push(f);
+        }
+        return result;
+    }
+
+    function rebuildMarkers() {
+        markers.clearLayers();
+        geoJsonLayer.clearLayers();
+        filteredFeatures = getFilteredFeatures();
+
+        // All features as SVG icon markers in cluster group
+        for (var i = 0; i < filteredFeatures.length; i++) {
+            markers.addLayer(createIconMarker(filteredFeatures[i]));
+        }
+
+        // If zoomed in enough, overlay GeoJSON shapes
+        if (map.getZoom() >= GEOJSON_ZOOM) {
+            showGeoJsonInView();
         }
 
         var countEl = document.getElementById("relief-count");
-        if (countEl) countEl.textContent = count + " / " + allFeatures.length;
+        if (countEl) countEl.textContent = filteredFeatures.length + " / " + allFeatures.length;
+    }
+
+    // ─── Lazy GeoJSON loading ────────────────────────────────────────
+    function showGeoJsonInView() {
+        geoJsonLayer.clearLayers();
+        if (map.getZoom() < GEOJSON_ZOOM) return;
+
+        var bounds = map.getBounds();
+        var toFetch = [];
+
+        for (var i = 0; i < filteredFeatures.length; i++) {
+            var f = filteredFeatures[i];
+            if (!f.has_geojson) continue;
+            if (!bounds.contains([f.lat, f.lon])) continue;
+
+            var cached = geojsonCache[f.wikidata_id];
+            if (cached) {
+                geoJsonLayer.addLayer(createGeoJsonLayer(f, cached));
+            } else if (!geojsonLoading[f.wikidata_id]) {
+                toFetch.push(f);
+            }
+        }
+
+        if (toFetch.length > 0) {
+            fetchGeoJsonBatch(toFetch);
+        }
+    }
+
+    function fetchGeoJsonBatch(features) {
+        var batchSize = 20;
+        var batch = features.slice(0, batchSize);
+        batch.forEach(function (f) { geojsonLoading[f.wikidata_id] = true; });
+
+        Promise.all(batch.map(function (f) {
+            return fetch(GEOJSON_BASE + f.wikidata_id + ".geojson")
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .then(function (data) {
+                    delete geojsonLoading[f.wikidata_id];
+                    if (data && data.geometry) {
+                        geojsonCache[f.wikidata_id] = data.geometry;
+                    }
+                })
+                .catch(function () { delete geojsonLoading[f.wikidata_id]; });
+        })).then(function () {
+            showGeoJsonInView();
+            var remaining = features.slice(batchSize);
+            if (remaining.length > 0) {
+                fetchGeoJsonBatch(remaining);
+            }
+        });
+    }
+
+    // ─── Map zoom/move handler ──────────────────────────────────────
+    var viewTimer = null;
+    map.on("moveend", function () {
+        clearTimeout(viewTimer);
+        viewTimer = setTimeout(function () {
+            if (map.getZoom() >= GEOJSON_ZOOM) {
+                showGeoJsonInView();
+            } else {
+                geoJsonLayer.clearLayers();
+            }
+        }, 200);
+    });
+
+    // ─── Legend ──────────────────────────────────────────────────────
+    function addLegend() {
+        var types = Object.keys(TYPE_COLORS);
+        var legend = L.control({ position: "bottomleft" });
+        legend.onAdd = function () {
+            var div = L.DomUtil.create("div", "relief-legend");
+            types.forEach(function (t) {
+                var label = typeLabel(t);
+                div.innerHTML += '<div class="relief-legend-item">' +
+                    '<img src="' + ICON_BASE + t + '.svg" class="relief-legend-icon" width="14" height="14">' +
+                    '<span>' + label + '</span></div>';
+            });
+            L.DomEvent.disableClickPropagation(div);
+            return div;
+        };
+        legend.addTo(map);
     }
 
     // ─── Filter panel ──────────────────────────────────────────────────
@@ -246,9 +385,11 @@
                 rebuildMarkers();
             });
 
-            var badge = document.createElement("span");
-            badge.className = "relief-color-badge";
-            badge.style.background = TYPE_COLORS[type];
+            var badge = document.createElement("img");
+            badge.src = ICON_BASE + type + ".svg";
+            badge.width = 16;
+            badge.height = 16;
+            badge.className = "relief-filter-icon";
 
             var text = document.createElement("span");
             text.textContent = typeLabel(type) + " (" + counts[type] + ")";
@@ -298,21 +439,8 @@
             var resp = await fetch("/api/relief-features");
             allFeatures = await resp.json();
 
-            // Preload GeoJSON for features that have them
-            var toLoad = allFeatures.filter(function (f) { return f.has_geojson; });
-            var batchSize = 20;
-            for (var i = 0; i < toLoad.length; i += batchSize) {
-                var batch = toLoad.slice(i, i + batchSize);
-                await Promise.all(batch.map(function (f) {
-                    return fetch(GEOJSON_BASE + f.wikidata_id + ".geojson")
-                        .then(function (r) { return r.ok ? r.json() : null; })
-                        .then(function (data) {
-                            if (data && data.geometry) geojsonCache[f.wikidata_id] = data.geometry;
-                        })
-                        .catch(function () {});
-                }));
-            }
-
+            // No GeoJSON preloading — loaded lazily on zoom/pan
+            addLegend();
             buildFilters();
             rebuildMarkers();
             map.addLayer(markers);

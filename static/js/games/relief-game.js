@@ -266,6 +266,8 @@ var ReliefGame = (function () {
     }
 
     /* ── Legend ───────────────────────────────────────── */
+    var ICON_BASE = "/static/img/icons/relief/";
+
     function addLegend(features) {
         var typesInPlay = {};
         features.forEach(function (f) { typesInPlay[f.type] = true; });
@@ -276,10 +278,9 @@ var ReliefGame = (function () {
         legend.onAdd = function () {
             var div = L.DomUtil.create("div", "relief-legend");
             types.forEach(function (t) {
-                var color = TYPE_COLORS[t] || "#999";
                 var label = (T && T[TYPE_I18N[t]]) || t;
                 div.innerHTML += '<div class="relief-legend-item">' +
-                    '<span class="relief-legend-dot" style="background:' + color + '"></span>' +
+                    '<img src="' + ICON_BASE + t + '.svg" class="relief-legend-icon" width="14" height="14">' +
                     '<span>' + label + '</span></div>';
             });
             L.DomEvent.disableClickPropagation(div);
@@ -331,13 +332,16 @@ var ReliefGame = (function () {
     }
 
     function geoStyle(id, color, isLine) {
-        var w = isLine ? 2.5 : 1.5;
+        var isRiver = false;
+        var f = featuresData[id];
+        if (f) isRiver = (f.type === "river");
+        var w = isRiver ? 4 : (isLine ? 3 : 2.5);
         var fo = isLine ? 0 : 0.2;
-        if (failedSet && failedSet.has(id))  return { color: "#ef5350", weight: w + 1, fillColor: "#ef5350", fillOpacity: 0.35, opacity: 0.9 };
-        if (correctSet && correctSet.has(id)) return { color: "#4caf50", weight: w + 1, fillColor: "#4caf50", fillOpacity: 0.35, opacity: 0.9 };
-        if (selectedId === id)               return { color: "#1a73e8", weight: w + 1.5, fillColor: "#1a73e8", fillOpacity: 0.3, opacity: 1 };
-        if (targetSet && targetSet.has(id))  return { color: color, weight: w, fillColor: color, fillOpacity: fo, opacity: 0.7 };
-        return { color: "#cfd8dc", weight: 1, fillColor: "#cfd8dc", fillOpacity: 0.1, opacity: 0.4 };
+        if (failedSet && failedSet.has(id))  return { color: "#ef5350", weight: w + 1, fillColor: "#ef5350", fillOpacity: 0.35, opacity: 0.9, lineCap: "round", lineJoin: "round" };
+        if (correctSet && correctSet.has(id)) return { color: "#4caf50", weight: w + 1, fillColor: "#4caf50", fillOpacity: 0.35, opacity: 0.9, lineCap: "round", lineJoin: "round" };
+        if (selectedId === id)               return { color: "#1a73e8", weight: w + 1.5, fillColor: "#1a73e8", fillOpacity: 0.3, opacity: 1, lineCap: "round", lineJoin: "round" };
+        if (targetSet && targetSet.has(id))  return { color: color, weight: w, fillColor: color, fillOpacity: fo, opacity: isRiver ? 0.55 : 0.7, lineCap: "round", lineJoin: "round" };
+        return { color: "#cfd8dc", weight: 1, fillColor: "#cfd8dc", fillOpacity: 0.1, opacity: 0.4, lineCap: "round", lineJoin: "round" };
     }
 
     function refreshMarker(id) {
