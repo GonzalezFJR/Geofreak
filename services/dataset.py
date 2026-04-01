@@ -87,6 +87,9 @@ class DatasetService:
                 self._cities_df = pd.DataFrame()
             else:
                 self._cities_df = pd.read_csv(CITIES_CSV, keep_default_na=False)
+                # Convert is_capital from string ("national"/"admin1"/"no") to bool
+                if "is_capital" in self._cities_df.columns:
+                    self._cities_df["is_capital"] = self._cities_df["is_capital"] == "national"
         return self._cities_df
 
     def get_cities(
