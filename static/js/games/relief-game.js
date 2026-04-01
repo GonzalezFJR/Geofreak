@@ -290,6 +290,24 @@ var ReliefGame = (function () {
     }
 
     /* ── Markers ──────────────────────────────────────── */
+    function createGameIcon(type, stateClass) {
+        return L.divIcon({
+            className: "relief-game-marker " + (stateClass || "state-default"),
+            html: '<div class="rgm-ring"><img src="' + ICON_BASE + type + '.svg" width="22" height="22"></div>',
+            iconSize: [28, 28],
+            iconAnchor: [14, 14],
+            popupAnchor: [0, -16],
+        });
+    }
+
+    function getMarkerState(id) {
+        if (failedSet && failedSet.has(id))  return "state-failed";
+        if (correctSet && correctSet.has(id)) return "state-correct";
+        if (selectedId === id)               return "state-selected";
+        if (targetSet && targetSet.has(id))  return "state-target";
+        return "state-default";
+    }
+
     function initMarkers(features) {
         features.forEach(function (f) {
             var color = TYPE_COLORS[f.type] || "#999";
@@ -309,8 +327,10 @@ var ReliefGame = (function () {
                     if (mode === "type") onClickMarker(f.id);
                 });
             } else {
-                layer = L.circleMarker([f.lat, f.lon], markerStyle(f.id, color));
+                var stateClass = getMarkerState(f.id);
+                layer = L.marker([f.lat, f.lon], { icon: createGameIcon(f.type, stateClass) });
                 layer._typeColor = color;
+                layer._featureType = f.type;
                 layer._isGeoJson = false;
                 layer.on("click", function (e) {
                     L.DomEvent.stopPropagation(e);
@@ -349,6 +369,9 @@ var ReliefGame = (function () {
         if (!m) return;
         if (m._isGeoJson) {
             m.setStyle(geoStyle(id, m._typeColor, m._isLine));
+        } else if (m._featureType) {
+            // SVG icon marker — swap the icon with new state class
+            m.setIcon(createGameIcon(m._featureType, getMarkerState(id)));
         } else {
             m.setStyle(markerStyle(id, m._typeColor));
         }

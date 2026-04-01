@@ -759,6 +759,46 @@
     object-fit: contain;
 }
 
+/* ─── Relief Game Marker (SVG icon with state ring) ───────────── */
+.relief-game-marker {
+    background: none !important;
+    border: none !important;
+}
+.relief-game-marker .rgm-ring {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.relief-game-marker.state-target .rgm-ring {
+    border-color: #78909c;
+    opacity: 0.85;
+}
+.relief-game-marker.state-selected .rgm-ring {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 3px rgba(26,115,232,0.3), 0 1px 4px rgba(0,0,0,0.2);
+}
+.relief-game-marker.state-correct .rgm-ring {
+    border-color: #4caf50;
+    background: rgba(76,175,80,0.15);
+    box-shadow: 0 0 0 2px rgba(76,175,80,0.25);
+}
+.relief-game-marker.state-failed .rgm-ring {
+    border-color: #ef5350;
+    background: rgba(239,83,80,0.15);
+    box-shadow: 0 0 0 2px rgba(239,83,80,0.25);
+}
+.relief-game-marker.state-default .rgm-ring {
+    opacity: 0.45;
+    border-color: #cfd8dc;
+}
+
 /* ─── Map Loading Spinner ──────────────────────────────────── */
 .map-spinner-overlay {
     position: absolute;

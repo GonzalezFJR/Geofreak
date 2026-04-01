@@ -67,6 +67,14 @@
         "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
         { attribution: "&copy; OpenTopoMap", maxZoom: 17 }
     );
+    var terrainCleanLayer = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
+        { attribution: "&copy; Esri", maxZoom: 13 }
+    );
+    var blankLayer = L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+        { attribution: "&copy; CARTO", subdomains: "abcd", maxZoom: 19 }
+    );
     var satelliteLayer = L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         { attribution: "&copy; Esri", maxZoom: 18 }
@@ -78,6 +86,8 @@
 
     var tileLayers = {};
     tileLayers[T["relief.layer_terrain"] || "Terrain"] = terrainLayer;
+    tileLayers[T["relief.layer_terrain_clean"] || "Terrain (clean)"] = terrainCleanLayer;
+    tileLayers[T["relief.layer_blank"] || "Blank"] = blankLayer;
     tileLayers[T["relief.layer_satellite"] || "Satellite"] = satelliteLayer;
     tileLayers[T["relief.layer_standard"] || "Standard"] = standardLayer;
 
@@ -422,13 +432,13 @@
     if (toggleBtn) {
         toggleBtn.addEventListener("click", function () {
             panel.classList.add("collapsed");
-            openBtn.classList.remove("hidden");
+            openBtn.classList.add("visible");
         });
     }
     if (openBtn) {
         openBtn.addEventListener("click", function () {
             panel.classList.remove("collapsed");
-            openBtn.classList.add("hidden");
+            openBtn.classList.remove("visible");
         });
     }
 

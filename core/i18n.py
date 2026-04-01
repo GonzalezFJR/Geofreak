@@ -85,6 +85,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Buscar por nombre…",
         "relief.layer_satellite": "Satélite",
         "relief.layer_terrain": "Terreno",
+        "relief.layer_terrain_clean": "Terreno (limpio)",
+        "relief.layer_blank": "Plano",
         "relief.layer_standard": "Estándar",
 
         # Relief Challenge game (Rocas y agua)
@@ -819,6 +821,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Search by name…",
         "relief.layer_satellite": "Satellite",
         "relief.layer_terrain": "Terrain",
+        "relief.layer_terrain_clean": "Terrain (clean)",
+        "relief.layer_blank": "Blank",
         "relief.layer_standard": "Standard",
 
         # Relief Challenge game (Rocas y agua)
@@ -1523,6 +1527,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Rechercher par nom…",
         "relief.layer_satellite": "Satellite",
         "relief.layer_terrain": "Terrain",
+        "relief.layer_terrain_clean": "Terrain (épuré)",
+        "relief.layer_blank": "Neutre",
         "relief.layer_standard": "Standard",
 
         # Relief Challenge game (Rocas y agua)
@@ -2200,6 +2206,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Cerca per nome…",
         "relief.layer_satellite": "Satellite",
         "relief.layer_terrain": "Terreno",
+        "relief.layer_terrain_clean": "Terreno (pulito)",
+        "relief.layer_blank": "Neutro",
         "relief.layer_standard": "Standard",
 
         # Relief Challenge game (Rocas y agua)
@@ -2878,6 +2886,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Поиск по названию…",
         "relief.layer_satellite": "Спутник",
         "relief.layer_terrain": "Рельеф",
+        "relief.layer_terrain_clean": "Рельеф (без подписей)",
+        "relief.layer_blank": "Нейтральная",
         "relief.layer_standard": "Стандарт",
 
         # Relief Challenge game (Rocas y agua)
@@ -3531,7 +3541,8 @@ _JS_KEYS = [
     "mapjs.google_maps", "mapjs.osm", "mapjs.capital_badge",
     "mapjs.inhabitants",
     # Relief viewer
-    "relief.layer_satellite", "relief.layer_terrain", "relief.layer_standard",
+    "relief.layer_satellite", "relief.layer_terrain", "relief.layer_terrain_clean",
+    "relief.layer_blank", "relief.layer_standard",
     "relief.filter_title", "relief.search_placeholder",
     # Relief Challenge game
     "rc.ph_type", "rc.entities",

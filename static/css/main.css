@@ -916,6 +916,10 @@ img {
     border-radius: var(--radius-sm);
     padding: 6px 10px;
     border: 1px solid var(--gray-200);
+    display: none;
+}
+.relief-panel-open.visible {
+    display: block;
 }
 .relief-search {
     padding: 8px 14px;
@@ -1149,5 +1153,5 @@ img {
 
     /* Relief panel: collapsed by default on mobile */
     .relief-panel { width: 200px; transform: translateX(-220px); }
-    .relief-panel-open { display: block; }
+    .relief-panel-open.visible { display: block; }
 }
