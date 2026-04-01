@@ -5,7 +5,7 @@
 
 (function () {
     "use strict";
-    console.log("[GeoFreak] map.js v2 loaded — tile-based city loading");
+    console.log("[GeoFreak] map.js v3 loaded — circleMarker city rendering");
 
     var LANG = window.LANG || "en";
     var T = window.T || {};
@@ -19,6 +19,10 @@
         zoomControl: true,
         worldCopyJump: true,
     });
+
+    // Custom pane for city markers — above the overlay pane (GeoJSON countries)
+    map.createPane("cityPane");
+    map.getPane("cityPane").style.zIndex = 450;
 
     // ─── Tile layers ────────────────────────────────────────
     var tileLayerDefs = {
@@ -108,7 +112,7 @@
     var tileIndex = null;       // Set of available tile keys "x_y"
     var loadedTiles = {};       // "x_y" → true
     var loadingTiles = {};      // "x_y" → true
-    var TILE_MIN_MAP_ZOOM = 5;  // start loading tiles at this map zoom
+    var TILE_MIN_MAP_ZOOM = 7;  // start loading tiles at this map zoom
 
     // ─── Relief layers ──────────────────────────────────────
     var RELIEF_TYPE_COLORS = {
@@ -337,26 +341,39 @@
     }
 
     // ─── City markers ───────────────────────────────────────
+
+    // Style config for L.circleMarker (non-capital cities)
+    var CITY_CIRCLE_STYLES = {
+        mega:    { radius: 7,   color: "#fff", weight: 2,   fillColor: "#1a1a1a", fillOpacity: 1 },
+        large:   { radius: 6.5, color: "#fff", weight: 1.5, fillColor: "#333",    fillOpacity: 1 },
+        medium:  { radius: 5.5, color: "#fff", weight: 1.5, fillColor: "#555",    fillOpacity: 1 },
+        small:   { radius: 4.5, color: "#fff", weight: 1,   fillColor: "#777",    fillOpacity: 1 },
+        tiny:    { radius: 4,   color: "#fff", weight: 0.8, fillColor: "#aaa",    fillOpacity: 1 },
+    };
+
+    // Capital star icon via L.divIcon with inline SVG
     var starSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="SIZE" height="SIZE">' +
         '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z" ' +
-        'fill="FILL" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+        'fill="#222" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>';
 
     function makeCapitalIcon(pop) {
         var size = pop >= 5000000 ? 22 : pop >= 1000000 ? 18 : 14;
-        var fill = "%23222";
-        var svg = starSvg.replace(/SIZE/g, size).replace("FILL", fill);
-        var encoded = "data:image/svg+xml," + encodeURIComponent(svg).replace(/%23/g, "%23");
-        return L.icon({ iconUrl: encoded, iconSize: [size, size], iconAnchor: [size / 2, size / 2], popupAnchor: [0, -size / 2] });
+        var svg = starSvg.replace(/SIZE/g, size);
+        return L.divIcon({
+            className: "capital-star-icon",
+            html: svg,
+            iconSize: [size, size],
+            iconAnchor: [size / 2, size / 2],
+            popupAnchor: [0, -size / 2],
+        });
     }
 
-    function makeCityIcon(pop) {
-        var size, cls;
-        if (pop >= 5000000)      { size = 12; cls = "city-marker-mega"; }
-        else if (pop >= 1000000) { size = 9;  cls = "city-marker-1m"; }
-        else if (pop >= 500000)  { size = 7;  cls = "city-marker-500k"; }
-        else if (pop >= 100000)  { size = 5;  cls = "city-marker-100k"; }
-        else                     { size = 3;  cls = "city-marker-small"; }
-        return L.divIcon({ className: cls, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
+    function getCityCircleStyle(pop) {
+        if (pop >= 5000000) return CITY_CIRCLE_STYLES.mega;
+        if (pop >= 1000000) return CITY_CIRCLE_STYLES.large;
+        if (pop >= 500000)  return CITY_CIRCLE_STYLES.medium;
+        if (pop >= 100000)  return CITY_CIRCLE_STYLES.small;
+        return CITY_CIRCLE_STYLES.tiny;
     }
 
     function cityTooltipHtml(city) {
@@ -394,11 +411,25 @@
             if (!city.lat || !city.lon) return;
             var pop = city.population || 0;
             var isCapital = city.is_capital;
-            var icon = isCapital ? makeCapitalIcon(pop) : makeCityIcon(pop);
-            var marker = L.marker([city.lat, city.lon], {
-                icon: icon,
-                zIndexOffset: isCapital ? 1000 : (pop >= 5000000 ? 500 : 0),
-            });
+            var marker;
+
+            if (isCapital) {
+                marker = L.marker([city.lat, city.lon], {
+                    icon: makeCapitalIcon(pop),
+                    zIndexOffset: 1000,
+                });
+            } else {
+                var style = getCityCircleStyle(pop);
+                marker = L.circleMarker([city.lat, city.lon], {
+                    pane: "cityPane",
+                    radius: style.radius,
+                    color: style.color,
+                    weight: style.weight,
+                    fillColor: style.fillColor,
+                    fillOpacity: style.fillOpacity,
+                });
+            }
+
             marker.bindTooltip(cityTooltipHtml(city), {
                 direction: "top", offset: [0, -8], className: "country-tooltip-wrapper",
             });
@@ -456,14 +487,26 @@
                 loadedTiles[key] = true;
                 delete loadingTiles[key];
                 updateCityVisibility();
+                console.log("[GeoFreak] Tile " + key + " loaded:", cities.length, "cities");
             })
-            .catch(function () { delete loadingTiles[key]; });
+            .catch(function (err) {
+                delete loadingTiles[key];
+                console.error("[GeoFreak] Tile " + key + " error:", err);
+            });
     }
 
     function checkAndLoadTiles() {
-        if (map.getZoom() < TILE_MIN_MAP_ZOOM) return;
-        if (!tileIndex) return;
+        var zoom = map.getZoom();
+        if (zoom < TILE_MIN_MAP_ZOOM) return;
+        if (!tileIndex) {
+            console.warn("[GeoFreak] checkAndLoadTiles: no tileIndex");
+            return;
+        }
         var keys = getVisibleTileKeys();
+        var newKeys = keys.filter(function (k) { return !loadedTiles[k] && !loadingTiles[k] && tileIndex.has(k); });
+        if (newKeys.length > 0) {
+            console.log("[GeoFreak] Loading", newKeys.length, "tiles at zoom", zoom);
+        }
         for (var i = 0; i < keys.length; i++) {
             loadCityTile(keys[i]);
         }
@@ -629,7 +672,7 @@
 
     // ─── Zoom-based city layer visibility ───────────────────
     var cityMinZoom = {
-        capitals: 3, mega: 2, large: 3, medium: 4, small100k: 5, tiny: 7,
+        capitals: 3, mega: 2, large: 3, medium: 4, small100k: 7, tiny: 9,
     };
 
     function updateCityVisibility() {
@@ -649,14 +692,51 @@
         });
     }
 
+    // ─── Auto-hide country borders at high zoom ─────────────
+    var countryBordersAutoHidden = false;
+    var COUNTRY_AUTOHIDE_MIN_ZOOM = 7;
+
+    function updateCountryBordersForZoom() {
+        if (!countryGeoLayer || !layerState.countries) return;
+        var zoom = map.getZoom();
+
+        if (zoom < COUNTRY_AUTOHIDE_MIN_ZOOM) {
+            // At low zoom, always show borders
+            if (countryBordersAutoHidden) {
+                map.addLayer(countryGeoLayer);
+                countryBordersAutoHidden = false;
+            }
+            return;
+        }
+
+        // Check if entire viewport fits within any single country's bounding box
+        var viewBounds = map.getBounds();
+        var insideSingle = false;
+        countryGeoLayer.eachLayer(function (layer) {
+            if (insideSingle) return;
+            try {
+                if (layer.getBounds().contains(viewBounds)) insideSingle = true;
+            } catch (e) { /* skip layers without bounds */ }
+        });
+
+        if (insideSingle && !countryBordersAutoHidden) {
+            map.removeLayer(countryGeoLayer);
+            countryBordersAutoHidden = true;
+        } else if (!insideSingle && countryBordersAutoHidden) {
+            map.addLayer(countryGeoLayer);
+            countryBordersAutoHidden = false;
+        }
+    }
+
     // ─── Preset system ──────────────────────────────────────
     var presetButtons = document.querySelectorAll(".map-preset");
     var currentPreset = "political";
 
     // Layer state tracks which logical layers are enabled
+    // Visibility is controlled by cityMinZoom per layer, so enable all here
     var layerState = {
         countries: true, capitals: true, mega: true, large: true,
-        medium: true, small100k: false, tiny: false,
+        medium: true, small100k: true, tiny: true,
         reliefAll: false, reliefLand: false, reliefWater: false, reliefCoast: false,
     };
 
@@ -665,7 +745,7 @@
     var presets = {
         political: {
             tile: "light", countries: true, capitals: true, mega: true,
-            large: true, medium: true, small100k: false, tiny: false,
+            large: true, medium: true, small100k: true, tiny: true,
             reliefAll: false, reliefLand: false, reliefWater: false, reliefCoast: false,
         },
         physical: {
@@ -839,10 +919,12 @@
         if (p.tile) setTileLayer(p.tile);
 
         layerState.countries = p.countries;
+        countryBordersAutoHidden = false;  // reset auto-hide on preset change
         if (countryGeoLayer) {
             if (p.countries && !map.hasLayer(countryGeoLayer)) map.addLayer(countryGeoLayer);
             else if (!p.countries && map.hasLayer(countryGeoLayer)) map.removeLayer(countryGeoLayer);
         }
+        if (p.countries) updateCountryBordersForZoom();
 
         ["capitals", "mega", "large", "medium", "small100k", "tiny"].forEach(function (k) {
             layerState[k] = p[k];
@@ -1601,6 +1683,7 @@
     // ─── Map events ─────────────────────────────────────────
     map.on("zoomend", function () {
         updateCityVisibility();
+        updateCountryBordersForZoom();
         applyTileForZoom();
         checkAndLoadTiles();
     });
@@ -1609,6 +1692,7 @@
     map.on("moveend", function () {
         clearTimeout(viewTimer);
         viewTimer = setTimeout(function () {
+            updateCountryBordersForZoom();
             if (reliefVisible) showReliefGeoJsonInView();
             checkAndLoadTiles();
         }, 200);
@@ -1626,25 +1710,17 @@
                 fetch("/api/relief-features"),
             ]);
 
-            // Check response status
-            [countriesResp, geojsonResp, baseResp, indexResp, reliefResp].forEach(function (r, i) {
-                var names = ["countries", "geojson", "base.json", "index.json", "relief"];
-                console.log("[GeoFreak] " + names[i] + ": status=" + r.status + " ok=" + r.ok);
-            });
-
             var countries = await countriesResp.json();
             var geojsonData = await geojsonResp.json();
             var baseCities = await baseResp.json();
             var indexData = await indexResp.json();
             allReliefFeatures = await reliefResp.json();
 
-            console.log("[GeoFreak] base.json parsed:", baseCities.length, "cities, isArray:", Array.isArray(baseCities));
-            console.log("[GeoFreak] first city:", JSON.stringify(baseCities[0]).substring(0, 200));
+            console.log("[GeoFreak] Data loaded. base:", baseCities.length, "cities, tiles:", indexData.tiles.length);
 
             // Tile index
             tileZoom = indexData.z;
             tileIndex = new Set(indexData.tiles);
-            console.log("[GeoFreak] index loaded:", indexData.tiles.length, "tiles at z=" + indexData.z);
 
             // Index countries by ISO
             countries.forEach(function (c) {
@@ -1656,17 +1732,13 @@
                 style: defaultStyle,
                 onEachFeature: onEachCountryFeature,
             }).addTo(map);
-            console.log("[GeoFreak] Country borders added to map");
 
             // Base city markers (capitals + 500K+)
             addCityMarkers(baseCities);
-            console.log("[GeoFreak] Markers added. Layer counts:",
+            console.log("[GeoFreak] Markers added.",
                 "capitals=" + cityLayers.capitals.getLayers().length,
                 "mega=" + cityLayers.mega.getLayers().length,
-                "large=" + cityLayers.large.getLayers().length,
-                "medium=" + cityLayers.medium.getLayers().length,
-                "small100k=" + cityLayers.small100k.getLayers().length,
-                "tiny=" + cityLayers.tiny.getLayers().length
+                "large=" + cityLayers.large.getLayers().length
             );
 
             // Relief cluster
@@ -1687,20 +1759,12 @@
             applyPreset("political");
 
             // Verify layers are on map
-            console.log("[GeoFreak] After applyPreset('political'):",
-                "zoom=" + map.getZoom(),
-                "layerState=", JSON.stringify(layerState),
+            console.log("[GeoFreak] After applyPreset. zoom=" + map.getZoom(),
                 "capitals on map:", map.hasLayer(cityLayers.capitals),
-                "mega on map:", map.hasLayer(cityLayers.mega),
-                "large on map:", map.hasLayer(cityLayers.large),
                 "capitals count:", cityLayers.capitals.getLayers().length,
-                "mega count:", cityLayers.mega.getLayers().length
+                "mega count:", cityLayers.mega.getLayers().length,
+                "large count:", cityLayers.large.getLayers().length
             );
-
-            // DEBUG: Test marker to verify Leaflet rendering works
-            var testMarker = L.circleMarker([48.8566, 2.3522], {radius: 10, color: "red", fillColor: "red", fillOpacity: 1});
-            testMarker.addTo(map).bindPopup("TEST MARKER - Paris");
-            console.log("[GeoFreak] DEBUG: test red circle marker added at Paris (48.85, 2.35)");
 
             // Load visible tiles at current zoom
             checkAndLoadTiles();
