@@ -535,6 +535,7 @@ class DatasetService:
                     "continent": str(row.get("continent", "")),
                     "subcontinent": str(row.get("subcontinent", "")),
                     "has_geojson": bool(row.get("has_geojson", False)),
+                    "min_zoom": int(row.get("min_zoom", 11)),
                 }
                 for col in ("elevation_m", "length_km", "area_km2"):
                     v = row.get(col, "")
@@ -605,6 +606,7 @@ class DatasetService:
                     "lat": float(row["lat"]),
                     "lon": float(row["lon"]),
                     "has_geojson": bool(row.get("has_geojson", False)),
+                    "min_zoom": int(row.get("min_zoom", 11)),
                 })
             except (ValueError, TypeError):
                 continue

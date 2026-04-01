@@ -85,7 +85,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Buscar por nombre…",
         "relief.layer_satellite": "Satélite",
         "relief.layer_terrain": "Terreno",
-        "relief.layer_terrain_clean": "Terreno (limpio)",
+        "relief.layer_terrain_clean": "Físico",
         "relief.layer_blank": "Plano",
         "relief.layer_standard": "Estándar",
 
@@ -821,7 +821,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Search by name…",
         "relief.layer_satellite": "Satellite",
         "relief.layer_terrain": "Terrain",
-        "relief.layer_terrain_clean": "Terrain (clean)",
+        "relief.layer_terrain_clean": "Physical",
         "relief.layer_blank": "Blank",
         "relief.layer_standard": "Standard",
 
@@ -1527,7 +1527,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Rechercher par nom…",
         "relief.layer_satellite": "Satellite",
         "relief.layer_terrain": "Terrain",
-        "relief.layer_terrain_clean": "Terrain (épuré)",
+        "relief.layer_terrain_clean": "Physique",
         "relief.layer_blank": "Neutre",
         "relief.layer_standard": "Standard",
 
@@ -2206,7 +2206,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Cerca per nome…",
         "relief.layer_satellite": "Satellite",
         "relief.layer_terrain": "Terreno",
-        "relief.layer_terrain_clean": "Terreno (pulito)",
+        "relief.layer_terrain_clean": "Fisico",
         "relief.layer_blank": "Neutro",
         "relief.layer_standard": "Standard",
 
@@ -2886,7 +2886,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "relief.search_placeholder": "Поиск по названию…",
         "relief.layer_satellite": "Спутник",
         "relief.layer_terrain": "Рельеф",
-        "relief.layer_terrain_clean": "Рельеф (без подписей)",
+        "relief.layer_terrain_clean": "Физическая",
         "relief.layer_blank": "Нейтральная",
         "relief.layer_standard": "Стандарт",
 

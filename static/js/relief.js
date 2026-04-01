@@ -68,8 +68,8 @@
         { attribution: "&copy; OpenTopoMap", maxZoom: 17 }
     );
     var terrainCleanLayer = L.tileLayer(
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
-        { attribution: "&copy; Esri", maxZoom: 13 }
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
+        { attribution: "&copy; Esri", maxZoom: 8 }
     );
     var blankLayer = L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
@@ -109,7 +109,6 @@
     var geojsonCache = {};               // wikidata_id → GeoJSON geometry (or null)
     var geojsonLoading = {};             // wikidata_id → true (currently fetching)
     var GEOJSON_BASE = "/static/data/relief_geojson/";
-    var GEOJSON_ZOOM = 6;               // show GeoJSON shapes at this zoom level+
     var filteredFeatures = [];           // features that pass current filters
 
     // ─── SVG icon creation for markers ──────────────────────────────
@@ -253,10 +252,8 @@
             markers.addLayer(createIconMarker(filteredFeatures[i]));
         }
 
-        // If zoomed in enough, overlay GeoJSON shapes
-        if (map.getZoom() >= GEOJSON_ZOOM) {
-            showGeoJsonInView();
-        }
+        // If any features should show GeoJSON at current zoom, overlay them
+        showGeoJsonInView();
 
         var countEl = document.getElementById("relief-count");
         if (countEl) countEl.textContent = filteredFeatures.length + " / " + allFeatures.length;
@@ -265,14 +262,14 @@
     // ─── Lazy GeoJSON loading ────────────────────────────────────────
     function showGeoJsonInView() {
         geoJsonLayer.clearLayers();
-        if (map.getZoom() < GEOJSON_ZOOM) return;
-
+        var currentZoom = map.getZoom();
         var bounds = map.getBounds();
         var toFetch = [];
 
         for (var i = 0; i < filteredFeatures.length; i++) {
             var f = filteredFeatures[i];
             if (!f.has_geojson) continue;
+            if (currentZoom < f.min_zoom) continue;
             if (!bounds.contains([f.lat, f.lon])) continue;
 
             var cached = geojsonCache[f.wikidata_id];
@@ -317,11 +314,7 @@
     map.on("moveend", function () {
         clearTimeout(viewTimer);
         viewTimer = setTimeout(function () {
-            if (map.getZoom() >= GEOJSON_ZOOM) {
-                showGeoJsonInView();
-            } else {
-                geoJsonLayer.clearLayers();
-            }
+            showGeoJsonInView();
         }, 200);
     });
 
