@@ -49,6 +49,7 @@ class DatasetService:
         self._brazil_df: Optional[pd.DataFrame] = None
         self._relief_df: Optional[pd.DataFrame] = None
         self._map_game_counts: Optional[dict] = None
+        self._city_tiers: Optional[dict[int, list[dict]]] = None
 
     # ── Countries ────────────────────────────────────────────
 
@@ -148,6 +149,76 @@ class DatasetService:
                 continue
         return records
 
+    # ── City tiers (for lazy map loading) ─────────────────────
+
+    def _build_city_tiers(self) -> dict[int, list[dict]]:
+        """Precompute city records grouped by population tier for lazy map loading."""
+        if self._city_tiers is not None:
+            return self._city_tiers
+
+        df = self._load_cities()
+        if df.empty:
+            self._city_tiers = {i: [] for i in range(1, 6)}
+            return self._city_tiers
+
+        tiers: dict[int, list[dict]] = {i: [] for i in range(1, 6)}
+
+        for _, row in df.iterrows():
+            try:
+                pop = int(row["population"])
+                is_capital = bool(row["is_capital"])
+
+                rec: dict[str, Any] = {
+                    "name": row["name"],
+                    "lat": float(row["lat"]),
+                    "lon": float(row["lon"]),
+                    "population": pop,
+                    "iso_a3": row.get("iso_a3", ""),
+                    "iso_a2": row.get("iso_a2", ""),
+                    "country": row.get("country_name", ""),
+                    "is_capital": is_capital,
+                }
+                # Localized names
+                for lc in ("en", "es", "fr", "it", "ru"):
+                    v = row.get(f"name_{lc}", "")
+                    if v:
+                        rec[f"name_{lc}"] = v
+                # Popup-ready fields
+                for fld in ("elevation", "metro_population", "annual_mean_temp",
+                            "annual_precipitation", "sunshine_hours_yr"):
+                    v = row.get(fld, "")
+                    if v != "" and v is not None:
+                        try:
+                            rec[fld] = float(v)
+                        except (ValueError, TypeError):
+                            pass
+                for fld in ("timezone", "admin1_name"):
+                    v = row.get(fld, "")
+                    if v:
+                        rec[fld] = v
+
+                # Assign to tier
+                if is_capital or pop >= 5_000_000:
+                    tiers[1].append(rec)
+                elif pop >= 1_000_000:
+                    tiers[2].append(rec)
+                elif pop >= 500_000:
+                    tiers[3].append(rec)
+                elif pop >= 100_000:
+                    tiers[4].append(rec)
+                else:  # 50k-100k
+                    tiers[5].append(rec)
+            except (ValueError, TypeError):
+                continue
+
+        self._city_tiers = tiers
+        return tiers
+
+    def get_cities_for_tier(self, tier: int) -> list[dict]:
+        """Return city records for a specific population tier (1-5)."""
+        tiers = self._build_city_tiers()
+        return tiers.get(tier, [])
+
     def get_countries_for_map(self, continent: str = "all", entity_type: str = "all") -> list[dict]:
         """Return countries with essential fields for the map game, with optional filtering."""
         df = self._load_countries()
@@ -216,6 +287,8 @@ class DatasetService:
             df = df[df["population"] >= 200_000]
         elif city_filter == "100k":
             df = df[df["population"] >= 100_000]
+        elif city_filter == "50k":
+            df = df[df["population"] >= 50_000]
 
         if continent and continent != "all":
             continent_values = CONTINENT_MAP.get(continent, [])
@@ -738,6 +811,7 @@ class DatasetService:
             "500k":               lambda df: df[df["population"] >= 500_000],
             "200k":               lambda df: df[df["population"] >= 200_000],
             "100k":               lambda df: df[df["population"] >= 100_000],
+            "50k":                lambda df: df[df["population"] >= 50_000],
         }
         counts_cities: dict[str, int] = {}
         for cf_key, cf_fn in city_filters_fns.items():
@@ -797,3 +871,77 @@ class DatasetService:
             except (ValueError, TypeError):
                 continue
         return records
+
+    # ── Relief editing ──────────────────────────────────────────
+
+    def create_relief_feature(self, data: dict) -> dict:
+        """Create a new relief feature, append to CSV, optionally save GeoJSON."""
+        import csv as csv_mod
+
+        df = self._load_relief()
+        next_id = int(df["id"].max()) + 1 if not df.empty else 1
+        wikidata_id = f"U{next_id}"
+
+        new_row = {
+            "id": next_id,
+            "wikidata_id": wikidata_id,
+            "name": data["name"],
+            "name_es": data.get("name_es", ""),
+            "name_en": data.get("name_en", ""),
+            "name_fr": data.get("name_fr", ""),
+            "name_it": data.get("name_it", ""),
+            "name_ru": data.get("name_ru", ""),
+            "type": data["type"],
+            "country_codes": data.get("country_codes", ""),
+            "country_names_en": "",
+            "lat": data["lat"],
+            "lon": data["lon"],
+            "elevation_m": data.get("elevation_m") or "",
+            "length_km": data.get("length_km") or "",
+            "area_km2": data.get("area_km2") or "",
+            "sitelinks": 0,
+            "continent": "",
+            "subcontinent": "",
+            "min_zoom": 11,
+        }
+
+        with open(RELIEF_CSV, "a", newline="", encoding="utf-8") as f:
+            writer = csv_mod.DictWriter(f, fieldnames=list(new_row.keys()))
+            writer.writerow(new_row)
+
+        has_geojson = False
+        if data.get("geojson"):
+            self.save_relief_geojson(wikidata_id, data["geojson"])
+            has_geojson = True
+
+        self._relief_df = None  # invalidate cache
+
+        result = dict(new_row)
+        result["has_geojson"] = has_geojson
+        return result
+
+    def save_relief_geojson(self, wikidata_id: str, geojson: dict) -> bool:
+        """Save GeoJSON geometry to a file for the given wikidata_id."""
+        import json as json_mod
+
+        df = self._load_relief()
+        if df[df["wikidata_id"] == wikidata_id].empty:
+            return False
+
+        if geojson.get("type") in ("Point", "LineString", "Polygon",
+                                    "MultiPoint", "MultiLineString", "MultiPolygon"):
+            feature = {
+                "type": "Feature",
+                "geometry": geojson,
+                "properties": {"wikidata_id": wikidata_id},
+            }
+        else:
+            feature = geojson
+
+        os.makedirs(RELIEF_GEOJSON_DIR, exist_ok=True)
+        filepath = os.path.join(RELIEF_GEOJSON_DIR, f"{wikidata_id}.geojson")
+        with open(filepath, "w", encoding="utf-8") as f:
+            json_mod.dump(feature, f, ensure_ascii=False)
+
+        self._relief_df = None  # invalidate cache
+        return True

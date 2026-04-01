@@ -828,46 +828,203 @@ img {
 }
 .map-preset:hover:not(.active) { background: #f0f4ff; }
 
-/* ─── Custom layers panel ────────────────────── */
-.map-custom-panel {
-    display: none;
+/* ─── Layers control (Leaflet topright) ──────── */
+.map-layers-control {
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+.map-layers-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    color: var(--gray-600);
+    cursor: pointer;
+    text-decoration: none;
+}
+.map-layers-toggle:hover { color: var(--gray-900); background: #f5f5f5; }
+.map-layers-body {
+    padding: 8px 12px;
+    min-width: 170px;
+    max-height: 55vh;
+    overflow-y: auto;
+    border-top: 1px solid #eee;
+}
+.mlc-section {
+    font-weight: 600;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-top: 8px;
+    margin-bottom: 3px;
+    letter-spacing: 0.05em;
+}
+.mlc-section:first-child { margin-top: 0; }
+.mlc-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 0;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--gray-700);
+}
+.mlc-label:hover { color: var(--gray-900); }
+.mlc-label input[type="checkbox"] {
+    width: 13px;
+    height: 13px;
+    accent-color: var(--blue-500, #1a73e8);
+}
+
+/* ─── Edit mode ──────────────────────────────── */
+.map-edit-btn a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+    text-decoration: none;
+    color: var(--gray-600);
+}
+.map-edit-btn a:hover { background: #f5f5f5; }
+.map-edit-btn a.active { background: #e3f2fd; color: #1a73e8; }
+
+#map.editing { cursor: crosshair; }
+
+/* Edit panel (type selector) */
+.map-edit-panel {
     position: absolute;
-    top: 114px;
-    left: 54px;
+    top: 74px;
+    left: 10px;
     z-index: 1000;
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-    padding: 10px 14px;
-    min-width: 180px;
-    max-height: 60vh;
+    width: 200px;
+    max-height: 70vh;
     overflow-y: auto;
+    padding: 8px 0;
 }
-.map-custom-panel.visible { display: block; }
-.mcp-section {
+.mep-header {
+    padding: 4px 12px 6px;
     font-weight: 600;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.mep-cat {
+    padding: 6px 12px 2px;
+    font-size: 0.68rem;
+    font-weight: 600;
     text-transform: uppercase;
     color: var(--gray-400);
-    margin-top: 8px;
-    margin-bottom: 4px;
     letter-spacing: 0.05em;
 }
-.mcp-section:first-child { margin-top: 0; }
-.map-custom-panel label {
+.mep-type {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--gray-700);
+    transition: background 0.12s;
+}
+.mep-type:hover { background: #f0f4ff; }
+.mep-type.selected { background: #e3f2fd; color: #1a73e8; font-weight: 600; }
+.mep-instructions {
+    padding: 8px 12px 4px;
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    line-height: 1.4;
+    min-height: 20px;
+}
+.mep-actions {
+    padding: 4px 12px 4px;
+    display: flex;
+    gap: 6px;
+}
+
+/* Edit buttons */
+.edit-btn {
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+.edit-btn-cancel { background: #f1f3f5; color: var(--gray-600); }
+.edit-btn-cancel:hover { background: #e2e6ea; }
+.edit-btn-submit { background: #1a73e8; color: white; }
+.edit-btn-submit:hover { background: #1565c0; }
+
+/* Edit form modal */
+.edit-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 12px;
+}
+.edit-tab {
+    padding: 6px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    font-weight: 500;
+}
+.edit-tab.active { color: #1a73e8; border-bottom-color: #1a73e8; }
+.edit-tab:hover:not(.active) { color: var(--gray-700); }
+.edit-tab-content { display: none; }
+.edit-tab-content.active { display: block; }
+.edit-form-row { margin-bottom: 8px; }
+.edit-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--gray-500); margin-bottom: 2px; }
+.edit-input { width: 100%; padding: 6px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem; box-sizing: border-box; }
+.edit-input:focus { border-color: #1a73e8; outline: none; }
+.edit-row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.edit-row-3col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.edit-type-display { font-size: 0.85rem; color: var(--gray-700); padding: 4px 0; }
+.edit-optional { margin-top: 8px; }
+.edit-optional summary { font-size: 0.78rem; cursor: pointer; color: var(--gray-500); margin-bottom: 8px; }
+.edit-form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee; }
+
+/* Search results */
+.edit-search-results {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+.edit-search-results:empty { display: none; }
+.edit-search-item {
+    padding: 6px 8px;
+    cursor: pointer;
+    font-size: 0.82rem;
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 3px 0;
-    font-size: 0.82rem;
-    cursor: pointer;
-    color: var(--gray-700);
 }
-.map-custom-panel label:hover { color: var(--gray-900); }
-.map-custom-panel input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
-    accent-color: var(--blue-500, #1a73e8);
+.edit-search-item:hover { background: #f0f4ff; }
+.edit-search-type { font-size: 0.7rem; color: var(--gray-400); margin-left: auto; }
+.edit-selected-feature {
+    padding: 8px;
+    background: #e8f5e9;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
 }
 
 .city-tooltip-content {
@@ -1247,5 +1404,5 @@ img {
     /* Map preset bar: smaller on mobile */
     .map-preset-bar { left: 10px; top: 70px; }
     .map-preset { padding: 5px 10px; font-size: 0.75rem; }
-    .map-custom-panel { left: 10px; top: 100px; }
+    .map-edit-panel { width: 160px; top: 60px; }
 }

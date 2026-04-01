@@ -101,6 +101,15 @@
         tiny:       L.layerGroup(),   // <100K
     };
 
+    // ── Tiered lazy loading configuration ────────────────────
+    var CITY_TIERS = {
+        1: { minZoom: 2,  loaded: false, loading: false },  // capitals + 5M
+        2: { minZoom: 3,  loaded: false, loading: false },  // 1M-5M
+        3: { minZoom: 4,  loaded: false, loading: false },  // 500K-1M
+        4: { minZoom: 5,  loaded: false, loading: false },  // 100K-500K
+        5: { minZoom: 7,  loaded: false, loading: false },  // 50K-100K
+    };
+
     // ─── Relief layers ──────────────────────────────────────
     var RELIEF_TYPE_COLORS = {
         volcano: "#DC143C", waterfall: "#00CED1", glacier: "#87CEEB",
@@ -404,6 +413,36 @@
         });
     }
 
+    // ─── Lazy tier loading ───────────────────────────────────
+    function loadCityTier(tier) {
+        var cfg = CITY_TIERS[tier];
+        if (!cfg || cfg.loaded || cfg.loading) return;
+        cfg.loading = true;
+
+        fetch("/api/cities/tier/" + tier)
+            .then(function (r) { return r.json(); })
+            .then(function (cities) {
+                addCityMarkers(cities);
+                cfg.loaded = true;
+                cfg.loading = false;
+                updateCityVisibility();
+            })
+            .catch(function (err) {
+                console.error("Error loading city tier " + tier + ":", err);
+                cfg.loading = false;
+            });
+    }
+
+    function checkAndLoadTiers() {
+        var zoom = map.getZoom();
+        for (var tier = 1; tier <= 5; tier++) {
+            var cfg = CITY_TIERS[tier];
+            if (zoom >= cfg.minZoom && !cfg.loaded && !cfg.loading) {
+                loadCityTier(tier);
+            }
+        }
+    }
+
     // ─── Relief marker/GeoJSON creation ─────────────────────
     function createReliefSvgIcon(type) {
         return L.divIcon({
@@ -584,7 +623,6 @@
 
     // ─── Preset system ──────────────────────────────────────
     var presetButtons = document.querySelectorAll(".map-preset");
-    var customPanel = document.getElementById("custom-panel");
     var currentPreset = "political";
 
     // Layer state tracks which logical layers are enabled
@@ -594,7 +632,6 @@
         reliefAll: false, reliefLand: false, reliefWater: false, reliefCoast: false,
     };
 
-    // Custom state (remembers last custom config)
     var customState = JSON.parse(JSON.stringify(layerState));
 
     var presets = {
@@ -610,45 +647,136 @@
         },
     };
 
-    function applyPreset(name) {
-        currentPreset = name;
-        var p = name === "custom" ? customState : presets[name];
+    // ─── Layers control (Leaflet, topright) ─────────────────
+    var _t = function (k) { return T[k] || k; };
+    var layersControl = null;
+    var layersExpanded = false;
 
-        // Switch tile
-        if (p.tile) setTileLayer(p.tile);
+    var LAYERS_CHECKBOX_MAP = {
+        countries: "countries", capitals: "capitals",
+        cities5m: "mega", cities1m: "large", cities500k: "medium",
+        cities100k: "small100k", citiesOther: "tiny",
+        reliefAll: "reliefAll", reliefLand: "reliefLand",
+        reliefWater: "reliefWater", reliefCoast: "reliefCoast",
+    };
 
-        // Countries
-        layerState.countries = p.countries;
-        if (countryGeoLayer) {
-            if (p.countries && !map.hasLayer(countryGeoLayer)) map.addLayer(countryGeoLayer);
-            else if (!p.countries && map.hasLayer(countryGeoLayer)) map.removeLayer(countryGeoLayer);
+    function buildLayersControl() {
+        var LayersControl = L.Control.extend({
+            options: { position: "topright" },
+            onAdd: function () {
+                var container = L.DomUtil.create("div", "map-layers-control leaflet-bar");
+                L.DomEvent.disableClickPropagation(container);
+                L.DomEvent.disableScrollPropagation(container);
+
+                // Toggle button
+                var toggle = L.DomUtil.create("a", "map-layers-toggle", container);
+                toggle.href = "#";
+                toggle.title = _t("mapjs.preset_custom");
+                toggle.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z" fill="currentColor"/></svg>';
+                toggle.onclick = function (e) {
+                    e.preventDefault();
+                    layersExpanded = !layersExpanded;
+                    body.style.display = layersExpanded ? "block" : "none";
+                };
+
+                // Body
+                var body = L.DomUtil.create("div", "map-layers-body", container);
+                body.style.display = "none";
+
+                // Political section
+                body.innerHTML += '<div class="mlc-section">' + _t("mapjs.section_custom_political") + '</div>';
+                var polItems = [
+                    ["countries",   _t("mapjs.layer_countries")],
+                    ["capitals",    _t("mapjs.layer_capitals")],
+                    ["cities5m",    _t("mapjs.layer_cities_5m")],
+                    ["cities1m",    _t("mapjs.layer_cities_1m")],
+                    ["cities500k",  _t("mapjs.layer_cities_500k")],
+                    ["cities100k",  _t("mapjs.layer_cities_100k")],
+                    ["citiesOther", _t("mapjs.layer_cities_other")],
+                ];
+                polItems.forEach(function (item) {
+                    var lbl = L.DomUtil.create("label", "mlc-label", body);
+                    lbl.innerHTML = '<input type="checkbox" data-layer="' + item[0] + '"> ' + item[1];
+                });
+
+                // Relief section
+                body.innerHTML += '<div class="mlc-section">' + _t("mapjs.section_custom_relief") + '</div>';
+                var relItems = [
+                    ["reliefAll",   _t("mapjs.layer_relief_all")],
+                    ["reliefLand",  _t("mapjs.layer_relief_land")],
+                    ["reliefWater", _t("mapjs.layer_relief_water")],
+                    ["reliefCoast", _t("mapjs.layer_relief_coast")],
+                ];
+                relItems.forEach(function (item) {
+                    var lbl = L.DomUtil.create("label", "mlc-label", body);
+                    lbl.innerHTML = '<input type="checkbox" data-layer="' + item[0] + '"> ' + item[1];
+                });
+
+                // Wire up checkboxes
+                body.querySelectorAll("input[type=checkbox]").forEach(function (cb) {
+                    cb.addEventListener("change", onLayerCheckboxChange);
+                });
+
+                container._body = body;
+                return container;
+            },
+        });
+        layersControl = new LayersControl();
+        layersControl.addTo(map);
+    }
+
+    function onLayerCheckboxChange(e) {
+        var cb = e.target;
+        var layerKey = LAYERS_CHECKBOX_MAP[cb.dataset.layer];
+        if (layerKey === undefined) return;
+
+        // Auto-switch to custom preset
+        if (currentPreset !== "custom") {
+            currentPreset = "custom";
+            presetButtons.forEach(function (b) {
+                b.classList.toggle("active", b.dataset.preset === "custom");
+            });
         }
 
-        // Cities
-        ["capitals", "mega", "large", "medium", "small100k", "tiny"].forEach(function (k) {
-            layerState[k] = p[k];
-        });
-        updateCityVisibility();
+        layerState[layerKey] = cb.checked;
+        customState[layerKey] = cb.checked;
 
-        // Relief
-        layerState.reliefAll = p.reliefAll;
-        layerState.reliefLand = p.reliefLand;
-        layerState.reliefWater = p.reliefWater;
-        layerState.reliefCoast = p.reliefCoast;
-        updateReliefFromState();
+        // Mutual exclusion for relief
+        if (cb.dataset.layer === "reliefAll" && cb.checked) {
+            layerState.reliefLand = false; layerState.reliefWater = false; layerState.reliefCoast = false;
+            customState.reliefLand = false; customState.reliefWater = false; customState.reliefCoast = false;
+            syncLayersCheckboxes();
+        } else if (["reliefLand", "reliefWater", "reliefCoast"].indexOf(layerKey) >= 0 && cb.checked) {
+            layerState.reliefAll = false; customState.reliefAll = false;
+            syncLayersCheckboxes();
+        }
 
-        // Preset buttons
-        presetButtons.forEach(function (btn) {
-            btn.classList.toggle("active", btn.dataset.preset === name);
-        });
-
-        // Custom panel
-        if (name === "custom") {
-            customPanel.classList.add("visible");
-            syncCustomCheckboxes();
+        // Apply
+        if (layerKey === "countries") {
+            if (countryGeoLayer) { cb.checked ? map.addLayer(countryGeoLayer) : map.removeLayer(countryGeoLayer); }
+        } else if (["capitals", "mega", "large", "medium", "small100k", "tiny"].indexOf(layerKey) >= 0) {
+            updateCityVisibility();
         } else {
-            customPanel.classList.remove("visible");
+            updateReliefFromState();
         }
+    }
+
+    function syncLayersCheckboxes() {
+        if (!layersControl) return;
+        var container = layersControl.getContainer();
+        if (!container) return;
+        container.querySelectorAll("input[type=checkbox]").forEach(function (cb) {
+            var layerKey = LAYERS_CHECKBOX_MAP[cb.dataset.layer];
+            if (layerKey !== undefined) cb.checked = layerState[layerKey];
+        });
+    }
+
+    function expandLayersControl(expand) {
+        if (!layersControl) return;
+        var container = layersControl.getContainer();
+        if (!container) return;
+        layersExpanded = expand;
+        container._body.style.display = expand ? "block" : "none";
     }
 
     function updateReliefFromState() {
@@ -676,19 +804,36 @@
         toggleReliefLegend(anyRelief);
     }
 
-    // Sync checkboxes in custom panel to match current layerState
-    function syncCustomCheckboxes() {
-        var checkboxMap = {
-            countries: "countries", capitals: "capitals",
-            cities5m: "mega", cities1m: "large", cities500k: "medium",
-            cities100k: "small100k", citiesOther: "tiny",
-            reliefAll: "reliefAll", reliefLand: "reliefLand",
-            reliefWater: "reliefWater", reliefCoast: "reliefCoast",
-        };
-        customPanel.querySelectorAll("input[type=checkbox]").forEach(function (cb) {
-            var layerKey = checkboxMap[cb.dataset.layer];
-            if (layerKey !== undefined) cb.checked = layerState[layerKey];
+    function applyPreset(name) {
+        currentPreset = name;
+        var p = name === "custom" ? customState : presets[name];
+
+        if (p.tile) setTileLayer(p.tile);
+
+        layerState.countries = p.countries;
+        if (countryGeoLayer) {
+            if (p.countries && !map.hasLayer(countryGeoLayer)) map.addLayer(countryGeoLayer);
+            else if (!p.countries && map.hasLayer(countryGeoLayer)) map.removeLayer(countryGeoLayer);
+        }
+
+        ["capitals", "mega", "large", "medium", "small100k", "tiny"].forEach(function (k) {
+            layerState[k] = p[k];
         });
+        updateCityVisibility();
+
+        layerState.reliefAll = p.reliefAll;
+        layerState.reliefLand = p.reliefLand;
+        layerState.reliefWater = p.reliefWater;
+        layerState.reliefCoast = p.reliefCoast;
+        updateReliefFromState();
+
+        presetButtons.forEach(function (btn) {
+            btn.classList.toggle("active", btn.dataset.preset === name);
+        });
+
+        syncLayersCheckboxes();
+
+        if (name === "custom") expandLayersControl(true);
     }
 
     // Preset button click handlers
@@ -696,83 +841,428 @@
         btn.addEventListener("click", function () {
             var preset = btn.dataset.preset;
             if (preset === "custom" && currentPreset === "custom") {
-                // Toggle panel
-                customPanel.classList.toggle("visible");
+                expandLayersControl(!layersExpanded);
                 return;
             }
             applyPreset(preset);
         });
     });
 
-    // Custom panel checkbox handlers
-    if (customPanel) {
-        var checkboxMap = {
-            countries: "countries", capitals: "capitals",
-            cities5m: "mega", cities1m: "large", cities500k: "medium",
-            cities100k: "small100k", citiesOther: "tiny",
-            reliefAll: "reliefAll", reliefLand: "reliefLand",
-            reliefWater: "reliefWater", reliefCoast: "reliefCoast",
-        };
+    // ─── Edit mode ──────────────────────────────────────────
+    var editMode = false;
+    var editSelectedType = null;
+    var editPendingMarker = null;
+    var editDrawing = { active: false, points: [], previewLine: null, rubberBand: null, vertices: [] };
+    var editFormContext = null; // {type, geojson, marker, latlng}
 
-        customPanel.querySelectorAll("input[type=checkbox]").forEach(function (cb) {
-            cb.addEventListener("change", function () {
-                // Switch to custom preset when user toggles a checkbox
-                if (currentPreset !== "custom") {
-                    currentPreset = "custom";
-                    presetButtons.forEach(function (b) {
-                        b.classList.toggle("active", b.dataset.preset === "custom");
-                    });
-                }
+    // Edit toggle control (Leaflet topleft)
+    var editControl = null;
+    function buildEditControl() {
+        var EditControl = L.Control.extend({
+            options: { position: "topleft" },
+            onAdd: function () {
+                var btn = L.DomUtil.create("div", "map-edit-btn leaflet-bar");
+                btn.innerHTML = '<a href="#" title="' + (_t("mapjs.edit_mode") || "Edit") + '">✏️</a>';
+                L.DomEvent.disableClickPropagation(btn);
+                btn.querySelector("a").onclick = function (e) {
+                    e.preventDefault();
+                    toggleEditMode();
+                };
+                return btn;
+            },
+        });
+        editControl = new EditControl();
+        editControl.addTo(map);
+    }
 
-                var layerKey = checkboxMap[cb.dataset.layer];
-                if (layerKey === undefined) return;
+    // Edit panel (type selector)
+    var editPanel = null;
+    function buildEditPanel() {
+        var panel = document.createElement("div");
+        panel.className = "map-edit-panel";
+        panel.style.display = "none";
+        panel.id = "edit-panel";
 
-                layerState[layerKey] = cb.checked;
-                customState[layerKey] = cb.checked;
+        var html = '<div class="mep-header">' + (_t("mapjs.edit_select_type") || "Select type") + '</div>';
+        var cats = [
+            { key: "land",  label: _t("mapjs.edit_cat_land") || "Land",  types: RELIEF_CATS.land },
+            { key: "water", label: _t("mapjs.edit_cat_water") || "Water", types: RELIEF_CATS.water },
+            { key: "coast", label: _t("mapjs.edit_cat_coast") || "Coast", types: RELIEF_CATS.coast },
+        ];
 
-                // Handle "reliefAll" toggling individual subcategories
-                if (cb.dataset.layer === "reliefAll" && cb.checked) {
-                    layerState.reliefLand = false;
-                    layerState.reliefWater = false;
-                    layerState.reliefCoast = false;
-                    customState.reliefLand = false;
-                    customState.reliefWater = false;
-                    customState.reliefCoast = false;
-                    syncCustomCheckboxes();
-                } else if (["reliefLand", "reliefWater", "reliefCoast"].indexOf(layerKey) >= 0 && cb.checked) {
-                    layerState.reliefAll = false;
-                    customState.reliefAll = false;
-                    syncCustomCheckboxes();
-                }
-
-                // Apply changes
-                if (layerKey === "countries") {
-                    if (countryGeoLayer) {
-                        if (cb.checked) map.addLayer(countryGeoLayer);
-                        else map.removeLayer(countryGeoLayer);
-                    }
-                } else if (["capitals", "mega", "large", "medium", "small100k", "tiny"].indexOf(layerKey) >= 0) {
-                    updateCityVisibility();
-                } else {
-                    updateReliefFromState();
-                }
+        cats.forEach(function (cat) {
+            html += '<div class="mep-cat">' + cat.label + '</div>';
+            cat.types.forEach(function (t) {
+                html += '<div class="mep-type" data-type="' + t + '">' +
+                    '<img src="' + ICON_BASE + t + '.svg" width="18" height="18">' +
+                    '<span>' + reliefTypeLabel(t) + '</span></div>';
             });
+        });
+        html += '<div class="mep-instructions" id="edit-instructions"></div>';
+        html += '<div class="mep-actions">';
+        html += '<button class="edit-btn edit-btn-cancel mep-btn-cancel" id="edit-cancel-draw">' + (_t("mapjs.edit_cancel") || "Cancel") + '</button>';
+        html += '<button class="edit-btn edit-btn-submit mep-btn-save" id="edit-save-btn" style="display:none">' + (_t("mapjs.edit_save") || "Save") + '</button>';
+        html += '</div>';
+
+        panel.innerHTML = html;
+        document.querySelector(".map-page").appendChild(panel);
+        editPanel = panel;
+
+        // Type selection handlers
+        panel.querySelectorAll(".mep-type").forEach(function (el) {
+            el.addEventListener("click", function () {
+                selectEditType(el.dataset.type);
+            });
+        });
+
+        // Cancel button
+        document.getElementById("edit-cancel-draw").addEventListener("click", function () {
+            cancelEditDrawing();
+        });
+
+        // Save button
+        document.getElementById("edit-save-btn").addEventListener("click", function () {
+            openEditForm();
         });
     }
 
-    // Close custom panel on outside click
-    document.addEventListener("click", function (e) {
-        if (currentPreset === "custom" && customPanel.classList.contains("visible")) {
-            if (!customPanel.contains(e.target) && !e.target.closest('.map-preset[data-preset="custom"]')) {
-                customPanel.classList.remove("visible");
-            }
+    function toggleEditMode() {
+        editMode = !editMode;
+        var btn = editControl.getContainer().querySelector("a");
+        if (editMode) {
+            btn.classList.add("active");
+            editPanel.style.display = "block";
+            document.getElementById("map").classList.add("editing");
+        } else {
+            btn.classList.remove("active");
+            editPanel.style.display = "none";
+            document.getElementById("map").classList.remove("editing");
+            cancelEditDrawing();
+            clearEditSelection();
         }
+    }
+
+    function selectEditType(type) {
+        editSelectedType = type;
+        editPanel.querySelectorAll(".mep-type").forEach(function (el) {
+            el.classList.toggle("selected", el.dataset.type === type);
+        });
+        cancelEditDrawing();
+        var instrEl = document.getElementById("edit-instructions");
+        var isLine = (type === "river");
+        instrEl.textContent = isLine
+            ? (_t("mapjs.edit_draw_line") || "Click on map to draw line. Double-click to finish.")
+            : (_t("mapjs.edit_place_point") || "Click on map to place or draw. Double-click to close polygon.");
+    }
+
+    function clearEditSelection() {
+        editSelectedType = null;
+        editPanel.querySelectorAll(".mep-type").forEach(function (el) { el.classList.remove("selected"); });
+        document.getElementById("edit-instructions").textContent = "";
+        document.getElementById("edit-save-btn").style.display = "none";
+    }
+
+    function cancelEditDrawing() {
+        // Remove pending marker
+        if (editPendingMarker) { map.removeLayer(editPendingMarker); editPendingMarker = null; }
+        // Clear drawing
+        if (editDrawing.previewLine) { map.removeLayer(editDrawing.previewLine); editDrawing.previewLine = null; }
+        if (editDrawing.rubberBand) { map.removeLayer(editDrawing.rubberBand); editDrawing.rubberBand = null; }
+        editDrawing.vertices.forEach(function (v) { map.removeLayer(v); });
+        editDrawing.vertices = [];
+        editDrawing.points = [];
+        editDrawing.active = false;
+        document.getElementById("edit-save-btn").style.display = "none";
+    }
+
+    // ─── Edit: Map click handler ────────────────────────────
+    map.on("click", function (e) {
+        if (!editMode || !editSelectedType) return;
+
+        if (editDrawing.active) {
+            // Add point to drawing
+            var pt = [e.latlng.lat, e.latlng.lng];
+            editDrawing.points.push(pt);
+
+            // Add vertex marker
+            var vertex = L.circleMarker(e.latlng, { radius: 4, color: "#1a73e8", fillColor: "#fff", fillOpacity: 1, weight: 2 });
+            vertex.addTo(map);
+            editDrawing.vertices.push(vertex);
+
+            // Update preview line
+            if (editDrawing.previewLine) map.removeLayer(editDrawing.previewLine);
+            editDrawing.previewLine = L.polyline(editDrawing.points, { color: "#1a73e8", weight: 2, dashArray: "5,5" }).addTo(map);
+            return;
+        }
+
+        // First click: decide point vs drawing
+        var isGeoType = true; // All types can be drawn as GeoJSON
+        // But if it's just a simple placement (single click → point marker)
+        // Start drawing mode — user builds the shape
+        editDrawing.active = true;
+        editDrawing.points = [[e.latlng.lat, e.latlng.lng]];
+
+        // First vertex
+        var vertex = L.circleMarker(e.latlng, { radius: 4, color: "#1a73e8", fillColor: "#fff", fillOpacity: 1, weight: 2 });
+        vertex.addTo(map);
+        editDrawing.vertices.push(vertex);
+
+        // Show instructions
+        var instrEl = document.getElementById("edit-instructions");
+        instrEl.textContent = editSelectedType === "river"
+            ? (_t("mapjs.edit_draw_line") || "Click to add points. Double-click to finish line.")
+            : (_t("mapjs.edit_draw_polygon") || "Click to add points. Double-click to close polygon.");
+    });
+
+    // Rubber band on mousemove
+    map.on("mousemove", function (e) {
+        if (!editMode || !editDrawing.active || editDrawing.points.length === 0) return;
+        var lastPt = editDrawing.points[editDrawing.points.length - 1];
+        if (editDrawing.rubberBand) map.removeLayer(editDrawing.rubberBand);
+        editDrawing.rubberBand = L.polyline([lastPt, [e.latlng.lat, e.latlng.lng]], {
+            color: "#1a73e8", weight: 1.5, dashArray: "3,6", opacity: 0.6,
+        }).addTo(map);
+    });
+
+    // Double click to finish drawing
+    map.on("dblclick", function (e) {
+        if (!editMode || !editDrawing.active) return;
+        L.DomEvent.stopPropagation(e);
+        L.DomEvent.preventDefault(e);
+
+        if (editDrawing.points.length < 2) {
+            // Too few points — treat as point placement
+            var latlng = L.latLng(editDrawing.points[0][0], editDrawing.points[0][1]);
+            cancelEditDrawing();
+            // Place marker
+            editPendingMarker = L.marker(latlng, {
+                icon: createReliefSvgIcon(editSelectedType),
+                draggable: true,
+            }).addTo(map);
+            editFormContext = { type: editSelectedType, latlng: latlng, geojson: null, marker: editPendingMarker };
+            document.getElementById("edit-save-btn").style.display = "";
+            return;
+        }
+
+        // Build GeoJSON
+        var coords, geojson;
+        if (editSelectedType === "river") {
+            // LineString
+            coords = editDrawing.points.map(function (p) { return [p[1], p[0]]; }); // [lng, lat]
+            geojson = { type: "LineString", coordinates: coords };
+        } else {
+            // Polygon — close it
+            coords = editDrawing.points.map(function (p) { return [p[1], p[0]]; });
+            coords.push(coords[0]); // close ring
+            geojson = { type: "Polygon", coordinates: [coords] };
+        }
+
+        // Compute centroid for lat/lon
+        var sumLat = 0, sumLng = 0;
+        editDrawing.points.forEach(function (p) { sumLat += p[0]; sumLng += p[1]; });
+        var centroid = L.latLng(sumLat / editDrawing.points.length, sumLng / editDrawing.points.length);
+
+        // Clean up drawing visuals (keep preview line as the shape preview)
+        if (editDrawing.rubberBand) { map.removeLayer(editDrawing.rubberBand); editDrawing.rubberBand = null; }
+        editDrawing.vertices.forEach(function (v) { map.removeLayer(v); });
+        editDrawing.vertices = [];
+
+        // Show finished shape
+        if (editDrawing.previewLine) map.removeLayer(editDrawing.previewLine);
+        var style = { color: RELIEF_TYPE_COLORS[editSelectedType] || "#1a73e8", weight: 3, opacity: 0.8, fillOpacity: 0.2 };
+        editDrawing.previewLine = L.geoJSON(geojson, { style: style }).addTo(map);
+
+        editDrawing.active = false;
+        editFormContext = { type: editSelectedType, latlng: centroid, geojson: geojson, marker: null };
+        document.getElementById("edit-save-btn").style.display = "";
+    });
+
+    // ─── Edit form ──────────────────────────────────────────
+    var editModalOverlay = document.getElementById("edit-modal-overlay");
+
+    function openEditForm() {
+        if (!editFormContext) return;
+        var ctx = editFormContext;
+
+        // Set labels
+        document.getElementById("edit-modal-title").textContent = _t("mapjs.edit_mode") || "Edit";
+        document.getElementById("edit-tab-new").textContent = _t("mapjs.edit_tab_new") || "Create new";
+        document.getElementById("edit-tab-assoc").textContent = _t("mapjs.edit_tab_associate") || "Associate";
+        document.getElementById("edit-label-name").textContent = _t("mapjs.edit_name") || "Name";
+        document.getElementById("edit-label-type").textContent = _t("mapjs.edit_label_type") || "Type";
+        document.getElementById("edit-optional-label").textContent = _t("mapjs.edit_optional") || "Optional fields";
+        document.getElementById("edit-label-country").textContent = _t("mapjs.edit_country") || "Country codes";
+        document.getElementById("edit-label-search").textContent = _t("mapjs.edit_search") || "Search feature";
+        document.getElementById("edit-form-cancel").textContent = _t("mapjs.edit_cancel") || "Cancel";
+        document.getElementById("edit-form-submit").textContent = _t("mapjs.edit_save") || "Save";
+
+        // Fill type display
+        document.getElementById("edit-type-display").innerHTML =
+            '<img src="' + ICON_BASE + ctx.type + '.svg" width="18" height="18" style="vertical-align:middle"> ' + reliefTypeLabel(ctx.type);
+
+        // Fill coordinates
+        document.getElementById("edit-lat").value = ctx.latlng.lat.toFixed(5);
+        document.getElementById("edit-lon").value = ctx.latlng.lng.toFixed(5);
+
+        // Clear form
+        document.getElementById("edit-name").value = "";
+        ["es", "en", "fr", "it", "ru"].forEach(function (l) {
+            var el = document.getElementById("edit-name-" + l);
+            if (el) el.value = "";
+        });
+        document.getElementById("edit-country").value = "";
+        document.getElementById("edit-elev").value = "";
+        document.getElementById("edit-length").value = "";
+        document.getElementById("edit-area").value = "";
+        document.getElementById("edit-search").value = "";
+        document.getElementById("edit-search-results").innerHTML = "";
+        document.getElementById("edit-selected-feature").style.display = "none";
+
+        // Show "Associate" tab only if we have GeoJSON
+        var assocTab = document.getElementById("edit-tab-assoc");
+        assocTab.style.display = ctx.geojson ? "" : "none";
+
+        // Activate "new" tab
+        switchEditTab("new");
+
+        editModalOverlay.classList.add("active");
+    }
+
+    function closeEditForm() {
+        editModalOverlay.classList.remove("active");
+    }
+
+    // Tab switching
+    function switchEditTab(tab) {
+        document.querySelectorAll(".edit-tab").forEach(function (t) { t.classList.toggle("active", t.dataset.tab === tab); });
+        document.getElementById("edit-pane-new").style.display = tab === "new" ? "" : "none";
+        document.getElementById("edit-pane-assoc").style.display = tab === "associate" ? "" : "none";
+    }
+
+    document.getElementById("edit-tab-new").addEventListener("click", function () { switchEditTab("new"); });
+    document.getElementById("edit-tab-assoc").addEventListener("click", function () { switchEditTab("associate"); });
+    document.getElementById("edit-modal-close").addEventListener("click", closeEditForm);
+    document.getElementById("edit-form-cancel").addEventListener("click", function () {
+        closeEditForm();
+        cancelEditDrawing();
+    });
+
+    editModalOverlay.addEventListener("click", function (e) { if (e.target === editModalOverlay) closeEditForm(); });
+
+    // Search for existing features (associate tab)
+    var searchTimeout = null;
+    document.getElementById("edit-search").addEventListener("input", function () {
+        clearTimeout(searchTimeout);
+        var val = this.value.toLowerCase().trim();
+        searchTimeout = setTimeout(function () {
+            var resultsEl = document.getElementById("edit-search-results");
+            if (val.length < 2) { resultsEl.innerHTML = ""; return; }
+            var matches = allReliefFeatures.filter(function (f) {
+                if (f.has_geojson) return false;
+                var name = (f["name_" + LANG] || f.name_en || f.name || "").toLowerCase();
+                return name.indexOf(val) >= 0;
+            }).slice(0, 10);
+            resultsEl.innerHTML = matches.map(function (f) {
+                var name = f["name_" + LANG] || f.name_en || f.name;
+                return '<div class="edit-search-item" data-wid="' + f.wikidata_id + '">' +
+                    '<img src="' + ICON_BASE + f.type + '.svg" width="16" height="16"> ' + name +
+                    ' <span class="edit-search-type">' + reliefTypeLabel(f.type) + '</span></div>';
+            }).join("");
+
+            resultsEl.querySelectorAll(".edit-search-item").forEach(function (el) {
+                el.addEventListener("click", function () {
+                    var wid = el.dataset.wid;
+                    var feat = allReliefFeatures.find(function (f) { return f.wikidata_id === wid; });
+                    if (feat) {
+                        editFormContext.associateWith = feat;
+                        document.getElementById("edit-selected-feature").style.display = "";
+                        document.getElementById("edit-selected-feature").innerHTML =
+                            '<img src="' + ICON_BASE + feat.type + '.svg" width="18" height="18"> ' +
+                            (feat["name_" + LANG] || feat.name_en || feat.name);
+                        resultsEl.innerHTML = "";
+                        document.getElementById("edit-search").value = "";
+                    }
+                });
+            });
+        }, 200);
+    });
+
+    // Submit
+    document.getElementById("edit-form-submit").addEventListener("click", function () {
+        if (!editFormContext) return;
+        var ctx = editFormContext;
+        var activeTab = document.querySelector(".edit-tab.active").dataset.tab;
+
+        if (activeTab === "associate" && ctx.associateWith && ctx.geojson) {
+            // Associate GeoJSON with existing feature
+            fetch("/api/relief-features/" + ctx.associateWith.wikidata_id + "/geojson", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ geojson: ctx.geojson }),
+            }).then(function (r) { return r.json(); }).then(function (res) {
+                if (res.status === "ok") {
+                    // Update local data
+                    ctx.associateWith.has_geojson = true;
+                    geojsonCache[ctx.associateWith.wikidata_id] = ctx.geojson;
+                    showReliefGeoJsonInView();
+                    closeEditForm();
+                    cancelEditDrawing();
+                }
+            }).catch(function (err) { console.error("Error associating GeoJSON:", err); });
+            return;
+        }
+
+        // Create new feature
+        var nameVal = document.getElementById("edit-name").value.trim();
+        if (!nameVal) { document.getElementById("edit-name").focus(); return; }
+
+        var payload = {
+            name: nameVal,
+            type: ctx.type,
+            lat: parseFloat(document.getElementById("edit-lat").value),
+            lon: parseFloat(document.getElementById("edit-lon").value),
+        };
+
+        ["es", "en", "fr", "it", "ru"].forEach(function (l) {
+            var v = document.getElementById("edit-name-" + l).value.trim();
+            if (v) payload["name_" + l] = v;
+        });
+
+        var cc = document.getElementById("edit-country").value.trim();
+        if (cc) payload.country_codes = cc;
+        var elev = document.getElementById("edit-elev").value;
+        if (elev) payload.elevation_m = parseFloat(elev);
+        var len = document.getElementById("edit-length").value;
+        if (len) payload.length_km = parseFloat(len);
+        var area = document.getElementById("edit-area").value;
+        if (area) payload.area_km2 = parseFloat(area);
+        if (ctx.geojson) payload.geojson = ctx.geojson;
+
+        fetch("/api/relief-features", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        }).then(function (r) { return r.json(); }).then(function (newFeature) {
+            // Add to local data
+            allReliefFeatures.push(newFeature);
+            if (newFeature.has_geojson && ctx.geojson) {
+                geojsonCache[newFeature.wikidata_id] = ctx.geojson;
+            }
+            // Add marker to cluster if relief is visible
+            if (reliefVisible && activeReliefTypes.has(newFeature.type)) {
+                reliefCluster.addLayer(createReliefIconMarker(newFeature));
+                if (newFeature.has_geojson) showReliefGeoJsonInView();
+            }
+            closeEditForm();
+            cancelEditDrawing();
+        }).catch(function (err) { console.error("Error creating feature:", err); });
     });
 
     // ─── Map events ─────────────────────────────────────────
     map.on("zoomend", function () {
         updateCityVisibility();
         applyTileForZoom();
+        checkAndLoadTiers();
     });
 
     var viewTimer = null;
@@ -787,16 +1277,16 @@
     async function init() {
         var loading = document.getElementById("loading");
         try {
-            var [countriesResp, geojsonResp, citiesResp, reliefResp] = await Promise.all([
+            var [countriesResp, geojsonResp, tier1Resp, reliefResp] = await Promise.all([
                 fetch("/api/countries"),
                 fetch("/api/geojson/all"),
-                fetch("/api/cities"),
+                fetch("/api/cities/tier/1"),
                 fetch("/api/relief-features"),
             ]);
 
             var countries = await countriesResp.json();
             var geojsonData = await geojsonResp.json();
-            var cities = await citiesResp.json();
+            var tier1Cities = await tier1Resp.json();
             allReliefFeatures = await reliefResp.json();
 
             // Index countries by ISO
@@ -810,8 +1300,9 @@
                 onEachFeature: onEachCountryFeature,
             }).addTo(map);
 
-            // City markers
-            addCityMarkers(cities);
+            // Tier 1 city markers (capitals + 5M)
+            addCityMarkers(tier1Cities);
+            CITY_TIERS[1].loaded = true;
 
             // Relief cluster
             reliefCluster = L.markerClusterGroup({
@@ -822,8 +1313,16 @@
                 disableClusteringAtZoom: 12,
             });
 
+            // Build UI controls
+            buildLayersControl();
+            buildEditControl();
+            buildEditPanel();
+
             // Apply initial preset (political)
             applyPreset("political");
+
+            // Load any other tiers needed at current zoom
+            checkAndLoadTiers();
 
         } catch (err) {
             console.error("Error loading map data:", err);

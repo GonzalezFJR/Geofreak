@@ -14,7 +14,7 @@ Sources (optional, require manual download or known URL):
   7. WHO Air Quality DB v6.1  — PM2.5, PM10, NO2 per city
   8. UN WUP 2024  — metro (agglomeration) population + 10-yr growth
 
-Target: ~5,500 cities with ≥100k population + all national capitals
+Target: ~10,000-12,000 cities with ≥50k population + all national capitals
 Columns: ~38 (identity, admin, multilingual names, climate, economic, air quality)
 
 Usage:
@@ -86,7 +86,7 @@ CAPITAL_CODES         = {"PPLC", "PPLG"}
 ADMIN1_CODES          = {"PPLA"}
 
 TARGET_LANGS    = {"es", "en", "fr", "it", "ru"}
-MIN_POPULATION  = 100_000
+MIN_POPULATION  = 30_000
 DEDUP_RADIUS_KM = 15.0
 
 # ── Climate constants ─────────────────────────────────────────────────────────
@@ -415,18 +415,29 @@ def fetch_elevations(
     cities_df: pd.DataFrame,
     force: bool = False,
 ) -> dict[int, float]:
-    if ELEVATION_CACHE.exists() and not force:
+    # Load existing cache for incremental updates
+    cached: dict[int, float] = {}
+    if ELEVATION_CACHE.exists():
         with open(ELEVATION_CACHE) as f:
-            cached = json.load(f)
-        print(f"    ✓ Elevation cache: {len(cached):,} entries")
-        return {int(k): v for k, v in cached.items()}
+            cached = {int(k): v for k, v in json.load(f).items()}
 
-    # Only fetch cities with missing/zero DEM
-    needs = cities_df[
-        (cities_df["dem"].isna()) | (cities_df["dem"] == "") | (cities_df["dem"] == 0)
-    ]
-    if needs.empty:
-        return {}
+    if not force:
+        # Only fetch cities with missing/zero DEM that are NOT already cached
+        needs = cities_df[
+            (cities_df["dem"].isna()) | (cities_df["dem"] == "") | (cities_df["dem"] == 0)
+        ]
+        needs = needs[~needs["geonameid"].isin(cached.keys())]
+        if needs.empty:
+            print(f"    ✓ Elevation cache: {len(cached):,} entries (all cities covered)")
+            return cached
+        print(f"    Elevation cache: {len(cached):,} entries, {len(needs):,} new cities to fetch")
+    else:
+        cached = {}
+        needs = cities_df[
+            (cities_df["dem"].isna()) | (cities_df["dem"] == "") | (cities_df["dem"] == 0)
+        ]
+        if needs.empty:
+            return {}
 
     results: dict[int, float] = {}
     rows = needs[["geonameid", "lat", "lon"]].to_dict("records")
@@ -452,10 +463,12 @@ def fetch_elevations(
             print(f"      ⚠ Elevation batch {i//BATCH}: {e}")
         time.sleep(0.1)
 
+    # Merge new results with cached and save
+    cached.update(results)
     with open(ELEVATION_CACHE, "w") as f:
-        json.dump({str(k): v for k, v in results.items()}, f)
-    print(f"    ✓ Elevation fetched: {len(results):,}")
-    return results
+        json.dump({str(k): v for k, v in cached.items()}, f)
+    print(f"    ✓ Elevation fetched: {len(results):,} new, {len(cached):,} total")
+    return cached
 
 
 def apply_elevations(
@@ -559,13 +572,24 @@ def fetch_climate_normals(
     cities_df: pd.DataFrame,
     force: bool = False,
 ) -> dict[int, dict]:
-    if CLIMATE_CACHE.exists() and not force:
+    # Load existing cache for incremental updates
+    cached: dict[int, dict] = {}
+    if CLIMATE_CACHE.exists():
         with open(CLIMATE_CACHE) as f:
-            cached = json.load(f)
-        print(f"    ✓ Climate cache: {len(cached):,} entries")
-        return {int(k): v for k, v in cached.items()}
+            cached = {int(k): v for k, v in json.load(f).items()}
 
-    rows = cities_df[["geonameid", "lat", "lon"]].to_dict("records")
+    if not force:
+        target_ids = set(cities_df["geonameid"])
+        missing_ids = target_ids - set(cached.keys())
+        if not missing_ids:
+            print(f"    ✓ Climate cache: {len(cached):,} entries (all cities covered)")
+            return cached
+        print(f"    Climate cache: {len(cached):,} entries, {len(missing_ids):,} new cities to fetch")
+        rows = cities_df[cities_df["geonameid"].isin(missing_ids)][["geonameid", "lat", "lon"]].to_dict("records")
+    else:
+        cached = {}
+        rows = cities_df[["geonameid", "lat", "lon"]].to_dict("records")
+
     print(f"    Fetching climate normals for {len(rows):,} cities "
           f"({CLIMATE_WORKERS} workers)…")
 
@@ -592,11 +616,14 @@ def fetch_climate_normals(
                       f"{elapsed:.0f}s elapsed, ~{remaining:.0f}s remaining")
 
     elapsed = time.time() - t0
-    print(f"    ✓ Climate fetched: {len(results):,} cities in {elapsed:.0f}s")
+    print(f"    ✓ Climate fetched: {len(results):,} new cities in {elapsed:.0f}s")
 
+    # Merge new results with cached and save
+    cached.update(results)
     with open(CLIMATE_CACHE, "w") as f:
-        json.dump({str(k): v for k, v in results.items()}, f)
-    return results
+        json.dump({str(k): v for k, v in cached.items()}, f)
+    print(f"    ✓ Climate total: {len(cached):,} entries")
+    return cached
 
 
 def apply_climate(
