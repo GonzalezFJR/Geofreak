@@ -57,9 +57,11 @@ var MapGame = (function () {
         'europe':   { center: [54,  15], zoom: 4, minZoom: 3, maxBounds: [[-17, -28], [85,  52]] },
         'asia':     { center: [35,  90], zoom: 3, minZoom: 2, maxBounds: [[-85,  25], [85, 180]] },
         'africa':   { center: [ 5,  20], zoom: 3, minZoom: 2, maxBounds: [[-85, -22], [85,  58]] },
-        'america':  { center: [10, -78], zoom: 3, minZoom: 2, maxBounds: [[-85, -130], [85, -25]] },
+        'americas': { center: [10, -78], zoom: 3, minZoom: 2, maxBounds: [[-85, -130], [85, -25]] },
         'oceania':  { center: [-25, 145], zoom: 4, minZoom: 3, maxBounds: [[-85, 108], [79, 188]] },
     };
+
+    var activeContinent = null; // set during loadData
 
     /* Returns the right map cfg for dataset + active continent filter */
     function getMapConfig(ds, continent) {
@@ -67,6 +69,34 @@ var MapGame = (function () {
             return CONTINENT_CONFIG[continent];
         }
         return DATASET_CONFIG[ds] || DATASET_CONFIG['countries'];
+    }
+
+    /* ── Oceania antimeridian helpers ──────────────────────── */
+    /* Oceania spans the antimeridian (~108°E to ~-130°W).
+       To display it contiguously, shift all negative longitudes
+       by +360 so they appear east of the dateline. */
+    function wrapLon(lon) {
+        if (activeContinent === 'oceania' && lon < 0) return lon + 360;
+        return lon;
+    }
+
+    function shiftGeoJSONCoords(geojson) {
+        if (activeContinent !== 'oceania') return geojson;
+        var shifted = JSON.parse(JSON.stringify(geojson));
+        function walk(coords) {
+            if (typeof coords[0] === 'number') {
+                // [lon, lat] pair
+                if (coords[0] < 0) coords[0] += 360;
+                return;
+            }
+            for (var i = 0; i < coords.length; i++) walk(coords[i]);
+        }
+        if (shifted.type === 'FeatureCollection') {
+            shifted.features.forEach(function (f) { walk(f.geometry.coordinates); });
+        } else if (shifted.type === 'Feature') {
+            walk(shifted.geometry.coordinates);
+        }
+        return shifted;
     }
 
     /* ── Prompt/placeholder keys per dataset ────────────────── */
@@ -163,6 +193,7 @@ var MapGame = (function () {
     /* ── Data loading ───────────────────────────────────────── */
     function loadData() {
         var s = readSettings();
+        activeContinent = s.continent || null;
 
         // Show UI for the chosen mode
         var promptBar = document.getElementById('game-prompt');
@@ -314,7 +345,7 @@ var MapGame = (function () {
         if (isCityDataset) {
             initCityMarkers(entities);
         } else {
-            initPolygonLayer(geojson);
+            initPolygonLayer(shiftGeoJSONCoords(geojson));
         }
 
         map.on('click', function (e) {
@@ -359,7 +390,7 @@ var MapGame = (function () {
 
     function initCityMarkers(entities) {
         entities.forEach(function (city) {
-            var marker = L.circleMarker([city.lat, city.lon], cityStyle(city.id));
+            var marker = L.circleMarker([city.lat, wrapLon(city.lon)], cityStyle(city.id));
             marker.on('click', function (e) {
                 L.DomEvent.stopPropagation(e);
                 if (mode === 'type') onClickCity(city.id);
@@ -667,7 +698,7 @@ var MapGame = (function () {
     function onMapClickCityLocate(e) {
         if (!cityLocateTarget) return;
         var city = cityLocateTarget;
-        var targetLL   = L.latLng(city.lat, city.lon);
+        var targetLL   = L.latLng(city.lat, wrapLon(city.lon));
         var clickLL    = e.latlng;
         var distKm     = clickLL.distanceTo(targetLL) / 1000;
         var correct    = distKm <= CITY_LOCATE_KM;

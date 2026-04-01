@@ -41,6 +41,7 @@ var GeoUtils = {
             asia   : function (c) { return c.continent === 'Asia'; },
             africa : function (c) { return c.continent === 'Africa'; },
             america: function (c) { return c.continent === 'North America' || c.continent === 'South America'; },
+            americas: function (c) { return c.continent === 'North America' || c.continent === 'South America'; },
             oceania: function (c) { return c.continent === 'Oceania'; },
         };
         var fn = map[continentKey];
