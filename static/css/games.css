@@ -2891,6 +2891,14 @@ body:has(.game-page) {
     box-shadow: 0 8px 24px rgba(26,115,232,0.45);
 }
 .mcfg-play-btn:active { transform: translateY(0); }
+.mcfg-play-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.mcfg-register-hint {
+    text-align: center; margin-top: 10px; padding: 10px 16px;
+    background: rgba(255,180,0,0.12); border-radius: var(--radius-md);
+    font-size: 0.88rem; color: var(--gray-700);
+}
+.mcfg-register-hint a { color: var(--blue-600); font-weight: 600; text-decoration: underline; }
 
 /* Responsive */
 @media (max-width: 700px) {

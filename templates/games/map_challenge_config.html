@@ -205,6 +205,9 @@
         <button type="button" class="mcfg-play-btn" id="mcfg-play-btn">
             {{ t('mg.cfg_start', lang) }}
         </button>
+        <div class="mcfg-register-hint" id="mcfg-register-hint" style="display:none">
+            <a href="/register">{{ t('mg.register_to_play', lang) }}</a>
+        </div>
 
     </div>
 </section>
@@ -213,6 +216,8 @@
 <script>
 (function () {
     var COUNTS = {{ map_game_counts_json | safe }};
+    var IS_LOGGED_IN = {{ 'true' if user else 'false' }};
+    var MAX_ANON_ITEMS = 100;
     var TLABELS = {
         name:   {{ t('mg.preview_name', lang) | tojson }},
         locate: {{ t('mg.preview_locate', lang) | tojson }},
@@ -247,6 +252,15 @@
     var SECS_TYPE  = {{ secs_per_item_type }};
     var SECS_CLICK = {{ secs_per_item_click }};
     function calcMin(n, factor) { return Math.floor(n * factor / 60) + 1; }
+    function formatTime(n, factor) {
+        var mins = calcMin(n, factor);
+        if (mins >= 60) {
+            var h = Math.floor(mins / 60);
+            var m = mins % 60;
+            return h + 'h' + (m > 0 ? ' ' + m + 'min' : '');
+        }
+        return mins + 'min';
+    }
 
     function getN() {
         if (state.dataset === 'cities' && state.cityCountries.length > 0) return -1; // unknown
@@ -266,18 +280,25 @@
 
     function updatePreview() {
         var n = getN();
-        var nEl  = document.getElementById('preview-n');
-        var tEl  = document.getElementById('preview-time');
+        var nEl   = document.getElementById('preview-n');
+        var tEl   = document.getElementById('preview-time');
+        var btn   = document.getElementById('mcfg-play-btn');
+        var hint  = document.getElementById('mcfg-register-hint');
         if (n === -1) {
             if (nEl) nEl.textContent = '? ' + (TLABELS.ent['cities'] || '');
             if (tEl) tEl.textContent = '–';
+            if (btn)  btn.disabled = false;
+            if (hint) hint.style.display = 'none';
             return;
         }
         if (nEl) nEl.textContent = getEntLabel(n);
         if (tEl) {
             var isType = (state.mode === 'type');
-            tEl.textContent = calcMin(n, isType ? SECS_TYPE : SECS_CLICK) + ' ' + (isType ? TLABELS.name : TLABELS.locate);
+            tEl.textContent = formatTime(n, isType ? SECS_TYPE : SECS_CLICK) + ' ' + (isType ? TLABELS.name : TLABELS.locate);
         }
+        var blocked = !IS_LOGGED_IN && n > MAX_ANON_ITEMS;
+        if (btn)  btn.disabled = blocked || n === 0;
+        if (hint) hint.style.display = blocked ? '' : 'none';
     }
 
     function wireCards(containerId, stateKey, onChange) {

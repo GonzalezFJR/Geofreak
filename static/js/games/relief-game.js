@@ -238,14 +238,10 @@ var ReliefGame = (function () {
         window._leaflet_map_ref = map;
         map.fitBounds(bounds);
 
-        /* Tile layers: physical (default), terrain, blank, satellite */
+        /* Tile layers: physical (default), blank, satellite */
         var physicalLayer = L.tileLayer(
             "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
             { attribution: "&copy; Esri", maxZoom: 8 }
-        );
-        var terrainLayer = L.tileLayer(
-            "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-            { attribution: "&copy; OpenTopoMap", maxZoom: 17 }
         );
         var blankLayer = L.tileLayer(
             "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
@@ -259,7 +255,6 @@ var ReliefGame = (function () {
         physicalLayer.addTo(map);
         var layerNames = {};
         layerNames[T["relief.layer_terrain_clean"] || "Physical"] = physicalLayer;
-        layerNames[T["relief.layer_terrain"] || "Terrain"] = terrainLayer;
         layerNames[T["relief.layer_blank"] || "Blank"] = blankLayer;
         layerNames[T["relief.layer_satellite"] || "Satellite"] = satelliteLayer;
         L.control.layers(layerNames, null, { position: "topright" }).addTo(map);
