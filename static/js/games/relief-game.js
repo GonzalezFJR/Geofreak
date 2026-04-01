@@ -190,10 +190,26 @@ var ReliefGame = (function () {
             zoomControl: true, worldCopyJump: true,
         });
 
-        L.tileLayer(
-            "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-            { attribution: "&copy; OpenTopoMap", maxZoom: 17 }
-        ).addTo(map);
+        /* Tile layers: blank (default), terrain (no labels), satellite */
+        var blankLayer = L.tileLayer(
+            "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+            { attribution: "&copy; CARTO", subdomains: "abcd", maxZoom: 19 }
+        );
+        var terrainLayer = L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
+            { attribution: "&copy; Esri", maxZoom: 13 }
+        );
+        var satelliteLayer = L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            { attribution: "&copy; Esri", maxZoom: 18 }
+        );
+
+        blankLayer.addTo(map);
+        L.control.layers({
+            "Mapa": blankLayer,
+            "Terreno": terrainLayer,
+            "Satélite": satelliteLayer,
+        }, null, { position: "topright" }).addTo(map);
 
         map.on("click", function (e) {
             if (mode === "click") {

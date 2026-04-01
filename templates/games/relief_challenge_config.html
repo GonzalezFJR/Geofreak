@@ -24,42 +24,97 @@
             </div>
         </div>
 
-        <!-- 1. Category -->
+        <!-- ── 1. Category ──────────────────────────────────── -->
         <div class="mcfg-section">
             <div class="mcfg-section-title">{{ t('rc.cfg_category_q', lang) }}</div>
-            <div class="mcfg-pills mcfg-pills-wrap" id="category-pills">
-                <button type="button" class="mcfg-pill active" data-value="all">{{ t('rc.cat_all', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="relief">{{ t('rc.cat_relief', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="water">{{ t('rc.cat_water', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="coast">{{ t('rc.cat_coast', lang) }}</button>
+
+            <div class="mcfg-cards mcfg-cards-5" id="category-cards">
+                <button type="button" class="mcfg-card active" data-value="all" style="--card-color: #388e3c">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-rc-all.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('rc.cat_all', lang) }}</span>
+                </button>
+                <button type="button" class="mcfg-card" data-value="relief" style="--card-color: #5d4037">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-rc-relief.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('rc.cat_relief', lang) }}</span>
+                </button>
+                <button type="button" class="mcfg-card" data-value="water" style="--card-color: #1565c0">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-rc-water.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('rc.cat_water', lang) }}</span>
+                </button>
+                <button type="button" class="mcfg-card" data-value="coast" style="--card-color: #00838f">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-rc-coast.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('rc.cat_coast', lang) }}</span>
+                </button>
+                <button type="button" class="mcfg-card" data-value="custom" style="--card-color: #6a1b9a">
+                    <div class="mcfg-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="64" height="64" fill="none">
+                            <style>
+                                .gear-spin { animation: gspin2 4s linear infinite; transform-origin: 36px 36px; }
+                                @keyframes gspin2 { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                            </style>
+                            <rect x="4" y="4" width="64" height="64" rx="6" fill="#f3e5f5"/>
+                            <g class="gear-spin">
+                                <circle cx="36" cy="36" r="12" stroke="#7b1fa2" stroke-width="2.5" fill="#ce93d8" opacity=".5"/>
+                                <circle cx="36" cy="36" r="5" fill="#7b1fa2" opacity=".6"/>
+                                <rect x="34" y="18" width="4" height="8" rx="2" fill="#7b1fa2" opacity=".7"/>
+                                <rect x="34" y="46" width="4" height="8" rx="2" fill="#7b1fa2" opacity=".7"/>
+                                <rect x="18" y="34" width="8" height="4" rx="2" fill="#7b1fa2" opacity=".7"/>
+                                <rect x="46" y="34" width="8" height="4" rx="2" fill="#7b1fa2" opacity=".7"/>
+                                <rect x="21" y="21" width="7" height="4" rx="2" fill="#7b1fa2" opacity=".5" transform="rotate(45 24.5 23)"/>
+                                <rect x="44" y="47" width="7" height="4" rx="2" fill="#7b1fa2" opacity=".5" transform="rotate(45 47.5 49)"/>
+                                <rect x="44" y="21" width="7" height="4" rx="2" fill="#7b1fa2" opacity=".5" transform="rotate(-45 47.5 23)"/>
+                                <rect x="21" y="47" width="7" height="4" rx="2" fill="#7b1fa2" opacity=".5" transform="rotate(-45 24.5 49)"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="mcfg-card-label">{{ t('rc.tab_custom', lang) }}</span>
+                </button>
             </div>
-            <div class="mcfg-pills mcfg-pills-wrap mcfg-pills-small" id="subtype-pills" style="margin-top:8px">
-                <button type="button" class="mcfg-pill" data-value="mountain">{{ t('rc.t_mountain', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="volcano">{{ t('rc.t_volcano', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="mountain_range">{{ t('rc.t_mountain_range', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="valley">{{ t('rc.t_valley', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="canyon">{{ t('rc.t_canyon', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="desert">{{ t('rc.t_desert', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="plateau">{{ t('rc.t_plateau', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="plain">{{ t('rc.t_plain', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="river">{{ t('rc.t_river', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="lake">{{ t('rc.t_lake', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="waterfall">{{ t('rc.t_waterfall', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="glacier">{{ t('rc.t_glacier', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="strait">{{ t('rc.t_strait', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="cape">{{ t('rc.t_cape', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="peninsula">{{ t('rc.t_peninsula', lang) }}</button>
-                <button type="button" class="mcfg-pill" data-value="island">{{ t('rc.t_island', lang) }}</button>
+
+            <!-- Custom type multi-select (hidden by default) -->
+            <div id="custom-types-panel" class="mcfg-filter-panel" style="display:none">
+                <div class="mcfg-pills mcfg-pills-small" id="custom-type-pills">
+                    <button type="button" class="mcfg-pill" data-value="mountain">{{ t('rc.t_mountain', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="volcano">{{ t('rc.t_volcano', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="mountain_range">{{ t('rc.t_mountain_range', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="valley">{{ t('rc.t_valley', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="canyon">{{ t('rc.t_canyon', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="desert">{{ t('rc.t_desert', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="plateau">{{ t('rc.t_plateau', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="plain">{{ t('rc.t_plain', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="river">{{ t('rc.t_river', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="lake">{{ t('rc.t_lake', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="waterfall">{{ t('rc.t_waterfall', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="glacier">{{ t('rc.t_glacier', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="strait">{{ t('rc.t_strait', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="cape">{{ t('rc.t_cape', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="peninsula">{{ t('rc.t_peninsula', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="island">{{ t('rc.t_island', lang) }}</button>
+                </div>
             </div>
         </div>
 
-        <!-- 2. Location filter -->
+        <!-- ── 2. Location ──────────────────────────────────── -->
         <div class="mcfg-section">
             <div class="mcfg-section-title">{{ t('rc.cfg_location_q', lang) }}</div>
 
-            <div class="mcfg-filter-group">
-                <span class="mcfg-filter-label">{{ t('mg.fil_continent', lang) }}</span>
-                <div class="mcfg-pills mcfg-pills-wrap" id="continent-pills">
+            <!-- Tabs: Continent / Country -->
+            <div class="mcfg-tabs" id="location-tabs">
+                <button type="button" class="mcfg-tab active" data-tab="continent">{{ t('rc.tab_continent', lang) }}</button>
+                <button type="button" class="mcfg-tab" data-tab="country">{{ t('rc.tab_country', lang) }}</button>
+            </div>
+
+            <!-- Continent panel -->
+            <div id="loc-continent-panel" class="mcfg-filter-panel">
+                <div class="mcfg-pills" id="continent-pills">
                     <button type="button" class="mcfg-pill active" data-value="all">{{ t('mg.cont_all', lang) }}</button>
                     <button type="button" class="mcfg-pill" data-value="europe">{{ t('mg.cont_europe', lang) }}</button>
                     <button type="button" class="mcfg-pill" data-value="north_america">{{ t('rc.cont_north_america', lang) }}</button>
@@ -71,13 +126,13 @@
                 </div>
             </div>
 
-            <div class="mcfg-filter-group" id="country-filter-group">
-                <span class="mcfg-filter-label">{{ t('rc.fil_country', lang) }}</span>
+            <!-- Country panel -->
+            <div id="loc-country-panel" class="mcfg-filter-panel" style="display:none">
                 <div id="rcfg-country-select"></div>
             </div>
         </div>
 
-        <!-- 3. Mode -->
+        <!-- ── 3. Mode ──────────────────────────────────────── -->
         <div class="mcfg-section">
             <div class="mcfg-section-title">{{ t('mg.cfg_mode_q', lang) }}</div>
             <div class="mcfg-cards mcfg-cards-2" id="mode-cards">
@@ -98,7 +153,7 @@
             </div>
         </div>
 
-        <!-- 4. Preview + Start -->
+        <!-- ── 4. Preview + Start ────────────────────────────── -->
         <div class="mcfg-preview" id="mcfg-preview">
             <span class="mcfg-preview-n" id="preview-n">&ndash;</span>
             <span class="mcfg-preview-sep">&middot;</span>
@@ -122,7 +177,9 @@
     };
 
     var state = {
-        category: 'all',
+        category: 'all',          // all|relief|water|coast|custom
+        customTypes: [],           // used when category === 'custom'
+        locMode: 'continent',      // continent|country
         continent: 'all',
         countryFilter: [],
         mode: 'type',
@@ -134,7 +191,16 @@
     function calcMin(n, factor) { return Math.floor(n * factor / 60) + 1; }
 
     function getN() {
-        if (state.countryFilter.length > 0) return -1;
+        if (state.locMode === 'country' && state.countryFilter.length > 0) return -1;
+        if (state.category === 'custom') {
+            if (state.customTypes.length === 0) return 0;
+            var total = 0;
+            state.customTypes.forEach(function (t) {
+                var dc = COUNTS[t];
+                if (dc) total += (dc[state.continent] || 0);
+            });
+            return total;
+        }
         var dc = COUNTS[state.category];
         if (!dc) return 0;
         return dc[state.continent] || 0;
@@ -144,9 +210,11 @@
         var n = getN();
         var nEl  = document.getElementById('preview-n');
         var tEl  = document.getElementById('preview-time');
+        var btn  = document.getElementById('mcfg-play-btn');
         if (n === -1) {
             if (nEl) nEl.textContent = '? ' + TLABELS.entity;
             if (tEl) tEl.textContent = '\u2013';
+            if (btn) btn.disabled = false;
             return;
         }
         if (nEl) nEl.textContent = n + ' ' + TLABELS.entity;
@@ -154,39 +222,61 @@
             var isType = (state.mode === 'type');
             tEl.textContent = calcMin(n, isType ? SECS_TYPE : SECS_CLICK) + ' ' + (isType ? TLABELS.name : TLABELS.locate);
         }
+        if (btn) btn.disabled = (n === 0);
     }
 
-    /* ── Wire category pills ─────────────────────────── */
-    var catPills = document.getElementById('category-pills');
-    var subPills = document.getElementById('subtype-pills');
+    /* ── Category cards ────────────────────────────────── */
+    var catCards = document.getElementById('category-cards');
+    var customPanel = document.getElementById('custom-types-panel');
 
-    function syncCategoryUI() {
-        // When a main category is active, deselect subtypes
-        catPills.querySelectorAll('.mcfg-pill').forEach(function (b) {
-            b.classList.toggle('active', b.getAttribute('data-value') === state.category);
-        });
-        subPills.querySelectorAll('.mcfg-pill').forEach(function (b) {
-            b.classList.toggle('active', b.getAttribute('data-value') === state.category);
-        });
-    }
-
-    catPills.querySelectorAll('.mcfg-pill').forEach(function (btn) {
+    catCards.querySelectorAll('.mcfg-card').forEach(function (btn) {
         btn.addEventListener('click', function () {
-            state.category = btn.getAttribute('data-value');
-            syncCategoryUI();
+            catCards.querySelectorAll('.mcfg-card').forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            var val = btn.getAttribute('data-value');
+            if (val === 'custom') {
+                state.category = 'custom';
+                customPanel.style.display = '';
+            } else {
+                state.category = val;
+                customPanel.style.display = 'none';
+            }
             updatePreview();
         });
     });
 
-    subPills.querySelectorAll('.mcfg-pill').forEach(function (btn) {
+    /* ── Custom type multi-select pills ────────────────── */
+    var customPills = document.getElementById('custom-type-pills');
+    customPills.querySelectorAll('.mcfg-pill').forEach(function (btn) {
         btn.addEventListener('click', function () {
-            state.category = btn.getAttribute('data-value');
-            syncCategoryUI();
+            btn.classList.toggle('active');
+            // Rebuild list
+            state.customTypes = [];
+            customPills.querySelectorAll('.mcfg-pill.active').forEach(function (b) {
+                state.customTypes.push(b.getAttribute('data-value'));
+            });
             updatePreview();
         });
     });
 
-    /* ── Wire continent pills ────────────────────────── */
+    /* ── Location tabs ─────────────────────────────────── */
+    var locTabs = document.getElementById('location-tabs');
+    var contPanel = document.getElementById('loc-continent-panel');
+    var countryPanel = document.getElementById('loc-country-panel');
+
+    locTabs.querySelectorAll('.mcfg-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            locTabs.querySelectorAll('.mcfg-tab').forEach(function (t) { t.classList.remove('active'); });
+            tab.classList.add('active');
+            var which = tab.getAttribute('data-tab');
+            state.locMode = which;
+            contPanel.style.display    = (which === 'continent') ? '' : 'none';
+            countryPanel.style.display = (which === 'country')   ? '' : 'none';
+            updatePreview();
+        });
+    });
+
+    /* ── Continent pills ───────────────────────────────── */
     var contPills = document.getElementById('continent-pills');
     contPills.querySelectorAll('.mcfg-pill').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -197,7 +287,7 @@
         });
     });
 
-    /* ── Wire mode cards ─────────────────────────────── */
+    /* ── Mode cards ────────────────────────────────────── */
     var modeCards = document.getElementById('mode-cards');
     modeCards.querySelectorAll('.mcfg-card').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -208,7 +298,7 @@
         });
     });
 
-    /* ── Country multi-select ────────────────────────── */
+    /* ── Country multi-select ──────────────────────────── */
     if (typeof GeoUtils !== 'undefined' && GeoUtils.buildCountrySelect) {
         var csContainer = document.getElementById('rcfg-country-select');
         if (csContainer) {
@@ -226,15 +316,21 @@
 
     updatePreview();
 
-    /* ── Play button ─────────────────────────────────── */
+    /* ── Play button ───────────────────────────────────── */
     document.getElementById('mcfg-play-btn').addEventListener('click', function () {
+        var cat = state.category;
+        if (cat === 'custom') {
+            if (state.customTypes.length === 0) return;
+            cat = state.customTypes.join(',');
+        }
         var params = new URLSearchParams({
             mode:     state.mode,
-            category: state.category,
-            continent: state.continent,
+            category: cat,
         });
-        if (state.countryFilter.length) {
+        if (state.locMode === 'country' && state.countryFilter.length) {
             params.set('country_filter', state.countryFilter.join(','));
+        } else {
+            params.set('continent', state.continent);
         }
         window.location.href = '/games/relief-challenge/play?' + params.toString();
     });

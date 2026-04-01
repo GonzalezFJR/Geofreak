@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <style>
+    .wave1 { animation: w1 2.5s ease-in-out infinite; }
+    .wave2 { animation: w1 2.5s ease-in-out infinite .4s; }
+    .wave3 { animation: w1 2.5s ease-in-out infinite .8s; }
+    @keyframes w1 { 0%,100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+    .drop { animation: fall 2s ease-in infinite; transform-origin: center; }
+    @keyframes fall { 0% { transform: translateY(-6px); opacity:0; } 30% { opacity:1; } 80% { transform: translateY(8px); opacity:1; } 100% { transform: translateY(10px); opacity:0; } }
+    .drop2 { animation: fall 2s ease-in infinite .6s; transform-origin: center; }
+  </style>
+  <!-- Background -->
+  <rect x="4" y="4" width="64" height="64" rx="6" fill="#e3f2fd"/>
+  <!-- River curves -->
+  <path d="M8,16 Q20,12 28,20 Q36,28 44,24 Q54,18 64,22" stroke="#1e88e5" stroke-width="3" fill="none" opacity=".7"/>
+  <path d="M10,26 Q22,22 30,28 Q38,34 48,30 Q58,24 66,28" stroke="#42a5f5" stroke-width="2" fill="none" opacity=".5"/>
+  <!-- Lake -->
+  <ellipse cx="36" cy="44" rx="20" ry="10" fill="#1565c0" opacity=".35"/>
+  <ellipse cx="36" cy="42" rx="18" ry="8" fill="#1e88e5" opacity=".5"/>
+  <!-- Water waves on lake -->
+  <path class="wave1" d="M22,42 Q28,39 34,42 Q40,45 46,42" stroke="white" stroke-width="1" fill="none" opacity=".6"/>
+  <path class="wave2" d="M24,46 Q30,43 36,46 Q42,49 48,46" stroke="white" stroke-width=".8" fill="none" opacity=".45"/>
+  <path class="wave3" d="M28,40 Q32,37 38,40" stroke="white" stroke-width=".8" fill="none" opacity=".5"/>
+  <!-- Waterfall drops -->
+  <rect x="56" y="34" width="4" height="12" rx="2" fill="#1e88e5" opacity=".3"/>
+  <circle class="drop" cx="58" cy="38" r="1.5" fill="#42a5f5"/>
+  <circle class="drop2" cx="57" cy="40" r="1.2" fill="#64b5f6"/>
+  <!-- Splash at bottom -->
+  <path d="M52,52 Q56,48 58,52 Q60,48 64,52" stroke="#90caf9" stroke-width="1.2" fill="none" opacity=".5"/>
+</svg>

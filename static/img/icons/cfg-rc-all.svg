@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <style>
+    .globe-spin { animation: gspin 6s linear infinite; transform-origin: 36px 36px; }
+    @keyframes gspin { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 56; } }
+    .peak-pulse { animation: ppulse 2.4s ease-in-out infinite; }
+    @keyframes ppulse { 0%,100% { opacity: .7; } 50% { opacity: 1; } }
+    .wave-move { animation: wmove 3s ease-in-out infinite; }
+    @keyframes wmove { 0%,100% { d: path("M6,50 Q20,44 36,50 Q52,56 66,50"); } 50% { d: path("M6,50 Q20,56 36,50 Q52,44 66,50"); } }
+  </style>
+  <!-- Globe -->
+  <circle cx="36" cy="36" r="28" fill="#e8f5e9" stroke="#388e3c" stroke-width="1.8"/>
+  <ellipse cx="36" cy="36" rx="12" ry="28" stroke="#66bb6a" stroke-width="1" opacity=".35"/>
+  <line x1="8" y1="36" x2="64" y2="36" stroke="#66bb6a" stroke-width="1" opacity=".35"/>
+  <ellipse cx="36" cy="36" rx="18" ry="28" stroke="#43a047" stroke-width="1.2" stroke-dasharray="5 4" class="globe-spin" opacity=".5"/>
+  <!-- Mountain -->
+  <polygon class="peak-pulse" points="20,46 32,22 44,46" fill="#4caf50" opacity=".7"/>
+  <polygon points="28,30 32,22 36,30 34,28.5 32,32 30,28.5" fill="white" opacity=".8"/>
+  <!-- Water wave -->
+  <path class="wave-move" d="M6,50 Q20,44 36,50 Q52,56 66,50" stroke="#1e88e5" stroke-width="2.5" fill="none" opacity=".7"/>
+  <path d="M6,54 Q20,48 36,54 Q52,60 66,54" stroke="#1e88e5" stroke-width="1.5" fill="none" opacity=".35"/>
+</svg>

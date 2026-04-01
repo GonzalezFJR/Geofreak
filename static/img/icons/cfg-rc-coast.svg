@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <style>
+    .coast-wave { animation: cw 3s ease-in-out infinite; }
+    @keyframes cw { 0%,100% { transform: translateX(0); } 50% { transform: translateX(3px); } }
+    .coast-wave2 { animation: cw 3s ease-in-out infinite .5s; }
+    .island-bob { animation: ibob 2.8s ease-in-out infinite; }
+    @keyframes ibob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+  </style>
+  <!-- Background ocean -->
+  <rect x="4" y="4" width="64" height="64" rx="6" fill="#e0f7fa"/>
+  <!-- Land mass (peninsula shape) -->
+  <path d="M4,4 L40,4 L40,16 Q50,20 48,32 Q46,42 38,46 Q30,50 26,44 Q20,38 18,30 L4,30 Z" fill="#a5d6a7" opacity=".7" stroke="#388e3c" stroke-width="1"/>
+  <!-- Cape point -->
+  <circle cx="38" cy="46" r="3" fill="#2e7d32" opacity=".8"/>
+  <path d="M38,46 L42,50 L38,54" stroke="#2e7d32" stroke-width="1.5" fill="none"/>
+  <!-- Island -->
+  <g class="island-bob">
+    <ellipse cx="56" cy="48" rx="8" ry="5" fill="#81c784" stroke="#388e3c" stroke-width="1"/>
+    <circle cx="56" cy="45" r="2" fill="#388e3c" opacity=".6"/>
+    <line x1="56" y1="43" x2="56" y2="47" stroke="#2e7d32" stroke-width=".8"/>
+  </g>
+  <!-- Strait lines -->
+  <path d="M4,36 Q16,34 24,40" stroke="#0097a7" stroke-width="1.5" fill="none" opacity=".4"/>
+  <!-- Ocean waves -->
+  <path class="coast-wave" d="M28,56 Q36,52 44,56 Q52,60 60,56" stroke="#26c6da" stroke-width="1.5" fill="none" opacity=".6"/>
+  <path class="coast-wave2" d="M8,48 Q16,44 24,48 Q32,52 40,48" stroke="#26c6da" stroke-width="1" fill="none" opacity=".4"/>
+  <path class="coast-wave" d="M36,64 Q48,60 60,64" stroke="#26c6da" stroke-width="1.2" fill="none" opacity=".5"/>
+</svg>

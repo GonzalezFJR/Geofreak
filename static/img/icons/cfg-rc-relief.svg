@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="72" height="72" fill="none">
+  <style>
+    .mtn-grow { animation: mgrow 3s ease-in-out infinite; transform-origin: bottom center; }
+    @keyframes mgrow { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(1.06); } }
+    .lava-glow { animation: lglow 1.8s ease-in-out infinite; }
+    @keyframes lglow { 0%,100% { opacity: .3; r: 4; } 50% { opacity: .7; r: 6; } }
+    .snow-sparkle { animation: ssparkle 2s ease-in-out infinite; }
+    @keyframes ssparkle { 0%,100% { opacity: .6; } 50% { opacity: 1; } }
+  </style>
+  <!-- Background -->
+  <rect x="4" y="4" width="64" height="64" rx="6" fill="#efebe9"/>
+  <!-- Far peak -->
+  <polygon class="mtn-grow" points="4,60 22,18 40,60" fill="#8d6e63" opacity=".5"/>
+  <polygon class="snow-sparkle" points="18,26 22,18 26,26 24,24.5 22,28 20,24.5" fill="white" opacity=".85"/>
+  <!-- Main peak -->
+  <polygon class="mtn-grow" points="18,60 42,10 66,60" fill="#6d4c41"/>
+  <polygon class="snow-sparkle" points="37,20 42,10 47,20 44.5,17.5 42,22 39.5,17.5" fill="white" opacity=".9"/>
+  <!-- Volcano hint -->
+  <circle class="lava-glow" cx="56" cy="24" r="4" fill="#f44336"/>
+  <polygon points="48,60 56,24 64,60" fill="#5d4037" opacity=".6"/>
+  <path d="M53.5,28 L56,24 L58.5,28" stroke="#ff5722" stroke-width="1.5" fill="none" opacity=".7"/>
+  <!-- Ground -->
+  <rect x="4" y="58" width="64" height="8" rx="3" fill="#a1887f" opacity=".5"/>
+</svg>

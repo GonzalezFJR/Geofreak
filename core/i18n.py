@@ -118,6 +118,9 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "rc.mode_click_desc": "Haz clic en el mapa para localizar cada elemento",
         "rc.entities": "elementos",
         "rc.ph_type": "Escribe el nombre…",
+        "rc.tab_custom": "Personalizado",
+        "rc.tab_continent": "Continente",
+        "rc.tab_country": "País",
 
         # Game settings / HUD / results
         "game.continent": "Continente",
@@ -849,6 +852,9 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "rc.mode_click_desc": "Click on the map to locate each feature",
         "rc.entities": "features",
         "rc.ph_type": "Type the name…",
+        "rc.tab_custom": "Custom",
+        "rc.tab_continent": "Continent",
+        "rc.tab_country": "Country",
 
         # Game settings / HUD / results
         "game.continent": "Continent",
@@ -1550,6 +1556,9 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "rc.mode_click_desc": "Clique sur la carte pour localiser chaque élément",
         "rc.entities": "éléments",
         "rc.ph_type": "Tape le nom…",
+        "rc.tab_custom": "Personnalisé",
+        "rc.tab_continent": "Continent",
+        "rc.tab_country": "Pays",
 
         # Game settings / HUD / results
         "game.continent": "Continent",
@@ -2224,6 +2233,9 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "rc.mode_click_desc": "Clicca sulla mappa per localizzare ogni elemento",
         "rc.entities": "elementi",
         "rc.ph_type": "Scrivi il nome…",
+        "rc.tab_custom": "Personalizzato",
+        "rc.tab_continent": "Continente",
+        "rc.tab_country": "Paese",
 
         # Game settings / HUD / results
         "game.continent": "Continente",
@@ -2899,6 +2911,9 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "rc.mode_click_desc": "Кликни на карте, чтобы найти каждый объект",
         "rc.entities": "объектов",
         "rc.ph_type": "Введи название…",
+        "rc.tab_custom": "Свой выбор",
+        "rc.tab_continent": "Континент",
+        "rc.tab_country": "Страна",
 
         # Game settings / HUD / results
         "game.continent": "Континент",

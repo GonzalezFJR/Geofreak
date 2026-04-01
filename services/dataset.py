@@ -554,12 +554,17 @@ class DatasetService:
             return []
 
         # Filter by category
-        type_list = CATEGORY_TYPES.get(category)
-        if type_list is None:
-            # Single-type category (e.g. "mountain")
-            df = df[df["type"] == category]
-        elif type_list:
-            df = df[df["type"].isin(type_list)]
+        if "," in category:
+            # Multi-type custom selection (e.g. "mountain,volcano")
+            types = [t.strip() for t in category.split(",") if t.strip()]
+            df = df[df["type"].isin(types)]
+        else:
+            type_list = CATEGORY_TYPES.get(category)
+            if type_list is None:
+                # Single-type category (e.g. "mountain")
+                df = df[df["type"] == category]
+            elif type_list:
+                df = df[df["type"].isin(type_list)]
 
         # Filter by continent
         if continent and continent != "all":

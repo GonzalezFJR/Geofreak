@@ -2495,6 +2495,33 @@ body:has(.game-page) {
 .mcfg-cards { display: grid; gap: 14px; }
 .mcfg-cards-3 { grid-template-columns: repeat(3, 1fr); }
 .mcfg-cards-2 { grid-template-columns: repeat(2, 1fr); }
+.mcfg-cards-5 { grid-template-columns: repeat(5, 1fr); gap: 10px; }
+
+/* Tabs (Continent / Country style) */
+.mcfg-tabs {
+    display: inline-flex;
+    gap: 0;
+    background: var(--gray-100);
+    border-radius: 8px;
+    padding: 3px;
+    margin-bottom: 10px;
+}
+.mcfg-tab {
+    padding: 6px 18px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--gray-500);
+    transition: all 0.18s;
+}
+.mcfg-tab.active {
+    background: var(--white);
+    color: var(--gray-800);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
 
 /* Cards */
 .mcfg-card {
@@ -2749,17 +2776,22 @@ body:has(.game-page) {
 .mcfg-play-btn:active { transform: translateY(0); }
 
 /* Responsive */
+@media (max-width: 700px) {
+    .mcfg-cards-5 { grid-template-columns: repeat(3, 1fr); }
+}
 @media (max-width: 520px) {
     .mcfg-page { padding-top: 80px; padding-bottom: 48px; }
     .mcfg-container { padding: 0 14px; gap: 18px; }
     .mcfg-cards-3 { gap: 8px; }
+    .mcfg-cards-5 { grid-template-columns: repeat(3, 1fr); gap: 6px; }
     .mcfg-card { padding: 16px 8px 14px; gap: 7px; }
     .mcfg-card-icon { width: 48px; height: 48px; }
-    .mcfg-card-icon img { width: 48px; height: 48px; }
+    .mcfg-card-icon img, .mcfg-card-icon svg { width: 48px; height: 48px; }
     .mcfg-card-label { font-size: 0.78rem; }
     .mcfg-header { padding: 16px; gap: 14px; }
     .mcfg-header-icon { width: 56px; height: 56px; }
     .mcfg-header-text h1 { font-size: 1.25rem; }
+    .mcfg-tab { padding: 5px 12px; font-size: 0.78rem; }
 }
 
 /* ═══════════════════════════════════════════════════════════
