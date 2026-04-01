@@ -87,12 +87,12 @@ ADMIN1_CODES          = {"PPLA"}
 
 TARGET_LANGS    = {"es", "en", "fr", "it", "ru"}
 MIN_POPULATION  = 30_000
-DEDUP_RADIUS_KM = 15.0
+DEDUP_RADIUS_KM = 5.0
 
 # ── Climate constants ─────────────────────────────────────────────────────────
 CLIMATE_START    = "1991-01-01"
 CLIMATE_END      = "2020-12-31"
-CLIMATE_WORKERS  = 24        # concurrent Open-Meteo requests
+CLIMATE_WORKERS  = 8         # concurrent Open-Meteo requests (keep low to avoid 429s)
 CLIMATE_CACHE    = CACHE / "climate_normals.json"
 ELEVATION_CACHE  = CACHE / "elevations.json"
 
@@ -501,71 +501,99 @@ def _fetch_climate_one(
     geonameid: int,
     lat: float,
     lon: float,
+    _max_retries: int = 5,
 ) -> tuple[int, dict]:
-    """Fetch 1991-2020 monthly climate normals for one city."""
-    try:
-        resp = requests.get(
-            "https://archive-api.open-meteo.com/v1/archive",
-            params={
-                "latitude":  lat,
-                "longitude": lon,
-                "start_date": CLIMATE_START,
-                "end_date":   CLIMATE_END,
-                "monthly": (
-                    "temperature_2m_mean,"
-                    "precipitation_sum,"
-                    "sunshine_duration,"
-                    "wind_speed_10m_mean"
+    """Fetch climate normals for one city using daily archive API."""
+    for attempt in range(_max_retries):
+        try:
+            resp = requests.get(
+                "https://archive-api.open-meteo.com/v1/archive",
+                params={
+                    "latitude":  lat,
+                    "longitude": lon,
+                    "start_date": CLIMATE_START,
+                    "end_date":   CLIMATE_END,
+                    "daily": (
+                        "temperature_2m_mean,"
+                        "precipitation_sum,"
+                        "sunshine_duration,"
+                        "wind_speed_10m_max"
+                    ),
+                    "timezone": "UTC",
+                },
+                timeout=60,
+            )
+            if resp.status_code == 429:
+                wait = min(30 * (2 ** attempt), 300)
+                time.sleep(wait)
+                continue
+            resp.raise_for_status()
+
+            data = resp.json()
+            daily = data.get("daily", {})
+
+            temps  = daily.get("temperature_2m_mean", [])
+            precip = daily.get("precipitation_sum", [])
+            sun    = daily.get("sunshine_duration", [])
+            wind   = daily.get("wind_speed_10m_max", [])
+
+            # Filter nulls
+            temp_v   = [x for x in temps if x is not None]
+            precip_v = [x for x in precip if x is not None]
+            sun_v    = [x for x in sun if x is not None]
+            wind_v   = [x for x in wind if x is not None]
+
+            # Number of years in the range
+            n_years = max(1, (pd.Timestamp(CLIMATE_END) - pd.Timestamp(CLIMATE_START)).days / 365.25)
+
+            # Compute climate variables
+            mean_temp = round(sum(temp_v) / len(temp_v), 1) if temp_v else None
+
+            # Group monthly max/min from daily data
+            times = daily.get("time", [])
+            monthly_temps: dict[str, list] = {}
+            for t, val in zip(times, temps):
+                if val is None:
+                    continue
+                month_key = t[:7]  # YYYY-MM
+                monthly_temps.setdefault(month_key, []).append(val)
+
+            # Get mean temp per month, then max/min across months
+            month_means: dict[int, list] = {}
+            for mk, vals in monthly_temps.items():
+                mm = int(mk[5:7])  # month number
+                month_means.setdefault(mm, []).append(sum(vals) / len(vals))
+
+            if month_means:
+                avg_by_month = {m: sum(vs) / len(vs) for m, vs in month_means.items()}
+                max_t = round(max(avg_by_month.values()), 1)
+                min_t = round(min(avg_by_month.values()), 1)
+            else:
+                max_t = None
+                min_t = None
+
+            # Sunshine: daily seconds → hours/year
+            sun_h_yr = round(sum(sun_v) / n_years / 3600, 0) if sun_v else None
+
+            result = {
+                "annual_mean_temp":        mean_temp,
+                "max_temp_warmest_month":  max_t,
+                "min_temp_coldest_month":  min_t,
+                "temp_annual_range":       (
+                    round(max_t - min_t, 1)
+                    if max_t is not None and min_t is not None else None
                 ),
-                "timezone": "UTC",
-            },
-            timeout=45,
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        monthly = data.get("monthly", {})
-
-        def annual_mean(vals: list) -> float | None:
-            v = [x for x in (vals or []) if x is not None]
-            return round(sum(v) / len(v), 2) if v else None
-
-        def annual_sum(vals: list) -> float | None:
-            """Average yearly total: mean of monthly values × 12."""
-            v = [x for x in (vals or []) if x is not None]
-            if not v:
-                return None
-            # Monthly means → annual total
-            return round(sum(v) / len(v) * 12, 1)
-
-        temps  = monthly.get("temperature_2m_mean", [])
-        precip = monthly.get("precipitation_sum", [])
-        sun    = monthly.get("sunshine_duration", [])
-        wind   = monthly.get("wind_speed_10m_mean", [])
-
-        # Compute per-year max/min temp from monthly series
-        temp_v = [x for x in temps if x is not None]
-        max_t  = round(max(temp_v), 1) if temp_v else None
-        min_t  = round(min(temp_v), 1) if temp_v else None
-
-        # Sunshine: Open-Meteo returns seconds/day; convert to hours/year
-        sun_v = [x for x in sun if x is not None]
-        sun_h_yr = round(sum(sun_v) / len(sun_v) * 365 / 3600, 0) if sun_v else None
-
-        result = {
-            "annual_mean_temp":        annual_mean(temps),
-            "max_temp_warmest_month":  max_t,
-            "min_temp_coldest_month":  min_t,
-            "temp_annual_range":       (
-                round(max_t - min_t, 1)
-                if max_t is not None and min_t is not None else None
-            ),
-            "annual_precipitation":    annual_sum(precip),
-            "sunshine_hours_yr":       sun_h_yr,
-            "mean_wind_speed":         annual_mean(wind),
-        }
-        return geonameid, result
-    except Exception:
-        return geonameid, {}
+                "annual_precipitation":    round(sum(precip_v) / n_years, 1) if precip_v else None,
+                "sunshine_hours_yr":       sun_h_yr,
+                "mean_wind_speed":         round(sum(wind_v) / len(wind_v), 1) if wind_v else None,
+            }
+            return geonameid, result
+        except Exception:
+            if attempt < _max_retries - 1:
+                time.sleep(5 * (attempt + 1))
+                continue
+            return geonameid, {}
+    return geonameid, {}
 
 
 def fetch_climate_normals(

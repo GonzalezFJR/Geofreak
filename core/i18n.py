@@ -3883,6 +3883,9 @@ _MAPJS_LABELS: dict[str, dict[str, str]] = {
         "mapjs.edit_cat_land": "Terrestre",
         "mapjs.edit_cat_water": "Agua",
         "mapjs.edit_cat_coast": "Costa",
+        "mapjs.edit_editing": "Editando",
+        "mapjs.edit_properties": "Propiedades",
+        "mapjs.edit_selected_hint": "Arrastra para mover. Pulsa Guardar para editar propiedades.",
     },
     "en": {
         "mapjs.layer_flat": "Light",
@@ -3964,6 +3967,9 @@ _MAPJS_LABELS: dict[str, dict[str, str]] = {
         "mapjs.edit_cat_land": "Land",
         "mapjs.edit_cat_water": "Water",
         "mapjs.edit_cat_coast": "Coast",
+        "mapjs.edit_editing": "Editing",
+        "mapjs.edit_properties": "Properties",
+        "mapjs.edit_selected_hint": "Drag to move. Click Save to edit properties.",
     },
     "fr": {
         "mapjs.layer_flat": "Clair",
@@ -4045,6 +4051,9 @@ _MAPJS_LABELS: dict[str, dict[str, str]] = {
         "mapjs.edit_cat_land": "Terrestre",
         "mapjs.edit_cat_water": "Eau",
         "mapjs.edit_cat_coast": "Côte",
+        "mapjs.edit_editing": "Modification",
+        "mapjs.edit_properties": "Propriétés",
+        "mapjs.edit_selected_hint": "Glissez pour déplacer. Cliquez sur Enregistrer pour modifier les propriétés.",
     },
     "it": {
         "mapjs.layer_flat": "Chiaro",
@@ -4126,6 +4135,9 @@ _MAPJS_LABELS: dict[str, dict[str, str]] = {
         "mapjs.edit_cat_land": "Terrestre",
         "mapjs.edit_cat_water": "Acqua",
         "mapjs.edit_cat_coast": "Costa",
+        "mapjs.edit_editing": "Modifica",
+        "mapjs.edit_properties": "Proprietà",
+        "mapjs.edit_selected_hint": "Trascina per spostare. Clicca Salva per modificare le proprietà.",
     },
     "ru": {
         "mapjs.layer_flat": "Светлая",
@@ -4207,6 +4219,9 @@ _MAPJS_LABELS: dict[str, dict[str, str]] = {
         "mapjs.edit_cat_land": "Сухопутный",
         "mapjs.edit_cat_water": "Водный",
         "mapjs.edit_cat_coast": "Побережье",
+        "mapjs.edit_editing": "Редактирование",
+        "mapjs.edit_properties": "Свойства",
+        "mapjs.edit_selected_hint": "Перетащите для перемещения. Нажмите Сохранить для изменения свойств.",
     },
 }
 

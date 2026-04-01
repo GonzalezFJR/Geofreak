@@ -588,14 +588,7 @@
       ]
     },
     "cities": {
-      "id": "cities",
       "label": "Cities",
-      "label_es": "Ciudades",
-      "label_en": "Cities",
-      "csv": "cities.csv",
-      "id_field": "geonameid",
-      "name_field": "name",
-      "name_es_field": "name_es",
       "variables": [
         {
           "key": "population",
@@ -742,7 +735,141 @@
           "label_ru": "PM10",
           "unit": "µg/m³",
           "format": "decimal",
-          "enabled": false
+          "enabled": true
+        },
+        {
+          "key": "gdp_per_capita_ppp",
+          "label_es": "PIB per cápita (PPA)",
+          "label_en": "GDP per capita (PPP)",
+          "label_fr": "PIB par habitant (PPA)",
+          "label_it": "PIL pro capite (PPA)",
+          "label_ru": "ВВП на душу (ППС)",
+          "unit": "$",
+          "format": "integer",
+          "enabled": true,
+          "description_es": "PIB per cápita en paridad de poder adquisitivo (Banco Mundial)"
+        },
+        {
+          "key": "hdi",
+          "label_es": "IDH",
+          "label_en": "HDI",
+          "label_fr": "IDH",
+          "label_it": "ISU",
+          "label_ru": "ИРЧП",
+          "unit": "",
+          "format": "decimal",
+          "enabled": true,
+          "description_es": "Índice de Desarrollo Humano (PNUD)"
+        },
+        {
+          "key": "internet_pct",
+          "label_es": "Usuarios de internet",
+          "label_en": "Internet users",
+          "label_fr": "Utilisateurs d'internet",
+          "label_it": "Utenti internet",
+          "label_ru": "Пользователи интернета",
+          "unit": "%",
+          "format": "decimal",
+          "enabled": true
+        },
+        {
+          "key": "life_expectancy",
+          "label_es": "Esperanza de vida",
+          "label_en": "Life expectancy",
+          "label_fr": "Espérance de vie",
+          "label_it": "Aspettativa di vita",
+          "label_ru": "Продолжительность жизни",
+          "unit": "años",
+          "format": "decimal",
+          "enabled": true
+        },
+        {
+          "key": "urban_pct",
+          "label_es": "Urbanización",
+          "label_en": "Urban population",
+          "label_fr": "Population urbaine",
+          "label_it": "Popolazione urbana",
+          "label_ru": "Городское население",
+          "unit": "%",
+          "format": "decimal",
+          "enabled": true
+        },
+        {
+          "key": "agri_pct_gdp",
+          "label_es": "Agricultura (% PIB)",
+          "label_en": "Agriculture (% GDP)",
+          "label_fr": "Agriculture (% PIB)",
+          "label_it": "Agricoltura (% PIL)",
+          "label_ru": "Сельское хозяйство (% ВВП)",
+          "unit": "%",
+          "format": "decimal",
+          "enabled": true
+        },
+        {
+          "key": "industry_pct_gdp",
+          "label_es": "Industria (% PIB)",
+          "label_en": "Industry (% GDP)",
+          "label_fr": "Industrie (% PIB)",
+          "label_it": "Industria (% PIL)",
+          "label_ru": "Промышленность (% ВВП)",
+          "unit": "%",
+          "format": "decimal",
+          "enabled": true
+        },
+        {
+          "key": "services_pct_gdp",
+          "label_es": "Servicios (% PIB)",
+          "label_en": "Services (% GDP)",
+          "label_fr": "Services (% PIB)",
+          "label_it": "Servizi (% PIL)",
+          "label_ru": "Сфера услуг (% ВВП)",
+          "unit": "%",
+          "format": "decimal",
+          "enabled": true
+        },
+        {
+          "key": "literacy_rate",
+          "label_es": "Tasa de alfabetización",
+          "label_en": "Literacy rate",
+          "label_fr": "Taux d'alphabétisation",
+          "label_it": "Tasso di alfabetizzazione",
+          "label_ru": "Уровень грамотности",
+          "unit": "%",
+          "format": "decimal",
+          "enabled": true
+        },
+        {
+          "key": "gini",
+          "label_es": "Índice de Gini",
+          "label_en": "Gini index",
+          "label_fr": "Indice de Gini",
+          "label_it": "Indice di Gini",
+          "label_ru": "Индекс Джини",
+          "unit": "",
+          "format": "decimal",
+          "enabled": true
+        },
+        {
+          "key": "co2_per_capita",
+          "label_es": "CO₂ per cápita",
+          "label_en": "CO₂ per capita",
+          "label_fr": "CO₂ par habitant",
+          "label_it": "CO₂ pro capite",
+          "label_ru": "CO₂ на душу",
+          "unit": "t",
+          "format": "decimal",
+          "enabled": true
+        },
+        {
+          "key": "hospital_beds_per_1k",
+          "label_es": "Camas hospitalarias (por 1.000)",
+          "label_en": "Hospital beds (per 1,000)",
+          "label_fr": "Lits d'hôpital (pour 1 000)",
+          "label_it": "Posti letto ospedalieri (per 1.000)",
+          "label_ru": "Больничные койки (на 1 000)",
+          "unit": "",
+          "format": "decimal",
+          "enabled": true
         }
       ]
     },

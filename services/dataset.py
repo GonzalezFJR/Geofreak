@@ -945,3 +945,59 @@ class DatasetService:
 
         self._relief_df = None  # invalidate cache
         return True
+
+    def update_relief_feature(self, wikidata_id: str, updates: dict) -> dict | None:
+        """Update an existing relief feature in the CSV. Returns updated record or None."""
+        import csv as csv_mod
+
+        df = self._load_relief()
+        mask = df["wikidata_id"] == wikidata_id
+        if not mask.any():
+            return None
+
+        # Handle geojson separately
+        geojson = updates.pop("geojson", None)
+        if geojson:
+            self.save_relief_geojson(wikidata_id, geojson)
+
+        # Update CSV columns
+        csv_cols = [
+            "name", "type", "lat", "lon",
+            "name_es", "name_en", "name_fr", "name_it", "name_ru",
+            "country_codes", "elevation_m", "length_km", "area_km2",
+        ]
+        for col in csv_cols:
+            if col in updates:
+                df.loc[mask, col] = updates[col]
+
+        # Rewrite CSV (without has_geojson which is computed)
+        write_df = df.drop(columns=["has_geojson"], errors="ignore")
+        write_df.to_csv(RELIEF_CSV, index=False)
+
+        self._relief_df = None  # invalidate cache
+
+        # Return updated record in API format
+        row = self._load_relief()[mask].iloc[0]
+        rec: dict[str, Any] = {
+            "id": int(row["id"]),
+            "wikidata_id": str(row["wikidata_id"]),
+            "name": str(row["name"]),
+            "name_es": str(row.get("name_es", row["name"])),
+            "name_en": str(row.get("name_en", row["name"])),
+            "name_fr": str(row.get("name_fr", row["name"])),
+            "name_it": str(row.get("name_it", row["name"])),
+            "name_ru": str(row.get("name_ru", row["name"])),
+            "type": str(row["type"]),
+            "country_codes": str(row.get("country_codes", "")),
+            "country_names_en": str(row.get("country_names_en", "")),
+            "lat": float(row["lat"]),
+            "lon": float(row["lon"]),
+            "continent": str(row.get("continent", "")),
+            "subcontinent": str(row.get("subcontinent", "")),
+            "has_geojson": bool(row.get("has_geojson", False)),
+            "min_zoom": int(row.get("min_zoom", 11)),
+        }
+        for col in ("elevation_m", "length_km", "area_km2"):
+            v = row.get(col, "")
+            rec[col] = round(float(v), 2) if v != "" else None
+        return rec

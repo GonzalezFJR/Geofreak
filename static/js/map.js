@@ -473,6 +473,7 @@
         marker.bindPopup(reliefPopupHtml(f));
         marker.bindTooltip(displayName, { direction: "top", offset: [0, -12], className: "country-tooltip-wrapper" });
         marker._featureData = f;
+        wireReliefMarkerForEdit(marker);
         return marker;
     }
 
@@ -496,6 +497,7 @@
         layer.bindPopup(reliefPopupHtml(f));
         layer.bindTooltip(displayName, { sticky: true, className: "country-tooltip-wrapper" });
         layer._featureData = f;
+        wireReliefGeoLayerForEdit(layer);
 
         layer.eachLayer(function (sub) {
             sub.on("mouseover", function () {
@@ -853,7 +855,10 @@
     var editSelectedType = null;
     var editPendingMarker = null;
     var editDrawing = { active: false, points: [], previewLine: null, rubberBand: null, vertices: [] };
-    var editFormContext = null; // {type, geojson, marker, latlng}
+    var editFormContext = null; // {type, geojson, marker, latlng, existing: null|featureData}
+
+    // ── Editing existing features ──
+    var editSelected = null;        // { feature, marker, geoLayer, editVertices[], originalLatLng, originalGeojson }
 
     // Edit toggle control (Leaflet topleft)
     var editControl = null;
@@ -915,9 +920,9 @@
             });
         });
 
-        // Cancel button
+        // Cancel button exits edit mode entirely
         document.getElementById("edit-cancel-draw").addEventListener("click", function () {
-            cancelEditDrawing();
+            toggleEditMode();
         });
 
         // Save button
@@ -939,6 +944,7 @@
             document.getElementById("map").classList.remove("editing");
             cancelEditDrawing();
             clearEditSelection();
+            deselectExistingFeature();
         }
     }
 
@@ -948,6 +954,7 @@
             el.classList.toggle("selected", el.dataset.type === type);
         });
         cancelEditDrawing();
+        deselectExistingFeature();
         var instrEl = document.getElementById("edit-instructions");
         var isLine = (type === "river");
         instrEl.textContent = isLine
@@ -957,9 +964,11 @@
 
     function clearEditSelection() {
         editSelectedType = null;
-        editPanel.querySelectorAll(".mep-type").forEach(function (el) { el.classList.remove("selected"); });
-        document.getElementById("edit-instructions").textContent = "";
-        document.getElementById("edit-save-btn").style.display = "none";
+        if (editPanel) {
+            editPanel.querySelectorAll(".mep-type").forEach(function (el) { el.classList.remove("selected"); });
+            document.getElementById("edit-instructions").textContent = "";
+            document.getElementById("edit-save-btn").style.display = "none";
+        }
     }
 
     function cancelEditDrawing() {
@@ -972,12 +981,203 @@
         editDrawing.vertices = [];
         editDrawing.points = [];
         editDrawing.active = false;
-        document.getElementById("edit-save-btn").style.display = "none";
+        if (document.getElementById("edit-save-btn")) {
+            document.getElementById("edit-save-btn").style.display = "none";
+        }
+    }
+
+    // ─── Edit existing: select / deselect ────────────────────
+    function deselectExistingFeature() {
+        if (!editSelected) return;
+        // Remove edit vertices
+        if (editSelected.editVertices) {
+            editSelected.editVertices.forEach(function (v) { map.removeLayer(v); });
+        }
+        // Restore marker to non-draggable
+        if (editSelected.marker) {
+            editSelected.marker.dragging.disable();
+            editSelected.marker.getElement().classList.remove("edit-highlight");
+        }
+        // Restore GeoJSON layer style
+        if (editSelected.geoLayer) {
+            editSelected.geoLayer.eachLayer(function (sub) {
+                sub.getElement && sub.getElement() && sub.getElement().classList.remove("edit-highlight-geo");
+            });
+        }
+        editSelected = null;
+        if (document.getElementById("edit-save-btn")) {
+            document.getElementById("edit-save-btn").style.display = "none";
+        }
+        document.getElementById("edit-instructions").textContent = "";
+    }
+
+    function selectExistingFeature(feature, marker, geoLayer) {
+        deselectExistingFeature();
+        cancelEditDrawing();
+        clearEditSelection(); // deselect type so new creation is disabled
+
+        var originalLatLng = marker ? L.latLng(feature.lat, feature.lon) : null;
+        var originalGeojson = geojsonCache[feature.wikidata_id] ? JSON.parse(JSON.stringify(geojsonCache[feature.wikidata_id])) : null;
+
+        editSelected = {
+            feature: feature,
+            marker: marker,
+            geoLayer: geoLayer,
+            editVertices: [],
+            originalLatLng: originalLatLng,
+            originalGeojson: originalGeojson,
+        };
+
+        // Highlight marker and make it draggable
+        if (marker) {
+            marker.dragging.enable();
+            if (marker.getElement()) marker.getElement().classList.add("edit-highlight");
+        }
+
+        // Highlight GeoJSON and show editable vertices
+        if (geoLayer && originalGeojson) {
+            geoLayer.eachLayer(function (sub) {
+                if (sub.getElement && sub.getElement()) sub.getElement().classList.add("edit-highlight-geo");
+            });
+            showEditVertices(originalGeojson);
+        }
+
+        // Update instructions and show save button
+        var langKey = "name_" + LANG;
+        var displayName = feature[langKey] || feature.name_en || feature.name;
+        document.getElementById("edit-instructions").innerHTML =
+            '<strong>' + displayName + '</strong><br>' +
+            (_t("mapjs.edit_selected_hint") || "Drag to move. Click Save to edit properties.");
+        document.getElementById("edit-save-btn").style.display = "";
+    }
+
+    function showEditVertices(geojson) {
+        if (!editSelected) return;
+        var coords = extractCoords(geojson);
+        coords.forEach(function (coord, idx) {
+            var latlng = L.latLng(coord[1], coord[0]); // GeoJSON is [lng, lat]
+            var vertex = L.circleMarker(latlng, {
+                radius: 5, color: "#1a73e8", fillColor: "#fff",
+                fillOpacity: 1, weight: 2, className: "edit-vertex",
+            }).addTo(map);
+
+            vertex._coordIndex = idx;
+            vertex.on("mousedown", function (e) {
+                L.DomEvent.stopPropagation(e);
+                startVertexDrag(vertex, idx);
+            });
+            editSelected.editVertices.push(vertex);
+        });
+    }
+
+    function extractCoords(geojson) {
+        if (geojson.type === "LineString") return geojson.coordinates;
+        if (geojson.type === "Polygon") return geojson.coordinates[0];
+        if (geojson.type === "MultiLineString") return geojson.coordinates[0]; // edit first line
+        if (geojson.type === "MultiPolygon") return geojson.coordinates[0][0]; // edit first polygon
+        return [];
+    }
+
+    function setCoords(geojson, coords) {
+        if (geojson.type === "LineString") geojson.coordinates = coords;
+        else if (geojson.type === "Polygon") geojson.coordinates[0] = coords;
+        else if (geojson.type === "MultiLineString") geojson.coordinates[0] = coords;
+        else if (geojson.type === "MultiPolygon") geojson.coordinates[0][0] = coords;
+    }
+
+    var dragVertex = null;
+    function startVertexDrag(vertex, idx) {
+        dragVertex = { vertex: vertex, idx: idx };
+        map.dragging.disable();
+        map.on("mousemove", onVertexDrag);
+        map.once("mouseup", endVertexDrag);
+    }
+
+    function onVertexDrag(e) {
+        if (!dragVertex || !editSelected) return;
+        dragVertex.vertex.setLatLng(e.latlng);
+        // Update the GeoJSON coordinate in real time
+        var coords = extractCoords(editSelected.originalGeojson);
+        coords[dragVertex.idx] = [e.latlng.lng, e.latlng.lat];
+        // If polygon and dragging first or last vertex, sync the closure
+        if (editSelected.originalGeojson.type === "Polygon" || editSelected.originalGeojson.type === "MultiPolygon") {
+            if (dragVertex.idx === 0) coords[coords.length - 1] = [e.latlng.lng, e.latlng.lat];
+            else if (dragVertex.idx === coords.length - 1) coords[0] = [e.latlng.lng, e.latlng.lat];
+        }
+        setCoords(editSelected.originalGeojson, coords);
+        // Re-render the GeoJSON layer
+        refreshEditGeoLayer();
+    }
+
+    function endVertexDrag() {
+        map.off("mousemove", onVertexDrag);
+        map.dragging.enable();
+        dragVertex = null;
+    }
+
+    function refreshEditGeoLayer() {
+        if (!editSelected || !editSelected.geoLayer || !editSelected.originalGeojson) return;
+        // Remove old layer from reliefGeoLayer and re-add
+        var f = editSelected.feature;
+        var color = RELIEF_TYPE_COLORS[f.type] || "#999";
+        var geojson = editSelected.originalGeojson;
+        var isLine = (geojson.type === "LineString" || geojson.type === "MultiLineString");
+        var style = isLine
+            ? { color: color, weight: 4, opacity: 0.8, fillOpacity: 0 }
+            : { color: color, weight: 2.5, opacity: 0.8, fillColor: color, fillOpacity: 0.25 };
+
+        reliefGeoLayer.removeLayer(editSelected.geoLayer);
+        var newLayer = L.geoJSON(geojson, { style: style });
+        newLayer._featureData = f;
+        newLayer.eachLayer(function (sub) {
+            if (sub.getElement && sub.getElement()) sub.getElement().classList.add("edit-highlight-geo");
+        });
+        reliefGeoLayer.addLayer(newLayer);
+        editSelected.geoLayer = newLayer;
+    }
+
+    // Wire existing relief markers for edit-mode click
+    function wireReliefMarkerForEdit(marker) {
+        marker.on("click", function (e) {
+            if (!editMode) return; // normal popup
+            L.DomEvent.stopPropagation(e);
+            var f = marker._featureData;
+            if (!f) return;
+            // Find matching GeoJSON layer if any
+            var geoLayer = null;
+            reliefGeoLayer.eachLayer(function (l) {
+                if (l._featureData && l._featureData.wikidata_id === f.wikidata_id) geoLayer = l;
+            });
+            selectExistingFeature(f, marker, geoLayer);
+        });
+    }
+
+    function wireReliefGeoLayerForEdit(layer) {
+        layer.on("click", function (e) {
+            if (!editMode) return;
+            L.DomEvent.stopPropagation(e);
+            var f = layer._featureData;
+            if (!f) return;
+            // Find the icon marker in the cluster
+            var marker = null;
+            reliefCluster.eachLayer(function (m) {
+                if (m._featureData && m._featureData.wikidata_id === f.wikidata_id) marker = m;
+            });
+            selectExistingFeature(f, marker, layer);
+        });
     }
 
     // ─── Edit: Map click handler ────────────────────────────
     map.on("click", function (e) {
-        if (!editMode || !editSelectedType) return;
+        if (!editMode) return;
+
+        // If something is selected and user clicks on empty map, deselect
+        if (editSelected && !editSelectedType) {
+            deselectExistingFeature();
+            return;
+        }
+
+        if (!editSelectedType) return;
 
         if (editDrawing.active) {
             // Add point to drawing
@@ -995,10 +1195,7 @@
             return;
         }
 
-        // First click: decide point vs drawing
-        var isGeoType = true; // All types can be drawn as GeoJSON
-        // But if it's just a simple placement (single click → point marker)
-        // Start drawing mode — user builds the shape
+        // First click: start drawing mode
         editDrawing.active = true;
         editDrawing.points = [[e.latlng.lat, e.latlng.lng]];
 
@@ -1039,7 +1236,7 @@
                 icon: createReliefSvgIcon(editSelectedType),
                 draggable: true,
             }).addTo(map);
-            editFormContext = { type: editSelectedType, latlng: latlng, geojson: null, marker: editPendingMarker };
+            editFormContext = { type: editSelectedType, latlng: latlng, geojson: null, marker: editPendingMarker, existing: null };
             document.getElementById("edit-save-btn").style.display = "";
             return;
         }
@@ -1073,7 +1270,7 @@
         editDrawing.previewLine = L.geoJSON(geojson, { style: style }).addTo(map);
 
         editDrawing.active = false;
-        editFormContext = { type: editSelectedType, latlng: centroid, geojson: geojson, marker: null };
+        editFormContext = { type: editSelectedType, latlng: centroid, geojson: geojson, marker: null, existing: null };
         document.getElementById("edit-save-btn").style.display = "";
     });
 
@@ -1081,6 +1278,11 @@
     var editModalOverlay = document.getElementById("edit-modal-overlay");
 
     function openEditForm() {
+        // If editing an existing feature via selection
+        if (editSelected) {
+            openEditFormForExisting();
+            return;
+        }
         if (!editFormContext) return;
         var ctx = editFormContext;
 
@@ -1124,6 +1326,61 @@
 
         // Activate "new" tab
         switchEditTab("new");
+
+        // Reset submit handler context
+        editFormContext.existing = null;
+
+        editModalOverlay.classList.add("active");
+    }
+
+    function openEditFormForExisting() {
+        var f = editSelected.feature;
+
+        // Set labels
+        document.getElementById("edit-modal-title").textContent = (_t("mapjs.edit_editing") || "Editing") + ": " +
+            (f["name_" + LANG] || f.name_en || f.name);
+        document.getElementById("edit-tab-new").textContent = _t("mapjs.edit_properties") || "Properties";
+        document.getElementById("edit-label-name").textContent = _t("mapjs.edit_name") || "Name";
+        document.getElementById("edit-label-type").textContent = _t("mapjs.edit_label_type") || "Type";
+        document.getElementById("edit-optional-label").textContent = _t("mapjs.edit_optional") || "Optional fields";
+        document.getElementById("edit-label-country").textContent = _t("mapjs.edit_country") || "Country codes";
+        document.getElementById("edit-form-cancel").textContent = _t("mapjs.edit_cancel") || "Cancel";
+        document.getElementById("edit-form-submit").textContent = _t("mapjs.edit_save") || "Save";
+
+        // Fill type display
+        document.getElementById("edit-type-display").innerHTML =
+            '<img src="' + ICON_BASE + f.type + '.svg" width="18" height="18" style="vertical-align:middle"> ' + reliefTypeLabel(f.type);
+
+        // Pre-fill form with existing data
+        document.getElementById("edit-name").value = f.name || "";
+        document.getElementById("edit-lat").value = editSelected.marker
+            ? editSelected.marker.getLatLng().lat.toFixed(5)
+            : f.lat.toFixed(5);
+        document.getElementById("edit-lon").value = editSelected.marker
+            ? editSelected.marker.getLatLng().lng.toFixed(5)
+            : f.lon.toFixed(5);
+
+        ["es", "en", "fr", "it", "ru"].forEach(function (l) {
+            var el = document.getElementById("edit-name-" + l);
+            if (el) el.value = f["name_" + l] || "";
+        });
+        document.getElementById("edit-country").value = f.country_codes || "";
+        document.getElementById("edit-elev").value = f.elevation_m != null ? f.elevation_m : "";
+        document.getElementById("edit-length").value = f.length_km != null ? f.length_km : "";
+        document.getElementById("edit-area").value = f.area_km2 != null ? f.area_km2 : "";
+
+        // Hide associate tab, show only properties
+        document.getElementById("edit-tab-assoc").style.display = "none";
+        switchEditTab("new");
+
+        // Set context so submit knows this is an update
+        editFormContext = {
+            type: f.type,
+            latlng: L.latLng(f.lat, f.lon),
+            geojson: editSelected.originalGeojson,
+            marker: editSelected.marker,
+            existing: f,
+        };
 
         editModalOverlay.classList.add("active");
     }
@@ -1191,17 +1448,76 @@
     document.getElementById("edit-form-submit").addEventListener("click", function () {
         if (!editFormContext) return;
         var ctx = editFormContext;
+
+        // ── Update existing feature ──
+        if (ctx.existing) {
+            var payload = {};
+            var nameVal = document.getElementById("edit-name").value.trim();
+            if (nameVal && nameVal !== ctx.existing.name) payload.name = nameVal;
+
+            var lat = parseFloat(document.getElementById("edit-lat").value);
+            var lon = parseFloat(document.getElementById("edit-lon").value);
+            if (lat !== ctx.existing.lat) payload.lat = lat;
+            if (lon !== ctx.existing.lon) payload.lon = lon;
+
+            ["es", "en", "fr", "it", "ru"].forEach(function (l) {
+                var v = document.getElementById("edit-name-" + l).value.trim();
+                if (v !== (ctx.existing["name_" + l] || "")) payload["name_" + l] = v;
+            });
+            var cc = document.getElementById("edit-country").value.trim();
+            if (cc !== (ctx.existing.country_codes || "")) payload.country_codes = cc;
+            var elev = document.getElementById("edit-elev").value;
+            if (elev !== "" && parseFloat(elev) !== ctx.existing.elevation_m) payload.elevation_m = parseFloat(elev);
+            var len = document.getElementById("edit-length").value;
+            if (len !== "" && parseFloat(len) !== ctx.existing.length_km) payload.length_km = parseFloat(len);
+            var area = document.getElementById("edit-area").value;
+            if (area !== "" && parseFloat(area) !== ctx.existing.area_km2) payload.area_km2 = parseFloat(area);
+
+            // Include updated GeoJSON if it was modified
+            if (editSelected && editSelected.originalGeojson) {
+                payload.geojson = editSelected.originalGeojson;
+            }
+
+            // If marker was dragged, use its position
+            if (editSelected && editSelected.marker) {
+                var mll = editSelected.marker.getLatLng();
+                payload.lat = mll.lat;
+                payload.lon = mll.lng;
+            }
+
+            fetch("/api/relief-features/" + ctx.existing.wikidata_id, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            }).then(function (r) { return r.json(); }).then(function (updated) {
+                // Update local data
+                for (var i = 0; i < allReliefFeatures.length; i++) {
+                    if (allReliefFeatures[i].wikidata_id === updated.wikidata_id) {
+                        allReliefFeatures[i] = updated;
+                        break;
+                    }
+                }
+                if (editSelected && editSelected.originalGeojson) {
+                    geojsonCache[updated.wikidata_id] = editSelected.originalGeojson;
+                }
+                // Rebuild map layers
+                closeEditForm();
+                deselectExistingFeature();
+                rebuildReliefMarkers();
+            }).catch(function (err) { console.error("Error updating feature:", err); });
+            return;
+        }
+
+        // ── Associate GeoJSON with existing feature ──
         var activeTab = document.querySelector(".edit-tab.active").dataset.tab;
 
         if (activeTab === "associate" && ctx.associateWith && ctx.geojson) {
-            // Associate GeoJSON with existing feature
             fetch("/api/relief-features/" + ctx.associateWith.wikidata_id + "/geojson", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ geojson: ctx.geojson }),
             }).then(function (r) { return r.json(); }).then(function (res) {
                 if (res.status === "ok") {
-                    // Update local data
                     ctx.associateWith.has_geojson = true;
                     geojsonCache[ctx.associateWith.wikidata_id] = ctx.geojson;
                     showReliefGeoJsonInView();
@@ -1212,7 +1528,7 @@
             return;
         }
 
-        // Create new feature
+        // ── Create new feature ──
         var nameVal = document.getElementById("edit-name").value.trim();
         if (!nameVal) { document.getElementById("edit-name").focus(); return; }
 
@@ -1243,12 +1559,10 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
         }).then(function (r) { return r.json(); }).then(function (newFeature) {
-            // Add to local data
             allReliefFeatures.push(newFeature);
             if (newFeature.has_geojson && ctx.geojson) {
                 geojsonCache[newFeature.wikidata_id] = ctx.geojson;
             }
-            // Add marker to cluster if relief is visible
             if (reliefVisible && activeReliefTypes.has(newFeature.type)) {
                 reliefCluster.addLayer(createReliefIconMarker(newFeature));
                 if (newFeature.has_geojson) showReliefGeoJsonInView();

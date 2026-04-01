@@ -1027,6 +1027,22 @@ img {
     margin-top: 8px;
 }
 
+/* Edit mode — highlight selected feature */
+.edit-highlight {
+    filter: drop-shadow(0 0 6px #1a73e8) drop-shadow(0 0 2px #1a73e8) !important;
+    z-index: 1000 !important;
+}
+.edit-highlight-geo {
+    filter: drop-shadow(0 0 4px #1a73e8);
+}
+.edit-vertex {
+    cursor: grab;
+    z-index: 1100 !important;
+}
+.edit-vertex:active {
+    cursor: grabbing;
+}
+
 .city-tooltip-content {
     font-family: var(--font-sans);
     font-size: 0.82rem;

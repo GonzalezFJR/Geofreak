@@ -109,6 +109,35 @@ async def create_relief_feature(payload: ReliefFeatureCreate):
     return dataset_service.create_relief_feature(payload.model_dump())
 
 
+class ReliefFeatureUpdate(BaseModel):
+    name: str | None = None
+    type: str | None = None
+    lat: float | None = None
+    lon: float | None = None
+    name_es: str | None = None
+    name_en: str | None = None
+    name_fr: str | None = None
+    name_it: str | None = None
+    name_ru: str | None = None
+    country_codes: str | None = None
+    elevation_m: float | None = None
+    length_km: float | None = None
+    area_km2: float | None = None
+    geojson: dict | None = None
+
+
+@router.put("/relief-features/{wikidata_id}")
+async def update_relief_feature(wikidata_id: str, payload: ReliefFeatureUpdate):
+    """Update an existing relief feature's properties."""
+    updates = {k: v for k, v in payload.model_dump().items() if v is not None}
+    if not updates:
+        raise HTTPException(status_code=400, detail="No fields to update")
+    result = dataset_service.update_relief_feature(wikidata_id, updates)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Feature not found")
+    return result
+
+
 class GeojsonAssociate(BaseModel):
     geojson: dict
 
