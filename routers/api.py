@@ -91,12 +91,16 @@ async def relief_game_data(
     category: str = Query("all", description="Category: all|relief|water|coast or single type"),
     continent: str = Query("all", description="Continent filter"),
     country_filter: str = Query("", description="Comma-separated ISO3 codes"),
+    count_only: bool = Query(False, description="Return only the count"),
 ):
     """Return relief features filtered for the game."""
     cf = [c.strip().upper() for c in country_filter.split(",") if c.strip()] if country_filter else None
-    return dataset_service.get_relief_for_game(
+    features = dataset_service.get_relief_for_game(
         category=category, continent=continent, country_filter=cf,
     )
+    if count_only:
+        return {"count": len(features)}
+    return features
 
 
 @router.get("/cities")
