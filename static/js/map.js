@@ -61,11 +61,27 @@
     tileLayerLabels[T["mapjs.layer_dark"] || "Dark"] = tileLayerDefs.dark;
 
     var activeTile = null;
+    var activeTileKey = "light";   // the tile the user/preset chose
+    var PHYSICAL_MAX_ZOOM = 8;
+
     function setTileLayer(key) {
+        activeTileKey = key;
+        applyTileForZoom();
+    }
+
+    function applyTileForZoom() {
+        var key = activeTileKey;
+        // If physical is selected but zoom exceeds its max, fall back to blank
+        if (key === "physical" && map.getZoom() > PHYSICAL_MAX_ZOOM) {
+            key = "blank";
+        }
+        var desired = tileLayerDefs[key] || tileLayerDefs.light;
+        if (activeTile === desired) return;
         if (activeTile) map.removeLayer(activeTile);
-        activeTile = tileLayerDefs[key] || tileLayerDefs.light;
+        activeTile = desired;
         activeTile.addTo(map);
     }
+
     setTileLayer("light");
 
     L.control.layers(tileLayerLabels, null, { position: "topright", collapsed: true }).addTo(map);
@@ -318,7 +334,7 @@
 
     function makeCapitalIcon(pop) {
         var size = pop >= 5000000 ? 22 : pop >= 1000000 ? 18 : 14;
-        var fill = "%23d4a017";
+        var fill = "%23222";
         var svg = starSvg.replace(/SIZE/g, size).replace("FILL", fill);
         var encoded = "data:image/svg+xml," + encodeURIComponent(svg).replace(/%23/g, "%23");
         return L.icon({ iconUrl: encoded, iconSize: [size, size], iconAnchor: [size / 2, size / 2], popupAnchor: [0, -size / 2] });
@@ -344,6 +360,26 @@
             '</div>';
     }
 
+    function cityPopupHtml(city) {
+        var langKey = "name_" + LANG;
+        var displayName = city[langKey] || city.name;
+        var html = '<div class="city-popup">';
+        html += '<div class="cp-name">' + displayName;
+        if (city.is_capital) html += ' <span class="cp-badge">★ ' + (T["mapjs.capital_badge"] || "CAPITAL") + '</span>';
+        html += '</div>';
+        html += '<div class="cp-country">' + city.country + '</div>';
+        if (city.admin1_name) html += '<div class="cp-detail">' + city.admin1_name + '</div>';
+        if (city.population > 0) html += '<div class="cp-stat">👥 ' + formatPop(city.population) + '</div>';
+        if (city.metro_population) html += '<div class="cp-stat">🏙️ ' + formatPop(city.metro_population) + ' (metro)</div>';
+        if (city.elevation) html += '<div class="cp-stat">⛰️ ' + Math.round(city.elevation).toLocaleString() + ' m</div>';
+        if (city.annual_mean_temp) html += '<div class="cp-stat">🌡️ ' + city.annual_mean_temp.toFixed(1) + ' °C</div>';
+        if (city.annual_precipitation) html += '<div class="cp-stat">🌧️ ' + Math.round(city.annual_precipitation) + ' mm</div>';
+        if (city.sunshine_hours_yr) html += '<div class="cp-stat">☀️ ' + Math.round(city.sunshine_hours_yr).toLocaleString() + ' h</div>';
+        if (city.timezone) html += '<div class="cp-detail cp-tz">' + city.timezone + '</div>';
+        html += '</div>';
+        return html;
+    }
+
     function addCityMarkers(cities) {
         cities.forEach(function (city) {
             if (!city.lat || !city.lon) return;
@@ -357,6 +393,7 @@
             marker.bindTooltip(cityTooltipHtml(city), {
                 direction: "top", offset: [0, -8], className: "country-tooltip-wrapper",
             });
+            marker.bindPopup(cityPopupHtml(city), { maxWidth: 260 });
 
             if (isCapital)          cityLayers.capitals.addLayer(marker);
             else if (pop >= 5000000) cityLayers.mega.addLayer(marker);
@@ -733,7 +770,10 @@
     });
 
     // ─── Map events ─────────────────────────────────────────
-    map.on("zoomend", updateCityVisibility);
+    map.on("zoomend", function () {
+        updateCityVisibility();
+        applyTileForZoom();
+    });
 
     var viewTimer = null;
     map.on("moveend", function () {

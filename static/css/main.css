@@ -768,24 +768,33 @@ img {
 }
 
 .city-marker {
-    background: rgba(30, 64, 120, 0.85);
+    background: #666;
     border: 1.5px solid rgba(255, 255, 255, 0.9);
     border-radius: 50%;
     box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
 .city-marker-large {
-    background: rgba(220, 50, 50, 0.85);
+    background: #333;
     border: 2px solid rgba(255, 255, 255, 0.95);
     border-radius: 50%;
     box-shadow: 0 2px 6px rgba(0,0,0,0.35);
 }
 
-.city-marker-mega    { background: #dc3545; border: 2px solid rgba(255,255,255,0.95); border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }
-.city-marker-1m      { background: #e85d2c; border: 1.5px solid rgba(255,255,255,0.9); border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-.city-marker-500k    { background: #e8912c; border: 1.5px solid rgba(255,255,255,0.9); border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-.city-marker-100k    { background: #c9a83e; border: 1px solid rgba(255,255,255,0.85); border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.25); }
-.city-marker-small   { background: #90a4ae; border: 1px solid rgba(255,255,255,0.8); border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+.city-marker-mega    { background: #1a1a1a; border: 2px solid rgba(255,255,255,0.95); border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.35); }
+.city-marker-1m      { background: #333; border: 1.5px solid rgba(255,255,255,0.9); border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+.city-marker-500k    { background: #555; border: 1.5px solid rgba(255,255,255,0.9); border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+.city-marker-100k    { background: #777; border: 1px solid rgba(255,255,255,0.85); border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.25); }
+.city-marker-small   { background: #aaa; border: 1px solid rgba(255,255,255,0.8); border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+
+/* ─── City popup ─────────────────────────────── */
+.city-popup { font-family: var(--font-sans); font-size: 0.82rem; line-height: 1.5; }
+.city-popup .cp-name { font-weight: 700; font-size: 0.95rem; color: var(--gray-900); }
+.city-popup .cp-badge { font-size: 0.68rem; font-weight: 600; color: var(--gray-500); margin-left: 4px; }
+.city-popup .cp-country { font-weight: 500; color: var(--gray-600); margin-bottom: 4px; }
+.city-popup .cp-detail { color: var(--gray-500); font-size: 0.78rem; }
+.city-popup .cp-stat { color: var(--gray-700); padding: 1px 0; }
+.city-popup .cp-tz { margin-top: 4px; font-size: 0.72rem; color: var(--gray-400); }
 
 /* ─── Map preset bar ─────────────────────────── */
 .map-preset-bar {

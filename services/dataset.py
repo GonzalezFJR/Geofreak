@@ -114,7 +114,7 @@ class DatasetService:
         records = []
         for _, row in df.iterrows():
             try:
-                records.append({
+                rec = {
                     "name": row["name"],
                     "country": row.get("country_name", ""),
                     "iso_a3": row.get("iso_a3", ""),
@@ -123,7 +123,27 @@ class DatasetService:
                     "lon": float(row["lon"]),
                     "population": int(row["population"]),
                     "is_capital": bool(row["is_capital"]),
-                })
+                }
+                # Localized names
+                for lc in ("en", "es", "fr", "it", "ru"):
+                    v = row.get(f"name_{lc}", "")
+                    if v:
+                        rec[f"name_{lc}"] = v
+                # Optional numeric fields
+                for fld in ("elevation", "metro_population", "annual_mean_temp",
+                            "annual_precipitation", "sunshine_hours_yr"):
+                    v = row.get(fld, "")
+                    if v != "" and v is not None:
+                        try:
+                            rec[fld] = float(v)
+                        except (ValueError, TypeError):
+                            pass
+                # Optional string fields
+                for fld in ("timezone", "admin1_name"):
+                    v = row.get(fld, "")
+                    if v:
+                        rec[fld] = v
+                records.append(rec)
             except (ValueError, TypeError):
                 continue
         return records
