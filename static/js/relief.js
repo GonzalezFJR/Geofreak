@@ -90,11 +90,34 @@
         zoomToBoundsOnClick: true,
         disableClusteringAtZoom: 12,
     });
+    var geoJsonLayer = L.layerGroup();   // non-clustered layer for polygons/lines
     var activeTypes = new Set(Object.keys(TYPE_COLORS));
     var searchQuery = "";
+    var geojsonCache = {};               // wikidata_id → GeoJSON geometry (or null)
+    var GEOJSON_BASE = "/static/data/relief_geojson/";
 
-    // ─── Marker creation ───────────────────────────────────────────────
-    function createMarker(f) {
+    // ─── Popup HTML builder ──────────────────────────────────────────
+    function popupHtml(f) {
+        var langKey = "name_" + LANG;
+        var displayName = f[langKey] || f.name_en || f.name;
+        var tl = typeLabel(f.type);
+        var html = '<div class="relief-popup">' +
+            '<div class="rp-name">' + displayName + '</div>' +
+            '<div class="rp-type">' + tl + '</div>';
+        if (f.country_names_en)
+            html += '<div class="rp-country">' + f.country_names_en + '</div>';
+        if (f.elevation_m != null)
+            html += '<div class="rp-stat">' + f.elevation_m.toLocaleString() + ' m</div>';
+        if (f.length_km != null)
+            html += '<div class="rp-stat">' + f.length_km.toLocaleString() + ' km</div>';
+        if (f.area_km2 != null)
+            html += '<div class="rp-stat">' + f.area_km2.toLocaleString() + ' km\u00B2</div>';
+        html += '</div>';
+        return html;
+    }
+
+    // ─── Marker creation (circle fallback) ───────────────────────────
+    function createCircleMarker(f) {
         var color = TYPE_COLORS[f.type] || "#999";
         var marker = L.circleMarker([f.lat, f.lon], {
             radius: 6,
@@ -104,42 +127,45 @@
             opacity: 1,
             fillOpacity: 0.85,
         });
-
         var langKey = "name_" + LANG;
         var displayName = f[langKey] || f.name_en || f.name;
-        var tl = typeLabel(f.type);
-
-        var html = '<div class="relief-popup">' +
-            '<div class="rp-name">' + displayName + '</div>' +
-            '<div class="rp-type">' + tl + '</div>';
-        if (f.country_names_en) {
-            html += '<div class="rp-country">' + f.country_names_en + '</div>';
-        }
-        if (f.elevation_m != null) {
-            html += '<div class="rp-stat">' + f.elevation_m.toLocaleString() + ' m</div>';
-        }
-        if (f.length_km != null) {
-            html += '<div class="rp-stat">' + f.length_km.toLocaleString() + ' km</div>';
-        }
-        if (f.area_km2 != null) {
-            html += '<div class="rp-stat">' + f.area_km2.toLocaleString() + ' km\u00B2</div>';
-        }
-        html += '</div>';
-
-        marker.bindPopup(html);
+        marker.bindPopup(popupHtml(f));
         marker.bindTooltip(displayName, {
-            direction: "top",
-            offset: [0, -8],
+            direction: "top", offset: [0, -8],
             className: "country-tooltip-wrapper",
         });
-
         marker._featureData = f;
         return marker;
+    }
+
+    // ─── GeoJSON shape creation ──────────────────────────────────────
+    function createGeoJsonLayer(f, geojson) {
+        var color = TYPE_COLORS[f.type] || "#999";
+        var isLine = (geojson.type === "LineString" || geojson.type === "MultiLineString");
+        var layer = L.geoJSON(geojson, {
+            style: {
+                color: color,
+                weight: isLine ? 2.5 : 1.5,
+                opacity: 0.9,
+                fillColor: color,
+                fillOpacity: isLine ? 0 : 0.25,
+            },
+        });
+        var langKey = "name_" + LANG;
+        var displayName = f[langKey] || f.name_en || f.name;
+        layer.bindPopup(popupHtml(f));
+        layer.bindTooltip(displayName, {
+            sticky: true,
+            className: "country-tooltip-wrapper",
+        });
+        layer._featureData = f;
+        return layer;
     }
 
     // ─── Filtering ─────────────────────────────────────────────────────
     function rebuildMarkers() {
         markers.clearLayers();
+        geoJsonLayer.clearLayers();
         var count = 0;
         var q = searchQuery.toLowerCase();
 
@@ -155,7 +181,12 @@
                     (f.name_ru || "").toLowerCase().indexOf(q) >= 0;
                 if (!match) continue;
             }
-            markers.addLayer(createMarker(f));
+            var cached = geojsonCache[f.wikidata_id];
+            if (cached) {
+                geoJsonLayer.addLayer(createGeoJsonLayer(f, cached));
+            } else {
+                markers.addLayer(createCircleMarker(f));
+            }
             count++;
         }
 
@@ -266,9 +297,26 @@
         try {
             var resp = await fetch("/api/relief-features");
             allFeatures = await resp.json();
+
+            // Preload GeoJSON for features that have them
+            var toLoad = allFeatures.filter(function (f) { return f.has_geojson; });
+            var batchSize = 20;
+            for (var i = 0; i < toLoad.length; i += batchSize) {
+                var batch = toLoad.slice(i, i + batchSize);
+                await Promise.all(batch.map(function (f) {
+                    return fetch(GEOJSON_BASE + f.wikidata_id + ".geojson")
+                        .then(function (r) { return r.ok ? r.json() : null; })
+                        .then(function (data) {
+                            if (data && data.geometry) geojsonCache[f.wikidata_id] = data.geometry;
+                        })
+                        .catch(function () {});
+                }));
+            }
+
             buildFilters();
             rebuildMarkers();
             map.addLayer(markers);
+            map.addLayer(geoJsonLayer);
         } catch (err) {
             console.error("Error loading relief data:", err);
         } finally {

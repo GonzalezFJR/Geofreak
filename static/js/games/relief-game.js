@@ -8,8 +8,10 @@ var ReliefGame = (function () {
     "use strict";
 
     var map;
-    var featureMarkers = {};   // id → L.circleMarker
+    var featureMarkers = {};   // id → L.circleMarker or L.geoJSON layer
     var featuresData   = {};   // id → feature object
+    var geojsonCache   = {};   // wikidata_id → GeoJSON geometry (or null)
+    var GEOJSON_BASE   = "/static/data/relief_geojson/";
     var targetIds      = [];
     var targetSet, correctSet, failedSet;
     var selectedId     = null;
@@ -125,18 +127,21 @@ var ReliefGame = (function () {
                     GeoGame._updateTimer();
                 }
 
-                initMap(features);
-                initMarkers(features);
-                addLegend(features);
-                hideSpinner();
-                GeoGame.startTimer();
+                // Preload GeoJSON geometries before rendering
+                return loadGeoJsonBatch(features).then(function () {
+                    initMap(features);
+                    initMarkers(features);
+                    addLegend(features);
+                    hideSpinner();
+                    GeoGame.startTimer();
 
-                if (mode === "type" && inputEl) {
-                    inputEl.focus();
-                    updateRevealButton();
-                } else if (mode === "click") {
-                    startLocate();
-                }
+                    if (mode === "type" && inputEl) {
+                        inputEl.focus();
+                        updateRevealButton();
+                    } else if (mode === "click") {
+                        startLocate();
+                    }
+                });
             })
             .catch(function (err) {
                 hideSpinner();
@@ -181,6 +186,30 @@ var ReliefGame = (function () {
     function getLabel(f) {
         var lang = window.LANG || "en";
         return f["name_" + lang] || f.name_en || f.name;
+    }
+
+    /* ── GeoJSON preloading ─────────────────────────────── */
+    function loadGeoJsonBatch(features) {
+        var toLoad = features.filter(function (f) { return f.has_geojson; });
+        if (!toLoad.length) return Promise.resolve();
+
+        var batchSize = 30;
+        var chain = Promise.resolve();
+        for (var i = 0; i < toLoad.length; i += batchSize) {
+            (function (batch) {
+                chain = chain.then(function () {
+                    return Promise.all(batch.map(function (f) {
+                        return fetch(GEOJSON_BASE + f.wikidata_id + ".geojson")
+                            .then(function (r) { return r.ok ? r.json() : null; })
+                            .then(function (data) {
+                                if (data && data.geometry) geojsonCache[f.wikidata_id] = data.geometry;
+                            })
+                            .catch(function () {});
+                    }));
+                });
+            })(toLoad.slice(i, i + batchSize));
+        }
+        return chain;
     }
 
     /* ── Map init ─────────────────────────────────────── */
@@ -263,16 +292,33 @@ var ReliefGame = (function () {
     function initMarkers(features) {
         features.forEach(function (f) {
             var color = TYPE_COLORS[f.type] || "#999";
-            var marker = L.circleMarker([f.lat, f.lon], markerStyle(f.id, color));
-            marker._typeColor = color;
+            var geojson = geojsonCache[f.wikidata_id];
+            var layer;
 
-            marker.on("click", function (e) {
-                L.DomEvent.stopPropagation(e);
-                if (mode === "type") onClickMarker(f.id);
-            });
+            if (geojson) {
+                var isLine = (geojson.type === "LineString" || geojson.type === "MultiLineString");
+                layer = L.geoJSON(geojson, {
+                    style: geoStyle(f.id, color, isLine),
+                });
+                layer._typeColor = color;
+                layer._isLine = isLine;
+                layer._isGeoJson = true;
+                layer.on("click", function (e) {
+                    L.DomEvent.stopPropagation(e);
+                    if (mode === "type") onClickMarker(f.id);
+                });
+            } else {
+                layer = L.circleMarker([f.lat, f.lon], markerStyle(f.id, color));
+                layer._typeColor = color;
+                layer._isGeoJson = false;
+                layer.on("click", function (e) {
+                    L.DomEvent.stopPropagation(e);
+                    if (mode === "type") onClickMarker(f.id);
+                });
+            }
 
-            marker.addTo(map);
-            featureMarkers[f.id] = marker;
+            layer.addTo(map);
+            featureMarkers[f.id] = layer;
         });
     }
 
@@ -284,9 +330,24 @@ var ReliefGame = (function () {
         return { radius: 4, fillColor: "#cfd8dc", color: "#b0bec5", weight: 0.5, fillOpacity: 0.4 };
     }
 
+    function geoStyle(id, color, isLine) {
+        var w = isLine ? 2.5 : 1.5;
+        var fo = isLine ? 0 : 0.2;
+        if (failedSet && failedSet.has(id))  return { color: "#ef5350", weight: w + 1, fillColor: "#ef5350", fillOpacity: 0.35, opacity: 0.9 };
+        if (correctSet && correctSet.has(id)) return { color: "#4caf50", weight: w + 1, fillColor: "#4caf50", fillOpacity: 0.35, opacity: 0.9 };
+        if (selectedId === id)               return { color: "#1a73e8", weight: w + 1.5, fillColor: "#1a73e8", fillOpacity: 0.3, opacity: 1 };
+        if (targetSet && targetSet.has(id))  return { color: color, weight: w, fillColor: color, fillOpacity: fo, opacity: 0.7 };
+        return { color: "#cfd8dc", weight: 1, fillColor: "#cfd8dc", fillOpacity: 0.1, opacity: 0.4 };
+    }
+
     function refreshMarker(id) {
         var m = featureMarkers[id];
-        if (m) m.setStyle(markerStyle(id, m._typeColor));
+        if (!m) return;
+        if (m._isGeoJson) {
+            m.setStyle(geoStyle(id, m._typeColor, m._isLine));
+        } else {
+            m.setStyle(markerStyle(id, m._typeColor));
+        }
     }
 
     /* ── Click on marker (type mode) ──────────────────── */

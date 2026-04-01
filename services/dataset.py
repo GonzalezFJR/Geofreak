@@ -20,6 +20,7 @@ MEXICO_STATES_CSV = os.path.join(DATA_DIR, "mexico_states.csv")
 ARGENTINA_PROVINCES_CSV = os.path.join(DATA_DIR, "argentina_provinces.csv")
 BRAZIL_STATES_CSV = os.path.join(DATA_DIR, "brazil_states.csv")
 RELIEF_CSV = os.path.join(DATA_DIR, "relief_features.csv")
+RELIEF_GEOJSON_DIR = os.path.join(DATA_DIR, "relief_geojson")
 
 # Maps filter key → continent values in the countries CSV
 CONTINENT_MAP: dict[str, list[str]] = {
@@ -497,6 +498,15 @@ class DatasetService:
                 self._relief_df = pd.DataFrame()
             else:
                 self._relief_df = pd.read_csv(RELIEF_CSV, keep_default_na=False)
+                # Precompute which features have GeoJSON geometry files
+                geo_ids: set[str] = set()
+                if os.path.isdir(RELIEF_GEOJSON_DIR):
+                    geo_ids = {
+                        f[:-8]  # strip ".geojson"
+                        for f in os.listdir(RELIEF_GEOJSON_DIR)
+                        if f.endswith(".geojson")
+                    }
+                self._relief_df["has_geojson"] = self._relief_df["wikidata_id"].isin(geo_ids)
         return self._relief_df
 
     def get_relief_features(self, feature_type: str = "all") -> list[dict]:
@@ -524,6 +534,7 @@ class DatasetService:
                     "lon": float(row["lon"]),
                     "continent": str(row.get("continent", "")),
                     "subcontinent": str(row.get("subcontinent", "")),
+                    "has_geojson": bool(row.get("has_geojson", False)),
                 }
                 for col in ("elevation_m", "length_km", "area_km2"):
                     v = row.get(col, "")
@@ -583,6 +594,7 @@ class DatasetService:
             try:
                 records.append({
                     "id": int(row["id"]),
+                    "wikidata_id": str(row["wikidata_id"]),
                     "name": str(row["name"]),
                     "name_es": str(row.get("name_es", row["name"])),
                     "name_en": str(row.get("name_en", row["name"])),
@@ -592,6 +604,7 @@ class DatasetService:
                     "type": str(row["type"]),
                     "lat": float(row["lat"]),
                     "lon": float(row["lon"]),
+                    "has_geojson": bool(row.get("has_geojson", False)),
                 })
             except (ValueError, TypeError):
                 continue
