@@ -304,6 +304,7 @@ var MapGame = (function () {
             opts.maxBoundsViscosity = 1.0;
         }
         map = L.map('game-map', opts);
+        window._leaflet_map_ref = map;
 
         L.tileLayer(
             'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',

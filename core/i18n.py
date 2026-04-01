@@ -3535,6 +3535,10 @@ _JS_KEYS = [
     "relief.filter_title", "relief.search_placeholder",
     # Relief Challenge game
     "rc.ph_type", "rc.entities",
+    "rc.t_mountain", "rc.t_volcano", "rc.t_mountain_range", "rc.t_valley",
+    "rc.t_canyon", "rc.t_desert", "rc.t_plateau", "rc.t_plain",
+    "rc.t_river", "rc.t_lake", "rc.t_waterfall", "rc.t_glacier",
+    "rc.t_strait", "rc.t_cape", "rc.t_peninsula", "rc.t_island",
 ]
 
 # Extra JS keys needed by ordering/comparison that use templates with {stat}

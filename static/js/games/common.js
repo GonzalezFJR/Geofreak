@@ -155,7 +155,7 @@ var GeoUtils = {
         container.classList.add('cs-widget');
         container.innerHTML =
             '<div class="cs-search-row">' +
-                '<input class="cs-input room-input" type="text" placeholder="' + placeholder + '" autocomplete="off">' +
+                '<input class="cs-input" type="text" placeholder="' + placeholder + '" autocomplete="off">' +
                 '<div class="cs-dropdown" style="display:none"></div>' +
             '</div>' +
             '<div class="cs-chips"></div>';
@@ -1282,7 +1282,7 @@ document.addEventListener('keydown', function (e) {
 /* ── Mobile Keyboard Viewport Handler ────────────────────────
    Uses visualViewport API to handle virtual keyboard showing/hiding.
    When keyboard opens, the viewport shrinks, and we adjust the
-   game-area height so the flag/map shrinks but input stays visible.
+   game-area / map-game-container height so content stays visible.
    ─────────────────────────────────────────────────────────────── */
 (function () {
     'use strict';
@@ -1290,20 +1290,22 @@ document.addEventListener('keydown', function (e) {
 
     var gameArea = null;
     var quizContainer = null;
+    var mapContainer = null;
     var originalHeight = null;
+    var originalMapHeight = null;
     var isKeyboardOpen = false;
 
     function init() {
         gameArea = document.getElementById('game-area');
         quizContainer = document.querySelector('.quiz-container');
-        if (!gameArea || !quizContainer) return;
+        mapContainer = document.querySelector('.map-game-container');
+
+        if (!gameArea && !mapContainer) return;
 
         window.visualViewport.addEventListener('resize', handleViewportResize);
     }
 
     function handleViewportResize() {
-        if (!gameArea || !quizContainer) return;
-
         var vv = window.visualViewport;
         var windowHeight = window.innerHeight;
         var keyboardHeight = windowHeight - vv.height;
@@ -1314,17 +1316,60 @@ document.addEventListener('keydown', function (e) {
         if (nowOpen && !isKeyboardOpen) {
             // Keyboard just opened
             isKeyboardOpen = true;
-            originalHeight = gameArea.style.height;
-            gameArea.style.height = vv.height + 'px';
             document.body.classList.add('keyboard-open');
+
+            if (gameArea && quizContainer) {
+                originalHeight = gameArea.style.height;
+                gameArea.style.height = vv.height + 'px';
+            }
+            if (mapContainer) {
+                originalMapHeight = mapContainer.style.height;
+                mapContainer.style.height = vv.height + 'px';
+                invalidateMap();
+            }
         } else if (!nowOpen && isKeyboardOpen) {
             // Keyboard closed
             isKeyboardOpen = false;
-            gameArea.style.height = originalHeight || '';
             document.body.classList.remove('keyboard-open');
+
+            if (gameArea) {
+                gameArea.style.height = originalHeight || '';
+            }
+            if (mapContainer) {
+                mapContainer.style.height = originalMapHeight || '';
+                invalidateMap();
+            }
         } else if (nowOpen) {
             // Keyboard still open, update height
-            gameArea.style.height = vv.height + 'px';
+            if (gameArea && quizContainer) {
+                gameArea.style.height = vv.height + 'px';
+            }
+            if (mapContainer) {
+                mapContainer.style.height = vv.height + 'px';
+                invalidateMap();
+            }
+        }
+    }
+
+    function invalidateMap() {
+        // Tell Leaflet to recalculate its size
+        var mapEl = document.getElementById('game-map');
+        if (mapEl && mapEl._leaflet_id) {
+            // Find the Leaflet map instance
+            setTimeout(function () {
+                try {
+                    // Leaflet stores map ref internally; use eachLayer to detect
+                    var mapObj = null;
+                    // Walk Leaflet's internal map registry
+                    for (var key in L.Map.prototype) break; // just check L exists
+                    if (window._leaflet_map_ref) {
+                        window._leaflet_map_ref.invalidateSize({ animate: false });
+                        return;
+                    }
+                    // Fallback: trigger window resize
+                    window.dispatchEvent(new Event('resize'));
+                } catch(e) {}
+            }, 50);
         }
     }
 

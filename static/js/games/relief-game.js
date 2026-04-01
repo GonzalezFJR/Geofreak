@@ -35,6 +35,18 @@ var ReliefGame = (function () {
         plain:          "#9ACD32", strait:         "#4682B4",
     };
 
+    /* ── Type i18n key map ───────────────────────────────── */
+    var TYPE_I18N = {
+        mountain: "rc.t_mountain", volcano: "rc.t_volcano",
+        mountain_range: "rc.t_mountain_range", lake: "rc.t_lake",
+        river: "rc.t_river", desert: "rc.t_desert",
+        valley: "rc.t_valley", canyon: "rc.t_canyon",
+        plateau: "rc.t_plateau", glacier: "rc.t_glacier",
+        waterfall: "rc.t_waterfall", peninsula: "rc.t_peninsula",
+        cape: "rc.t_cape", island: "rc.t_island",
+        plain: "rc.t_plain", strait: "rc.t_strait",
+    };
+
     /* ── Init ─────────────────────────────────────────── */
     function init() {
         GeoGame.init({ onStart: loadData, delayTimer: true });
@@ -115,6 +127,7 @@ var ReliefGame = (function () {
 
                 initMap(features);
                 initMarkers(features);
+                addLegend(features);
                 hideSpinner();
                 GeoGame.startTimer();
 
@@ -192,6 +205,7 @@ var ReliefGame = (function () {
             minZoom: 2, maxZoom: 14,
             zoomControl: true, worldCopyJump: true,
         });
+        window._leaflet_map_ref = map;
         map.fitBounds(bounds);
 
         /* Tile layers: terrain (default), blank, satellite */
@@ -220,6 +234,29 @@ var ReliefGame = (function () {
                 onMapClickLocate(e);
             }
         });
+    }
+
+    /* ── Legend ───────────────────────────────────────── */
+    function addLegend(features) {
+        var typesInPlay = {};
+        features.forEach(function (f) { typesInPlay[f.type] = true; });
+        var types = Object.keys(typesInPlay).sort();
+        if (types.length < 2) return;
+
+        var legend = L.control({ position: "bottomleft" });
+        legend.onAdd = function () {
+            var div = L.DomUtil.create("div", "relief-legend");
+            types.forEach(function (t) {
+                var color = TYPE_COLORS[t] || "#999";
+                var label = (T && T[TYPE_I18N[t]]) || t;
+                div.innerHTML += '<div class="relief-legend-item">' +
+                    '<span class="relief-legend-dot" style="background:' + color + '"></span>' +
+                    '<span>' + label + '</span></div>';
+            });
+            L.DomEvent.disableClickPropagation(div);
+            return div;
+        };
+        legend.addTo(map);
     }
 
     /* ── Markers ──────────────────────────────────────── */
