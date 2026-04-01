@@ -8,10 +8,11 @@ var ReliefGame = (function () {
     "use strict";
 
     var map;
-    var featureMarkers = {};   // id → L.circleMarker or L.geoJSON layer
+    var featureMarkers = {};   // id → L.marker or L.geoJSON layer
     var featuresData   = {};   // id → feature object
     var geojsonCache   = {};   // wikidata_id → GeoJSON geometry (or null)
     var GEOJSON_BASE   = "/static/data/relief_geojson/";
+    var markerCluster  = null; // L.markerClusterGroup for icon markers
     var targetIds      = [];
     var targetSet, correctSet, failedSet;
     var selectedId     = null;
@@ -237,10 +238,14 @@ var ReliefGame = (function () {
         window._leaflet_map_ref = map;
         map.fitBounds(bounds);
 
-        /* Tile layers: terrain (default), blank, satellite */
+        /* Tile layers: physical (default), terrain, blank, satellite */
+        var physicalLayer = L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}",
+            { attribution: "&copy; Esri", maxZoom: 8 }
+        );
         var terrainLayer = L.tileLayer(
-            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
-            { attribution: "&copy; Esri", maxZoom: 13 }
+            "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+            { attribution: "&copy; OpenTopoMap", maxZoom: 17 }
         );
         var blankLayer = L.tileLayer(
             "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
@@ -251,18 +256,29 @@ var ReliefGame = (function () {
             { attribution: "&copy; Esri", maxZoom: 18 }
         );
 
-        terrainLayer.addTo(map);
-        L.control.layers({
-            "Terreno": terrainLayer,
-            "Mapa": blankLayer,
-            "\u{1F6F0}\uFE0F Sat\u00E9lite": satelliteLayer,
-        }, null, { position: "topright" }).addTo(map);
+        physicalLayer.addTo(map);
+        var layerNames = {};
+        layerNames[T["relief.layer_terrain_clean"] || "Physical"] = physicalLayer;
+        layerNames[T["relief.layer_terrain"] || "Terrain"] = terrainLayer;
+        layerNames[T["relief.layer_blank"] || "Blank"] = blankLayer;
+        layerNames[T["relief.layer_satellite"] || "Satellite"] = satelliteLayer;
+        L.control.layers(layerNames, null, { position: "topright" }).addTo(map);
 
         map.on("click", function (e) {
             if (mode === "click") {
                 onMapClickLocate(e);
             }
         });
+
+        /* Cluster group for icon markers */
+        markerCluster = L.markerClusterGroup({
+            maxClusterRadius: 35,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            zoomToBoundsOnClick: true,
+            disableClusteringAtZoom: 10,
+        });
+        map.addLayer(markerCluster);
     }
 
     /* ── Legend ───────────────────────────────────────── */
@@ -326,6 +342,7 @@ var ReliefGame = (function () {
                     L.DomEvent.stopPropagation(e);
                     if (mode === "type") onClickMarker(f.id);
                 });
+                layer.addTo(map);
             } else {
                 var stateClass = getMarkerState(f.id);
                 layer = L.marker([f.lat, f.lon], { icon: createGameIcon(f.type, stateClass) });
@@ -336,9 +353,9 @@ var ReliefGame = (function () {
                     L.DomEvent.stopPropagation(e);
                     if (mode === "type") onClickMarker(f.id);
                 });
+                markerCluster.addLayer(layer);
             }
 
-            layer.addTo(map);
             featureMarkers[f.id] = layer;
         });
     }

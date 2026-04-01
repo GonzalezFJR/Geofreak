@@ -1,5 +1,17 @@
 {% extends "games/_base_game.html" %}
 
+{% block extra_head %}
+{{ super() }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+{% endblock %}
+
+{% block game_scripts %}
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="/static/js/games/relief-game.js"></script>
+<script>ReliefGame.init();</script>
+{% endblock %}
+
 {% block game_area %}
 <div class="map-game-container">
     <!-- Locate mode: prompt shown when marker is presented -->
@@ -21,9 +33,4 @@
 <input type="hidden" id="relief-category-value"        value="{{ relief_category }}">
 <input type="hidden" id="relief-continent-value"       value="{{ relief_continent }}">
 <input type="hidden" id="relief-country-filter-value"  value="{{ relief_country_filter }}">
-{% endblock %}
-
-{% block game_scripts %}
-<script src="/static/js/games/relief-game.js"></script>
-<script>ReliefGame.init();</script>
 {% endblock %}

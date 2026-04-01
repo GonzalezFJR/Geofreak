@@ -91,7 +91,7 @@
     tileLayers[T["relief.layer_satellite"] || "Satellite"] = satelliteLayer;
     tileLayers[T["relief.layer_standard"] || "Standard"] = standardLayer;
 
-    terrainLayer.addTo(map);
+    terrainCleanLayer.addTo(map);
     L.control.layers(tileLayers, null, { position: "topright", collapsed: true }).addTo(map);
 
     // ─── State ─────────────────────────────────────────────────────────

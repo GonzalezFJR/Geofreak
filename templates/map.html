@@ -3,6 +3,8 @@
 {% block title %}{{ t('map.title', lang) }}{% endblock %}
 
 {% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 <style>
     body { overflow: hidden; }
     .footer { display: none; }
@@ -12,6 +14,30 @@
 {% block content %}
 <div class="map-page">
     <div id="map"></div>
+
+    <!-- Preset selector bar -->
+    <div class="map-preset-bar" id="preset-bar">
+        <button class="map-preset active" data-preset="political">{{ t('map.preset_political', lang) }}</button>
+        <button class="map-preset" data-preset="physical">{{ t('map.preset_physical', lang) }}</button>
+        <button class="map-preset" data-preset="custom">{{ t('map.preset_custom', lang) }} ▾</button>
+    </div>
+
+    <!-- Custom layers panel -->
+    <div class="map-custom-panel" id="custom-panel">
+        <div class="mcp-section">{{ t('map.section_political', lang) }}</div>
+        <label><input type="checkbox" data-layer="countries" checked> {{ t('map.layer_countries', lang) }}</label>
+        <label><input type="checkbox" data-layer="capitals" checked> {{ t('map.layer_capitals', lang) }}</label>
+        <label><input type="checkbox" data-layer="cities5m" checked> {{ t('map.layer_cities_5m', lang) }}</label>
+        <label><input type="checkbox" data-layer="cities1m" checked> {{ t('map.layer_cities_1m', lang) }}</label>
+        <label><input type="checkbox" data-layer="cities500k"> {{ t('map.layer_cities_500k', lang) }}</label>
+        <label><input type="checkbox" data-layer="cities100k"> {{ t('map.layer_cities_100k', lang) }}</label>
+        <label><input type="checkbox" data-layer="citiesOther"> {{ t('map.layer_cities_other', lang) }}</label>
+        <div class="mcp-section">{{ t('map.section_relief', lang) }}</div>
+        <label><input type="checkbox" data-layer="reliefAll"> {{ t('map.layer_relief_all', lang) }}</label>
+        <label><input type="checkbox" data-layer="reliefLand"> {{ t('map.layer_relief_land', lang) }}</label>
+        <label><input type="checkbox" data-layer="reliefWater"> {{ t('map.layer_relief_water', lang) }}</label>
+        <label><input type="checkbox" data-layer="reliefCoast"> {{ t('map.layer_relief_coast', lang) }}</label>
+    </div>
 
     <!-- Loading overlay -->
     <div class="loading-overlay" id="loading">
@@ -39,5 +65,6 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="/static/js/map.js"></script>
 {% endblock %}
