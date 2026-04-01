@@ -219,33 +219,37 @@ async def map_game_data(
     entity_type: str = Query("all", description="Entity type filter (countries only): all|country|territory"),
     city_filter: str = Query("capitals", description="City filter: capitals|5m|1m|500k|200k|100k"),
     country_filter: str = Query("", description="Comma-separated iso_a3 codes to filter cities by country"),
+    count_only: bool = Query(False, description="Return only the count"),
 ):
     """Return entity list for the map game based on dataset and filters."""
     if dataset == "countries":
-        return dataset_service.get_countries_for_map(continent=continent, entity_type=entity_type)
+        result = dataset_service.get_countries_for_map(continent=continent, entity_type=entity_type)
     elif dataset == "cities":
         cf_list = [c.strip().upper() for c in country_filter.split(",") if c.strip()] if country_filter else None
-        return dataset_service.get_cities_for_map(city_filter=city_filter, continent=continent, country_filter=cf_list)
+        result = dataset_service.get_cities_for_map(city_filter=city_filter, continent=continent, country_filter=cf_list)
     elif dataset == "us-states":
-        return dataset_service.get_us_states()
+        result = dataset_service.get_us_states()
     elif dataset == "spain-provinces":
-        return dataset_service.get_spain_provinces()
+        result = dataset_service.get_spain_provinces()
     elif dataset == "russia-regions":
-        return dataset_service.get_russia_regions()
+        result = dataset_service.get_russia_regions()
     elif dataset == "france-regions":
-        return dataset_service.get_france_regions()
+        result = dataset_service.get_france_regions()
     elif dataset == "italy-provinces":
-        return dataset_service.get_italy_provinces()
+        result = dataset_service.get_italy_provinces()
     elif dataset == "germany-states":
-        return dataset_service.get_germany_states()
+        result = dataset_service.get_germany_states()
     elif dataset == "mexico-states":
-        return dataset_service.get_mexico_states()
+        result = dataset_service.get_mexico_states()
     elif dataset == "argentina-provinces":
-        return dataset_service.get_argentina_provinces()
+        result = dataset_service.get_argentina_provinces()
     elif dataset == "brazil-states":
-        return dataset_service.get_brazil_states()
+        result = dataset_service.get_brazil_states()
     else:
         raise HTTPException(status_code=400, detail="Unknown dataset")
+    if count_only:
+        return {"count": len(result)}
+    return result
 
 
 @router.get("/map-game/geojson")

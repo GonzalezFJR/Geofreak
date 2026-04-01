@@ -12,7 +12,10 @@ from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, JSON
 from core.config import get_settings
 from core.i18n import get_lang
 from core.templates import templates
-from services.analytics import get_counters, get_recent_events, count_s3_events_today, list_s3_event_files, load_recent_events_s3
+from services.analytics import (
+    get_counters, get_recent_events, get_daily_counters, get_total_events,
+    count_s3_events_today, list_s3_event_files, load_recent_events_s3,
+)
 from services.games import GamesService
 from services.quiz import get_all_variables, get_datasets, get_sources, toggle_variable, reload_var_config
 from services.dataset_config import get_dataset_config_service
@@ -253,6 +256,8 @@ async def admin_analytics(request: Request):
     lang = get_lang(request)
 
     counters = get_counters()
+    daily = get_daily_counters()
+    total_events = get_total_events()
     s3_today = count_s3_events_today()
     s3_files = list_s3_event_files(days=7, max_keys=50)
 
@@ -264,14 +269,21 @@ async def admin_analytics(request: Request):
     s3_only = [e for e in s3_events if e.get("ts", "") < oldest_mem_ts] if oldest_mem_ts else s3_events
     recent = (memory_events + s3_only)[:50]
 
-    # Compute some summary stats
-    total_events = sum(counters.values())
-    event_types = sorted(counters.items(), key=lambda x: x[1], reverse=True)
+    # Separate base event types from sub-counters (contain #)
+    base_types = sorted(
+        [(k, v) for k, v in counters.items() if "#" not in k],
+        key=lambda x: x[1], reverse=True,
+    )
+    sub_types = sorted(
+        [(k, v) for k, v in counters.items() if "#" in k],
+        key=lambda x: x[1], reverse=True,
+    )
 
     return templates.TemplateResponse("admin/analytics.html", {
         "request": request, "lang": lang, "section": "analytics",
         "counters": counters, "total_events": total_events,
-        "event_types": event_types, "recent": recent,
+        "event_types": base_types, "sub_types": sub_types,
+        "daily": daily, "recent": recent,
         "s3_today": s3_today, "s3_files": s3_files,
     })
 

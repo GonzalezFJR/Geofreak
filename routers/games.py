@@ -10,6 +10,7 @@ from core.i18n import get_lang
 from core.templates import templates
 from services.games import GamesService
 from services.dataset import DatasetService
+from services.analytics import track
 
 router = APIRouter(prefix="/games", tags=["games"])
 
@@ -60,6 +61,7 @@ async def daily_challenge(request: Request, user=Depends(get_optional_user)):
 @router.get("", response_class=HTMLResponse)
 async def games_dashboard(request: Request, user=Depends(get_optional_user)):
     lang = get_lang(request)
+    track("page_view", {"page": "games"})
     games = games_service.get_games()
     return templates.TemplateResponse(
         "games/dashboard.html", {"request": request, "games": games, "user": user, "lang": lang}
@@ -100,6 +102,7 @@ async def play_map_challenge(
     if not game:
         raise HTTPException(status_code=404, detail="Game not found")
     game_json = json.dumps(game, ensure_ascii=False)
+    track("game_started", {"game": "map-challenge", "dataset": dataset, "mode": mode})
     ctx = {
         "request": request, "game": game, "game_json": game_json, "user": user, "lang": lang,
         "map_dataset": dataset,
@@ -144,6 +147,7 @@ async def play_relief_challenge(
     if not game:
         raise HTTPException(status_code=404, detail="Game not found")
     game_json = json.dumps(game, ensure_ascii=False)
+    track("game_started", {"game": "relief-challenge", "category": category, "mode": mode})
     ctx = {
         "request": request, "game": game, "game_json": game_json,
         "user": user, "lang": lang,
@@ -165,6 +169,7 @@ async def play_game(request: Request, game_id: str, user=Depends(get_optional_us
     if not template:
         raise HTTPException(status_code=404, detail="Game template not found")
     game_json = json.dumps(game, ensure_ascii=False)
+    track("game_started", {"game": game_id})
     ctx = {"request": request, "game": game, "game_json": game_json, "user": user, "lang": lang}
     ctx.update(MAP_GAME_CONFIG.get(game_id, {}))
     return templates.TemplateResponse(template, ctx)

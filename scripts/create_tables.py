@@ -141,6 +141,19 @@ TABLE_DEFS: list[tuple] = [
         ],
         [],
     ),
+    # 11. analytics  (PK=pk, SK=sk)  — atomic counters
+    (
+        "analytics",
+        [
+            {"AttributeName": "pk", "KeyType": "HASH"},
+            {"AttributeName": "sk", "KeyType": "RANGE"},
+        ],
+        [
+            {"AttributeName": "pk", "AttributeType": "S"},
+            {"AttributeName": "sk", "AttributeType": "S"},
+        ],
+        [],
+    ),
 ]
 
 

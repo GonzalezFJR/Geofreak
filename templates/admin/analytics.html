@@ -23,12 +23,12 @@
             <div class="analytics-card-label">{{ t('adm.an_total_events', lang) }}</div>
         </div>
         <div class="analytics-card">
-            <div class="analytics-card-value">{{ event_types | length }}</div>
-            <div class="analytics-card-label">{{ t('adm.an_event_types', lang) }}</div>
+            <div class="analytics-card-value">{{ daily.get('total', 0) }}</div>
+            <div class="analytics-card-label">{{ t('adm.an_today', lang) }}</div>
         </div>
         <div class="analytics-card">
-            <div class="analytics-card-value">{{ s3_today }}</div>
-            <div class="analytics-card-label">{{ t('adm.an_s3_today', lang) }}</div>
+            <div class="analytics-card-value">{{ event_types | length }}</div>
+            <div class="analytics-card-label">{{ t('adm.an_event_types', lang) }}</div>
         </div>
         <div class="analytics-card">
             <div class="analytics-card-value">{{ s3_files | length }}</div>
@@ -46,6 +46,7 @@
                     <tr>
                         <th>{{ t('adm.an_event', lang) }}</th>
                         <th>{{ t('adm.an_count', lang) }}</th>
+                        <th>{{ t('adm.an_today', lang) }}</th>
                         <th>{{ t('adm.an_pct', lang) }}</th>
                     </tr>
                 </thead>
@@ -54,6 +55,7 @@
                     <tr>
                         <td><code>{{ name }}</code></td>
                         <td class="num">{{ count }}</td>
+                        <td class="num">{{ daily.get(name, 0) }}</td>
                         <td class="num">{{ "%.1f" | format(count / total_events * 100 if total_events else 0) }}%</td>
                     </tr>
                 {% endfor %}
@@ -64,6 +66,33 @@
         <p class="empty-msg">{{ t('adm.an_no_events', lang) }}</p>
         {% endif %}
     </div>
+
+    <!-- Sub-counters (per game, per page, etc.) -->
+    {% if sub_types %}
+    <div class="admin-section">
+        <h2 class="admin-section-title">{{ t('adm.an_detail', lang) }}</h2>
+        <div class="analytics-table-wrap">
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>{{ t('adm.an_event', lang) }}</th>
+                        <th>{{ t('adm.an_count', lang) }}</th>
+                        <th>{{ t('adm.an_today', lang) }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for name, count in sub_types %}
+                    <tr>
+                        <td><code>{{ name }}</code></td>
+                        <td class="num">{{ count }}</td>
+                        <td class="num">{{ daily.get(name, 0) }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
 
     <!-- Recent events -->
     <div class="admin-section">

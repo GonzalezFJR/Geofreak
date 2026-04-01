@@ -13,6 +13,7 @@ from core.i18n import get_lang, SUPPORTED_LANGS
 from core.templates import templates
 from services.email import send_contact
 from services.games import GamesService
+from services.analytics import track
 from services.leaderboards import (
     get_leaderboard,
     get_user_position,
@@ -33,6 +34,7 @@ _QUIZZ_TYPES = {"quiz", "map"}    # flags, outline, name-*
 @router.get("/", response_class=HTMLResponse)
 async def landing(request: Request, user=Depends(get_optional_user)):
     lang = get_lang(request)
+    track("page_view", {"page": "landing"})
     return templates.TemplateResponse("landing.html", {
         "request": request, "user": user, "lang": lang,
     })
@@ -41,12 +43,14 @@ async def landing(request: Request, user=Depends(get_optional_user)):
 @router.get("/map", response_class=HTMLResponse)
 async def map_viewer(request: Request, user=Depends(get_optional_user)):
     lang = get_lang(request)
+    track("page_view", {"page": "map"})
     return templates.TemplateResponse("map.html", {"request": request, "user": user, "lang": lang})
 
 
 @router.get("/relief", response_class=HTMLResponse)
 async def relief_map(request: Request, user=Depends(get_optional_user)):
     lang = get_lang(request)
+    track("page_view", {"page": "relief"})
     return templates.TemplateResponse("relief.html", {"request": request, "user": user, "lang": lang})
 
 
@@ -59,6 +63,7 @@ async def ranking_page(
     user=Depends(get_optional_user),
 ):
     lang = get_lang(request)
+    track("page_view", {"page": "ranking"})
 
     # Load the requested leaderboard
     if tab == "game" and game and game in GAME_TYPES:
