@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('relief.title', lang) }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+<style>
+    body { overflow: hidden; }
+    .footer { display: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="map-page">
+    <div id="map"></div>
+
+    <!-- Filter panel -->
+    <div class="relief-panel" id="relief-panel">
+        <div class="relief-panel-header">
+            <h3>{{ t('relief.filter_title', lang) }}</h3>
+            <button class="relief-panel-toggle" id="panel-toggle">&#9776;</button>
+        </div>
+        <div class="relief-search">
+            <input type="text" id="relief-search" placeholder="{{ t('relief.search_placeholder', lang) }}" />
+        </div>
+        <div class="relief-filters" id="relief-filters"></div>
+        <div class="relief-count" id="relief-count"></div>
+    </div>
+
+    <!-- Reopen button (visible when panel is collapsed) -->
+    <button class="relief-panel-open hidden" id="panel-open">&#9776;</button>
+
+    <!-- Loading overlay -->
+    <div class="loading-overlay" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">{{ t('relief.loading', lang) }}</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="/static/js/relief.js"></script>
+{% endblock %}

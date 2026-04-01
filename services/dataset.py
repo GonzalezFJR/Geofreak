@@ -19,6 +19,7 @@ GERMANY_STATES_CSV = os.path.join(DATA_DIR, "germany_states.csv")
 MEXICO_STATES_CSV = os.path.join(DATA_DIR, "mexico_states.csv")
 ARGENTINA_PROVINCES_CSV = os.path.join(DATA_DIR, "argentina_provinces.csv")
 BRAZIL_STATES_CSV = os.path.join(DATA_DIR, "brazil_states.csv")
+RELIEF_CSV = os.path.join(DATA_DIR, "relief_features.csv")
 
 # Maps filter key → continent values in the countries CSV
 CONTINENT_MAP: dict[str, list[str]] = {
@@ -45,6 +46,7 @@ class DatasetService:
         self._mexico_df: Optional[pd.DataFrame] = None
         self._argentina_df: Optional[pd.DataFrame] = None
         self._brazil_df: Optional[pd.DataFrame] = None
+        self._relief_df: Optional[pd.DataFrame] = None
         self._map_game_counts: Optional[dict] = None
 
     # ── Countries ────────────────────────────────────────────
@@ -483,6 +485,48 @@ class DatasetService:
                     "lat": float(row["lat"]),
                     "lon": float(row["lon"]),
                 })
+            except (ValueError, TypeError):
+                continue
+        return records
+
+    # ── Relief features ────────────────────────────────────────
+
+    def _load_relief(self) -> pd.DataFrame:
+        if self._relief_df is None:
+            if not os.path.exists(RELIEF_CSV):
+                self._relief_df = pd.DataFrame()
+            else:
+                self._relief_df = pd.read_csv(RELIEF_CSV, keep_default_na=False)
+        return self._relief_df
+
+    def get_relief_features(self, feature_type: str = "all") -> list[dict]:
+        df = self._load_relief()
+        if df.empty:
+            return []
+        if feature_type and feature_type != "all":
+            df = df[df["type"] == feature_type]
+        records = []
+        for _, row in df.iterrows():
+            try:
+                rec: dict[str, Any] = {
+                    "id": int(row["id"]),
+                    "wikidata_id": str(row["wikidata_id"]),
+                    "name": str(row["name"]),
+                    "name_es": str(row.get("name_es", row["name"])),
+                    "name_en": str(row.get("name_en", row["name"])),
+                    "name_fr": str(row.get("name_fr", row["name"])),
+                    "name_it": str(row.get("name_it", row["name"])),
+                    "name_ru": str(row.get("name_ru", row["name"])),
+                    "type": str(row["type"]),
+                    "country_codes": str(row.get("country_codes", "")),
+                    "country_names_en": str(row.get("country_names_en", "")),
+                    "lat": float(row["lat"]),
+                    "lon": float(row["lon"]),
+                }
+                for col in ("elevation_m", "length_km", "area_km2"):
+                    v = row.get(col, "")
+                    rec[col] = round(float(v), 2) if v != "" else None
+                records.append(rec)
             except (ValueError, TypeError):
                 continue
         return records

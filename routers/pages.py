@@ -44,6 +44,12 @@ async def map_viewer(request: Request, user=Depends(get_optional_user)):
     return templates.TemplateResponse("map.html", {"request": request, "user": user, "lang": lang})
 
 
+@router.get("/relief", response_class=HTMLResponse)
+async def relief_map(request: Request, user=Depends(get_optional_user)):
+    lang = get_lang(request)
+    return templates.TemplateResponse("relief.html", {"request": request, "user": user, "lang": lang})
+
+
 @router.get("/ranking", response_class=HTMLResponse)
 async def ranking_page(
     request: Request,

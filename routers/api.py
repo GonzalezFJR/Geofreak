@@ -78,6 +78,14 @@ async def get_country_geojson(iso_code: str):
     return JSONResponse(content=data)
 
 
+@router.get("/relief-features")
+async def get_relief_features(
+    feature_type: str = Query("all", description="Filter by type: mountain, volcano, lake, river, etc."),
+):
+    """Return relief/landform features for the map viewer."""
+    return dataset_service.get_relief_features(feature_type=feature_type)
+
+
 @router.get("/cities")
 async def get_cities(
     min_population: int = Query(0, description="Minimum population filter"),

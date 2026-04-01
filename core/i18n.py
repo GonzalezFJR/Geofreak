@@ -78,6 +78,15 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "map.title": "GeoFreak — Mapa interactivo",
         "map.loading": "Cargando mapa del mundo…",
 
+        # Relief map viewer
+        "relief.title": "GeoFreak — Relieve del mundo",
+        "relief.loading": "Cargando formas del relieve…",
+        "relief.filter_title": "Filtrar",
+        "relief.search_placeholder": "Buscar por nombre…",
+        "relief.layer_satellite": "Satélite",
+        "relief.layer_terrain": "Terreno",
+        "relief.layer_standard": "Estándar",
+
         # Game settings / HUD / results
         "game.continent": "Continente",
         "game.all": "🌍 Todos",
@@ -768,6 +777,15 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "map.title": "GeoFreak — Interactive map",
         "map.loading": "Loading world map…",
 
+        # Relief map viewer
+        "relief.title": "GeoFreak — World Relief Features",
+        "relief.loading": "Loading landform features…",
+        "relief.filter_title": "Filter",
+        "relief.search_placeholder": "Search by name…",
+        "relief.layer_satellite": "Satellite",
+        "relief.layer_terrain": "Terrain",
+        "relief.layer_standard": "Standard",
+
         # Game settings / HUD / results
         "game.continent": "Continent",
         "game.all": "🌍 All",
@@ -1428,6 +1446,15 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "map.title": "GeoFreak — Carte interactive",
         "map.loading": "Chargement de la carte du monde…",
 
+        # Relief map viewer
+        "relief.title": "GeoFreak — Relief du monde",
+        "relief.loading": "Chargement des formes du relief…",
+        "relief.filter_title": "Filtrer",
+        "relief.search_placeholder": "Rechercher par nom…",
+        "relief.layer_satellite": "Satellite",
+        "relief.layer_terrain": "Terrain",
+        "relief.layer_standard": "Standard",
+
         # Game settings / HUD / results
         "game.continent": "Continent",
         "game.all": "🌍 Tous",
@@ -2060,6 +2087,15 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         # Map page
         "map.title": "GeoFreak — Mappa interattiva",
         "map.loading": "Caricamento mappa del mondo…",
+
+        # Relief map viewer
+        "relief.title": "GeoFreak — Rilievo del mondo",
+        "relief.loading": "Caricamento delle forme del rilievo…",
+        "relief.filter_title": "Filtra",
+        "relief.search_placeholder": "Cerca per nome…",
+        "relief.layer_satellite": "Satellite",
+        "relief.layer_terrain": "Terreno",
+        "relief.layer_standard": "Standard",
 
         # Game settings / HUD / results
         "game.continent": "Continente",
@@ -2695,6 +2731,15 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "map.title": "GeoFreak — Интерактивная карта",
         "map.loading": "Загрузка карты мира…",
 
+        # Relief map viewer
+        "relief.title": "GeoFreak — Рельеф мира",
+        "relief.loading": "Загрузка форм рельефа…",
+        "relief.filter_title": "Фильтр",
+        "relief.search_placeholder": "Поиск по названию…",
+        "relief.layer_satellite": "Спутник",
+        "relief.layer_terrain": "Рельеф",
+        "relief.layer_standard": "Стандарт",
+
         # Game settings / HUD / results
         "game.continent": "Континент",
         "game.all": "🌍 Все",
@@ -3310,6 +3355,9 @@ _JS_KEYS = [
     "mapjs.official_languages", "mapjs.car_side", "mapjs.start_of_week",
     "mapjs.google_maps", "mapjs.osm", "mapjs.capital_badge",
     "mapjs.inhabitants",
+    # Relief viewer
+    "relief.layer_satellite", "relief.layer_terrain", "relief.layer_standard",
+    "relief.filter_title", "relief.search_placeholder",
 ]
 
 # Extra JS keys needed by ordering/comparison that use templates with {stat}
