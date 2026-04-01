@@ -5,6 +5,7 @@
 
 (function () {
     "use strict";
+    console.log("[GeoFreak] map.js v2 loaded — tile-based city loading");
 
     var LANG = window.LANG || "en";
     var T = window.T || {};
@@ -1625,15 +1626,25 @@
                 fetch("/api/relief-features"),
             ]);
 
+            // Check response status
+            [countriesResp, geojsonResp, baseResp, indexResp, reliefResp].forEach(function (r, i) {
+                var names = ["countries", "geojson", "base.json", "index.json", "relief"];
+                console.log("[GeoFreak] " + names[i] + ": status=" + r.status + " ok=" + r.ok);
+            });
+
             var countries = await countriesResp.json();
             var geojsonData = await geojsonResp.json();
             var baseCities = await baseResp.json();
             var indexData = await indexResp.json();
             allReliefFeatures = await reliefResp.json();
 
+            console.log("[GeoFreak] base.json parsed:", baseCities.length, "cities, isArray:", Array.isArray(baseCities));
+            console.log("[GeoFreak] first city:", JSON.stringify(baseCities[0]).substring(0, 200));
+
             // Tile index
             tileZoom = indexData.z;
             tileIndex = new Set(indexData.tiles);
+            console.log("[GeoFreak] index loaded:", indexData.tiles.length, "tiles at z=" + indexData.z);
 
             // Index countries by ISO
             countries.forEach(function (c) {
@@ -1645,9 +1656,18 @@
                 style: defaultStyle,
                 onEachFeature: onEachCountryFeature,
             }).addTo(map);
+            console.log("[GeoFreak] Country borders added to map");
 
             // Base city markers (capitals + 500K+)
             addCityMarkers(baseCities);
+            console.log("[GeoFreak] Markers added. Layer counts:",
+                "capitals=" + cityLayers.capitals.getLayers().length,
+                "mega=" + cityLayers.mega.getLayers().length,
+                "large=" + cityLayers.large.getLayers().length,
+                "medium=" + cityLayers.medium.getLayers().length,
+                "small100k=" + cityLayers.small100k.getLayers().length,
+                "tiny=" + cityLayers.tiny.getLayers().length
+            );
 
             // Relief cluster
             reliefCluster = L.markerClusterGroup({
@@ -1666,11 +1686,27 @@
             // Apply initial preset (political)
             applyPreset("political");
 
+            // Verify layers are on map
+            console.log("[GeoFreak] After applyPreset('political'):",
+                "zoom=" + map.getZoom(),
+                "layerState=", JSON.stringify(layerState),
+                "capitals on map:", map.hasLayer(cityLayers.capitals),
+                "mega on map:", map.hasLayer(cityLayers.mega),
+                "large on map:", map.hasLayer(cityLayers.large),
+                "capitals count:", cityLayers.capitals.getLayers().length,
+                "mega count:", cityLayers.mega.getLayers().length
+            );
+
+            // DEBUG: Test marker to verify Leaflet rendering works
+            var testMarker = L.circleMarker([48.8566, 2.3522], {radius: 10, color: "red", fillColor: "red", fillOpacity: 1});
+            testMarker.addTo(map).bindPopup("TEST MARKER - Paris");
+            console.log("[GeoFreak] DEBUG: test red circle marker added at Paris (48.85, 2.35)");
+
             // Load visible tiles at current zoom
             checkAndLoadTiles();
 
         } catch (err) {
-            console.error("Error loading map data:", err);
+            console.error("Error loading map data:", err, err.stack);
         } finally {
             if (loading) {
                 loading.classList.add("hidden");
