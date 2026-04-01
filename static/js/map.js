@@ -101,14 +101,13 @@
         tiny:       L.layerGroup(),   // <100K
     };
 
-    // ── Tiered lazy loading configuration ────────────────────
-    var CITY_TIERS = {
-        1: { minZoom: 2,  loaded: false, loading: false },  // capitals + 5M
-        2: { minZoom: 3,  loaded: false, loading: false },  // 1M-5M
-        3: { minZoom: 4,  loaded: false, loading: false },  // 500K-1M
-        4: { minZoom: 5,  loaded: false, loading: false },  // 100K-500K
-        5: { minZoom: 7,  loaded: false, loading: false },  // 50K-100K
-    };
+    // ── Tile-based city loading ─────────────────────────────
+    var TILE_BASE = "/static/data/city_tiles/";
+    var tileZoom = 7;           // matches build_city_tiles.py TILE_ZOOM
+    var tileIndex = null;       // Set of available tile keys "x_y"
+    var loadedTiles = {};       // "x_y" → true
+    var loadingTiles = {};      // "x_y" → true
+    var TILE_MIN_MAP_ZOOM = 5;  // start loading tiles at this map zoom
 
     // ─── Relief layers ──────────────────────────────────────
     var RELIEF_TYPE_COLORS = {
@@ -413,33 +412,59 @@
         });
     }
 
-    // ─── Lazy tier loading ───────────────────────────────────
-    function loadCityTier(tier) {
-        var cfg = CITY_TIERS[tier];
-        if (!cfg || cfg.loaded || cfg.loading) return;
-        cfg.loading = true;
-
-        fetch("/api/cities/tier/" + tier)
-            .then(function (r) { return r.json(); })
-            .then(function (cities) {
-                addCityMarkers(cities);
-                cfg.loaded = true;
-                cfg.loading = false;
-                updateCityVisibility();
-            })
-            .catch(function (err) {
-                console.error("Error loading city tier " + tier + ":", err);
-                cfg.loading = false;
-            });
+    // ─── Tile-based city loading ─────────────────────────────
+    function latLonToTile(lat, lon, zoom) {
+        var n = Math.pow(2, zoom);
+        var x = Math.floor((lon + 180) / 360 * n);
+        var latRad = Math.max(-85, Math.min(85, lat)) * Math.PI / 180;
+        var y = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
+        return [Math.max(0, Math.min(n - 1, x)), Math.max(0, Math.min(n - 1, y))];
     }
 
-    function checkAndLoadTiers() {
-        var zoom = map.getZoom();
-        for (var tier = 1; tier <= 5; tier++) {
-            var cfg = CITY_TIERS[tier];
-            if (zoom >= cfg.minZoom && !cfg.loaded && !cfg.loading) {
-                loadCityTier(tier);
+    function getVisibleTileKeys() {
+        var bounds = map.getBounds();
+        var sw = bounds.getSouthWest();
+        var ne = bounds.getNorthEast();
+        var swTile = latLonToTile(sw.lat, sw.lng, tileZoom);
+        var neTile = latLonToTile(ne.lat, ne.lng, tileZoom);
+        var n = Math.pow(2, tileZoom);
+        var keys = [];
+        // tile y increases downward: neTile[1] <= swTile[1]
+        for (var y = neTile[1]; y <= swTile[1]; y++) {
+            if (sw.lng <= ne.lng) {
+                for (var x = swTile[0]; x <= neTile[0]; x++) {
+                    keys.push(x + "_" + y);
+                }
+            } else {
+                // date-line crossing
+                for (var x = swTile[0]; x < n; x++) keys.push(x + "_" + y);
+                for (var x = 0; x <= neTile[0]; x++) keys.push(x + "_" + y);
             }
+        }
+        return keys;
+    }
+
+    function loadCityTile(key) {
+        if (loadedTiles[key] || loadingTiles[key]) return;
+        if (tileIndex && !tileIndex.has(key)) return;
+        loadingTiles[key] = true;
+        fetch(TILE_BASE + key + ".json")
+            .then(function (r) { return r.ok ? r.json() : []; })
+            .then(function (cities) {
+                addCityMarkers(cities);
+                loadedTiles[key] = true;
+                delete loadingTiles[key];
+                updateCityVisibility();
+            })
+            .catch(function () { delete loadingTiles[key]; });
+    }
+
+    function checkAndLoadTiles() {
+        if (map.getZoom() < TILE_MIN_MAP_ZOOM) return;
+        if (!tileIndex) return;
+        var keys = getVisibleTileKeys();
+        for (var i = 0; i < keys.length; i++) {
+            loadCityTile(keys[i]);
         }
     }
 
@@ -1576,7 +1601,7 @@
     map.on("zoomend", function () {
         updateCityVisibility();
         applyTileForZoom();
-        checkAndLoadTiers();
+        checkAndLoadTiles();
     });
 
     var viewTimer = null;
@@ -1584,6 +1609,7 @@
         clearTimeout(viewTimer);
         viewTimer = setTimeout(function () {
             if (reliefVisible) showReliefGeoJsonInView();
+            checkAndLoadTiles();
         }, 200);
     });
 
@@ -1591,17 +1617,23 @@
     async function init() {
         var loading = document.getElementById("loading");
         try {
-            var [countriesResp, geojsonResp, tier1Resp, reliefResp] = await Promise.all([
+            var [countriesResp, geojsonResp, baseResp, indexResp, reliefResp] = await Promise.all([
                 fetch("/api/countries"),
                 fetch("/api/geojson/all"),
-                fetch("/api/cities/tier/1"),
+                fetch(TILE_BASE + "base.json"),
+                fetch(TILE_BASE + "index.json"),
                 fetch("/api/relief-features"),
             ]);
 
             var countries = await countriesResp.json();
             var geojsonData = await geojsonResp.json();
-            var tier1Cities = await tier1Resp.json();
+            var baseCities = await baseResp.json();
+            var indexData = await indexResp.json();
             allReliefFeatures = await reliefResp.json();
+
+            // Tile index
+            tileZoom = indexData.z;
+            tileIndex = new Set(indexData.tiles);
 
             // Index countries by ISO
             countries.forEach(function (c) {
@@ -1614,9 +1646,8 @@
                 onEachFeature: onEachCountryFeature,
             }).addTo(map);
 
-            // Tier 1 city markers (capitals + 5M)
-            addCityMarkers(tier1Cities);
-            CITY_TIERS[1].loaded = true;
+            // Base city markers (capitals + 500K+)
+            addCityMarkers(baseCities);
 
             // Relief cluster
             reliefCluster = L.markerClusterGroup({
@@ -1635,8 +1666,8 @@
             // Apply initial preset (political)
             applyPreset("political");
 
-            // Load any other tiers needed at current zoom
-            checkAndLoadTiers();
+            // Load visible tiles at current zoom
+            checkAndLoadTiles();
 
         } catch (err) {
             console.error("Error loading map data:", err);
