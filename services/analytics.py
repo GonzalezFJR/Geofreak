@@ -104,6 +104,7 @@ def track(event_type: str, data: dict[str, Any] | None = None) -> None:
 
     with _counters_lock:
         _counters[event_type] = _counters.get(event_type, 0) + 1
+        counters_snapshot = dict(_counters)
 
     with _lock:
         _ring.append(event)
@@ -111,6 +112,11 @@ def track(event_type: str, data: dict[str, Any] | None = None) -> None:
         flush_size = get_settings().analytics_flush_size
         if len(_buffer) >= flush_size:
             _flush_locked()
+
+    # Persist counters on every track() so they survive container restarts
+    threading.Thread(
+        target=_persist_counters_to_s3, args=(counters_snapshot,), daemon=True
+    ).start()
 
 
 def flush() -> None:
