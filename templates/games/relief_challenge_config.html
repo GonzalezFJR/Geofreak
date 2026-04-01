@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/games.css">
+{% endblock %}
+
+{% block content %}
+<section class="mcfg-page">
+    <div class="mcfg-container">
+
+        <!-- Breadcrumb -->
+        <div class="mcfg-breadcrumb">
+            <a href="/games" class="mcfg-back">&larr; {{ t('nav.games', lang) }}</a>
+        </div>
+
+        <!-- Header -->
+        <div class="mcfg-header">
+            <div class="mcfg-header-icon">
+                <img src="/static/img/icons/relief-challenge.svg" width="64" height="64" alt="">
+            </div>
+            <div class="mcfg-header-text">
+                <h1>{{ game_field(game, 'name', lang) }}</h1>
+                <p>{{ game_field(game, 'description', lang) }}</p>
+            </div>
+        </div>
+
+        <!-- 1. Category -->
+        <div class="mcfg-section">
+            <div class="mcfg-section-title">{{ t('rc.cfg_category_q', lang) }}</div>
+            <div class="mcfg-pills mcfg-pills-wrap" id="category-pills">
+                <button type="button" class="mcfg-pill active" data-value="all">{{ t('rc.cat_all', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="relief">{{ t('rc.cat_relief', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="water">{{ t('rc.cat_water', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="coast">{{ t('rc.cat_coast', lang) }}</button>
+            </div>
+            <div class="mcfg-pills mcfg-pills-wrap mcfg-pills-small" id="subtype-pills" style="margin-top:8px">
+                <button type="button" class="mcfg-pill" data-value="mountain">{{ t('rc.t_mountain', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="volcano">{{ t('rc.t_volcano', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="mountain_range">{{ t('rc.t_mountain_range', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="valley">{{ t('rc.t_valley', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="canyon">{{ t('rc.t_canyon', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="desert">{{ t('rc.t_desert', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="plateau">{{ t('rc.t_plateau', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="plain">{{ t('rc.t_plain', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="river">{{ t('rc.t_river', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="lake">{{ t('rc.t_lake', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="waterfall">{{ t('rc.t_waterfall', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="glacier">{{ t('rc.t_glacier', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="strait">{{ t('rc.t_strait', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="cape">{{ t('rc.t_cape', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="peninsula">{{ t('rc.t_peninsula', lang) }}</button>
+                <button type="button" class="mcfg-pill" data-value="island">{{ t('rc.t_island', lang) }}</button>
+            </div>
+        </div>
+
+        <!-- 2. Location filter -->
+        <div class="mcfg-section">
+            <div class="mcfg-section-title">{{ t('rc.cfg_location_q', lang) }}</div>
+
+            <div class="mcfg-filter-group">
+                <span class="mcfg-filter-label">{{ t('mg.fil_continent', lang) }}</span>
+                <div class="mcfg-pills mcfg-pills-wrap" id="continent-pills">
+                    <button type="button" class="mcfg-pill active" data-value="all">{{ t('mg.cont_all', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="europe">{{ t('mg.cont_europe', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="north_america">{{ t('rc.cont_north_america', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="central_america">{{ t('rc.cont_central_america', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="south_america">{{ t('rc.cont_south_america', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="asia">{{ t('mg.cont_asia', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="africa">{{ t('mg.cont_africa', lang) }}</button>
+                    <button type="button" class="mcfg-pill" data-value="oceania">{{ t('mg.cont_oceania', lang) }}</button>
+                </div>
+            </div>
+
+            <div class="mcfg-filter-group" id="country-filter-group">
+                <span class="mcfg-filter-label">{{ t('rc.fil_country', lang) }}</span>
+                <div id="rcfg-country-select"></div>
+            </div>
+        </div>
+
+        <!-- 3. Mode -->
+        <div class="mcfg-section">
+            <div class="mcfg-section-title">{{ t('mg.cfg_mode_q', lang) }}</div>
+            <div class="mcfg-cards mcfg-cards-2" id="mode-cards">
+                <button type="button" class="mcfg-card active" data-value="type" style="--card-color: #10b981">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-mode-type.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('mg.mode_name', lang) }}</span>
+                    <span class="mcfg-card-desc">{{ t('rc.mode_type_desc', lang) }}</span>
+                </button>
+                <button type="button" class="mcfg-card" data-value="click" style="--card-color: #ef4444">
+                    <div class="mcfg-card-icon">
+                        <img src="/static/img/icons/cfg-mode-locate.svg" width="64" height="64" alt="">
+                    </div>
+                    <span class="mcfg-card-label">{{ t('mg.mode_locate', lang) }}</span>
+                    <span class="mcfg-card-desc">{{ t('rc.mode_click_desc', lang) }}</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. Preview + Start -->
+        <div class="mcfg-preview" id="mcfg-preview">
+            <span class="mcfg-preview-n" id="preview-n">&ndash;</span>
+            <span class="mcfg-preview-sep">&middot;</span>
+            <span id="preview-time">&ndash;</span>
+        </div>
+        <button type="button" class="mcfg-play-btn" id="mcfg-play-btn">
+            {{ t('mg.cfg_start', lang) }}
+        </button>
+
+    </div>
+</section>
+
+<script src="/static/js/games/common.js"></script>
+<script>
+(function () {
+    var COUNTS = {{ relief_counts_json | safe }};
+    var TLABELS = {
+        name:   {{ t('mg.preview_name', lang) | tojson }},
+        locate: {{ t('mg.preview_locate', lang) | tojson }},
+        entity: {{ t('rc.entities', lang) | tojson }},
+    };
+
+    var state = {
+        category: 'all',
+        continent: 'all',
+        countryFilter: [],
+        mode: 'type',
+    };
+
+    var SECS_TYPE  = {{ secs_per_item_type }};
+    var SECS_CLICK = {{ secs_per_item_click }};
+
+    function calcMin(n, factor) { return Math.floor(n * factor / 60) + 1; }
+
+    function getN() {
+        if (state.countryFilter.length > 0) return -1;
+        var dc = COUNTS[state.category];
+        if (!dc) return 0;
+        return dc[state.continent] || 0;
+    }
+
+    function updatePreview() {
+        var n = getN();
+        var nEl  = document.getElementById('preview-n');
+        var tEl  = document.getElementById('preview-time');
+        if (n === -1) {
+            if (nEl) nEl.textContent = '? ' + TLABELS.entity;
+            if (tEl) tEl.textContent = '\u2013';
+            return;
+        }
+        if (nEl) nEl.textContent = n + ' ' + TLABELS.entity;
+        if (tEl) {
+            var isType = (state.mode === 'type');
+            tEl.textContent = calcMin(n, isType ? SECS_TYPE : SECS_CLICK) + ' ' + (isType ? TLABELS.name : TLABELS.locate);
+        }
+    }
+
+    /* ── Wire category pills ─────────────────────────── */
+    var catPills = document.getElementById('category-pills');
+    var subPills = document.getElementById('subtype-pills');
+
+    function syncCategoryUI() {
+        // When a main category is active, deselect subtypes
+        catPills.querySelectorAll('.mcfg-pill').forEach(function (b) {
+            b.classList.toggle('active', b.getAttribute('data-value') === state.category);
+        });
+        subPills.querySelectorAll('.mcfg-pill').forEach(function (b) {
+            b.classList.toggle('active', b.getAttribute('data-value') === state.category);
+        });
+    }
+
+    catPills.querySelectorAll('.mcfg-pill').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            state.category = btn.getAttribute('data-value');
+            syncCategoryUI();
+            updatePreview();
+        });
+    });
+
+    subPills.querySelectorAll('.mcfg-pill').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            state.category = btn.getAttribute('data-value');
+            syncCategoryUI();
+            updatePreview();
+        });
+    });
+
+    /* ── Wire continent pills ────────────────────────── */
+    var contPills = document.getElementById('continent-pills');
+    contPills.querySelectorAll('.mcfg-pill').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            contPills.querySelectorAll('.mcfg-pill').forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            state.continent = btn.getAttribute('data-value');
+            updatePreview();
+        });
+    });
+
+    /* ── Wire mode cards ─────────────────────────────── */
+    var modeCards = document.getElementById('mode-cards');
+    modeCards.querySelectorAll('.mcfg-card').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            modeCards.querySelectorAll('.mcfg-card').forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            state.mode = btn.getAttribute('data-value');
+            updatePreview();
+        });
+    });
+
+    /* ── Country multi-select ────────────────────────── */
+    if (typeof GeoUtils !== 'undefined' && GeoUtils.buildCountrySelect) {
+        var csContainer = document.getElementById('rcfg-country-select');
+        if (csContainer) {
+            GeoUtils.buildCountrySelect({
+                container: csContainer,
+                placeholder: {{ t('cust.city_countries_placeholder', lang) | tojson }},
+                lang: {{ lang | tojson }},
+                onChange: function(isoList) {
+                    state.countryFilter = isoList;
+                    updatePreview();
+                }
+            });
+        }
+    }
+
+    updatePreview();
+
+    /* ── Play button ─────────────────────────────────── */
+    document.getElementById('mcfg-play-btn').addEventListener('click', function () {
+        var params = new URLSearchParams({
+            mode:     state.mode,
+            category: state.category,
+            continent: state.continent,
+        });
+        if (state.countryFilter.length) {
+            params.set('country_filter', state.countryFilter.join(','));
+        }
+        window.location.href = '/games/relief-challenge/play?' + params.toString();
+    });
+}());
+</script>
+{% endblock %}

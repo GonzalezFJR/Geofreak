@@ -86,6 +86,19 @@ async def get_relief_features(
     return dataset_service.get_relief_features(feature_type=feature_type)
 
 
+@router.get("/relief-game/data")
+async def relief_game_data(
+    category: str = Query("all", description="Category: all|relief|water|coast or single type"),
+    continent: str = Query("all", description="Continent filter"),
+    country_filter: str = Query("", description="Comma-separated ISO3 codes"),
+):
+    """Return relief features filtered for the game."""
+    cf = [c.strip().upper() for c in country_filter.split(",") if c.strip()] if country_filter else None
+    return dataset_service.get_relief_for_game(
+        category=category, continent=continent, country_filter=cf,
+    )
+
+
 @router.get("/cities")
 async def get_cities(
     min_population: int = Query(0, description="Minimum population filter"),

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <!-- Mountain range (background) -->
+  <path d="M4,48 L16,20 L24,32 L32,12 L40,30 L48,18 L60,48 Z"
+        fill="#8B4513" opacity="0.25"/>
+  <!-- Main mountain -->
+  <path d="M12,48 L32,12 L52,48 Z" fill="#8B4513" opacity="0.7"/>
+  <!-- Snow cap -->
+  <path d="M27,22 L32,12 L37,22 L34,20 L32,24 L30,20 Z" fill="white" opacity="0.85"/>
+  <!-- Second peak -->
+  <path d="M2,48 L18,24 L34,48 Z" fill="#A0522D" opacity="0.5"/>
+  <path d="M15,30 L18,24 L21,30 L19,28.5 L18,31 L17,28.5 Z" fill="white" opacity="0.7"/>
+  <!-- Water/river -->
+  <path d="M2,48 Q16,42 32,48 Q48,54 62,48 L62,56 Q48,62 32,56 Q16,50 2,56 Z"
+        fill="#1E90FF" opacity="0.7"/>
+  <!-- Water shimmer -->
+  <path d="M10,50 Q18,47 26,50" stroke="white" stroke-width="1" opacity="0.5" fill="none"/>
+  <path d="M36,52 Q44,49 52,52" stroke="white" stroke-width="1" opacity="0.5" fill="none"/>
+  <!-- Volcano glow -->
+  <circle cx="48" cy="18" r="3" fill="#DC143C" opacity="0.4"/>
+  <path d="M40,48 L48,18 L56,48 Z" fill="#5d4037" opacity="0.45"/>
+  <path d="M46,22 L48,18 L50,22" stroke="#DC143C" stroke-width="1.5" opacity="0.6" fill="none"/>
+</svg>

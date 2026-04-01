@@ -1,0 +1,29 @@
+{% extends "games/_base_game.html" %}
+
+{% block game_area %}
+<div class="map-game-container">
+    <!-- Locate mode: prompt shown when marker is presented -->
+    <div class="map-game-prompt map-city-prompt" id="relief-locate-prompt" style="display:none">
+        <span class="prompt-label" id="relief-locate-text"></span>
+    </div>
+    <!-- Name mode: input bar at bottom -->
+    <div class="map-game-input-bar" id="game-input-bar" style="display:none">
+        <input type="text" id="answer-input-name" placeholder="" autocomplete="off">
+        <button class="btn-reveal-map-bar" id="btn-reveal-bar" onclick="ReliefGame.reveal()" disabled>
+            {{ t('quiz.reveal', lang) }}
+        </button>
+        <div class="input-feedback" id="input-feedback"></div>
+    </div>
+    <div id="game-map" class="game-map"></div>
+</div>
+
+<input type="hidden" id="relief-mode-value"           value="{{ relief_mode }}">
+<input type="hidden" id="relief-category-value"        value="{{ relief_category }}">
+<input type="hidden" id="relief-continent-value"       value="{{ relief_continent }}">
+<input type="hidden" id="relief-country-filter-value"  value="{{ relief_country_filter }}">
+{% endblock %}
+
+{% block game_scripts %}
+<script src="/static/js/games/relief-game.js"></script>
+<script>ReliefGame.init();</script>
+{% endblock %}

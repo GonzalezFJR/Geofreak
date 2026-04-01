@@ -113,6 +113,48 @@ async def play_map_challenge(
     return templates.TemplateResponse("games/map_game.html", ctx)
 
 
+@router.get("/relief-challenge", response_class=HTMLResponse)
+async def relief_challenge_config(request: Request, user=Depends(get_optional_user)):
+    lang = get_lang(request)
+    game = games_service.get_game("relief-challenge")
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    counts = _dataset_service.get_relief_game_counts()
+    gd = game.get("defaults", {})
+    ctx = {
+        "request": request, "game": game, "user": user, "lang": lang,
+        "relief_counts_json": json.dumps(counts, ensure_ascii=False),
+        "secs_per_item_type": gd.get("secs_per_item_type", 4),
+        "secs_per_item_click": gd.get("secs_per_item_click", 8),
+    }
+    return templates.TemplateResponse("games/relief_challenge_config.html", ctx)
+
+
+@router.get("/relief-challenge/play", response_class=HTMLResponse)
+async def play_relief_challenge(
+    request: Request,
+    mode: str = "type",
+    category: str = "all",
+    continent: str = "all",
+    country_filter: str = "",
+    user=Depends(get_optional_user),
+):
+    lang = get_lang(request)
+    game = games_service.get_game("relief-challenge")
+    if not game:
+        raise HTTPException(status_code=404, detail="Game not found")
+    game_json = json.dumps(game, ensure_ascii=False)
+    ctx = {
+        "request": request, "game": game, "game_json": game_json,
+        "user": user, "lang": lang,
+        "relief_mode": mode,
+        "relief_category": category,
+        "relief_continent": continent,
+        "relief_country_filter": country_filter,
+    }
+    return templates.TemplateResponse("games/relief_game.html", ctx)
+
+
 @router.get("/{game_id}", response_class=HTMLResponse)
 async def play_game(request: Request, game_id: str, user=Depends(get_optional_user)):
     lang = get_lang(request)

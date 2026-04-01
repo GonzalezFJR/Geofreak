@@ -522,6 +522,8 @@ class DatasetService:
                     "country_names_en": str(row.get("country_names_en", "")),
                     "lat": float(row["lat"]),
                     "lon": float(row["lon"]),
+                    "continent": str(row.get("continent", "")),
+                    "subcontinent": str(row.get("subcontinent", "")),
                 }
                 for col in ("elevation_m", "length_km", "area_km2"):
                     v = row.get(col, "")
@@ -530,6 +532,100 @@ class DatasetService:
             except (ValueError, TypeError):
                 continue
         return records
+
+    def get_relief_for_game(
+        self,
+        category: str = "all",
+        continent: str = "all",
+        country_filter: list[str] | None = None,
+    ) -> list[dict]:
+        """Return relief features filtered for the game."""
+        # Category → type groups
+        CATEGORY_TYPES: dict[str, list[str]] = {
+            "all": [],
+            "relief": ["mountain", "volcano", "mountain_range", "valley",
+                        "canyon", "desert", "plateau", "plain"],
+            "water": ["river", "lake", "waterfall", "glacier"],
+            "coast": ["strait", "cape", "peninsula", "island"],
+        }
+
+        df = self._load_relief()
+        if df.empty:
+            return []
+
+        # Filter by category
+        type_list = CATEGORY_TYPES.get(category)
+        if type_list is None:
+            # Single-type category (e.g. "mountain")
+            df = df[df["type"] == category]
+        elif type_list:
+            df = df[df["type"].isin(type_list)]
+
+        # Filter by continent
+        if continent and continent != "all":
+            df = df[df["subcontinent"] == continent]
+
+        # Filter by country
+        if country_filter:
+            iso_set = set(country_filter)
+            mask = df["country_codes"].apply(
+                lambda codes: bool(set(c.strip() for c in codes.split(",") if c.strip()) & iso_set)
+            )
+            df = df[mask]
+
+        records = []
+        for _, row in df.iterrows():
+            try:
+                records.append({
+                    "id": int(row["id"]),
+                    "name": str(row["name"]),
+                    "name_es": str(row.get("name_es", row["name"])),
+                    "name_en": str(row.get("name_en", row["name"])),
+                    "name_fr": str(row.get("name_fr", row["name"])),
+                    "name_it": str(row.get("name_it", row["name"])),
+                    "name_ru": str(row.get("name_ru", row["name"])),
+                    "type": str(row["type"]),
+                    "lat": float(row["lat"]),
+                    "lon": float(row["lon"]),
+                })
+            except (ValueError, TypeError):
+                continue
+        return records
+
+    def get_relief_game_counts(self) -> dict[str, dict[str, int]]:
+        """Precompute entity counts for all relief category/continent combos."""
+        df = self._load_relief()
+        if df.empty:
+            return {}
+
+        CATEGORIES = {
+            "all": [],
+            "relief": ["mountain", "volcano", "mountain_range", "valley",
+                        "canyon", "desert", "plateau", "plain"],
+            "water": ["river", "lake", "waterfall", "glacier"],
+            "coast": ["strait", "cape", "peninsula", "island"],
+            "mountain": ["mountain"], "volcano": ["volcano"],
+            "mountain_range": ["mountain_range"], "lake": ["lake"],
+            "river": ["river"], "desert": ["desert"], "valley": ["valley"],
+            "canyon": ["canyon"], "plateau": ["plateau"], "glacier": ["glacier"],
+            "waterfall": ["waterfall"], "peninsula": ["peninsula"],
+            "cape": ["cape"], "island": ["island"], "plain": ["plain"],
+            "strait": ["strait"],
+        }
+        CONTINENTS = ["all", "europe", "asia", "africa", "north_america",
+                       "central_america", "south_america", "oceania"]
+
+        result: dict[str, dict[str, int]] = {}
+        for cat, type_list in CATEGORIES.items():
+            sub = df[df["type"].isin(type_list)] if type_list else df
+            counts: dict[str, int] = {}
+            for cont in CONTINENTS:
+                if cont == "all":
+                    counts[cont] = len(sub)
+                else:
+                    counts[cont] = int((sub["subcontinent"] == cont).sum())
+            result[cat] = counts
+        return result
 
     def get_dataset_df(self, dataset_id: str) -> pd.DataFrame:
         """Return the full DataFrame for any dataset by ID."""

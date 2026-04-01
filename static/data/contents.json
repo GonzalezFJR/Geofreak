@@ -98,6 +98,31 @@
       "visible": true
     },
     {
+      "id": "relief-challenge",
+      "name": "Rocas y agua",
+      "name_en": "Rocks & Water",
+      "name_fr": "Roches et eau",
+      "name_it": "Rocce e acqua",
+      "name_ru": "Скалы и вода",
+      "description": "Identifica montañas, ríos, lagos y otros elementos del relieve sobre el mapa.",
+      "description_en": "Identify mountains, rivers, lakes and other landforms on the map.",
+      "description_fr": "Identifiez montagnes, rivières, lacs et autres reliefs sur la carte.",
+      "description_it": "Identifica montagne, fiumi, laghi e altre forme del rilievo sulla mappa.",
+      "description_ru": "Определите горы, реки, озёра и другие формы рельефа на карте.",
+      "icon": "⛰️",
+      "color": "#5d4037",
+      "type": "map",
+      "subcategory": "sobre_el_mapa",
+      "defaults": {
+        "time_limit": 600,
+        "secs_per_item_type": 4,
+        "secs_per_item_click": 8
+      },
+      "has_continent_filter": true,
+      "enabled": true,
+      "visible": true
+    },
+    {
       "id": "ordering",
       "name": "GeoRankings",
       "name_en": "GeoRankings",

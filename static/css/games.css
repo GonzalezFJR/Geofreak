@@ -2608,6 +2608,10 @@ body:has(.game-page) {
     border-color: var(--blue-500);
     color: var(--white);
 }
+.mcfg-pills-small .mcfg-pill {
+    padding: 3px 10px;
+    font-size: 0.75rem;
+}
 
 /* Info tip */
 .mcfg-info-tip {
