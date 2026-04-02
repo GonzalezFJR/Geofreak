@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, HTTPException, Request, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 
 from core.auth import get_current_user, get_optional_user
@@ -46,7 +46,7 @@ _games_service = GamesService()
 # ── Pages ────────────────────────────────────────────────────────────────────
 
 @router.get("/tournaments")
-async def tournament_lobby_page(request=None, user: Optional[dict] = Depends(get_optional_user)):
+async def tournament_lobby_page(request: Request, user: Optional[dict] = Depends(get_optional_user)):
     lang = get_lang(request)
     games = _games_service.get_games()
     return templates.TemplateResponse("tournaments/lobby.html", {
@@ -56,7 +56,7 @@ async def tournament_lobby_page(request=None, user: Optional[dict] = Depends(get
 
 
 @router.get("/tournaments/{tid}")
-async def tournament_page(tid: str, request=None, user: dict = Depends(get_current_user)):
+async def tournament_page(tid: str, request: Request, user: dict = Depends(get_current_user)):
     lang = get_lang(request)
     tourn = get_tournament(tid)
     if not tourn:
