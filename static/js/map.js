@@ -58,8 +58,8 @@
 
     // Tile layer control labels
     var tileLayerLabels = {};
-    tileLayerLabels[T["mapjs.layer_flat"] || "Light"] = tileLayerDefs.light;
     tileLayerLabels[T["mapjs.layer_blank"] || "Blank"] = tileLayerDefs.blank;
+    tileLayerLabels[T["mapjs.layer_flat"] || "Light"] = tileLayerDefs.light;
     tileLayerLabels[T["mapjs.layer_physical"] || "Physical"] = tileLayerDefs.physical;
     tileLayerLabels[T["mapjs.layer_terrain"] || "Terrain"] = tileLayerDefs.terrain;
     tileLayerLabels[T["mapjs.layer_standard"] || "Standard"] = tileLayerDefs.standard;
@@ -67,7 +67,7 @@
     tileLayerLabels[T["mapjs.layer_dark"] || "Dark"] = tileLayerDefs.dark;
 
     var activeTile = null;
-    var activeTileKey = "light";   // the tile the user/preset chose
+    var activeTileKey = "blank";   // the tile the user/preset chose
     var PHYSICAL_MAX_ZOOM = 8;
 
     function setTileLayer(key) {
@@ -654,12 +654,25 @@
         reliefLegend = L.control({ position: "bottomleft" });
         reliefLegend.onAdd = function () {
             var div = L.DomUtil.create("div", "relief-legend");
+            L.DomEvent.disableClickPropagation(div);
+
+            // Header with collapse toggle
+            var header = L.DomUtil.create("div", "relief-legend-header", div);
+            header.innerHTML = '<span>' + (_t("mapjs.legend") || "Leyenda") + '</span><span class="relief-legend-arrow">▼</span>';
+            var body = L.DomUtil.create("div", "relief-legend-body", div);
+
             types.forEach(function (t) {
-                div.innerHTML += '<div class="relief-legend-item">' +
-                    '<img src="' + ICON_BASE + t + '.svg" class="relief-legend-icon" width="14" height="14">' +
+                body.innerHTML += '<div class="relief-legend-item">' +
+                    '<img src="' + ICON_BASE + t + '.svg" class="relief-legend-icon" width="18" height="18">' +
                     '<span>' + reliefTypeLabel(t) + '</span></div>';
             });
-            L.DomEvent.disableClickPropagation(div);
+
+            header.onclick = function () {
+                var collapsed = body.style.display === "none";
+                body.style.display = collapsed ? "" : "none";
+                header.querySelector(".relief-legend-arrow").textContent = collapsed ? "▼" : "▶";
+            };
+
             return div;
         };
         reliefLegend.addTo(map);
@@ -745,7 +758,7 @@
 
     var presets = {
         political: {
-            tile: "light", countries: true, capitals: true, mega: true,
+            tile: "blank", countries: true, capitals: true, mega: true,
             large: true, medium: true, small100k: true, tiny: true,
             reliefAll: false, reliefLand: false, reliefWater: false, reliefCoast: false,
         },

@@ -1252,23 +1252,42 @@ img {
     border: none !important;
 }
 .relief-legend {
-    background: rgba(255,255,255,0.92);
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(6px);
-    border-radius: 8px;
-    padding: 8px 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    font-size: 0.72rem;
-    line-height: 1.1;
-    max-height: 40vh;
+    border-radius: 10px;
+    padding: 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    font-size: 0.82rem;
+    line-height: 1.2;
+    min-width: 160px;
+}
+.relief-legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--gray-700);
+    border-bottom: 1px solid var(--gray-200);
+    user-select: none;
+}
+.relief-legend-arrow {
+    font-size: 0.7rem;
+    color: var(--gray-400);
+}
+.relief-legend-body {
+    padding: 8px 12px 10px;
+    max-height: 50vh;
     overflow-y: auto;
     column-count: 2;
-    column-gap: 12px;
+    column-gap: 16px;
 }
 .relief-legend-item {
     display: flex;
     align-items: center;
-    gap: 5px;
-    padding: 2px 0;
+    gap: 6px;
+    padding: 3px 0;
     break-inside: avoid;
     white-space: nowrap;
     color: var(--gray-700);
