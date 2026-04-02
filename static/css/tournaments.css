@@ -18,6 +18,69 @@
     margin-bottom: 8px;
 }
 
+/* ─── Landing page ─────────────────────────────────────────── */
+.trn-landing-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.trn-landing-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 28px 32px;
+    background: var(--white);
+    border-radius: 16px;
+    border: 2px solid var(--gray-200);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, transform .15s;
+}
+.trn-landing-card:hover {
+    border-color: var(--blue-400);
+    box-shadow: 0 4px 20px rgba(0,0,0,.08);
+    transform: translateY(-2px);
+}
+.trn-landing-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+.trn-landing-card h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+}
+.trn-landing-card p {
+    color: var(--gray-500);
+    font-size: .9rem;
+    margin-bottom: 16px;
+}
+.trn-join-form {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 8px;
+}
+.trn-join-form .room-input {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 600px) {
+    .trn-landing-actions {
+        grid-template-columns: 1fr;
+    }
+}
+
 .trn-lobby .section-desc {
     color: var(--gray-500);
     margin-bottom: 32px;

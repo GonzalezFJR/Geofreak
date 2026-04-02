@@ -43,8 +43,6 @@
             });
         });
     }
-    setupNBtns('trn-cfg-questions');
-    setupNBtns('trn-cfg-rounds');
 
     // ── Game picker ───────────────────────────────────────────
     if (picker) {
@@ -71,14 +69,8 @@
     }
 
     function resetConfig() {
-        var qBtns = document.getElementById('trn-cfg-questions');
-        qBtns.querySelectorAll('.trn-n-btn').forEach(function (b) {
-            b.classList.toggle('active', b.getAttribute('data-n') === '10');
-        });
-        var rBtns = document.getElementById('trn-cfg-rounds');
-        rBtns.querySelectorAll('.trn-n-btn').forEach(function (b) {
-            b.classList.toggle('active', b.getAttribute('data-n') === '1');
-        });
+        document.getElementById('trn-cfg-questions').value = '10';
+        document.getElementById('trn-cfg-rounds').value = '1';
         document.getElementById('trn-cfg-continent').value = 'all';
         document.getElementById('trn-cfg-timer').checked = false;
     }
@@ -99,8 +91,8 @@
         addBtn.addEventListener('click', function () {
             if (!selectedGame) return;
             var totalRounds = queue.reduce(function (s, g) { return s + g.rounds; }, 0);
-            var numQuestions = parseInt(getActiveN('trn-cfg-questions'), 10) || 10;
-            var numRounds = parseInt(getActiveN('trn-cfg-rounds'), 10) || 1;
+            var numQuestions = parseInt(document.getElementById('trn-cfg-questions').value, 10) || 10;
+            var numRounds = parseInt(document.getElementById('trn-cfg-rounds').value, 10) || 1;
 
             if (totalRounds + numRounds > 10) {
                 showError(T.max_games);
@@ -124,11 +116,6 @@
             picker.querySelectorAll('.trn-pick-card').forEach(function (c) { c.classList.remove('selected'); });
             selectedGame = null;
         });
-    }
-
-    function getActiveN(containerId) {
-        var active = document.getElementById(containerId).querySelector('.trn-n-btn.active');
-        return active ? active.getAttribute('data-n') : '10';
     }
 
     // ── Render queue ──────────────────────────────────────────

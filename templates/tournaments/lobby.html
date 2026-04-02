@@ -3,7 +3,6 @@
 {% block title %}{{ t('trn.lobby_title', lang) }}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/games.css">
 <link rel="stylesheet" href="/static/css/tournaments.css">
 {% endblock %}
 
@@ -18,139 +17,68 @@
         </div>
         {% else %}
 
-        <!-- ── Header ── -->
         <div class="trn-designer-header">
             <a href="/games" class="room-back">← {{ t('nav.games', lang) }}</a>
-            <h1>{{ t('trn.design_title', lang) }}</h1>
-            <p class="section-desc">{{ t('trn.design_subtitle', lang) }}</p>
+            <h1>{{ t('trn.lobby_title', lang) }}</h1>
+            <p class="section-desc">{{ t('trn.lobby_subtitle', lang) }}</p>
         </div>
 
-        <!-- ── Top bar: players + estimated time ── -->
-        <div class="trn-topbar">
-            <div class="trn-topbar-item">
-                <label>{{ t('trn.num_players', lang) }}</label>
-                <div class="trn-n-btns" id="trn-player-btns">
-                    {% for n in range(2, 11) %}
-                    <button type="button" class="trn-n-btn{% if n == 2 %} active{% endif %}" data-n="{{ n }}">{{ n }}</button>
-                    {% endfor %}
+        <div class="trn-landing-actions">
+            <a href="/tournaments/create" class="trn-landing-card">
+                <div class="trn-landing-icon">🎨</div>
+                <h2>{{ t('trn.create_btn', lang) }}</h2>
+                <p>{{ t('trn.design_subtitle', lang) }}</p>
+            </a>
+            <div class="trn-landing-card" id="trn-join-card">
+                <div class="trn-landing-icon">🔗</div>
+                <h2>{{ t('trn.join_with_code', lang) }}</h2>
+                <p>{{ t('trn.enter_code', lang) }}</p>
+                <div class="trn-join-form" id="trn-join-form">
+                    <input type="text" id="trn-join-code" class="room-input"
+                           placeholder="{{ t('trn.room_code', lang) }}" maxlength="40" autocomplete="off">
+                    <button class="btn btn-primary" id="btn-join-trn">{{ t('trn.join_btn', lang) }}</button>
                 </div>
-            </div>
-            <div class="trn-topbar-item trn-est">
-                <span class="trn-est-icon">⏱</span>
-                <span>{{ t('trn.estimated_time', lang) }}:</span>
-                <strong id="trn-est-time">0 {{ t('trn.minutes', lang) }}</strong>
+                <p class="room-error" id="trn-join-error" style="display:none"></p>
             </div>
         </div>
-
-        <!-- ── Game selector ── -->
-        <div class="trn-add-section">
-            <h2>{{ t('trn.select_game_type', lang) }}</h2>
-            <div class="trn-game-picker" id="trn-game-picker">
-                {% for game in games %}
-                {% if game.id in ['ordering','comparison','geostats','flags','outline'] %}
-                <button type="button" class="trn-pick-card" data-game-id="{{ game.id }}"
-                        data-game-name="{{ game_field(game, 'name', lang) }}"
-                        data-game-color="{{ game.color }}"
-                        data-game-icon="/static/img/icons/{{ game.id }}.svg"
-                        data-game-secs="{{ game.defaults.secs_per_item|default(20) }}"
-                        data-game-type="{{ game.type }}"
-                        style="--card-color: {{ game.color }}">
-                    <img src="/static/img/icons/{{ game.id }}.svg" width="40" height="40" alt="">
-                    <span>{{ game_field(game, 'name', lang) }}</span>
-                </button>
-                {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- ── Configure selected game (hidden until a game is picked) ── -->
-        <div class="trn-config-panel" id="trn-config-panel" style="display:none">
-            <div class="trn-config-header">
-                <img id="trn-cfg-icon" src="" width="36" height="36" alt="">
-                <h3 id="trn-cfg-name"></h3>
-                <button class="game-info-btn game-info-btn--inline" type="button" id="trn-cfg-info"
-                        title="{{ t('gi.instructions', lang) }}">i</button>
-            </div>
-            <div class="trn-config-body">
-                <div class="trn-cfg-group">
-                    <label>{{ t('trn.questions', lang) }}</label>
-                    <div class="trn-n-btns" id="trn-cfg-questions">
-                        {% for n in [5, 10, 15, 20] %}
-                        <button type="button" class="trn-n-btn{% if n == 10 %} active{% endif %}" data-n="{{ n }}">{{ n }}</button>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="trn-cfg-group">
-                    <label>{{ t('trn.rounds_per_game', lang) }}</label>
-                    <div class="trn-n-btns" id="trn-cfg-rounds">
-                        {% for n in range(1, 4) %}
-                        <button type="button" class="trn-n-btn{% if n == 1 %} active{% endif %}" data-n="{{ n }}">{{ n }}</button>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="trn-cfg-group">
-                    <label>{{ t('trn.continent_filter', lang) }}</label>
-                    <select id="trn-cfg-continent" class="room-select">
-                        <option value="all">{{ t('game.all', lang) }}</option>
-                        <option value="europe">{{ t('game.europe', lang) }}</option>
-                        <option value="asia">{{ t('game.asia', lang) }}</option>
-                        <option value="africa">{{ t('game.africa', lang) }}</option>
-                        <option value="america">{{ t('game.america', lang) }}</option>
-                        <option value="oceania">{{ t('game.oceania', lang) }}</option>
-                    </select>
-                </div>
-                <div class="trn-cfg-group">
-                    <label class="trn-toggle-label">
-                        <input type="checkbox" id="trn-cfg-timer">
-                        <span>{{ t('trn.with_timer', lang) }}</span>
-                    </label>
-                </div>
-            </div>
-            <button class="btn btn-primary trn-cfg-add-btn" id="trn-cfg-add">{{ t('trn.add_game', lang) }}</button>
-        </div>
-
-        <!-- ── Game list (tournament queue) ── -->
-        <div class="trn-queue-section">
-            <h2>{{ t('trn.game_list_title', lang) }} <span class="trn-queue-count" id="trn-queue-count">(0/10)</span></h2>
-            <div class="trn-queue" id="trn-queue">
-                <p class="trn-queue-empty" id="trn-queue-empty">{{ t('trn.no_games_yet', lang) }}</p>
-            </div>
-        </div>
-
-        <!-- ── Create room button ── -->
-        <button class="btn btn-primary trn-create-room-btn" id="btn-create-trn" disabled>
-            {{ t('trn.create_room', lang) }}
-        </button>
-        <p class="room-error" id="trn-create-error" style="display:none"></p>
 
         {% endif %}
     </div>
 </section>
-
-{% include "games/_instructions_modal.html" %}
 {% endblock %}
 
 {% block extra_scripts %}
 {% if user %}
 <script>
-window.TRN_T = {
-    game_n: {{ t('trn.game_n', lang)|tojson }},
-    remove: {{ t('trn.remove_game', lang)|tojson }},
-    minutes: {{ t('trn.minutes', lang)|tojson }},
-    max_games: {{ t('trn.max_games', lang)|tojson }},
-    creating: {{ t('trn.creating', lang)|tojson }},
-    questions: {{ t('trn.questions', lang)|tojson }},
-    rounds: {{ t('trn.rounds_per_game', lang)|tojson }},
-    timer: {{ t('trn.with_timer', lang)|tojson }},
-    continent: {{ t('trn.continent_filter', lang)|tojson }},
-    all: {{ t('game.all', lang)|tojson }},
-    europe: {{ t('game.europe', lang)|tojson }},
-    asia: {{ t('game.asia', lang)|tojson }},
-    africa: {{ t('game.africa', lang)|tojson }},
-    america: {{ t('game.america', lang)|tojson }},
-    oceania: {{ t('game.oceania', lang)|tojson }}
-};
+(function () {
+    var codeInput = document.getElementById('trn-join-code');
+    var joinBtn = document.getElementById('btn-join-trn');
+    var errorEl = document.getElementById('trn-join-error');
+
+    joinBtn.addEventListener('click', function () {
+        var code = codeInput.value.trim();
+        if (!code) return;
+        errorEl.style.display = 'none';
+        joinBtn.disabled = true;
+
+        fetch('/api/tournaments/' + encodeURIComponent(code) + '/join', { method: 'POST' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.tournament_id) {
+                    window.location.href = '/tournaments/' + data.tournament_id;
+                } else {
+                    errorEl.textContent = data.detail || 'Error';
+                    errorEl.style.display = 'block';
+                    joinBtn.disabled = false;
+                }
+            })
+            .catch(function () { joinBtn.disabled = false; });
+    });
+
+    codeInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') joinBtn.click();
+    });
+})();
 </script>
-<script src="/static/js/tournaments/lobby.js"></script>
 {% endif %}
 {% endblock %}

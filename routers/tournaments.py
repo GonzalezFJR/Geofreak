@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+from decimal import Decimal
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request, WebSocket, WebSocketDisconnect
@@ -10,6 +12,16 @@ from pydantic import BaseModel
 from core.auth import get_current_user, get_optional_user
 from core.i18n import get_lang, t
 from core.templates import templates
+
+
+def _decimal_default(obj):
+    if isinstance(obj, Decimal):
+        return int(obj) if obj == int(obj) else float(obj)
+    raise TypeError
+
+def _clean_decimals(obj):
+    """Convert DynamoDB Decimals to plain ints/floats for JSON serialization."""
+    return json.loads(json.dumps(obj, default=_decimal_default))
 from core.websocket_manager import tournament_manager as ws_mgr
 from services.auth import decode_token
 from services.games import GamesService
@@ -48,8 +60,16 @@ _games_service = GamesService()
 @router.get("/tournaments")
 async def tournament_lobby_page(request: Request, user: Optional[dict] = Depends(get_optional_user)):
     lang = get_lang(request)
-    games = _games_service.get_games()
     return templates.TemplateResponse("tournaments/lobby.html", {
+        "request": request, "user": user, "lang": lang,
+    })
+
+
+@router.get("/tournaments/create")
+async def tournament_create_page(request: Request, user: Optional[dict] = Depends(get_optional_user)):
+    lang = get_lang(request)
+    games = _games_service.get_games()
+    return templates.TemplateResponse("tournaments/create.html", {
         "request": request, "user": user, "lang": lang,
         "games": games,
     })
@@ -73,6 +93,9 @@ async def tournament_page(tid: str, request: Request, user: dict = Depends(get_c
     template = "tournaments/play.html"
     if tourn["status"] == "finished":
         template = "tournaments/results.html"
+
+    # Clean Decimals from DynamoDB before passing to template
+    tourn = _clean_decimals(tourn)
 
     # Build game name map from contents.json
     all_games = _games_service.get_games()
@@ -116,16 +139,16 @@ async def api_create_tournament(payload: CreateTournamentPayload, user: dict = D
 
     # Count total rounds (each game.rounds contributes)
     total_rounds = sum(g.rounds for g in payload.games)
-    if total_rounds > 10:
-        raise HTTPException(status_code=400, detail="Maximum 10 total rounds")
+    if total_rounds > 50:
+        raise HTTPException(status_code=400, detail="Maximum 50 total rounds")
 
     for g in payload.games:
         if g.game_id not in VALID_GAME_IDS:
             raise HTTPException(status_code=400, detail=f"Invalid game type: {g.game_id}")
-        if g.num_questions < 3 or g.num_questions > 20:
-            raise HTTPException(status_code=400, detail="Questions must be 3-20")
-        if g.rounds < 1 or g.rounds > 3:
-            raise HTTPException(status_code=400, detail="Rounds per game must be 1-3")
+        if g.num_questions < 5 or g.num_questions > 50:
+            raise HTTPException(status_code=400, detail="Questions must be 5-50")
+        if g.rounds < 1 or g.rounds > 5:
+            raise HTTPException(status_code=400, detail="Rounds per game must be 1-5")
 
     # Expand games into individual rounds
     rounds_config = []
