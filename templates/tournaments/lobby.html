@@ -24,7 +24,7 @@
         </div>
 
         <div class="trn-landing-actions">
-            <a href="/tournaments/create" class="trn-landing-card">
+            <a href="/play/tournament/create" class="trn-landing-card">
                 <div class="trn-landing-icon">🎨</div>
                 <h2>{{ t('trn.create_btn', lang) }}</h2>
                 <p>{{ t('trn.design_subtitle', lang) }}</p>
@@ -33,7 +33,7 @@
                 <div class="trn-landing-icon">🔗</div>
                 <h2>{{ t('trn.join_with_code', lang) }}</h2>
                 <p>{{ t('trn.enter_code', lang) }}</p>
-                <div class="trn-join-form" id="trn-join-form">
+                <div class="trn-join-form"  id="trn-join-form">
                     <input type="text" id="trn-join-code" class="room-input"
                            placeholder="{{ t('trn.room_code', lang) }}" maxlength="40" autocomplete="off">
                     <button class="btn btn-primary" id="btn-join-trn">{{ t('trn.join_btn', lang) }}</button>

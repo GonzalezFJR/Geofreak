@@ -68,7 +68,7 @@
 
         document.getElementById('btn-cancel-trn')?.addEventListener('click', function () {
             fetch('/api/tournaments/' + TID + '/cancel', { method: 'POST' })
-                .then(function () { window.location.href = '/tournaments'; });
+                .then(function () { window.location.href = '/play/tournament'; });
         });
 
         document.getElementById('btn-start-trn')?.addEventListener('click', function () {
@@ -151,7 +151,7 @@
 
             case 'tournament_cancelled':
                 showFeedback(T.cancelled, 'error');
-                setTimeout(function () { window.location.href = '/tournaments'; }, 1500);
+                setTimeout(function () { window.location.href = '/play/tournament'; }, 1500);
                 break;
 
             case 'user_connected': break;

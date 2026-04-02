@@ -57,7 +57,7 @@ _games_service = GamesService()
 
 # ── Pages ────────────────────────────────────────────────────────────────────
 
-@router.get("/tournaments")
+@router.get("/play/tournament")
 async def tournament_lobby_page(request: Request, user: Optional[dict] = Depends(get_optional_user)):
     lang = get_lang(request)
     return templates.TemplateResponse("tournaments/lobby.html", {
@@ -65,7 +65,7 @@ async def tournament_lobby_page(request: Request, user: Optional[dict] = Depends
     })
 
 
-@router.get("/tournaments/create")
+@router.get("/play/tournament/create")
 async def tournament_create_page(request: Request, user: Optional[dict] = Depends(get_optional_user)):
     lang = get_lang(request)
     games = _games_service.get_games()

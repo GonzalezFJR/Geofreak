@@ -62,17 +62,21 @@
 }
 .trn-join-form {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
     max-width: 320px;
     margin-top: 8px;
 }
 .trn-join-form .room-input {
-    flex: 1;
+    width: 100%;
     text-align: center;
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 2px;
+}
+.trn-join-form .btn {
+    width: 100%;
 }
 
 @media (max-width: 600px) {
