@@ -134,21 +134,21 @@
 {% if user %}
 <script>
 window.TRN_T = {
-    game_n: {{ t_js('trn.game_n', lang) }},
-    remove: {{ t_js('trn.remove_game', lang) }},
-    minutes: {{ t_js('trn.minutes', lang) }},
-    max_games: {{ t_js('trn.max_games', lang) }},
-    creating: {{ t_js('trn.creating', lang) }},
-    questions: {{ t_js('trn.questions', lang) }},
-    rounds: {{ t_js('trn.rounds_per_game', lang) }},
-    timer: {{ t_js('trn.with_timer', lang) }},
-    continent: {{ t_js('trn.continent_filter', lang) }},
-    all: {{ t_js('game.all', lang) }},
-    europe: {{ t_js('game.europe', lang) }},
-    asia: {{ t_js('game.asia', lang) }},
-    africa: {{ t_js('game.africa', lang) }},
-    america: {{ t_js('game.america', lang) }},
-    oceania: {{ t_js('game.oceania', lang) }}
+    game_n: {{ t('trn.game_n', lang)|tojson }},
+    remove: {{ t('trn.remove_game', lang)|tojson }},
+    minutes: {{ t('trn.minutes', lang)|tojson }},
+    max_games: {{ t('trn.max_games', lang)|tojson }},
+    creating: {{ t('trn.creating', lang)|tojson }},
+    questions: {{ t('trn.questions', lang)|tojson }},
+    rounds: {{ t('trn.rounds_per_game', lang)|tojson }},
+    timer: {{ t('trn.with_timer', lang)|tojson }},
+    continent: {{ t('trn.continent_filter', lang)|tojson }},
+    all: {{ t('game.all', lang)|tojson }},
+    europe: {{ t('game.europe', lang)|tojson }},
+    asia: {{ t('game.asia', lang)|tojson }},
+    africa: {{ t('game.africa', lang)|tojson }},
+    america: {{ t('game.america', lang)|tojson }},
+    oceania: {{ t('game.oceania', lang)|tojson }}
 };
 </script>
 <script src="/static/js/tournaments/lobby.js"></script>
