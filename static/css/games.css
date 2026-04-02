@@ -1892,10 +1892,10 @@ a.game-card:hover .game-card-icon {
     .comparison-container { padding: 12px 12px 8px; }
     .comparison-header { margin-bottom: 16px; }
     .comparison-prompt { font-size: 1rem; }
-    .comparison-cards { gap: 10px; flex-wrap: nowrap; margin-bottom: 14px; }
-    .comparison-card { min-width: 0; padding: 18px 12px; }
+    .comparison-cards { gap: 12px; flex-direction: column; align-items: center; margin-bottom: 14px; }
+    .comparison-card { min-width: 0; width: 100%; max-width: 340px; padding: 18px 16px; }
     .comparison-flag { font-size: 2.2rem; margin-bottom: 8px; }
-    .comparison-name { font-size: 0.92rem; margin-bottom: 4px; }
+    .comparison-name { font-size: 0.95rem; margin-bottom: 4px; }
     .comparison-value { font-size: 1.05rem; margin-top: 4px; }
     .comparison-feedback { font-size: 0.9rem; }
 
@@ -1938,9 +1938,9 @@ a.game-card:hover .game-card-icon {
     .hud-timer { min-width: 60px; font-size: 0.82rem; }
 
     /* Comparison game — very small phones */
-    .comparison-card { padding: 14px 8px; }
+    .comparison-card { padding: 14px 12px; }
     .comparison-flag { font-size: 1.8rem; margin-bottom: 6px; }
-    .comparison-name { font-size: 0.82rem; }
+    .comparison-name { font-size: 0.85rem; }
     .comparison-value { font-size: 0.92rem; }
 }
 
@@ -2093,29 +2093,31 @@ body:has(.game-page) {
         font-size: 0.9rem;
     }
     body:has(.game-page) .geostats-chart-wrapper {
-        padding: 8px;
-        margin-bottom: 6px;
-        max-height: calc(100vh - 56px - 30px - 190px);
-        min-height: 100px;
+        padding: 6px;
+        margin-bottom: 4px;
+        min-height: 80px;
         overflow: hidden;
     }
     body:has(.game-page) .geostats-input-area {
         margin-bottom: 4px;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
     }
     body:has(.game-page) .geostats-input-area input {
+        flex: 1 1 100%;
         padding: 8px 10px;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         min-width: 0;
     }
     body:has(.game-page) .geostats-input-area .btn {
-        padding: 8px 14px;
-        font-size: 0.82rem;
+        flex: 1;
+        padding: 8px 12px;
+        font-size: 0.85rem;
         white-space: nowrap;
     }
     body:has(.game-page) .geostats-input-area .btn-reveal {
+        flex: 1;
         padding: 8px 10px;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
     }
     body:has(.game-page) .geostats-status {
         margin-bottom: 2px;
@@ -2491,12 +2493,19 @@ body:has(.game-page) {
     .comparison-container {
         padding: 12px 10px calc(env(safe-area-inset-bottom, 0px) + 12px);
     }
-    .comparison-header { margin-bottom: 16px; }
+    .comparison-header { margin-bottom: 12px; }
     .comparison-prompt { font-size: 1rem; }
-    .comparison-cards { gap: 10px; }
-    .comparison-card { padding: 20px 16px; min-width: 140px; }
+    .comparison-cards { gap: 12px; flex-direction: column; align-items: center; }
+    .comparison-card { padding: 18px 16px; min-width: 0; width: 100%; max-width: 340px; }
     .comparison-flag { font-size: 2rem; }
     .comparison-name { font-size: 0.95rem; }
+}
+
+/* ── Comparison landscape — restore horizontal layout ─── */
+@media (max-width: 640px) and (orientation: landscape) {
+    .comparison-cards { flex-direction: row; align-items: stretch; }
+    .comparison-card { width: auto; max-width: 280px; flex: 1; padding: 14px 12px; }
+    .comparison-flag { font-size: 1.8rem; margin-bottom: 6px; }
 }
 
 /* ─── Outline Game Map ─────────────────────────────────────── */
