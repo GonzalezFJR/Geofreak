@@ -58,14 +58,14 @@ var MapGame = (function () {
         'asia':     { center: [35,  90], zoom: 3, minZoom: 2, maxBounds: [[-85,  25], [85, 180]] },
         'africa':   { center: [ 5,  20], zoom: 3, minZoom: 2, maxBounds: [[-85, -22], [85,  58]] },
         'americas': { center: [10, -78], zoom: 3, minZoom: 2, maxBounds: [[-85, -130], [85, -25]] },
-        'oceania':  { center: [-25, 145], zoom: 4, minZoom: 3, maxBounds: [[-85, 108], [79, 188]] },
+        'oceania':  { center: [-15, 178], zoom: 3, minZoom: 2, maxBounds: [[-55, 100], [30, 240]] },
     };
 
     var activeContinent = null; // set during loadData
 
     /* Returns the right map cfg for dataset + active continent filter */
     function getMapConfig(ds, continent) {
-        if (ds === 'countries' && continent && continent !== 'all' && CONTINENT_CONFIG[continent]) {
+        if (continent && continent !== 'all' && CONTINENT_CONFIG[continent]) {
             return CONTINENT_CONFIG[continent];
         }
         return DATASET_CONFIG[ds] || DATASET_CONFIG['countries'];
@@ -187,7 +187,7 @@ var MapGame = (function () {
             if (cityCountries) dataUrl += '&country_filter=' + encodeURIComponent(cityCountries);
         }
 
-        return { dataUrl: dataUrl, continent: continent, entityType: entityType };
+        return { dataUrl: dataUrl, continent: isCityDataset ? cityContinent : continent, entityType: entityType };
     }
 
     /* ── Data loading ───────────────────────────────────────── */
