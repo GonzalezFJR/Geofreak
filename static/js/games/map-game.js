@@ -578,12 +578,14 @@ var MapGame = (function () {
     function markCorrect(id) {
         correctSet.add(id);
         GeoGame.addCorrect();
+        GeoGame.addAnswered();
         if (isCityDataset) refreshCityStyle(id);
         else refreshStyle(id);
     }
 
     function markFailed(id) {
         failedSet.add(id);
+        GeoGame.addAnswered();
         if (isCityDataset) refreshCityStyle(id);
         else refreshStyle(id);
     }

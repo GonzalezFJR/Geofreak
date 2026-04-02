@@ -455,10 +455,12 @@ var ReliefGame = (function () {
     function markCorrect(id) {
         correctSet.add(id);
         GeoGame.addCorrect();
+        GeoGame.addAnswered();
         refreshMarker(id);
     }
     function markFailed(id) {
         failedSet.add(id);
+        GeoGame.addAnswered();
         refreshMarker(id);
     }
     function checkComplete() {

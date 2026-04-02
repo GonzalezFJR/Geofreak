@@ -337,6 +337,7 @@ var OrderingGame = (function () {
         if (isCorrect) {
             GeoGame.addCorrect();
         }
+        GeoGame.addAnswered();
 
         var feedbackText = isCorrect
             ? (T['ord.correct'] || '✅ Correct order!')

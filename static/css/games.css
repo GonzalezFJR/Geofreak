@@ -365,6 +365,20 @@
     font-weight: 600;
 }
 
+.hud-progress {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.12);
+}
+.hud-progress-fill {
+    height: 100%;
+    width: 0;
+    background: var(--primary, #1a73e8);
+    transition: width 0.4s ease;
+    border-radius: 0 2px 2px 0;
+}
+
 .hud-quit {
     position: absolute;
     right: 16px;
@@ -2030,16 +2044,17 @@ body:has(.game-page) {
         display: flex;
     }
     body:has(.game-page) .nav-links .nav-link {
-        color: rgba(255, 255, 255, 0.9);
+        color: rgba(255, 255, 255, 0.9) !important;
         font-size: 1.1rem;
         padding: 14px 32px;
         border-radius: 8px;
+        border-bottom: none !important;
         transition: background 0.15s;
     }
     body:has(.game-page) .nav-links .nav-link:hover,
     body:has(.game-page) .nav-links .nav-link:active {
         background: rgba(255, 255, 255, 0.1);
-        color: #fff;
+        color: #fff !important;
     }
     body:has(.game-page) .nav-links .nav-logout {
         color: #ef5350 !important;
@@ -2080,16 +2095,27 @@ body:has(.game-page) {
     body:has(.game-page) .geostats-chart-wrapper {
         padding: 8px;
         margin-bottom: 6px;
-        /* Limit chart height on mobile to fit everything */
-        max-height: calc(100vh - 56px - 30px - 160px);
-        min-height: 120px;
+        max-height: calc(100vh - 56px - 30px - 190px);
+        min-height: 100px;
+        overflow: hidden;
     }
     body:has(.game-page) .geostats-input-area {
         margin-bottom: 4px;
+        flex-wrap: nowrap;
     }
     body:has(.game-page) .geostats-input-area input {
-        padding: 8px 12px;
-        font-size: 0.9rem;
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        min-width: 0;
+    }
+    body:has(.game-page) .geostats-input-area .btn {
+        padding: 8px 14px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+    }
+    body:has(.game-page) .geostats-input-area .btn-reveal {
+        padding: 8px 10px;
+        font-size: 0.75rem;
     }
     body:has(.game-page) .geostats-status {
         margin-bottom: 2px;

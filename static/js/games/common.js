@@ -462,6 +462,7 @@ var CAPITAL_ALIASES = {
 /* ── Game Controller ───────────────────────────────────────── */
 var GeoGame = {
     correct: 0,
+    answered: 0,
     total: 0,
     startTime: null,
     timerInterval: null,
@@ -519,6 +520,7 @@ var GeoGame = {
 
         this.settings = s;
         this.correct = 0;
+        this.answered = 0;
         this.total = 0;
 
         // Show loading spinner on start button; game screen shown only after data is ready
@@ -540,11 +542,12 @@ var GeoGame = {
 
         // Timer — if delayTimer is set, defer until startTimer() is called
         this.timeRemaining = this.settings.timeLimit || 0;
+        if (this.settings.timeLimit <= 0) {
+            document.getElementById('hud-timer').style.display = 'none';
+        }
         if (this._callbacks.delayTimer) {
             if (this.settings.timeLimit > 0) {
                 this._updateTimer();
-            } else {
-                document.getElementById('hud-timer').textContent = '⏱️ ∞';
             }
         } else {
             this._beginTimer();
@@ -569,7 +572,7 @@ var GeoGame = {
                 }
             }, 1000);
         } else {
-            document.getElementById('hud-timer').textContent = '⏱️ ∞';
+            document.getElementById('hud-timer').style.display = 'none';
         }
     },
 
@@ -590,6 +593,10 @@ var GeoGame = {
 
     addCorrect: function () {
         this.correct++;
+    },
+
+    addAnswered: function () {
+        this.answered++;
         this._updateHudScore();
     },
 
@@ -599,10 +606,15 @@ var GeoGame = {
     },
 
     _updateHudScore: function () {
-        var c = document.getElementById('hud-correct');
+        var a = document.getElementById('hud-answered');
         var t = document.getElementById('hud-total');
-        if (c) c.textContent = this.correct;
+        if (a) a.textContent = this.answered;
         if (t) t.textContent = this.total;
+        // Progress bar (visible when no countdown)
+        var fill = document.getElementById('hud-progress-fill');
+        if (fill && this.total > 0) {
+            fill.style.width = Math.round((this.answered / this.total) * 100) + '%';
+        }
     },
 
     endGame: function () {

@@ -514,6 +514,7 @@ var GeoStatsGame = (function () {
 
     function endQuestion() {
         resolved = true;
+        GeoGame.addAnswered();
         document.getElementById('geostats-input').disabled = true;
         document.getElementById('btn-guess').style.display = 'none';
         document.getElementById('btn-gs-reveal').style.display = 'none';

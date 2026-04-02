@@ -154,6 +154,7 @@ var QuizGame = (function () {
         if (acceptable.has(normalised)) {
             // CORRECT
             GeoGame.addCorrect();
+            GeoGame.addAnswered();
             input.className = 'correct';
             showFeedback('correct', (T['js.correct_name'] || '✅ Correct! {name}').replace('{name}', GeoUtils.getLocalName(country)));
             GeoReview.snapshot();
@@ -163,6 +164,7 @@ var QuizGame = (function () {
             var matched = findMatchingCountry(normalised);
             if (matched) {
                 // Valid country, but WRONG - reveal correct answer and move on
+                GeoGame.addAnswered();
                 var localName = GeoUtils.getLocalName(country);
                 input.value = localName;
                 input.className = 'wrong';
@@ -192,6 +194,7 @@ var QuizGame = (function () {
 
     /** Reveal: show the answer and count as failed */
     function reveal() {
+        GeoGame.addAnswered();
         var country = queue[currentIdx];
         var input = document.getElementById('answer-input');
         // Only focus if keyboard was already open (input had focus)

@@ -169,6 +169,7 @@ var ComparisonGame = (function () {
         if (isCorrect) {
             GeoGame.addCorrect();
         }
+        GeoGame.addAnswered();
 
         q.countries.forEach(function (c) {
             var valEl = document.getElementById('val-' + c.iso_a3);

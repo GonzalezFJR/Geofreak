@@ -94,9 +94,10 @@
     <div class="game-hud" id="game-hud" style="display:none">
         <div class="hud-timer" id="hud-timer">⏱️ 10:00</div>
         <div class="hud-score">
-            ✅ <span id="hud-correct">0</span> / <span id="hud-total">0</span>
+            <span id="hud-answered">0</span> / <span id="hud-total">0</span>
         </div>
         <button class="hud-quit" onclick="GeoGame.quit()">{{ t('game.quit', lang) }}</button>
+        <div class="hud-progress" id="hud-progress"><div class="hud-progress-fill" id="hud-progress-fill"></div></div>
     </div>
 
     <!-- ─── Game area ─────────────────────────────────────── -->
