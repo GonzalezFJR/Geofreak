@@ -745,5 +745,10 @@ var MapGame = (function () {
         }, 1600);
     }
 
-    return { init: init, submitAnswer: submitAnswer, reveal: reveal };
+    return {
+        init: init,
+        submitAnswer: submitAnswer,
+        reveal: reveal,
+        getConfig: function () { return { dataset: dataset, mode: mode }; }
+    };
 })();

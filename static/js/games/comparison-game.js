@@ -220,6 +220,7 @@ var ComparisonGame = (function () {
     function saveResult() {
         var elapsed = Date.now() - GeoGame.startTime;
         var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
+        var isRanked = GeoGame.settings.timeLimit > 0;
         var payload = {
             game_type: 'comparison',
             mode: isDaily ? 'daily' : 'solo',
@@ -227,7 +228,9 @@ var ComparisonGame = (function () {
             total: GeoGame.total,
             accuracy: GeoGame.total > 0 ? GeoGame.correct / GeoGame.total : 0,
             time_ms: elapsed,
-            config: { continent: GeoGame.settings.continent, questions: questions.length }
+            config: { continent: GeoGame.settings.continent, questions: questions.length },
+            ranked: isRanked,
+            num_questions: questions.length
         };
         if (isDaily) { _setDailyCache(GeoGame.correct, GeoGame.total, elapsed); }
         fetch('/api/matches/result', {

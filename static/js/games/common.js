@@ -656,6 +656,7 @@ var GeoGame = {
         // ordering, comparison & geostats games save their own results
         if (gameType === 'ordering' || gameType === 'comparison' || gameType === 'geostats') return;
 
+        var isRanked = this.settings.timeLimit > 0;
         var payload = {
             game_type: gameType,
             mode: 'solo',
@@ -663,8 +664,20 @@ var GeoGame = {
             total: this.total,
             accuracy: this.total > 0 ? this.correct / this.total : 0,
             time_ms: elapsedSec * 1000,
-            config: { continent: this.settings.continent || 'all' }
+            config: { continent: this.settings.continent || 'all' },
+            ranked: isRanked,
+            num_questions: this.total
         };
+        // Add dataset/mode for map games
+        if (typeof MapGame !== 'undefined' && MapGame.getConfig) {
+            var mc = MapGame.getConfig();
+            if (mc.dataset) payload.config.dataset = mc.dataset;
+            if (mc.mode) payload.config.game_mode = mc.mode;
+        }
+        if (typeof ReliefGame !== 'undefined' && ReliefGame.getConfig) {
+            var rc = ReliefGame.getConfig();
+            if (rc.category) payload.config.category = rc.category;
+        }
         fetch('/api/matches/result', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

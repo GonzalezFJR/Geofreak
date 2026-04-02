@@ -22,6 +22,22 @@ from services.user_stats import record_match_result, get_user_stats, ensure_user
 from services.analytics import track
 from services.daily_challenge import get_daily_challenge, get_user_daily_result, save_user_daily_result
 from services.leaderboards import get_leaderboard, get_user_position, rebuild_all_leaderboards, GAME_TYPES
+from services.scoring import (
+    process_ranked_attempt,
+    get_records,
+    get_user_attempts,
+    get_user_test_ratings,
+    build_test_key,
+    ALL_GAME_TYPES as SCORING_GAME_TYPES,
+)
+from services.rankings import (
+    get_game_ranking,
+    get_season_ranking,
+    get_weekly_ranking,
+    get_user_game_ranking,
+    get_user_ranking_position,
+    rebuild_all_rankings,
+)
 
 router = APIRouter(tags=["api"])
 
@@ -383,6 +399,9 @@ class MatchResultPayload(BaseModel):
     accuracy: float
     time_ms: int
     config: dict = {}
+    ranked: bool = False
+    num_questions: int = 0
+    per_question_scores: list[float] = []
 
 
 @router.post("/matches/result")
@@ -448,11 +467,32 @@ async def save_match_result(
             "match_id": match["match_id"],
         })
 
-    return {
+    # Process ranked attempt (competitive scoring system)
+    scoring_result = None
+    if payload.ranked and payload.game_type in SCORING_GAME_TYPES:
+        try:
+            scoring_result = process_ranked_attempt(
+                user_id=user["user_id"],
+                game_type=payload.game_type,
+                score=payload.score,
+                total=payload.total,
+                num_questions=payload.num_questions or payload.total,
+                time_ms=payload.time_ms,
+                config=payload.config,
+                per_question_scores=payload.per_question_scores or None,
+                username=user.get("username", ""),
+            )
+        except Exception:
+            pass  # scoring failure must not break match saving
+
+    result = {
         "saved": True,
         "match_id": match["match_id"],
         "total_matches": int(stats.get("total_matches", 0)),
     }
+    if scoring_result:
+        result["scoring"] = scoring_result
+    return result
 
 
 @router.get("/user/stats")
@@ -511,3 +551,104 @@ async def api_top10(user: Optional[dict] = Depends(get_optional_user)):
     if user:
         result["user_position"] = get_user_position(user["user_id"])
     return result
+
+
+# ── Ranking endpoints (new scoring system) ───────────────────────────────────
+
+@router.get("/rankings/game/{game_type}")
+async def api_game_ranking(
+    game_type: str,
+    user: Optional[dict] = Depends(get_optional_user),
+):
+    """Per-game ranking using the new scoring system (R_test → RG)."""
+    if game_type not in SCORING_GAME_TYPES:
+        raise HTTPException(status_code=404, detail="Unknown game type")
+    lb = get_game_ranking(game_type)
+    result = {
+        "ranking": lb["entries"] if lb else [],
+        "game_type": game_type,
+        "updated_at": lb.get("updated_at") if lb else None,
+    }
+    if user:
+        pos = get_user_ranking_position(user["user_id"], "game", game_type)
+        result["user_position"] = pos
+        result["user_detail"] = get_user_game_ranking(user["user_id"], game_type)
+    return result
+
+
+@router.get("/rankings/season")
+async def api_season_ranking(user: Optional[dict] = Depends(get_optional_user)):
+    """Season ranking (last 12 weeks)."""
+    lb = get_season_ranking()
+    result = {
+        "ranking": lb["entries"] if lb else [],
+        "updated_at": lb.get("updated_at") if lb else None,
+    }
+    if user:
+        pos = get_user_ranking_position(user["user_id"], "season")
+        result["user_position"] = pos
+    return result
+
+
+@router.get("/rankings/weekly")
+async def api_weekly_ranking(
+    week: Optional[str] = Query(None, description="ISO week key like 2026-W14"),
+    user: Optional[dict] = Depends(get_optional_user),
+):
+    """Weekly ranking (current or specific week)."""
+    lb = get_weekly_ranking(week)
+    result = {
+        "ranking": lb["entries"] if lb else [],
+        "week_key": lb.get("week_key", week) if lb else week,
+        "updated_at": lb.get("updated_at") if lb else None,
+    }
+    if user:
+        pos = get_user_ranking_position(user["user_id"], "weekly")
+        result["user_position"] = pos
+    return result
+
+
+@router.get("/rankings/rebuild")
+async def api_rebuild_rankings(user: dict = Depends(get_current_user)):
+    """Manually trigger ranking rebuild (admin-level)."""
+    counts = rebuild_all_rankings()
+    return {"status": "ok", "rebuilt": counts}
+
+
+# ── Scoring data endpoints ───────────────────────────────────────────────────
+
+@router.get("/user/scoring")
+async def api_user_scoring(user: dict = Depends(get_current_user)):
+    """Return the current user's scoring data: test ratings and recent attempts."""
+    test_ratings = get_user_test_ratings(user["user_id"])
+    recent_attempts = get_user_attempts(user["user_id"], limit=30)
+
+    # Compute game rankings on-the-fly
+    from collections import defaultdict
+    game_ratings_map: dict[str, list[float]] = defaultdict(list)
+    for tr in test_ratings:
+        game_ratings_map[tr["game_type"]].append(tr["rating"])
+
+    from services.rankings import compute_game_ranking, compute_game_ranking_final
+    game_rankings = {}
+    for gt, ratings in game_ratings_map.items():
+        rg = compute_game_ranking(ratings)
+        rg_final = compute_game_ranking_final(rg, len(ratings))
+        game_rankings[gt] = {
+            "rg": round(rg, 4),
+            "rg_final": round(rg_final, 4),
+            "tests_valid": len(ratings),
+        }
+
+    return {
+        "test_ratings": test_ratings,
+        "game_rankings": game_rankings,
+        "recent_attempts": recent_attempts,
+    }
+
+
+@router.get("/records/{config_key:path}")
+async def api_records(config_key: str):
+    """Get records for a specific test configuration."""
+    records = get_records(config_key)
+    return {"config_key": config_key, "records": records}

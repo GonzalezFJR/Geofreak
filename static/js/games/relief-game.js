@@ -575,5 +575,10 @@ var ReliefGame = (function () {
         setTimeout(function () { advanceLocate(); checkComplete(); }, 1600);
     }
 
-    return { init: init, submitAnswer: submitAnswer, reveal: reveal };
+    return {
+        init: init,
+        submitAnswer: submitAnswer,
+        reveal: reveal,
+        getConfig: function () { return { category: category, mode: mode }; }
+    };
 })();

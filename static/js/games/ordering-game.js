@@ -381,6 +381,7 @@ var OrderingGame = (function () {
         var elapsed = Date.now() - GeoGame.startTime;
         var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
         var avgScore = questions.length > 0 ? totalScore / questions.length : 0;
+        var isRanked = GeoGame.settings.timeLimit > 0;
         var payload = {
             game_type: 'ordering',
             mode: isDaily ? 'daily' : 'solo',
@@ -392,7 +393,9 @@ var OrderingGame = (function () {
                 continent: GeoGame.settings.continent,
                 questions: questions.length,
                 avg_score: Math.round(avgScore * 10) / 10
-            }
+            },
+            ranked: isRanked,
+            num_questions: questions.length
         };
         if (isDaily) { _setDailyCache(GeoGame.correct, GeoGame.total, elapsed); }
         fetch('/api/matches/result', {

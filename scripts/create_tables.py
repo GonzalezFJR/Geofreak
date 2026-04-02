@@ -154,6 +154,57 @@ TABLE_DEFS: list[tuple] = [
         ],
         [],
     ),
+    # 12. ranked_attempts  (PK=test_key, SK=attempt_id)
+    #     GSI: user-time-index (PK=user_id, SK=created_at)
+    (
+        "ranked_attempts",
+        [
+            {"AttributeName": "test_key", "KeyType": "HASH"},
+            {"AttributeName": "attempt_id", "KeyType": "RANGE"},
+        ],
+        [
+            {"AttributeName": "test_key", "AttributeType": "S"},
+            {"AttributeName": "attempt_id", "AttributeType": "S"},
+            {"AttributeName": "user_id", "AttributeType": "S"},
+            {"AttributeName": "created_at", "AttributeType": "S"},
+        ],
+        [
+            {
+                "IndexName": "user-time-index",
+                "KeySchema": [
+                    {"AttributeName": "user_id", "KeyType": "HASH"},
+                    {"AttributeName": "created_at", "KeyType": "RANGE"},
+                ],
+                "Projection": {"ProjectionType": "ALL"},
+            },
+        ],
+    ),
+    # 13. test_ratings  (PK=user_id, SK=test_key)
+    (
+        "test_ratings",
+        [
+            {"AttributeName": "user_id", "KeyType": "HASH"},
+            {"AttributeName": "test_key", "KeyType": "RANGE"},
+        ],
+        [
+            {"AttributeName": "user_id", "AttributeType": "S"},
+            {"AttributeName": "test_key", "AttributeType": "S"},
+        ],
+        [],
+    ),
+    # 14. records  (PK=config_key, SK=record_sort)
+    (
+        "records",
+        [
+            {"AttributeName": "config_key", "KeyType": "HASH"},
+            {"AttributeName": "record_sort", "KeyType": "RANGE"},
+        ],
+        [
+            {"AttributeName": "config_key", "AttributeType": "S"},
+            {"AttributeName": "record_sort", "AttributeType": "S"},
+        ],
+        [],
+    ),
 ]
 
 
