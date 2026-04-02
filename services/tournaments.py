@@ -16,7 +16,7 @@ from boto3.dynamodb.conditions import Key
 
 from core.aws import get_dynamodb_resource
 from core.config import get_settings
-from services.quiz import generate_ordering_set, generate_comparison_set
+from services.quiz import generate_ordering_set, generate_comparison_set, generate_geostats_set, generate_quiz_set
 
 import random
 
@@ -280,8 +280,50 @@ def generate_round_questions(game_type: str, config: dict) -> list[dict]:
 
     if game_type == "ordering":
         return generate_ordering_set(num_questions=num, continent=continent)
+    elif game_type == "comparison":
+        return generate_comparison_set(num_questions=num, continent=continent)
+    elif game_type == "geostats":
+        return generate_geostats_set(num_questions=num, continent=continent)
+    elif game_type in ("flags", "outline"):
+        return _generate_quiz_questions(num, continent, game_type)
     else:
         return generate_comparison_set(num_questions=num, continent=continent)
+
+
+def _generate_quiz_questions(num: int, continent, game_type: str) -> list[dict]:
+    """Generate quiz questions for flags/outline with options + correct answer."""
+    all_countries = generate_quiz_set(num_questions=max(num * 4, 50), continent=continent)
+    if len(all_countries) < 4:
+        return []
+
+    questions = []
+    used = set()
+    for c in all_countries:
+        if len(questions) >= num:
+            break
+        iso = c["iso_a3"]
+        if iso in used:
+            continue
+        used.add(iso)
+
+        # Get 3 wrong options
+        wrong = [x for x in all_countries if x["iso_a3"] != iso and x["iso_a3"] not in used]
+        random.shuffle(wrong)
+        wrong_options = wrong[:3]
+
+        options = [c] + wrong_options
+        random.shuffle(options)
+
+        questions.append({
+            "correct_iso": iso,
+            "display": {k: c.get(k, "") for k in ["iso_a3", "name", "name_es", "name_en", "name_fr", "name_it", "name_ru", "flag_emoji"]},
+            "options": [
+                {k: o.get(k, "") for k in ["iso_a3", "name", "name_es", "name_en", "name_fr", "name_it", "name_ru", "flag_emoji"]}
+                for o in options
+            ],
+        })
+
+    return questions
 
 
 def pick_round_game_type(config: dict) -> str:

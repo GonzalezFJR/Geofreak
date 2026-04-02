@@ -12,6 +12,7 @@ from core.i18n import get_lang, t
 from core.templates import templates
 from core.websocket_manager import tournament_manager as ws_mgr
 from services.auth import decode_token
+from services.games import GamesService
 from services.matches import create_match, finish_match, save_match_player
 from services.tournaments import (
     advance_round,
@@ -39,16 +40,18 @@ from services.users import get_user_by_id
 
 router = APIRouter(tags=["tournaments"])
 
+_games_service = GamesService()
+
 
 # ── Pages ────────────────────────────────────────────────────────────────────
 
 @router.get("/tournaments")
 async def tournament_lobby_page(request=None, user: Optional[dict] = Depends(get_optional_user)):
     lang = get_lang(request)
-    waiting = get_waiting_tournaments() if user else []
+    games = _games_service.get_games()
     return templates.TemplateResponse("tournaments/lobby.html", {
         "request": request, "user": user, "lang": lang,
-        "waiting_tournaments": waiting,
+        "games": games,
     })
 
 
@@ -71,41 +74,78 @@ async def tournament_page(tid: str, request=None, user: dict = Depends(get_curre
     if tourn["status"] == "finished":
         template = "tournaments/results.html"
 
+    # Build game name map from contents.json
+    all_games = _games_service.get_games()
+    game_name_map = {}
+    for g in all_games:
+        lang_key = "name_" + lang if lang != "es" else "name"
+        game_name_map[g["id"]] = g.get(lang_key) or g.get("name_en") or g.get("name", g["id"])
+
     return templates.TemplateResponse(template, {
         "request": request, "user": user, "lang": lang,
         "tournament": tourn, "rounds": rounds,
         "current_round": current_round_data,
+        "game_name_map": game_name_map,
     })
 
 
 # ── REST API ─────────────────────────────────────────────────────────────────
 
-class CreateTournamentPayload(BaseModel):
-    number_of_rounds: int = 5
+class TournamentGameConfig(BaseModel):
+    game_id: str
     num_questions: int = 10
+    rounds: int = 1
     continent: str = "all"
-    game_types: list[str] = ["ordering", "comparison"]
+    timed: bool = False
+
+
+class CreateTournamentPayload(BaseModel):
+    games: list[TournamentGameConfig]
+    num_players: int = 2
+
+
+VALID_GAME_IDS = {"ordering", "comparison", "geostats", "flags", "outline"}
 
 
 @router.post("/api/tournaments/create")
 async def api_create_tournament(payload: CreateTournamentPayload, user: dict = Depends(get_current_user)):
-    if payload.number_of_rounds < 2 or payload.number_of_rounds > 10:
-        raise HTTPException(status_code=400, detail="Rounds must be 2-10")
-    if payload.num_questions < 3 or payload.num_questions > 20:
-        raise HTTPException(status_code=400, detail="Questions must be 3-20")
-    valid_types = {"ordering", "comparison"}
-    if not all(gt in valid_types for gt in payload.game_types):
-        raise HTTPException(status_code=400, detail="Invalid game type")
+    if payload.num_players < 2 or payload.num_players > 10:
+        raise HTTPException(status_code=400, detail="Players must be 2-10")
+    if not payload.games:
+        raise HTTPException(status_code=400, detail="At least one game required")
+
+    # Count total rounds (each game.rounds contributes)
+    total_rounds = sum(g.rounds for g in payload.games)
+    if total_rounds > 10:
+        raise HTTPException(status_code=400, detail="Maximum 10 total rounds")
+
+    for g in payload.games:
+        if g.game_id not in VALID_GAME_IDS:
+            raise HTTPException(status_code=400, detail=f"Invalid game type: {g.game_id}")
+        if g.num_questions < 3 or g.num_questions > 20:
+            raise HTTPException(status_code=400, detail="Questions must be 3-20")
+        if g.rounds < 1 or g.rounds > 3:
+            raise HTTPException(status_code=400, detail="Rounds per game must be 1-3")
+
+    # Expand games into individual rounds
+    rounds_config = []
+    for g in payload.games:
+        for _ in range(g.rounds):
+            rounds_config.append({
+                "game_id": g.game_id,
+                "num_questions": g.num_questions,
+                "continent": g.continent,
+                "timed": g.timed,
+            })
 
     config = {
-        "num_questions": payload.num_questions,
-        "continent": payload.continent,
-        "game_types": payload.game_types,
+        "rounds": rounds_config,
+        "num_players": payload.num_players,
     }
     tourn = create_tournament(
         created_by=user["user_id"],
         username=user["username"],
-        number_of_rounds=payload.number_of_rounds,
+        number_of_rounds=total_rounds,
         config=config,
     )
     track("tournament_created", {"tournament_id": tourn["tournament_id"], "user_id": user["user_id"]})
@@ -152,11 +192,15 @@ async def api_start_tournament(tid: str, user: dict = Depends(get_current_user))
     start_tournament(tid)
     rnd = _create_next_round(tid, 1, tourn)
 
+    config = tourn.get("config", {})
+    rounds_config = config.get("rounds", [])
+
     await ws_mgr.broadcast_all(tid, {
         "type": "tournament_started",
         "round_number": 1,
         "game_type": rnd["game_type"],
-        "total_rounds": int(tourn.get("number_of_rounds", 5)),
+        "total_rounds": int(tourn.get("number_of_rounds", 1)),
+        "rounds_config": rounds_config,
     })
     return {"started": True, "round": 1}
 
@@ -216,16 +260,7 @@ async def api_round_questions(tid: str, round_num: int, user: dict = Depends(get
     questions = rnd.get("questions", [])
     game_type = rnd.get("game_type", "ordering")
 
-    if game_type == "ordering":
-        safe_q = [
-            {"stat": q["stat"], "stat_info": q["stat_info"], "ascending": q["ascending"], "countries": q["countries"]}
-            for q in questions
-        ]
-    else:
-        safe_q = [
-            {"stat": q["stat"], "stat_info": q["stat_info"], "countries": q["countries"]}
-            for q in questions
-        ]
+    safe_q = _strip_answers(questions, game_type)
     return {"questions": safe_q, "game_type": game_type, "round_number": round_num}
 
 
@@ -260,7 +295,11 @@ async def api_tournament_answer(tid: str, payload: TournamentAnswerPayload, user
 
     if game_type == "ordering":
         correct = payload.answer == q.get("correct_order", [])
-    else:
+    elif game_type == "comparison":
+        correct = payload.answer == q.get("correct_iso", "")
+    elif game_type in ("flags", "outline"):
+        correct = payload.answer == q.get("correct_iso", "")
+    elif game_type == "geostats":
         correct = payload.answer == q.get("correct_iso", "")
 
     current_score = int(rnd.get("round_scores", {}).get(user["user_id"], 0))
@@ -270,12 +309,7 @@ async def api_tournament_answer(tid: str, payload: TournamentAnswerPayload, user
     update_round_progress(tid, payload.round_number, user["user_id"], qi + 1, current_score)
 
     feedback = {"correct": correct, "question_index": qi}
-    if game_type == "ordering":
-        feedback["correct_order"] = q.get("correct_order", [])
-        feedback["correct_values"] = q.get("correct_values", {})
-    else:
-        feedback["correct_iso"] = q.get("correct_iso", "")
-        feedback["values"] = q.get("values", {})
+    feedback.update(_build_feedback(q, game_type))
 
     # Broadcast opponent progress
     await ws_mgr.broadcast(tid, {
@@ -404,10 +438,73 @@ def _safe_tournament(tourn: dict) -> dict:
 
 def _create_next_round(tid: str, round_number: int, tourn: dict) -> dict:
     config = tourn.get("config", {})
-    game_type = pick_round_game_type(config)
-    questions = generate_round_questions(game_type, config)
+    rounds_config = config.get("rounds", [])
+    idx = round_number - 1  # 0-based
+    if idx < len(rounds_config):
+        rc = rounds_config[idx]
+        game_type = rc.get("game_id", "ordering")
+        round_config = {
+            "num_questions": rc.get("num_questions", 10),
+            "continent": rc.get("continent", "all"),
+            "timed": rc.get("timed", False),
+        }
+    else:
+        # Fallback for old-format tournaments
+        game_type = pick_round_game_type(config)
+        round_config = config
+
+    questions = generate_round_questions(game_type, round_config)
     players = tourn.get("players", [])
-    return create_round(tid, round_number, game_type, config, questions, players)
+    return create_round(tid, round_number, game_type, round_config, questions, players)
+
+
+def _strip_answers(questions: list[dict], game_type: str) -> list[dict]:
+    """Remove answer fields from questions before sending to client."""
+    safe = []
+    for q in questions:
+        if game_type == "ordering":
+            safe.append({
+                "stat": q.get("stat"), "stat_info": q.get("stat_info"),
+                "ascending": q.get("ascending"), "countries": q.get("countries"),
+            })
+        elif game_type == "comparison":
+            safe.append({
+                "stat": q.get("stat"), "stat_info": q.get("stat_info"),
+                "countries": q.get("countries"),
+            })
+        elif game_type in ("flags", "outline"):
+            safe.append({
+                "options": q.get("options", []),
+                "display": q.get("display", {}),
+            })
+        elif game_type == "geostats":
+            safe.append({
+                "chart_data": q.get("chart_data", {}),
+                "stat_info": q.get("stat_info"),
+                "options": q.get("options", []),
+            })
+        else:
+            safe.append(q)
+    return safe
+
+
+def _build_feedback(q: dict, game_type: str) -> dict:
+    """Build feedback dict with correct answers for the client."""
+    if game_type == "ordering":
+        return {
+            "correct_order": q.get("correct_order", []),
+            "correct_values": q.get("correct_values", {}),
+        }
+    elif game_type == "comparison":
+        return {
+            "correct_iso": q.get("correct_iso", ""),
+            "values": q.get("values", {}),
+        }
+    elif game_type in ("flags", "outline"):
+        return {"correct_iso": q.get("correct_iso", "")}
+    elif game_type == "geostats":
+        return {"correct_iso": q.get("correct_iso", "")}
+    return {}
 
 
 async def _persist_tournament_results(tourn: dict) -> None:
@@ -429,10 +526,12 @@ async def _persist_tournament_results(tourn: dict) -> None:
     )
     finish_match(match_id=match["match_id"], winner_id=winner_id)
 
-    total_rounds = int(tourn.get("number_of_rounds", 5))
+    total_rounds = int(tourn.get("number_of_rounds", 1))
+    rounds_config = config.get("rounds", [])
+    total_questions = sum(rc.get("num_questions", 10) for rc in rounds_config) if rounds_config else total_rounds * 10
     for rank, pid in enumerate(sorted_players, 1):
         total_score = int(scoreboard.get(pid, 0))
-        accuracy = (total_score / (total_rounds * int(config.get("num_questions", 10))) * 100) if total_rounds > 0 else 0
+        accuracy = (total_score / total_questions * 100) if total_questions > 0 else 0
         save_match_player(
             match_id=match["match_id"],
             user_id=pid,
@@ -444,7 +543,7 @@ async def _persist_tournament_results(tourn: dict) -> None:
             user_id=pid,
             game_type="tournament",
             score=total_score,
-            total=total_rounds * int(config.get("num_questions", 10)),
+            total=total_questions,
             accuracy=accuracy,
             time_ms=0,
             won=(pid == winner_id),

@@ -1,0 +1,98 @@
+<!-- Game Instructions Modal — reusable partial.
+     Include once; open with GeoFreak.showGameInstructions(gameId, lang) -->
+<div class="gi-overlay" id="gi-modal" style="display:none" role="dialog" aria-modal="true">
+    <div class="gi-card">
+        <button class="gi-close" id="gi-close" aria-label="{{ t('gi.close', lang) }}">&times;</button>
+        <div class="gi-header">
+            <img class="gi-icon" id="gi-icon" src="" width="64" height="64" alt="">
+            <div>
+                <h2 class="gi-title" id="gi-title"></h2>
+                <p class="gi-desc" id="gi-desc"></p>
+            </div>
+        </div>
+        <div class="gi-sections">
+            <div class="gi-section">
+                <h3><span class="gi-section-icon">🎯</span> {{ t('gi.how_to_play', lang) }}</h3>
+                <p id="gi-how"></p>
+            </div>
+            <div class="gi-section">
+                <h3><span class="gi-section-icon">⭐</span> {{ t('gi.scoring', lang) }}</h3>
+                <p id="gi-scoring"></p>
+            </div>
+            <div class="gi-section">
+                <h3><span class="gi-section-icon">💡</span> {{ t('gi.tips', lang) }}</h3>
+                <p id="gi-tips"></p>
+            </div>
+        </div>
+        <button class="btn btn-primary gi-close-btn" id="gi-close-btn">{{ t('gi.close', lang) }}</button>
+    </div>
+</div>
+
+<script>
+(function () {
+    var GAME_INSTRUCTIONS = {
+        ordering: {
+            desc: {{ t_js('gi.ordering_desc', lang) }},
+            scoring: {{ t_js('gi.ordering_scoring', lang) }},
+            tip: {{ t_js('gi.ordering_tip', lang) }}
+        },
+        comparison: {
+            desc: {{ t_js('gi.comparison_desc', lang) }},
+            scoring: {{ t_js('gi.comparison_scoring', lang) }},
+            tip: {{ t_js('gi.comparison_tip', lang) }}
+        },
+        geostats: {
+            desc: {{ t_js('gi.geostats_desc', lang) }},
+            scoring: {{ t_js('gi.geostats_scoring', lang) }},
+            tip: {{ t_js('gi.geostats_tip', lang) }}
+        },
+        flags: {
+            desc: {{ t_js('gi.flags_desc', lang) }},
+            scoring: {{ t_js('gi.flags_scoring', lang) }},
+            tip: {{ t_js('gi.flags_tip', lang) }}
+        },
+        outline: {
+            desc: {{ t_js('gi.outline_desc', lang) }},
+            scoring: {{ t_js('gi.outline_scoring', lang) }},
+            tip: {{ t_js('gi.outline_tip', lang) }}
+        }
+    };
+
+    /* Game display names — filled from contents.json data injected in cards */
+    var GAME_NAMES = {};
+    document.querySelectorAll('[data-game-id]').forEach(function (el) {
+        GAME_NAMES[el.getAttribute('data-game-id')] = el.getAttribute('data-game-name') || '';
+    });
+
+    var overlay = document.getElementById('gi-modal');
+    var closeBtn = document.getElementById('gi-close');
+    var closeBtnBot = document.getElementById('gi-close-btn');
+
+    function show(gameId) {
+        var info = GAME_INSTRUCTIONS[gameId];
+        if (!info) return;
+        document.getElementById('gi-icon').src = '/static/img/icons/' + gameId + '.svg';
+        document.getElementById('gi-title').textContent = GAME_NAMES[gameId] || gameId;
+        document.getElementById('gi-desc').textContent = '';
+        document.getElementById('gi-how').textContent = info.desc;
+        document.getElementById('gi-scoring').textContent = info.scoring;
+        document.getElementById('gi-tips').textContent = info.tip;
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hide() {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', hide);
+    if (closeBtnBot) closeBtnBot.addEventListener('click', hide);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) hide(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+
+    window.GeoFreak = window.GeoFreak || {};
+    window.GeoFreak.showGameInstructions = show;
+    window.GeoFreak.GAME_INSTRUCTIONS = GAME_INSTRUCTIONS;
+})();
+</script>

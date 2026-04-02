@@ -389,6 +389,441 @@
 .trn-feedback-wrong { color: #c62828; background: rgba(239, 83, 80, 0.1); }
 .trn-feedback-info { color: var(--blue-600); background: rgba(26, 115, 232, 0.08); }
 
+/* ─── Tournament Designer ──────────────────────────────────── */
+.trn-designer-header {
+    margin-bottom: 28px;
+}
+.trn-designer-header .room-back {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    text-decoration: none;
+    margin-bottom: 12px;
+}
+.trn-designer-header .room-back:hover { color: var(--blue-500); }
+.trn-designer-header h1 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--gray-900);
+    margin-bottom: 6px;
+}
+
+/* Top bar */
+.trn-topbar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 18px 24px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+.trn-topbar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.trn-topbar-item label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    white-space: nowrap;
+}
+.trn-est {
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+.trn-est-icon { font-size: 1.1rem; }
+.trn-est strong { color: var(--gray-900); }
+
+/* N-buttons (reusable) */
+.trn-n-btns {
+    display: flex;
+    gap: 4px;
+}
+.trn-n-btn {
+    padding: 6px 12px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    color: var(--gray-600);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+}
+.trn-n-btn:hover {
+    border-color: var(--blue-400);
+    color: var(--blue-600);
+}
+.trn-n-btn.active {
+    background: var(--blue-500);
+    border-color: var(--blue-500);
+    color: white;
+}
+
+/* Game picker */
+.trn-add-section {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+}
+.trn-add-section h2 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+    color: var(--gray-800);
+}
+.trn-game-picker {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.trn-pick-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    cursor: pointer;
+    transition: all .2s;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+.trn-pick-card:hover {
+    border-color: var(--card-color, var(--blue-500));
+    background: color-mix(in srgb, var(--card-color, var(--blue-500)) 8%, white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+.trn-pick-card.selected {
+    border-color: var(--card-color, var(--blue-500));
+    background: color-mix(in srgb, var(--card-color, var(--blue-500)) 10%, white);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--card-color, var(--blue-500)) 20%, transparent);
+}
+
+/* Config panel */
+.trn-config-panel {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+    border: 2px solid var(--gray-100);
+    animation: giSlideUp .2s ease;
+}
+.trn-config-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.trn-config-header h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin: 0;
+    flex: 1;
+}
+.game-info-btn--inline {
+    position: static;
+    opacity: 1;
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+}
+.trn-config-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.trn-cfg-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+}
+.trn-toggle-label {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+.trn-toggle-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--blue-500);
+}
+.trn-cfg-add-btn {
+    width: 100%;
+}
+
+/* Queue */
+.trn-queue-section {
+    margin-bottom: 24px;
+}
+.trn-queue-section h2 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--gray-800);
+    margin-bottom: 16px;
+}
+.trn-queue-count {
+    font-weight: 400;
+    color: var(--gray-400);
+    font-size: 0.9rem;
+}
+.trn-queue-empty {
+    text-align: center;
+    padding: 24px;
+    color: var(--gray-400);
+    font-size: 0.95rem;
+    background: var(--white);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--gray-200);
+}
+
+.trn-queue-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: var(--white);
+    border: 2px solid var(--gray-100);
+    border-left: 4px solid var(--card-color, var(--gray-300));
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+    transition: box-shadow .2s;
+}
+.trn-queue-item:hover { box-shadow: var(--shadow-sm); }
+
+.trn-qi-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.trn-qi-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+.trn-qi-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.trn-qi-info strong {
+    color: var(--gray-800);
+    font-size: 0.9rem;
+}
+.trn-qi-info small {
+    color: var(--gray-500);
+    font-size: 0.78rem;
+}
+.trn-qi-remove {
+    background: none;
+    border: none;
+    color: var(--gray-400);
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: color .15s;
+}
+.trn-qi-remove:hover { color: #ef5350; }
+
+.trn-create-room-btn {
+    width: 100%;
+    font-size: 1.05rem;
+    padding: 14px 24px;
+}
+
+/* ─── Tournament Structure Overview ───────────────────────── */
+.trn-structure {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+}
+.trn-structure h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--gray-900);
+}
+.trn-structure-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.trn-struct-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--gray-100);
+    border-left: 4px solid var(--card-color, var(--gray-300));
+}
+.trn-struct-item.active {
+    border-color: var(--blue-400);
+    background: rgba(26, 115, 232, 0.04);
+}
+.trn-struct-item.completed {
+    opacity: 0.5;
+}
+.trn-struct-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    background: var(--gray-100);
+    color: var(--gray-600);
+}
+.trn-struct-item.active .trn-struct-num {
+    background: var(--blue-500);
+    color: white;
+}
+.trn-struct-item.completed .trn-struct-num {
+    background: #4caf50;
+    color: white;
+}
+.trn-struct-info strong { display: block; color: var(--gray-800); font-size: 0.9rem; }
+.trn-struct-info small { color: var(--gray-500); font-size: 0.78rem; }
+
+/* ─── Pre-game summary ────────────────────────────────────── */
+.trn-pregame {
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    animation: giSlideUp .3s ease;
+}
+.trn-pregame-icon { margin-bottom: 12px; }
+.trn-pregame h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+}
+.trn-pregame-meta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+.trn-pregame-tag {
+    padding: 6px 14px;
+    background: var(--gray-100);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-600);
+}
+.trn-pregame-instructions {
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto 24px;
+}
+.trn-pregame-instructions p {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+.trn-pregame-countdown {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--blue-500);
+    animation: pulseTrn 1s infinite;
+}
+@keyframes pulseTrn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* ─── Global Scoreboard (between games) ───────────────────── */
+.trn-global-sb {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+}
+.trn-global-sb h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+    text-align: center;
+}
+.trn-gsb-remaining {
+    text-align: center;
+    color: var(--gray-500);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+.trn-gsb-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.trn-gsb-table th {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 6px;
+    border-bottom: 2px solid var(--gray-100);
+    text-align: center;
+}
+.trn-gsb-table th:first-child { text-align: left; }
+.trn-gsb-table td {
+    padding: 10px 6px;
+    border-bottom: 1px solid var(--gray-50);
+    text-align: center;
+    font-size: 0.9rem;
+}
+.trn-gsb-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+.trn-gsb-table td:last-child {
+    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--gray-900);
+}
+.trn-gsb-table tr.is-you td { color: var(--blue-600); }
+
 /* ─── Results ──────────────────────────────────────────────── */
 .trn-results-overlay {
     display: flex;
@@ -455,10 +890,62 @@
     background: var(--gray-100);
 }
 
+/* ─── Quiz + GeoStats game areas ──────────────────────────── */
+.trn-quiz-area,
+.trn-geostats-area {
+    text-align: center;
+}
+.trn-quiz-display {
+    margin-bottom: 20px;
+}
+.trn-quiz-options,
+.trn-gs-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+.trn-quiz-opt {
+    padding: 14px 16px;
+    background: var(--gray-50);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: all .2s;
+}
+.trn-quiz-opt:hover {
+    border-color: var(--blue-500);
+    background: rgba(26, 115, 232, 0.06);
+    transform: translateY(-1px);
+}
+.trn-quiz-opt:disabled {
+    opacity: 0.6;
+    cursor: default;
+    transform: none;
+}
+.trn-gs-chart {
+    min-height: 120px;
+    margin-bottom: 20px;
+}
+
+.trn-timer {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gray-600);
+    margin-bottom: 16px;
+}
+
 /* ─── Responsive ───────────────────────────────────────────── */
 @media (max-width: 900px) {
     .trn-create-form { grid-template-columns: 1fr 1fr; }
     .trn-scoreboard { padding: 12px 16px; }
+    .trn-config-body { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 640px) {
@@ -466,9 +953,15 @@
     .trn-play .container {
         padding: 24px 16px 40px;
     }
-    .trn-lobby h1 { font-size: 1.5rem; }
+    .trn-lobby h1,
+    .trn-designer-header h1 { font-size: 1.5rem; }
     .trn-create-form { grid-template-columns: 1fr; }
     #btn-create-trn { width: 100%; justify-content: center; }
+
+    .trn-topbar { flex-direction: column; align-items: stretch; gap: 12px; }
+    .trn-est { margin-left: 0; justify-content: center; }
+    .trn-game-picker { flex-direction: column; }
+    .trn-config-body { grid-template-columns: 1fr; }
 
     .trn-card {
         flex-direction: column;

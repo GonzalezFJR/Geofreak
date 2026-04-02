@@ -3,14 +3,13 @@
 {% block title %}{{ t('trn.lobby_title', lang) }}{% endblock %}
 
 {% block extra_head %}
+<link rel="stylesheet" href="/static/css/games.css">
 <link rel="stylesheet" href="/static/css/tournaments.css">
 {% endblock %}
 
 {% block content %}
 <section class="trn-lobby">
     <div class="container">
-        <h1>{{ t('trn.lobby_title', lang) }}</h1>
-        <p class="section-desc">{{ t('trn.lobby_subtitle', lang) }}</p>
 
         {% if not user %}
         <div class="trn-auth-notice">
@@ -19,30 +18,79 @@
         </div>
         {% else %}
 
-        <!-- Create tournament -->
-        <div class="trn-create-section">
-            <h2>{{ t('trn.create_title', lang) }}</h2>
-            <div class="trn-create-form">
-                <div class="setting-group">
-                    <label>{{ t('trn.num_rounds', lang) }}</label>
-                    <select id="trn-rounds">
-                        <option value="3">3</option>
-                        <option value="5" selected>5</option>
-                        <option value="7">7</option>
-                        <option value="10">10</option>
-                    </select>
+        <!-- ── Header ── -->
+        <div class="trn-designer-header">
+            <a href="/games" class="room-back">← {{ t('nav.games', lang) }}</a>
+            <h1>{{ t('trn.design_title', lang) }}</h1>
+            <p class="section-desc">{{ t('trn.design_subtitle', lang) }}</p>
+        </div>
+
+        <!-- ── Top bar: players + estimated time ── -->
+        <div class="trn-topbar">
+            <div class="trn-topbar-item">
+                <label>{{ t('trn.num_players', lang) }}</label>
+                <div class="trn-n-btns" id="trn-player-btns">
+                    {% for n in range(2, 11) %}
+                    <button type="button" class="trn-n-btn{% if n == 2 %} active{% endif %}" data-n="{{ n }}">{{ n }}</button>
+                    {% endfor %}
                 </div>
-                <div class="setting-group">
-                    <label>{{ t('game.nquestions', lang) }}</label>
-                    <select id="trn-questions">
-                        <option value="5">5</option>
-                        <option value="10" selected>10</option>
-                        <option value="15">15</option>
-                    </select>
+            </div>
+            <div class="trn-topbar-item trn-est">
+                <span class="trn-est-icon">⏱</span>
+                <span>{{ t('trn.estimated_time', lang) }}:</span>
+                <strong id="trn-est-time">0 {{ t('trn.minutes', lang) }}</strong>
+            </div>
+        </div>
+
+        <!-- ── Game selector ── -->
+        <div class="trn-add-section">
+            <h2>{{ t('trn.select_game_type', lang) }}</h2>
+            <div class="trn-game-picker" id="trn-game-picker">
+                {% for game in games %}
+                {% if game.id in ['ordering','comparison','geostats','flags','outline'] %}
+                <button type="button" class="trn-pick-card" data-game-id="{{ game.id }}"
+                        data-game-name="{{ game_field(game, 'name', lang) }}"
+                        data-game-color="{{ game.color }}"
+                        data-game-icon="/static/img/icons/{{ game.id }}.svg"
+                        data-game-secs="{{ game.defaults.secs_per_item|default(20) }}"
+                        data-game-type="{{ game.type }}"
+                        style="--card-color: {{ game.color }}">
+                    <img src="/static/img/icons/{{ game.id }}.svg" width="40" height="40" alt="">
+                    <span>{{ game_field(game, 'name', lang) }}</span>
+                </button>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ── Configure selected game (hidden until a game is picked) ── -->
+        <div class="trn-config-panel" id="trn-config-panel" style="display:none">
+            <div class="trn-config-header">
+                <img id="trn-cfg-icon" src="" width="36" height="36" alt="">
+                <h3 id="trn-cfg-name"></h3>
+                <button class="game-info-btn game-info-btn--inline" type="button" id="trn-cfg-info"
+                        title="{{ t('gi.instructions', lang) }}">i</button>
+            </div>
+            <div class="trn-config-body">
+                <div class="trn-cfg-group">
+                    <label>{{ t('trn.questions', lang) }}</label>
+                    <div class="trn-n-btns" id="trn-cfg-questions">
+                        {% for n in [5, 10, 15, 20] %}
+                        <button type="button" class="trn-n-btn{% if n == 10 %} active{% endif %}" data-n="{{ n }}">{{ n }}</button>
+                        {% endfor %}
+                    </div>
                 </div>
-                <div class="setting-group">
-                    <label>{{ t('game.continent', lang) }}</label>
-                    <select id="trn-continent">
+                <div class="trn-cfg-group">
+                    <label>{{ t('trn.rounds_per_game', lang) }}</label>
+                    <div class="trn-n-btns" id="trn-cfg-rounds">
+                        {% for n in range(1, 4) %}
+                        <button type="button" class="trn-n-btn{% if n == 1 %} active{% endif %}" data-n="{{ n }}">{{ n }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="trn-cfg-group">
+                    <label>{{ t('trn.continent_filter', lang) }}</label>
+                    <select id="trn-cfg-continent" class="room-select">
                         <option value="all">{{ t('game.all', lang) }}</option>
                         <option value="europe">{{ t('game.europe', lang) }}</option>
                         <option value="asia">{{ t('game.asia', lang) }}</option>
@@ -51,48 +99,56 @@
                         <option value="oceania">{{ t('game.oceania', lang) }}</option>
                     </select>
                 </div>
-                <div class="setting-group">
-                    <label>{{ t('trn.game_types', lang) }}</label>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="trn-type-ordering" checked> {{ t('duel.ordering', lang) }}
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="trn-type-comparison" checked> {{ t('duel.comparison', lang) }}
-                        </label>
-                    </div>
+                <div class="trn-cfg-group">
+                    <label class="trn-toggle-label">
+                        <input type="checkbox" id="trn-cfg-timer">
+                        <span>{{ t('trn.with_timer', lang) }}</span>
+                    </label>
                 </div>
-                <button class="btn btn-primary" id="btn-create-trn">{{ t('trn.create_btn', lang) }}</button>
+            </div>
+            <button class="btn btn-primary trn-cfg-add-btn" id="trn-cfg-add">{{ t('trn.add_game', lang) }}</button>
+        </div>
+
+        <!-- ── Game list (tournament queue) ── -->
+        <div class="trn-queue-section">
+            <h2>{{ t('trn.game_list_title', lang) }} <span class="trn-queue-count" id="trn-queue-count">(0/10)</span></h2>
+            <div class="trn-queue" id="trn-queue">
+                <p class="trn-queue-empty" id="trn-queue-empty">{{ t('trn.no_games_yet', lang) }}</p>
             </div>
         </div>
 
-        <!-- Waiting tournaments -->
-        <div class="trn-waiting-section">
-            <h2>{{ t('trn.available_title', lang) }}</h2>
-            <div class="trn-list" id="trn-list">
-                <div class="trn-list-empty" id="trn-list-empty" style="display:none">
-                    {{ t('trn.no_tournaments', lang) }}
-                </div>
-            </div>
-        </div>
+        <!-- ── Create room button ── -->
+        <button class="btn btn-primary trn-create-room-btn" id="btn-create-trn" disabled>
+            {{ t('trn.create_room', lang) }}
+        </button>
+        <p class="room-error" id="trn-create-error" style="display:none"></p>
 
         {% endif %}
     </div>
 </section>
+
+{% include "games/_instructions_modal.html" %}
 {% endblock %}
 
 {% block extra_scripts %}
 {% if user %}
 <script>
 window.TRN_T = {
-    ordering: "{{ t('duel.ordering', lang) }}",
-    comparison: "{{ t('duel.comparison', lang) }}",
-    join: "{{ t('trn.join_btn', lang) }}",
-    rounds: "{{ t('trn.rounds_label', lang) }}",
-    players: "{{ t('trn.players_label', lang) }}",
-    by: "{{ t('duel.created_by', lang) }}",
-    creating: "{{ t('trn.creating', lang) }}",
-    joining: "{{ t('trn.joining', lang) }}"
+    game_n: {{ t_js('trn.game_n', lang) }},
+    remove: {{ t_js('trn.remove_game', lang) }},
+    minutes: {{ t_js('trn.minutes', lang) }},
+    max_games: {{ t_js('trn.max_games', lang) }},
+    creating: {{ t_js('trn.creating', lang) }},
+    questions: {{ t_js('trn.questions', lang) }},
+    rounds: {{ t_js('trn.rounds_per_game', lang) }},
+    timer: {{ t_js('trn.with_timer', lang) }},
+    continent: {{ t_js('trn.continent_filter', lang) }},
+    all: {{ t_js('game.all', lang) }},
+    europe: {{ t_js('game.europe', lang) }},
+    asia: {{ t_js('game.asia', lang) }},
+    africa: {{ t_js('game.africa', lang) }},
+    america: {{ t_js('game.america', lang) }},
+    oceania: {{ t_js('game.oceania', lang) }}
 };
 </script>
 <script src="/static/js/tournaments/lobby.js"></script>

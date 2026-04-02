@@ -3,6 +3,7 @@
 {% block title %}{{ t('trn.play_title', lang) }}{% endblock %}
 
 {% block extra_head %}
+<link rel="stylesheet" href="/static/css/games.css">
 <link rel="stylesheet" href="/static/css/tournaments.css">
 {% endblock %}
 
@@ -10,19 +11,29 @@
 <section class="trn-play">
     <div class="container">
 
-        <!-- Waiting for players / start -->
+        <!-- ═══ 1. Waiting room ═══ -->
         <div class="trn-waiting-room" id="trn-waiting" {% if tournament.status == 'active' %}style="display:none"{% endif %}>
             <h2>{{ t('trn.waiting_players', lang) }}</h2>
+
+            <!-- Room code -->
+            <div class="room-code-box rp-code-box" style="justify-content:center;margin-bottom:20px">
+                <div class="room-code-label">{{ t('trn.room_code', lang) }}</div>
+                <div class="room-code-value" id="trn-room-code">{{ tournament.tournament_id[:8]|upper }}</div>
+                <button class="room-copy-btn" id="btn-copy-code">{{ t('trn.copy_code', lang) }}</button>
+            </div>
+
             <p class="trn-share-info">{{ t('trn.share_link', lang) }}</p>
             <div class="trn-share-box">
                 <input type="text" id="share-url" readonly value="" class="share-url-input">
                 <button class="btn btn-outline" id="btn-copy-url">{{ t('duel.copy_link', lang) }}</button>
             </div>
+
             <div class="trn-player-list" id="trn-player-list">
                 {% for pid in tournament.players %}
                 <div class="trn-player-chip">{{ tournament.player_usernames.get(pid, '?') }}</div>
                 {% endfor %}
             </div>
+
             {% if tournament.created_by == user.user_id %}
             <button class="btn btn-primary" id="btn-start-trn" {% if tournament.players|length < 2 %}disabled{% endif %}>
                 {{ t('trn.start_btn', lang) }}
@@ -33,13 +44,34 @@
             {% endif %}
         </div>
 
-        <!-- Game area -->
-        <div class="trn-game-area" id="trn-game" {% if tournament.status != 'active' %}style="display:none"{% endif %}>
+        <!-- ═══ 2. Tournament structure overview ═══ -->
+        <div id="trn-structure-view" style="display:none">
+            <div class="trn-structure">
+                <h2>{{ t('trn.structure_title', lang) }}</h2>
+                <div class="trn-structure-list" id="trn-structure-list"></div>
+            </div>
+        </div>
+
+        <!-- ═══ 3. Pre-game summary ═══ -->
+        <div id="trn-pregame-view" style="display:none">
+            <div class="trn-pregame">
+                <div class="trn-pregame-icon" id="trn-pregame-icon">
+                    <img src="" id="trn-pregame-img" width="72" height="72" alt="">
+                </div>
+                <h2 id="trn-pregame-title"></h2>
+                <div class="trn-pregame-meta" id="trn-pregame-meta"></div>
+                <div class="trn-pregame-instructions" id="trn-pregame-instr"></div>
+                <div class="trn-pregame-countdown" id="trn-pregame-countdown">5</div>
+            </div>
+        </div>
+
+        <!-- ═══ 4. Game area ═══ -->
+        <div class="trn-game-area" id="trn-game" style="display:none">
 
             <!-- Tournament header -->
             <div class="trn-header">
                 <div class="trn-round-badge" id="trn-round-badge">
-                    {{ t('trn.round_label', lang) }} <span id="trn-round-num">{{ tournament.current_round|default(1) }}</span> / <span id="trn-round-total">{{ tournament.number_of_rounds }}</span>
+                    {{ t('trn.round_label', lang) }} <span id="trn-round-num">1</span> / <span id="trn-round-total">{{ tournament.number_of_rounds }}</span>
                 </div>
                 <div class="trn-game-type-badge" id="trn-game-type-badge"></div>
             </div>
@@ -47,19 +79,17 @@
             <!-- Scoreboard -->
             <div class="trn-scoreboard" id="trn-scoreboard"></div>
 
-            <!-- Round transition -->
-            <div class="trn-round-transition" id="trn-round-transition" style="display:none">
-                <h3 id="trn-transition-title"></h3>
-                <div class="trn-round-scores" id="trn-round-scores"></div>
-                <p class="trn-next-round-msg" id="trn-next-round-msg"></p>
-            </div>
-
             <!-- Question area -->
             <div class="trn-question-area" id="trn-question-area">
                 <div class="trn-question-counter">
                     <span id="tq-current">1</span> / <span id="tq-total">10</span>
                 </div>
                 <div class="trn-question-prompt" id="trn-prompt"></div>
+
+                <!-- Timer -->
+                <div class="trn-timer" id="trn-timer" style="display:none">
+                    ⏱ <span id="trn-timer-val">0:00</span>
+                </div>
 
                 <!-- Ordering -->
                 <div class="trn-ordering-items" id="trn-ordering-items" style="display:none"></div>
@@ -70,16 +100,42 @@
                 <!-- Comparison -->
                 <div class="trn-comparison-cards" id="trn-comparison-cards" style="display:none"></div>
 
+                <!-- Quiz (flags/outline) -->
+                <div class="trn-quiz-area" id="trn-quiz-area" style="display:none">
+                    <div class="trn-quiz-display" id="trn-quiz-display"></div>
+                    <div class="trn-quiz-options" id="trn-quiz-options"></div>
+                </div>
+
+                <!-- GeoStats -->
+                <div class="trn-geostats-area" id="trn-geostats-area" style="display:none">
+                    <div class="trn-gs-chart" id="trn-gs-chart"></div>
+                    <div class="trn-gs-options" id="trn-gs-options"></div>
+                </div>
+
                 <!-- Feedback -->
                 <div class="trn-feedback" id="trn-feedback" style="display:none"></div>
             </div>
         </div>
 
-        <!-- Final results overlay -->
+        <!-- ═══ 5. Global scoreboard (between games) ═══ -->
+        <div id="trn-scoreboard-view" style="display:none">
+            <div class="trn-global-sb">
+                <h2>{{ t('trn.scoreboard_title', lang) }}</h2>
+                <p class="trn-gsb-remaining" id="trn-gsb-remaining"></p>
+                <table class="trn-gsb-table" id="trn-gsb-table">
+                    <thead><tr id="trn-gsb-header"></tr></thead>
+                    <tbody id="trn-gsb-body"></tbody>
+                </table>
+            </div>
+            <p class="trn-next-round-msg" id="trn-gsb-next" style="text-align:center;font-weight:600;color:var(--blue-500)"></p>
+        </div>
+
+        <!-- ═══ 6. Final results overlay ═══ -->
         <div class="trn-results-overlay" id="trn-results" style="display:none">
             <div class="trn-results-card">
                 <div class="results-icon" id="trn-result-icon">🏆</div>
                 <h2 id="trn-result-title"></h2>
+                <h3>{{ t('trn.final_standings', lang) }}</h3>
                 <div class="trn-final-standings" id="trn-final-standings"></div>
                 <div class="trn-results-actions">
                     <a href="/tournaments" class="btn btn-primary">{{ t('trn.back_lobby', lang) }}</a>
@@ -90,6 +146,8 @@
 
     </div>
 </section>
+
+{% include "games/_instructions_modal.html" %}
 {% endblock %}
 
 {% block extra_scripts %}
@@ -98,35 +156,53 @@ window.TRN_ID = "{{ tournament.tournament_id }}";
 window.TRN_STATUS = "{{ tournament.status }}";
 window.TRN_TOTAL_ROUNDS = {{ tournament.number_of_rounds }};
 window.TRN_CURRENT_ROUND = {{ tournament.current_round|default(0) }};
+window.TRN_CONFIG = {{ tournament.config|tojson }};
 window.USER_ID = "{{ user.user_id }}";
 window.USER_NAME = "{{ user.username }}";
 window.TRN_CREATED_BY = "{{ tournament.created_by }}";
+window.TRN_PLAYERS = {{ tournament.players|tojson }};
+window.TRN_PLAYER_USERNAMES = {{ tournament.player_usernames|tojson }};
+window.TRN_SCOREBOARD = {{ tournament.scoreboard|tojson }};
 window.TRN_T = {
-    you: "{{ t('duel.you', lang) }}",
-    opponent: "{{ t('duel.opponent', lang) }}",
-    win: "{{ t('trn.you_win', lang) }}",
-    lose: "{{ t('trn.you_lose', lang) }}",
-    draw: "{{ t('duel.draw', lang) }}",
-    round_label: "{{ t('trn.round_label', lang) }}",
-    round_complete: "{{ t('trn.round_complete', lang) }}",
-    next_round: "{{ t('trn.next_round', lang) }}",
-    waiting_others: "{{ t('trn.waiting_others', lang) }}",
-    cancelled: "{{ t('trn.cancelled', lang) }}",
-    correct: "{{ t('duel.answer_correct', lang) }}",
-    wrong: "{{ t('duel.answer_wrong', lang) }}",
-    points: "{{ t('duel.points', lang) }}",
-    ordering: "{{ t('duel.ordering', lang) }}",
-    comparison: "{{ t('duel.comparison', lang) }}",
-    started: "{{ t('trn.started', lang) }}",
-    confirm_order: "{{ t('ord.confirm', lang) }}",
-    prompt_asc: "{{ t('duel.ord_asc', lang) }}",
-    prompt_desc: "{{ t('duel.ord_desc', lang) }}",
-    cmp_prompt: "{{ t('duel.cmp_prompt', lang) }}",
+    you: {{ t_js('duel.you', lang) }},
+    opponent: {{ t_js('duel.opponent', lang) }},
+    win: {{ t_js('trn.you_win', lang) }},
+    lose: {{ t_js('trn.you_lose', lang) }},
+    draw: {{ t_js('duel.draw', lang) }},
+    round_label: {{ t_js('trn.round_label', lang) }},
+    round_complete: {{ t_js('trn.round_complete', lang) }},
+    next_round: {{ t_js('trn.next_round', lang) }},
+    next_game: {{ t_js('trn.next_game', lang) }},
+    waiting_others: {{ t_js('trn.waiting_others', lang) }},
+    cancelled: {{ t_js('trn.cancelled', lang) }},
+    correct: {{ t_js('duel.answer_correct', lang) }},
+    wrong: {{ t_js('duel.answer_wrong', lang) }},
+    points: {{ t_js('duel.points', lang) }},
+    started: {{ t_js('trn.started', lang) }},
+    confirm_order: {{ t_js('ord.confirm', lang) }},
+    prompt_asc: {{ t_js('duel.ord_asc', lang) }},
+    prompt_desc: {{ t_js('duel.ord_desc', lang) }},
+    cmp_prompt: {{ t_js('duel.cmp_prompt', lang) }},
     stat_label_key: "{{ 'label_es' if lang == 'es' else 'label_en' }}",
-    final_standings: "{{ t('trn.final_standings', lang) }}",
-    place_1: "{{ t('trn.place_1', lang) }}",
-    place_2: "{{ t('trn.place_2', lang) }}",
-    place_3: "{{ t('trn.place_3', lang) }}"
+    final_standings: {{ t_js('trn.final_standings', lang) }},
+    place_1: {{ t_js('trn.place_1', lang) }},
+    place_2: {{ t_js('trn.place_2', lang) }},
+    place_3: {{ t_js('trn.place_3', lang) }},
+    structure_title: {{ t_js('trn.structure_title', lang) }},
+    game_summary: {{ t_js('trn.game_summary', lang) }},
+    preparing_game: {{ t_js('trn.preparing_game', lang) }},
+    scoreboard_title: {{ t_js('trn.scoreboard_title', lang) }},
+    games_remaining: {{ t_js('trn.games_remaining', lang) }},
+    total_score: {{ t_js('trn.total_score', lang) }},
+    questions: {{ t_js('trn.questions', lang) }},
+    minutes: {{ t_js('trn.minutes', lang) }},
+    game_names: {
+        ordering: {{ game_name_map.get('ordering', 'GeoRankings')|tojson }},
+        comparison: {{ game_name_map.get('comparison', 'GeoFreaker')|tojson }},
+        geostats: {{ game_name_map.get('geostats', 'GeoStats')|tojson }},
+        flags: {{ game_name_map.get('flags', 'Flags')|tojson }},
+        outline: {{ game_name_map.get('outline', 'Outline')|tojson }}
+    }
 };
 </script>
 <script src="/static/js/tournaments/play.js"></script>

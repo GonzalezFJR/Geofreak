@@ -16,7 +16,9 @@
     <div class="games-grid">
         {% for game in games %}
         {% if game.enabled and game.visible|default(true) and game.type == 'solo' %}
-        <div class="game-card" style="--card-color: {{ game.color }}">
+        <div class="game-card" style="--card-color: {{ game.color }}" data-game-id="{{ game.id }}" data-game-name="{{ game_field(game, 'name', lang) }}">
+            <button class="game-info-btn" type="button" onclick="GeoFreak.showGameInstructions('{{ game.id }}')"
+                    title="{{ t('gi.instructions', lang) }}">i</button>
             <div class="game-card-inner">
                 <div class="game-card-icon">
                     <img src="/static/img/icons/{{ game.id }}.svg" width="72" height="72" alt="">
@@ -66,7 +68,9 @@
         {% for game in games %}
         {% if game.enabled and game.visible|default(true) and game.subcategory == 'adivina_cual' %}
         {% if game.type == 'quiz' %}
-        <div class="game-card" style="--card-color: {{ game.color }}">
+        <div class="game-card" style="--card-color: {{ game.color }}" data-game-id="{{ game.id }}" data-game-name="{{ game_field(game, 'name', lang) }}">
+            <button class="game-info-btn" type="button" onclick="GeoFreak.showGameInstructions('{{ game.id }}')"
+                    title="{{ t('gi.instructions', lang) }}">i</button>
             <div class="game-card-inner">
                 <div class="game-card-icon">
                     <img src="/static/img/icons/{{ game.id }}.svg" width="72" height="72" alt="">
@@ -138,6 +142,8 @@
         {% endfor %}
     </div>
 </section>
+
+{% include "games/_instructions_modal.html" %}
 {% endblock %}
 
 {% block extra_scripts %}

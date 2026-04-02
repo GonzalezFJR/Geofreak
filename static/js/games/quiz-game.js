@@ -9,6 +9,7 @@ var QuizGame = (function () {
     var skipped = [];       // items skipped to retry later
     var allCountries = [];  // all loaded countries for validation
     var currentIdx = 0;
+    var originalTotal = 0;  // total questions for scoring (never changes)
     var displayFn = null;
     var answerFn = null;
     var inRetryMode = false;
@@ -61,6 +62,7 @@ var QuizGame = (function () {
                     var max = settings.maxItems || 0;
                     queue = max > 0 ? entities.slice(0, max) : entities.slice();
                     currentIdx = 0;
+                    originalTotal = queue.length;
                     GeoGame.setTotal(queue.length);
                     GeoGame.beginPlay();
                     showNext();
@@ -83,6 +85,7 @@ var QuizGame = (function () {
                     var max = settings.maxItems || 0;
                     queue = max > 0 ? filtered.slice(0, max) : filtered.slice();
                     currentIdx = 0;
+                    originalTotal = queue.length;
                     GeoGame.setTotal(queue.length);
                     GeoGame.beginPlay();
                     showNext();
@@ -94,18 +97,11 @@ var QuizGame = (function () {
         // Check if we finished the main queue
         if (currentIdx >= queue.length) {
             // If there are skipped items, cycle back to them
-            if (skipped.length > 0 && !inRetryMode) {
+            if (skipped.length > 0) {
+                queue = skipped.slice();
+                skipped = [];
+                currentIdx = 0;
                 inRetryMode = true;
-                queue = skipped.slice();
-                skipped = [];
-                currentIdx = 0;
-                GeoGame.setTotal(queue.length);
-            } else if (skipped.length > 0) {
-                // Already in retry mode, cycle again
-                queue = skipped.slice();
-                skipped = [];
-                currentIdx = 0;
-                GeoGame.setTotal(queue.length);
             } else {
                 GeoGame.endGame();
                 return;
