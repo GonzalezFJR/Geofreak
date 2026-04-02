@@ -98,11 +98,11 @@ async def ranking_page(
 
 @router.get("/play/{mode}", response_class=HTMLResponse)
 async def play_select(request: Request, mode: str, user=Depends(get_optional_user)):
-    if mode not in ("solo", "duel", "tournament"):
+    if mode not in ("solo", "duel"):
         mode = "solo"
     lang = get_lang(request)
     games = [g.copy() for g in _games_svc.get_games() if g.get("type") in _PLAY_TYPES and g.get("enabled")]
-    href_prefix = {"solo": "/games/", "duel": "/duel/", "tournament": "/tournaments?game="}
+    href_prefix = {"solo": "/games/", "duel": "/duel/"}
     for g in games:
         g["_href"] = href_prefix[mode] + g["id"]
     return templates.TemplateResponse("games/select.html", {

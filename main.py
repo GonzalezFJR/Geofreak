@@ -44,13 +44,13 @@ def create_app():
 
     # Routers
     app.include_router(auth.router)
+    app.include_router(tournaments.router)
     app.include_router(pages.router)
     app.include_router(api.router, prefix="/api")
     app.include_router(games.router)
     app.include_router(social.router)
     app.include_router(duels.router)
     app.include_router(rooms.router)
-    app.include_router(tournaments.router)
     app.include_router(admin.router)
 
     # Custom 404 handler
