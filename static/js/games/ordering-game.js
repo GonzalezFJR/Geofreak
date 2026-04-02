@@ -21,22 +21,28 @@ var OrderingGame = (function () {
         return 'gf_daily_' + d.getUTCFullYear() + '-' + (m < 10 ? '0' + m : m) + '-' + (day < 10 ? '0' + day : day);
     }
     function _getDailyCache() {
+        var key = _dailyTodayKey();
         var r = null;
-        try { r = JSON.parse(localStorage.getItem(_dailyTodayKey())); } catch (e) {}
+        try { r = JSON.parse(localStorage.getItem(key)); } catch (e) {}
         if (!r || typeof r.score === 'undefined') {
             try {
                 var cm = document.cookie.match(/(?:^|;)\s*gf_daily=([^;]*)/);
-                if (cm) r = JSON.parse(decodeURIComponent(cm[1]));
+                if (cm) {
+                    var parsed = JSON.parse(decodeURIComponent(cm[1]));
+                    if (parsed && parsed.date === key) r = parsed;
+                }
             } catch (e) {}
         }
         return (r && typeof r.score !== 'undefined') ? r : null;
     }
     function _setDailyCache(score, total, timeMs) {
+        var key = _dailyTodayKey();
         var data = JSON.stringify({ score: score, total: total, time_ms: timeMs });
-        try { localStorage.setItem(_dailyTodayKey(), data); } catch (e) {}
+        try { localStorage.setItem(key, data); } catch (e) {}
         try {
+            var cookieData = JSON.stringify({ score: score, total: total, time_ms: timeMs, date: key });
             var exp = new Date(); exp.setDate(exp.getDate() + 2);
-            document.cookie = 'gf_daily=' + encodeURIComponent(data) + '; expires=' + exp.toUTCString() + '; path=/; SameSite=Lax';
+            document.cookie = 'gf_daily=' + encodeURIComponent(cookieData) + '; expires=' + exp.toUTCString() + '; path=/; SameSite=Lax';
         } catch (e) {}
     }
 
