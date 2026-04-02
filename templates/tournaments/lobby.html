@@ -20,65 +20,50 @@
         <div class="trn-designer-header">
             <a href="/games" class="room-back">← {{ t('nav.games', lang) }}</a>
             <h1>{{ t('trn.lobby_title', lang) }}</h1>
-            <p class="section-desc">{{ t('trn.lobby_subtitle', lang) }}</p>
         </div>
 
+        <!-- Hero with animated SVG map -->
+        <div class="trn-hero">
+            {% include '_mapamundi.html' %}
+            <div class="trn-hero-text">
+                <p>{{ t('trn.hero_desc', lang) }}</p>
+            </div>
+        </div>
+
+        <!-- Action cards -->
         <div class="trn-landing-actions">
             <a href="/play/tournament/create" class="trn-landing-card">
-                <div class="trn-landing-icon">🎨</div>
-                <h2>{{ t('trn.create_btn', lang) }}</h2>
-                <p>{{ t('trn.design_subtitle', lang) }}</p>
-            </a>
-            <div class="trn-landing-card" id="trn-join-card">
-                <div class="trn-landing-icon">🔗</div>
-                <h2>{{ t('trn.join_with_code', lang) }}</h2>
-                <p>{{ t('trn.enter_code', lang) }}</p>
-                <div class="trn-join-form"  id="trn-join-form">
-                    <input type="text" id="trn-join-code" class="room-input"
-                           placeholder="{{ t('trn.room_code', lang) }}" maxlength="40" autocomplete="off">
-                    <button class="btn btn-primary" id="btn-join-trn">{{ t('trn.join_btn', lang) }}</button>
+                <div class="trn-landing-icon-wrap">
+                    <img src="/static/img/icons/tournament.svg" class="trn-landing-icon-svg" width="64" height="64" alt="">
                 </div>
-                <p class="room-error" id="trn-join-error" style="display:none"></p>
-            </div>
+                <h2>{{ t('trn.create_btn', lang) }}</h2>
+                <p>{{ t('trn.create_card_desc', lang) }}</p>
+            </a>
+            <a href="/play/tournament/join" class="trn-landing-card">
+                <div class="trn-landing-icon-wrap trn-landing-icon-join">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+                        <style>
+                            .link-ring { animation: linkPulse 2.4s ease-in-out infinite; transform-origin: 32px 32px; }
+                            @keyframes linkPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+                            .link-glow { animation: linkGlow 2.4s ease-in-out infinite; }
+                            @keyframes linkGlow { 0%,100%{opacity:0.2} 50%{opacity:0.6} }
+                        </style>
+                        <g class="link-ring">
+                            <path d="M26,22 A14,14 0 1,0 26,42" stroke="#1976d2" stroke-width="4" stroke-linecap="round" fill="none"/>
+                            <path d="M38,22 A14,14 0 1,1 38,42" stroke="#43a047" stroke-width="4" stroke-linecap="round" fill="none"/>
+                            <rect class="link-glow" x="28" y="24" width="8" height="16" rx="4" fill="#e3f2fd"/>
+                        </g>
+                        <circle cx="18" cy="14" r="2" fill="#bbdefb" class="link-glow" style="animation-delay:.4s"/>
+                        <circle cx="46" cy="50" r="2" fill="#c8e6c9" class="link-glow" style="animation-delay:.8s"/>
+                        <circle cx="50" cy="18" r="1.5" fill="#c8e6c9" class="link-glow" style="animation-delay:1.2s"/>
+                    </svg>
+                </div>
+                <h2>{{ t('trn.join_with_code', lang) }}</h2>
+                <p>{{ t('trn.join_card_desc', lang) }}</p>
+            </a>
         </div>
 
         {% endif %}
     </div>
 </section>
-{% endblock %}
-
-{% block extra_scripts %}
-{% if user %}
-<script>
-(function () {
-    var codeInput = document.getElementById('trn-join-code');
-    var joinBtn = document.getElementById('btn-join-trn');
-    var errorEl = document.getElementById('trn-join-error');
-
-    joinBtn.addEventListener('click', function () {
-        var code = codeInput.value.trim();
-        if (!code) return;
-        errorEl.style.display = 'none';
-        joinBtn.disabled = true;
-
-        fetch('/api/tournaments/' + encodeURIComponent(code) + '/join', { method: 'POST' })
-            .then(function (r) { return r.json(); })
-            .then(function (data) {
-                if (data.tournament_id) {
-                    window.location.href = '/tournaments/' + data.tournament_id;
-                } else {
-                    errorEl.textContent = data.detail || 'Error';
-                    errorEl.style.display = 'block';
-                    joinBtn.disabled = false;
-                }
-            })
-            .catch(function () { joinBtn.disabled = false; });
-    });
-
-    codeInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') joinBtn.click();
-    });
-})();
-</script>
-{% endif %}
 {% endblock %}

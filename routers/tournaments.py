@@ -75,6 +75,14 @@ async def tournament_create_page(request: Request, user: Optional[dict] = Depend
     })
 
 
+@router.get("/play/tournament/join")
+async def tournament_join_page(request: Request, user: Optional[dict] = Depends(get_optional_user)):
+    lang = get_lang(request)
+    return templates.TemplateResponse("tournaments/join.html", {
+        "request": request, "user": user, "lang": lang,
+    })
+
+
 @router.get("/tournaments/{tid}")
 async def tournament_page(tid: str, request: Request, user: dict = Depends(get_current_user)):
     lang = get_lang(request)

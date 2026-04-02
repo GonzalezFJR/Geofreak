@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('trn.join_title', lang) }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="/static/css/tournaments.css">
+{% endblock %}
+
+{% block content %}
+<section class="trn-lobby">
+    <div class="container">
+        <div class="trn-designer-header">
+            <a href="/play/tournament" class="room-back">← {{ t('trn.lobby_title', lang) }}</a>
+            <h1>{{ t('trn.join_title', lang) }}</h1>
+        </div>
+
+        <div class="trn-join-box">
+            <!-- Identity -->
+            <div class="trn-join-identity">
+                {% if user %}
+                <span class="trn-join-playing-as">{{ t('trn.playing_as', lang) }}</span>
+                <span class="trn-join-username">{{ user.username }}</span>
+                {% else %}
+                <label for="trn-guest-name" class="trn-join-playing-as">{{ t('trn.guest_name', lang) }}</label>
+                <input type="text" id="trn-guest-name" class="trn-join-input"
+                       placeholder="{{ t('trn.guest_name_placeholder', lang) }}" maxlength="30" autocomplete="off">
+                {% endif %}
+            </div>
+
+            <!-- Code input -->
+            <div class="trn-join-code-group">
+                <label for="trn-join-code" class="trn-join-code-label">{{ t('trn.code_label', lang) }}</label>
+                <input type="text" id="trn-join-code" class="trn-join-code-input"
+                       placeholder="{{ t('trn.code_placeholder', lang) }}" maxlength="40" autocomplete="off"
+                       autofocus>
+            </div>
+
+            <!-- Error -->
+            <p class="room-error" id="trn-join-error" style="display:none"></p>
+
+            <!-- Submit -->
+            <button class="btn btn-primary trn-join-submit" id="btn-join-trn">
+                {{ t('trn.join_action', lang) }}
+            </button>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function () {
+    var codeInput = document.getElementById('trn-join-code');
+    var joinBtn = document.getElementById('btn-join-trn');
+    var errorEl = document.getElementById('trn-join-error');
+
+    joinBtn.addEventListener('click', function () {
+        var code = codeInput.value.trim();
+        if (!code) return;
+        errorEl.style.display = 'none';
+        joinBtn.disabled = true;
+
+        fetch('/api/tournaments/' + encodeURIComponent(code) + '/join', { method: 'POST' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.tournament_id) {
+                    window.location.href = '/tournaments/' + data.tournament_id;
+                } else {
+                    errorEl.textContent = data.detail || 'Error';
+                    errorEl.style.display = 'block';
+                    joinBtn.disabled = false;
+                }
+            })
+            .catch(function () { joinBtn.disabled = false; });
+    });
+
+    codeInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') joinBtn.click();
+    });
+})();
+</script>
+{% endblock %}
