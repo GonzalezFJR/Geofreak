@@ -59,6 +59,7 @@
     // Tile layer control labels
     var tileLayerLabels = {};
     tileLayerLabels[T["mapjs.layer_flat"] || "Light"] = tileLayerDefs.light;
+    tileLayerLabels[T["mapjs.layer_blank"] || "Blank"] = tileLayerDefs.blank;
     tileLayerLabels[T["mapjs.layer_physical"] || "Physical"] = tileLayerDefs.physical;
     tileLayerLabels[T["mapjs.layer_terrain"] || "Terrain"] = tileLayerDefs.terrain;
     tileLayerLabels[T["mapjs.layer_standard"] || "Standard"] = tileLayerDefs.standard;

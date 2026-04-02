@@ -3644,7 +3644,7 @@ _JS_KEYS = [
     "mg.entities_country", "mg.entities_territory", "mg.entities_city",
     "mg.entities_state", "mg.entities_province", "mg.entities_region",
     # Map viewer
-    "mapjs.layer_flat", "mapjs.layer_standard", "mapjs.layer_satellite",
+    "mapjs.layer_flat", "mapjs.layer_blank", "mapjs.layer_standard", "mapjs.layer_satellite",
     "mapjs.layer_dark", "mapjs.capitals", "mapjs.megacities",
     "mapjs.large_cities", "mapjs.medium_cities", "mapjs.other_cities",
     "mapjs.section_general", "mapjs.section_population",
@@ -3840,6 +3840,7 @@ _JS_KEYS_EXTRA: dict[str, dict[str, str]] = {
 _MAPJS_LABELS: dict[str, dict[str, str]] = {
     "es": {
         "mapjs.layer_flat": "Plano",
+        "mapjs.layer_blank": "Sin etiquetas",
         "mapjs.layer_standard": "Estándar",
         "mapjs.layer_satellite": "Satélite",
         "mapjs.layer_dark": "Oscuro",
@@ -3924,6 +3925,7 @@ _MAPJS_LABELS: dict[str, dict[str, str]] = {
     },
     "en": {
         "mapjs.layer_flat": "Light",
+        "mapjs.layer_blank": "No labels",
         "mapjs.layer_standard": "Standard",
         "mapjs.layer_satellite": "Satellite",
         "mapjs.layer_dark": "Dark",
@@ -4008,6 +4010,7 @@ _MAPJS_LABELS: dict[str, dict[str, str]] = {
     },
     "fr": {
         "mapjs.layer_flat": "Clair",
+        "mapjs.layer_blank": "Sans étiquettes",
         "mapjs.layer_standard": "Standard",
         "mapjs.layer_satellite": "Satellite",
         "mapjs.layer_dark": "Sombre",
@@ -4092,6 +4095,7 @@ _MAPJS_LABELS: dict[str, dict[str, str]] = {
     },
     "it": {
         "mapjs.layer_flat": "Chiaro",
+        "mapjs.layer_blank": "Senza etichette",
         "mapjs.layer_standard": "Standard",
         "mapjs.layer_satellite": "Satellite",
         "mapjs.layer_dark": "Scuro",
@@ -4176,6 +4180,7 @@ _MAPJS_LABELS: dict[str, dict[str, str]] = {
     },
     "ru": {
         "mapjs.layer_flat": "Светлая",
+        "mapjs.layer_blank": "Без надписей",
         "mapjs.layer_standard": "Стандартная",
         "mapjs.layer_satellite": "Спутник",
         "mapjs.layer_dark": "Тёмная",
