@@ -1060,6 +1060,9 @@
 .section-header {
     text-align: center;
     margin-bottom: 28px;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .section-badge {
     display: inline-block;
@@ -1083,7 +1086,8 @@
 .section-desc {
     color: var(--gray-500);
     font-size: 0.95rem;
-    margin: 0;
+    margin: 0 auto;
+    max-width: 640px;
 }
 .daily-card {
     display: flex;
