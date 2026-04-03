@@ -35,9 +35,13 @@
             <div class="nav-links" id="nav-links">
                 <a href="/games" class="nav-link">{{ t('nav.games', lang) }}</a>
                 {% if request.session.get('authenticated') %}
+                <a href="/ranking" class="nav-link">{{ t('nav.ranking', lang) }}</a>
+                <a href="/map" class="nav-link">{{ t('nav.map', lang) }}</a>
                 <a href="/admin" class="nav-link">Admin</a>
                 <a href="/admin/logout" class="nav-link nav-logout">{{ t('nav.logout', lang) }}</a>
                 {% elif user %}
+                <a href="/ranking" class="nav-link">{{ t('nav.ranking', lang) }}</a>
+                <a href="/map" class="nav-link">{{ t('nav.map', lang) }}</a>
                 <a href="/friends" class="nav-link nav-friends" id="nav-friends">{{ t('soc.friends', lang) }}</a>
                 <a href="/profile" class="nav-link">{{ user.username }}</a>
                 <a href="/logout" class="nav-link nav-logout">{{ t('nav.logout', lang) }}</a>
@@ -66,7 +70,6 @@
                 </div>
                 <div class="footer-links">
                     <a href="/games">{{ t('footer.games', lang) }}</a>
-                    <a href="/ranking">{{ t('footer.ranking', lang) }}</a>
                     <a href="/sources">{{ t('footer.sources', lang) }}</a>
                     <a href="/contact">{{ t('footer.contact', lang) }}</a>
                 </div>

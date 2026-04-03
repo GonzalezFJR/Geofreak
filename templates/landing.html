@@ -50,44 +50,44 @@
     </a>
 </section>
 
-<!-- Game Modes -->
-<section class="modes-section">
+<!-- GeoGames -->
+<section class="landing-section landing-section--blue">
     <div class="section-header">
-        <h2 class="section-title">{{ t('landing.modes_title', lang) }}</h2>
+        <h2 class="section-title">{{ t('landing.geogames_title', lang) }}</h2>
+        <p class="section-desc">{{ t('landing.geogames_desc', lang) }}</p>
     </div>
-    <div class="modes-grid" style="grid-template-columns: repeat(3, 1fr); max-width: 720px;">
-        <a href="/play/solo" class="mode-card mode-solo">
-            <div class="mode-icon-wrap"><img src="/static/img/icons/solo.svg" class="mode-icon" width="72" height="72" alt=""></div>
-            <h3>{{ t('landing.mode_solo', lang) }}</h3>
-            <p>{{ t('landing.mode_solo_d', lang) }}</p>
+    <div class="landing-game-grid">
+        {% for g in geogames %}
+        <a href="/games/{{ g.id }}" class="landing-game-card landing-game-card--geogame">
+            <div class="lgc-icon"><img src="/static/img/icons/{{ g.id }}.svg?v={{ V }}" width="56" height="56" alt=""></div>
+            <h3>{{ g.name }}</h3>
+            <p>{{ g.desc }}</p>
+            <span class="lgc-btn">{{ t('landing.play_btn', lang) }}</span>
         </a>
-        <a href="/play/duel" class="mode-card mode-duel">
-            <div class="mode-icon-wrap"><img src="/static/img/icons/duel.svg" class="mode-icon" width="72" height="72" alt=""></div>
-            <h3>{{ t('landing.mode_duel', lang) }}</h3>
-            <p>{{ t('landing.mode_duel_d', lang) }}</p>
-        </a>
-        <a href="/play/tournament" class="mode-card mode-tournament">
-            <div class="mode-icon-wrap"><img src="/static/img/icons/tournament.svg" class="mode-icon" width="72" height="72" alt=""></div>
-            <h3>{{ t('landing.mode_tournament', lang) }}</h3>
-            <p>{{ t('landing.mode_tournament_d', lang) }}</p>
-        </a>
+        {% endfor %}
     </div>
 </section>
 
-<!-- GeoQuiz -->
-<section class="quiz-section">
-    <div class="quiz-card">
-        <img src="/static/img/icons/quiz.svg" class="quiz-card-icon" width="64" height="64" alt="">
-        <div class="quiz-card-text">
-            <h2>GeoQuiz</h2>
-            <p>{{ t('landing.quiz_desc', lang) }}</p>
-            <a href="/quizz" class="quiz-btn">{{ t('landing.quiz_btn', lang) }}</a>
-        </div>
+<!-- GeoQuiz: Map challenges -->
+<section class="landing-section landing-section--brown">
+    <div class="section-header">
+        <h2 class="section-title">{{ t('landing.geoquiz_title', lang) }}</h2>
+        <p class="section-desc">{{ t('landing.geoquiz_desc', lang) }}</p>
+    </div>
+    <div class="landing-game-grid">
+        {% for g in map_games %}
+        <a href="/games/{{ g.id }}" class="landing-game-card landing-game-card--map">
+            <div class="lgc-icon"><img src="/static/img/icons/{{ g.id }}.svg?v={{ V }}" width="56" height="56" alt=""></div>
+            <h3>{{ g.name }}</h3>
+            <p>{{ g.desc }}</p>
+            <span class="lgc-btn lgc-btn--brown">{{ t('landing.play_btn', lang) }}</span>
+        </a>
+        {% endfor %}
     </div>
 </section>
 
 {% if not user %}
-<!-- Signup CTA for non-logged users -->
+<!-- Signup CTA -->
 <section class="signup-section">
     <div class="signup-content">
         <h2>{{ t('landing.signup_title', lang) }}</h2>
@@ -99,6 +99,53 @@
     </div>
 </section>
 {% endif %}
+
+<!-- Play Modes: Solo / Duelo / Torneo -->
+<section class="landing-section landing-section--modes">
+    <div class="section-header">
+        <h2 class="section-title">{{ t('landing.modes_title', lang) }}</h2>
+        <p class="section-desc">{{ t('landing.modes_desc', lang) }}</p>
+    </div>
+    <div class="modes-grid">
+        <a href="/play/solo" class="mode-card mode-solo">
+            <div class="mode-icon-wrap"><img src="/static/img/icons/solo.svg?v={{ V }}" class="mode-icon" width="72" height="72" alt=""></div>
+            <h3>{{ t('landing.mode_solo', lang) }}</h3>
+            <p>{{ t('landing.mode_solo_d', lang) }}</p>
+        </a>
+        <a href="/play/duel" class="mode-card mode-duel">
+            <div class="mode-icon-wrap"><img src="/static/img/icons/duel.svg?v={{ V }}" class="mode-icon" width="72" height="72" alt=""></div>
+            <h3>{{ t('landing.mode_duel', lang) }}</h3>
+            <p>{{ t('landing.mode_duel_d', lang) }}</p>
+        </a>
+        <a href="/tournaments" class="mode-card mode-tournament">
+            <div class="mode-icon-wrap"><img src="/static/img/icons/tournament.svg?v={{ V }}" class="mode-icon" width="72" height="72" alt=""></div>
+            <h3>{{ t('landing.mode_tournament', lang) }}</h3>
+            <p>{{ t('landing.mode_tournament_d', lang) }}</p>
+        </a>
+    </div>
+    <div class="tournament-highlight">
+        <img src="/static/img/icons/tournament.svg?v={{ V }}" width="48" height="48" alt="" class="th-icon">
+        <p>{{ t('landing.tournament_extra', lang) }}</p>
+    </div>
+</section>
+
+<!-- Guessing Games -->
+<section class="landing-section landing-section--green">
+    <div class="section-header">
+        <h2 class="section-title">{{ t('landing.guess_title', lang) }}</h2>
+        <p class="section-desc">{{ t('landing.guess_desc', lang) }}</p>
+    </div>
+    <div class="landing-game-grid">
+        {% for g in guess_games %}
+        <a href="/games/{{ g.id }}" class="landing-game-card landing-game-card--guess">
+            <div class="lgc-icon"><img src="/static/img/icons/{{ g.id }}.svg?v={{ V }}" width="56" height="56" alt=""></div>
+            <h3>{{ g.name }}</h3>
+            <p>{{ g.desc }}</p>
+            <span class="lgc-btn lgc-btn--green">{{ t('landing.play_btn', lang) }}</span>
+        </a>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}
 
 {% block extra_scripts %}

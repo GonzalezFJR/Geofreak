@@ -58,13 +58,38 @@ _QUIZZ_TYPES = {"quiz", "map"}    # flags, outline, name-*
 async def landing(request: Request, user=Depends(get_optional_user)):
     lang = get_lang(request)
     track("page_view", {"page": "landing"})
+    suffix = _LANG_SUFFIX.get(lang, "_en")
+    games = _games_svc.get_games()
+    # Build localized game info by subcategory
+    geogames = []  # solo type (GeoGames)
+    map_games = []  # map type (sobre_el_mapa)
+    guess_games = []  # quiz type (adivina_cual)
+    for g in games:
+        if not g.get("enabled"):
+            continue
+        gtype = g.get("type", "")
+        sub = g.get("subcategory", "")
+        info = {
+            "id": g["id"],
+            "name": g.get(f"name{suffix}") or g.get("name") or g["id"],
+            "desc": g.get(f"description{suffix}") or g.get("description") or "",
+        }
+        if gtype == "solo":
+            geogames.append(info)
+        elif gtype == "map":
+            map_games.append(info)
+        elif gtype == "quiz" and sub == "adivina_cual":
+            guess_games.append(info)
     return templates.TemplateResponse("landing.html", {
         "request": request, "user": user, "lang": lang,
+        "geogames": geogames, "map_games": map_games, "guess_games": guess_games,
     })
 
 
 @router.get("/map", response_class=HTMLResponse)
 async def map_viewer(request: Request, user=Depends(get_optional_user)):
+    if not user and not request.session.get("authenticated"):
+        return RedirectResponse("/login", status_code=302)
     lang = get_lang(request)
     track("page_view", {"page": "map"})
     can_edit = False
@@ -78,6 +103,8 @@ async def map_viewer(request: Request, user=Depends(get_optional_user)):
 
 @router.get("/relief", response_class=HTMLResponse)
 async def relief_map(request: Request, user=Depends(get_optional_user)):
+    if not user and not request.session.get("authenticated"):
+        return RedirectResponse("/login", status_code=302)
     lang = get_lang(request)
     track("page_view", {"page": "relief"})
     return templates.TemplateResponse("relief.html", {"request": request, "user": user, "lang": lang})
@@ -91,6 +118,8 @@ async def ranking_page(
     game: Optional[str] = Query(None),
     user=Depends(get_optional_user),
 ):
+    if not user and not request.session.get("authenticated"):
+        return RedirectResponse("/login", status_code=302)
     lang = get_lang(request)
     track("page_view", {"page": "ranking"})
 

@@ -621,9 +621,9 @@
     height: 4px;
     transition: height 0.3s;
 }
-.ranking-card--daily::before { background: linear-gradient(135deg, #f59e0b, #f97316); }
-.ranking-card--global::before { background: linear-gradient(135deg, var(--blue-500), #6366f1); }
-.ranking-card--game::before { background: linear-gradient(135deg, var(--green-500), #10b981); }
+.ranking-card--daily::before { background: linear-gradient(135deg, var(--brown-500), var(--orange-500)); }
+.ranking-card--global::before { background: linear-gradient(135deg, var(--blue-500), var(--blue-700)); }
+.ranking-card--game::before { background: linear-gradient(135deg, var(--green-500), var(--green-600)); }
 
 .ranking-card:hover {
     transform: translateY(-4px);
@@ -815,6 +815,7 @@
 .rank-cell.gold { color: #d4a017; font-size: 1.1rem; }
 .rank-cell.silver { color: #8a8a8a; font-size: 1.05rem; }
 .rank-cell.bronze { color: #b87333; font-size: 1.05rem; }
+.rank-medal { vertical-align: middle; display: inline-block; }
 
 .value-cell {
     font-family: var(--font-display);
@@ -1012,20 +1013,26 @@
 }
 .mode-solo  { --mode-color: var(--blue-500); }
 .mode-solo h3 { color: var(--blue-600); }
-.mode-duel  { --mode-color: #e53935; }
-.mode-duel h3 { color: #e53935; }
-.mode-tournament { --mode-color: #ff9800; }
-.mode-tournament h3 { color: #e68a00; }
+.mode-duel  { --mode-color: var(--orange-500); }
+.mode-duel h3 { color: var(--orange-600); }
+.mode-tournament { --mode-color: var(--violet-500); }
+.mode-tournament h3 { color: var(--violet-600); }
 .mode-tests { --mode-color: var(--green-500); }
 .mode-tests h3 { color: var(--green-600); }
 .mode-quizz { --mode-color: var(--green-500); }
 .mode-quizz h3 { color: var(--green-600); }
+.mode-geogame { --mode-color: var(--blue-500); }
+.mode-geogame h3 { color: var(--blue-600); }
+.mode-geoquiz { --mode-color: var(--green-500); }
+.mode-geoquiz h3 { color: var(--green-600); }
+.mode-map { --mode-color: var(--brown-500); }
+.mode-map h3 { color: var(--brown-600); }
 
 /* ============================================================
    Landing — Header
    ============================================================ */
 .landing-header {
-    padding: 132px 24px 40px;
+    padding: 132px 24px 32px;
     text-align: center;
     background: linear-gradient(135deg, #0a2540 0%, #0c2d5a 50%, #0a3d6b 100%);
 }
@@ -1444,6 +1451,134 @@
     .daily-hero { flex-direction: column; padding: 28px 20px; gap: 20px; text-align: center; }
     .daily-hero svg { width: 180px; height: auto; }
     .quiz-card { flex-direction: column; text-align: center; padding: 28px 20px; }
+}
+
+/* ============================================================
+   Landing — Game section layout
+   ============================================================ */
+.landing-section {
+    padding: 80px 24px;
+}
+.landing-section--blue { background: var(--gray-50); }
+.landing-section--brown { background: var(--white); }
+.landing-section--green { background: var(--gray-50); }
+.landing-section--modes {
+    padding: 80px 24px 60px;
+    background: var(--white);
+}
+
+.landing-game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.landing-game-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px 28px;
+    border-radius: var(--radius-xl);
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+.landing-game-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    transition: height 0.3s;
+}
+.landing-game-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 36px -6px rgba(0,0,0,0.12);
+    border-color: transparent;
+}
+.landing-game-card:hover::before { height: 6px; }
+
+.landing-game-card--geogame::before { background: linear-gradient(135deg, var(--blue-500), var(--blue-700)); }
+.landing-game-card--map::before { background: linear-gradient(135deg, var(--brown-500), var(--brown-700)); }
+.landing-game-card--guess::before { background: linear-gradient(135deg, var(--green-500), var(--green-600)); }
+
+.lgc-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    transition: transform 0.3s;
+}
+.landing-game-card--geogame .lgc-icon { background: color-mix(in srgb, var(--blue-500) 10%, transparent); }
+.landing-game-card--map .lgc-icon { background: color-mix(in srgb, var(--brown-500) 10%, transparent); }
+.landing-game-card--guess .lgc-icon { background: color-mix(in srgb, var(--green-500) 10%, transparent); }
+.landing-game-card:hover .lgc-icon { transform: scale(1.08); }
+
+.landing-game-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 8px;
+}
+.landing-game-card p {
+    color: var(--gray-500);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 18px;
+    flex: 1;
+}
+
+.lgc-btn {
+    display: inline-block;
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    background: var(--blue-500);
+    color: var(--white);
+    transition: all 0.2s;
+}
+.lgc-btn--brown { background: var(--brown-500); }
+.lgc-btn--green { background: var(--green-500); }
+.landing-game-card:hover .lgc-btn { filter: brightness(0.9); }
+
+/* Tournament highlight box */
+.tournament-highlight {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 700px;
+    margin: 36px auto 0;
+    padding: 24px 28px;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--violet-500) 6%, var(--white));
+    border: 1.5px solid color-mix(in srgb, var(--violet-400) 25%, var(--gray-200));
+}
+.tournament-highlight .th-icon {
+    flex-shrink: 0;
+    opacity: 0.8;
+}
+.tournament-highlight p {
+    color: var(--gray-600);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .landing-section { padding: 50px 12px; }
+    .landing-game-grid { grid-template-columns: 1fr; gap: 16px; }
+    .tournament-highlight { flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+    .modes-grid { grid-template-columns: 1fr !important; max-width: 100% !important; }
 }
 
 /* ============================================================

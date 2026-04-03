@@ -14,30 +14,21 @@
     <div class="ranking-cards">
         <a href="/ranking?cat=daily" class="ranking-card ranking-card--daily">
             <div class="ranking-card__icon">
-                <svg viewBox="0 0 48 48" width="56" height="56">
-                    <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
-                    <text x="24" y="30" text-anchor="middle" font-size="22">📅</text>
-                </svg>
+                <img src="/static/img/icons/ranking-daily.svg?v={{ V }}" width="56" height="56" alt="">
             </div>
             <h3>{{ t('lb.daily', lang) }}</h3>
             <p>{{ t('lb.daily_subtitle', lang) }}</p>
         </a>
         <a href="/ranking?cat=global" class="ranking-card ranking-card--global">
             <div class="ranking-card__icon">
-                <svg viewBox="0 0 48 48" width="56" height="56">
-                    <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
-                    <text x="24" y="30" text-anchor="middle" font-size="22">🏆</text>
-                </svg>
+                <img src="/static/img/icons/ranking-global.svg?v={{ V }}" width="56" height="56" alt="">
             </div>
             <h3>{{ t('lb.global_ranking', lang) }}</h3>
             <p>{{ t('lb.global_subtitle', lang) }}</p>
         </a>
         <a href="/ranking?cat=game&game={{ game_types[0] }}" class="ranking-card ranking-card--game">
             <div class="ranking-card__icon">
-                <svg viewBox="0 0 48 48" width="56" height="56">
-                    <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
-                    <text x="24" y="30" text-anchor="middle" font-size="22">🎮</text>
-                </svg>
+                <img src="/static/img/icons/ranking-game.svg?v={{ V }}" width="56" height="56" alt="">
             </div>
             <h3>{{ t('lb.by_game_ranking', lang) }}</h3>
             <p>{{ t('lb.game_subtitle', lang) }}</p>
@@ -108,7 +99,7 @@
             {% for e in entries %}
             <tr>
                 <td class="rank-cell {{ 'gold' if e.rank == 1 else ('silver' if e.rank == 2 else ('bronze' if e.rank == 3 else '')) }}">
-                    {% if e.rank == 1 %}🥇{% elif e.rank == 2 %}🥈{% elif e.rank == 3 %}🥉{% else %}{{ e.rank }}{% endif %}
+                    {% if e.rank == 1 %}<img src="/static/img/icons/medal-gold.svg" class="rank-medal" width="22" height="22" alt="1">{% elif e.rank == 2 %}<img src="/static/img/icons/medal-silver.svg" class="rank-medal" width="22" height="22" alt="2">{% elif e.rank == 3 %}<img src="/static/img/icons/medal-bronze.svg" class="rank-medal" width="22" height="22" alt="3">{% else %}{{ e.rank }}{% endif %}
                 </td>
                 <td>{{ e.username }}</td>
                 <td class="value-cell">{{ e.value | int }}</td>
@@ -123,7 +114,7 @@
 
     {% else %}
     <div class="ranking-empty">
-        <span>🏆</span>
+        <img src="/static/img/icons/ranking-global.svg" width="48" height="48" alt="" style="opacity:0.5">
         {{ t('lb.no_entries', lang) }}
     </div>
     {% endif %}
