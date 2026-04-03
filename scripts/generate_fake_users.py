@@ -243,7 +243,7 @@ def store_attempts(user_id: str, username: str, attempts: list[dict], settings):
         })
 
 
-def store_daily_scores(user_id: str, skill: float, settings):
+def store_daily_scores(user_id: str, username: str, skill: float, settings):
     """Generate and store daily challenge scores for a fake user."""
     daily_table = get_dynamodb_resource().Table(settings.table_name("daily_scores"))
     now = datetime.now(timezone.utc)
@@ -269,6 +269,7 @@ def store_daily_scores(user_id: str, skill: float, settings):
         daily_table.put_item(Item={
             "user_id": user_id,
             "date": date_str,
+            "username": username,
             "score_s": Decimal(str(round(score_s, 4))),
             "q": Decimal(str(round(q, 6))),
             "n": n,
@@ -316,7 +317,7 @@ def main():
         store_attempts(uid, username, attempts, settings)
 
         # Generate daily scores
-        store_daily_scores(uid, skill, settings)
+        store_daily_scores(uid, username, skill, settings)
 
         if (i + 1) % 20 == 0:
             print(f"  ... {i + 1}/{args.count}")

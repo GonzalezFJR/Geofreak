@@ -202,13 +202,14 @@ def get_daily_leaderboard(date: str) -> list[dict]:
 
     entries = []
     for i, item in enumerate(items, 1):
+        s = Decimal(str(round(float(item.get("score_s", 0)), 4)))
         entries.append({
             "rank": i,
             "user_id": item["user_id"],
             "username": item.get("username", "???"),
-            "score_s": float(item.get("score_s", 0)),
-            "q": float(item.get("q", 0)),
-            "tpp": float(item.get("tpp", 0)),
+            "value": s,
+            "score_s": s,
+            "q": Decimal(str(round(float(item.get("q", 0)), 6))),
             "game_type": item.get("game_type", ""),
         })
     return entries
