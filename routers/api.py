@@ -46,6 +46,7 @@ from services.daily_rankings import (
     get_user_daily_ranking_position,
     get_user_daily_scores,
     rebuild_all_daily_rankings,
+    rebuild_daily_ranking,
 )
 
 router = APIRouter(tags=["api"])
@@ -490,6 +491,7 @@ async def save_match_result(
                 num_questions=payload.num_questions or payload.total,
                 config=payload.config,
             )
+            rebuild_daily_ranking(today)
         except Exception:
             pass  # daily scoring failure must not break match saving
 
