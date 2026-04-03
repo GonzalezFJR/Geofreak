@@ -655,6 +655,15 @@
 }
 .ranking-back a:hover { color: var(--blue-700); }
 
+.ranking-category-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin: 0 0 16px;
+    text-align: center;
+}
+
 .ranking-tabs {
     display: flex;
     gap: 8px;

@@ -200,18 +200,31 @@ def get_daily_leaderboard(date: str) -> list[dict]:
         )
         items.extend(resp.get("Items", []))
 
+    # Resolve usernames from users table (daily_scores may lack username field)
+    user_ids = list({item["user_id"] for item in items})
+    usernames = _load_usernames(user_ids)
+
     entries = []
     for i, item in enumerate(items, 1):
+        uid = item["user_id"]
+        uname = usernames.get(uid, "")
+        if not uname:
+            continue  # skip entries without a resolvable username
         s = Decimal(str(round(float(item.get("score_s", 0)), 4)))
         entries.append({
             "rank": i,
-            "user_id": item["user_id"],
-            "username": item.get("username", "???"),
+            "user_id": uid,
+            "username": uname,
             "value": s,
             "score_s": s,
             "q": Decimal(str(round(float(item.get("q", 0)), 6))),
             "game_type": item.get("game_type", ""),
         })
+
+    # Re-rank after filtering
+    for i, e in enumerate(entries, 1):
+        e["rank"] = i
+
     return entries
 
 

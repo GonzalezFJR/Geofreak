@@ -65,10 +65,15 @@
     <div class="ranking-game-select">
         {% for gt in game_types %}
         <a href="/ranking?cat=game&game={{ gt }}" class="game-btn {{ 'active' if game_type == gt }}">
-            {{ gt | replace('-', ' ') | title }}
+            {{ game_names.get(gt, gt) }}
         </a>
         {% endfor %}
     </div>
+    {% endif %}
+
+    <!-- Category title -->
+    {% if category_title %}
+    <h2 class="ranking-category-title">{{ category_title }}</h2>
     {% endif %}
 
     <!-- User position banner -->
@@ -91,6 +96,7 @@
             <tr>
                 <th>{{ t('lb.rank', lang) }}</th>
                 <th>{{ t('lb.player', lang) }}</th>
+                <th>{{ t('lb.value', lang) }}</th>
             </tr>
         </thead>
         <tbody>
@@ -100,6 +106,7 @@
                     {% if e.rank == 1 %}🥇{% elif e.rank == 2 %}🥈{% elif e.rank == 3 %}🥉{% else %}{{ e.rank }}{% endif %}
                 </td>
                 <td>{{ e.username }}</td>
+                <td class="value-cell">{{ e.value | int }}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -34,6 +34,20 @@ router = APIRouter()
 _games_svc = GamesService()
 _settings = get_settings()
 
+# Language suffix map for contents.json game names
+_LANG_SUFFIX = {"es": "", "en": "_en", "fr": "_fr", "it": "_it", "ru": "_ru"}
+
+
+def _build_game_names(lang: str) -> dict[str, str]:
+    """Map game_id → localized display name from contents.json."""
+    suffix = _LANG_SUFFIX.get(lang, "_en")
+    result = {}
+    for g in _games_svc.get_games():
+        gid = g.get("id", "")
+        name = g.get(f"name{suffix}") or g.get("name") or gid
+        result[gid] = name
+    return result
+
 # Game types shown in each selection page
 _PLAY_TYPES = {"solo"}             # ordering + comparison
 _QUIZZ_TYPES = {"quiz", "map"}    # flags, outline, name-*
@@ -85,9 +99,16 @@ async def ranking_page(
     user_pos = None
     category = cat
     game_type = game or ""
+    category_title = ""
+
+    # Build game display names from contents.json
+    game_names = _build_game_names(lang)
 
     if cat == "daily":
         sub = sub or "today"
+        from core.i18n import t
+        sub_labels = {"today": t("lb.today", lang), "monthly": t("lb.monthly", lang), "absolute": t("lb.absolute", lang)}
+        category_title = t("lb.daily", lang) + " — " + sub_labels.get(sub, "")
         if sub == "today":
             lb = get_daily_day_ranking()
         elif sub == "monthly":
@@ -104,6 +125,9 @@ async def ranking_page(
 
     elif cat == "global":
         sub = sub or "season"
+        from core.i18n import t
+        sub_labels = {"season": t("lb.season", lang), "weekly": t("lb.weekly", lang)}
+        category_title = t("lb.global_ranking", lang) + " — " + sub_labels.get(sub, "")
         if sub == "season":
             lb = get_season_ranking()
         elif sub == "weekly":
@@ -118,6 +142,8 @@ async def ranking_page(
     elif cat == "game":
         gt = game if game and game in ALL_GAME_TYPES else game_types[0]
         game_type = gt
+        from core.i18n import t
+        category_title = t("lb.by_game_ranking", lang) + " — " + game_names.get(gt, gt)
         lb = get_game_ranking(gt)
         entries = lb.get("entries", []) if lb else []
         updated_at = lb.get("updated_at") if lb else None
@@ -127,10 +153,15 @@ async def ranking_page(
         category = None  # show category cards
         sub = None
 
+    # Limit public ranking to top 20
+    entries = entries[:20]
+
     return templates.TemplateResponse("ranking.html", {
         "request": request, "user": user, "lang": lang,
         "category": category, "sub": sub,
+        "category_title": category_title,
         "game_type": game_type, "game_types": game_types,
+        "game_names": game_names,
         "entries": entries, "updated_at": updated_at,
         "user_position": user_pos,
     })
