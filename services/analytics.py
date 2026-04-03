@@ -38,12 +38,12 @@ logger = logging.getLogger(__name__)
 _S3_PREFIX = "analytics/events"
 _RING_BUFFER_MAX = 500
 
-# Fields that generate sub-counters (event_type → data key)
-_SUB_COUNTER_FIELDS: dict[str, str] = {
-    "match_finished": "game_type",
-    "game_started": "game",
-    "duel_created": "game_type",
-    "page_view": "page",
+# Fields that generate sub-counters (event_type → data key(s))
+_SUB_COUNTER_FIELDS: dict[str, list[str]] = {
+    "match_finished": ["game_type", "language"],
+    "game_started": ["game"],
+    "duel_created": ["game_type"],
+    "page_view": ["page"],
 }
 
 # ── Internal state ───────────────────────────────────────────────────────────
@@ -74,12 +74,13 @@ def _increment_counters(event_type: str, data: dict, now: datetime) -> None:
             (f"daily:{today}", event_type),
         ]
 
-        # Add sub-counter if applicable (e.g. match_finished#map_challenge)
-        sub_field = _SUB_COUNTER_FIELDS.get(event_type)
-        if sub_field and data.get(sub_field):
-            sub_sk = f"{event_type}#{data[sub_field]}"
-            keys.append(("all", sub_sk))
-            keys.append((f"daily:{today}", sub_sk))
+        # Add sub-counters if applicable (e.g. match_finished#map_challenge)
+        sub_fields = _SUB_COUNTER_FIELDS.get(event_type, [])
+        for sub_field in sub_fields:
+            if data.get(sub_field):
+                sub_sk = f"{event_type}#{data[sub_field]}"
+                keys.append(("all", sub_sk))
+                keys.append((f"daily:{today}", sub_sk))
 
         for pk, sk in keys:
             table.update_item(
@@ -182,6 +183,18 @@ def get_total_events() -> int:
         return int(item["value"]) if item else 0
     except Exception:
         return 0
+
+
+def get_daily_counters_range(days: int = 30) -> list[dict]:
+    """Return daily counters for the last N days. Each entry: {date, counters}."""
+    now = datetime.now(timezone.utc)
+    result = []
+    for i in range(days):
+        d = (now - timedelta(days=i)).strftime("%Y-%m-%d")
+        counters = get_daily_counters(d)
+        if counters:
+            result.append({"date": d, "counters": counters})
+    return result
 
 
 # ── S3 flushing (event archival) ─────────────────────────────────────────────

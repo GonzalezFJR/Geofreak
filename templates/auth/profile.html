@@ -63,14 +63,8 @@
         </div>
     </div>
 
-    <!-- Action buttons -->
-    <div class="profile-actions">
-        <a href="/games" class="btn-accent">{{ t('prof.play', lang) }}</a>
-        <a href="/logout" class="prof-btn-outline prof-btn-logout">{{ t('prof.logout', lang) }}</a>
-    </div>
-
     <!-- Tabs -->
-    <div class="profile-tabs">
+    <div class="profile-tabs" style="margin-top:28px;">
         <button class="tab-btn active" data-tab="stats">{{ t('prof.tab_stats', lang) }}</button>
         <button class="tab-btn" data-tab="friends">
             {{ t('prof.tab_friends', lang) }}
@@ -288,39 +282,10 @@
     <!-- Tab: Configuración -->
     <div id="tab-config" class="tab-content" style="display:none">
 
-        <!-- Account details -->
+        <!-- Account details with inline edit -->
         <div class="profile-section">
             <h2>{{ t('prof.account', lang) }}</h2>
-            <div class="profile-detail">
-                <span class="label">{{ t('prof.user', lang) }}</span>
-                <span>{{ user.username }}</span>
-            </div>
-            <div class="profile-detail">
-                <span class="label">{{ t('prof.email', lang) }}</span>
-                <span class="profile-email-row">
-                    {{ user.email }}
-                    {% if not user.email_verified %}
-                    <span class="profile-unverified-badge">({{ t('prof.unverified', lang) }})</span>
-                    <form method="post" action="/profile/resend-verification" class="profile-verify-form">
-                        <button type="submit" class="btn-resend-verify" title="{{ t('prof.resend_verify', lang) }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                            </svg>
-                        </button>
-                    </form>
-                    {% endif %}
-                </span>
-            </div>
-            <div class="profile-detail">
-                <span class="label">{{ t('prof.role', lang) }}</span>
-                <span>{{ (user.role or user.plan or 'free') | capitalize }}</span>
-            </div>
-        </div>
 
-        <!-- Change username -->
-        <div class="profile-section">
-            <h2>{{ t('prof.change_username', lang) }}</h2>
             {% if request.query_params.get('un_ok') %}
             <div class="auth-success">{{ t('prof.username_changed', lang) }}</div>
             {% endif %}
@@ -329,17 +294,6 @@
             {% elif request.query_params.get('un_error') == 'taken' %}
             <div class="auth-error">{{ t('prof.username_taken', lang) }}</div>
             {% endif %}
-            <form method="post" action="/profile/change-username" class="profile-form">
-                <input type="text" name="new_username" placeholder="{{ t('prof.new_username', lang) }}" required
-                       minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+" value="{{ user.username }}">
-                <button type="submit" class="btn-accent">{{ t('prof.save', lang) }}</button>
-            </form>
-            <p class="auth-hint">{{ t('auth.user_hint', lang) }}</p>
-        </div>
-
-        <!-- Change email -->
-        <div class="profile-section">
-            <h2>{{ t('prof.change_email', lang) }}</h2>
             {% if request.query_params.get('em_sent') %}
             <div class="auth-success">{{ t('prof.email_sent', lang) }}</div>
             {% endif %}
@@ -348,10 +302,52 @@
             {% elif request.query_params.get('em_error') == 'taken' %}
             <div class="auth-error">{{ t('prof.email_taken', lang) }}</div>
             {% endif %}
-            <form method="post" action="/profile/change-email" class="profile-form">
-                <input type="email" name="new_email" placeholder="{{ t('prof.new_email', lang) }}" required>
-                <button type="submit" class="btn-accent">{{ t('prof.send_confirm', lang) }}</button>
+
+            <!-- Username row -->
+            <div class="profile-detail">
+                <span class="label">{{ t('prof.user', lang) }}</span>
+                <span class="editable-row">
+                    <span id="val-username">{{ user.username }}</span>
+                    <button type="button" class="edit-pencil" onclick="toggleEdit('username')" title="{{ t('prof.edit', lang) }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                    </button>
+                </span>
+            </div>
+            <form id="edit-username" class="inline-edit-form" method="post" action="/profile/change-username" style="display:none">
+                <input type="text" name="new_username" value="{{ user.username }}" required minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+">
+                <button type="submit" class="btn-accent btn-sm">{{ t('prof.save', lang) }}</button>
+                <button type="button" class="prof-btn-outline btn-sm" onclick="toggleEdit('username')">{{ t('prof.cancel_edit', lang) }}</button>
+                <span class="auth-hint" style="margin:0;display:block;width:100%;">{{ t('auth.user_hint', lang) }}</span>
             </form>
+
+            <!-- Email row -->
+            <div class="profile-detail">
+                <span class="label">{{ t('prof.email', lang) }}</span>
+                <span class="editable-row">
+                    <span id="val-email">{{ user.email }}</span>
+                    {% if not user.email_verified %}
+                    <span class="profile-unverified-badge">({{ t('prof.unverified', lang) }})</span>
+                    <form method="post" action="/profile/resend-verification" class="profile-verify-form">
+                        <button type="submit" class="btn-resend-verify" title="{{ t('prof.resend_verify', lang) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        </button>
+                    </form>
+                    {% endif %}
+                    <button type="button" class="edit-pencil" onclick="toggleEdit('email')" title="{{ t('prof.edit', lang) }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                    </button>
+                </span>
+            </div>
+            <form id="edit-email" class="inline-edit-form" method="post" action="/profile/change-email" style="display:none">
+                <input type="email" name="new_email" placeholder="{{ t('prof.new_email', lang) }}" required>
+                <button type="submit" class="btn-accent btn-sm">{{ t('prof.send_confirm', lang) }}</button>
+                <button type="button" class="prof-btn-outline btn-sm" onclick="toggleEdit('email')">{{ t('prof.cancel_edit', lang) }}</button>
+            </form>
+
+            <div class="profile-detail">
+                <span class="label">{{ t('prof.role', lang) }}</span>
+                <span>{{ (user.role or user.plan or 'free') | capitalize }}</span>
+            </div>
         </div>
 
         <!-- Change password -->
@@ -378,6 +374,11 @@
         {% endif %}
 
     </div><!-- /tab-config -->
+
+    <!-- Logout -->
+    <div style="text-align:right;margin-top:32px;">
+        <a href="/logout" class="prof-btn-outline prof-btn-logout" style="display:inline-block;padding:8px 24px;border-radius:var(--radius-sm);text-decoration:none;font-weight:600;font-size:0.88rem;">{{ t('prof.logout', lang) }}</a>
+    </div>
 </div>
 
 <!-- Google new-user name modal -->
@@ -436,6 +437,11 @@
         });
     });
     var hash = window.location.hash.replace('#', '');
+    // Auto-switch to config tab if query params indicate username/email change result
+    var sp = new URLSearchParams(window.location.search);
+    if (sp.has('un_ok') || sp.has('un_error') || sp.has('em_sent') || sp.has('em_error') || sp.has('pw_ok') || sp.has('pw_error')) {
+        hash = 'config';
+    }
     if (['stats', 'friends', 'config'].indexOf(hash) !== -1) switchTab(hash);
 
     /* ── Friends sub-tabs ── */
@@ -634,6 +640,24 @@
         statusEl.textContent = '';
         saveBtn.disabled = false;
         saveBtn.textContent = saveLbl;
+    }
+
+    /* ── Inline edit toggle ── */
+    window.toggleEdit = function(field) {
+        var form = document.getElementById('edit-' + field);
+        if (!form) return;
+        var isHidden = form.style.display === 'none';
+        form.style.display = isHidden ? 'flex' : 'none';
+        if (isHidden) form.querySelector('input').focus();
+    };
+    // Auto-open edit forms if errors present
+    if (sp.has('un_ok') || sp.has('un_error')) {
+        var ef = document.getElementById('edit-username');
+        if (ef) ef.style.display = 'flex';
+    }
+    if (sp.has('em_sent') || sp.has('em_error')) {
+        var ef2 = document.getElementById('edit-email');
+        if (ef2) ef2.style.display = 'flex';
     }
 }());
 </script>

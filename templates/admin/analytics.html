@@ -2,6 +2,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="/static/css/admin.css?v={{ V }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -16,29 +17,93 @@
 
     {% include "admin/_nav.html" %}
 
-    <!-- Summary cards -->
-    <div class="analytics-cards">
-        <div class="analytics-card">
-            <div class="analytics-card-value">{{ total_events }}</div>
-            <div class="analytics-card-label">{{ t('adm.an_total_events', lang) }}</div>
+    <!-- ────── Section: Estadísticas ────── -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">📊 Estadísticas</h2>
+
+        <!-- Per-game counters table -->
+        <div class="analytics-table-wrap">
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>Juego</th>
+                        <th class="num">Hoy</th>
+                        <th class="num">Semana</th>
+                        <th class="num">Mes</th>
+                        <th class="num">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for gt in game_types %}
+                    <tr>
+                        <td><code>{{ gt }}</code></td>
+                        <td class="num">{{ game_stats[gt].today }}</td>
+                        <td class="num">{{ game_stats[gt].week }}</td>
+                        <td class="num">{{ game_stats[gt].month }}</td>
+                        <td class="num">{{ game_stats[gt].total }}</td>
+                    </tr>
+                {% endfor %}
+                    <tr style="font-weight:700;border-top:2px solid var(--gray-300);">
+                        <td>TOTAL</td>
+                        <td class="num">{{ game_stats.values()|map(attribute='today')|sum }}</td>
+                        <td class="num">{{ game_stats.values()|map(attribute='week')|sum }}</td>
+                        <td class="num">{{ game_stats.values()|map(attribute='month')|sum }}</td>
+                        <td class="num">{{ game_stats.values()|map(attribute='total')|sum }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="analytics-card">
-            <div class="analytics-card-value">{{ daily.get('total', 0) }}</div>
-            <div class="analytics-card-label">{{ t('adm.an_today', lang) }}</div>
-        </div>
-        <div class="analytics-card">
-            <div class="analytics-card-value">{{ event_types | length }}</div>
-            <div class="analytics-card-label">{{ t('adm.an_event_types', lang) }}</div>
-        </div>
-        <div class="analytics-card">
-            <div class="analytics-card-value">{{ s3_files | length }}</div>
-            <div class="analytics-card-label">{{ t('adm.an_s3_files_week', lang) }}</div>
+
+        <!-- Charts grid -->
+        <div class="analytics-charts-grid">
+            <!-- Visits per day -->
+            <div class="analytics-chart-card">
+                <h3>Visitas / día (30d)</h3>
+                <div class="chart-wrap"><canvas id="chart-visits"></canvas></div>
+            </div>
+            <!-- Games per day -->
+            <div class="analytics-chart-card">
+                <h3>Partidas / día (30d)</h3>
+                <div class="chart-wrap"><canvas id="chart-games"></canvas></div>
+            </div>
+            <!-- 24h histogram -->
+            <div class="analytics-chart-card">
+                <h3>Actividad hoy (por hora)</h3>
+                <div class="chart-wrap"><canvas id="chart-hours"></canvas></div>
+            </div>
+            <!-- Language pie -->
+            <div class="analytics-chart-card">
+                <h3>Partidas por idioma</h3>
+                <div class="chart-wrap chart-wrap-pie"><canvas id="chart-lang"></canvas></div>
+            </div>
         </div>
     </div>
 
-    <!-- Event counters by type -->
+    <!-- ────── Section: Eventos ────── -->
     <div class="admin-section">
-        <h2 class="admin-section-title">{{ t('adm.an_counters', lang) }}</h2>
+        <h2 class="admin-section-title">📡 Eventos</h2>
+
+        <!-- Summary cards -->
+        <div class="analytics-cards">
+            <div class="analytics-card">
+                <div class="analytics-card-value">{{ total_events }}</div>
+                <div class="analytics-card-label">{{ t('adm.an_total_events', lang) }}</div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-card-value">{{ daily.get('total', 0) }}</div>
+                <div class="analytics-card-label">{{ t('adm.an_today', lang) }}</div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-card-value">{{ event_types | length }}</div>
+                <div class="analytics-card-label">{{ t('adm.an_event_types', lang) }}</div>
+            </div>
+            <div class="analytics-card">
+                <div class="analytics-card-value">{{ s3_files | length }}</div>
+                <div class="analytics-card-label">{{ t('adm.an_s3_files_week', lang) }}</div>
+            </div>
+        </div>
+
+        <!-- Event counters by type -->
         {% if event_types %}
         <div class="analytics-table-wrap">
             <table class="analytics-table">
@@ -62,15 +127,11 @@
                 </tbody>
             </table>
         </div>
-        {% else %}
-        <p class="empty-msg">{{ t('adm.an_no_events', lang) }}</p>
         {% endif %}
-    </div>
 
-    <!-- Sub-counters (per game, per page, etc.) -->
-    {% if sub_types %}
-    <div class="admin-section">
-        <h2 class="admin-section-title">{{ t('adm.an_detail', lang) }}</h2>
+        <!-- Sub-counters -->
+        {% if sub_types %}
+        <h3 style="margin:20px 0 10px;font-size:0.95rem;font-weight:600;">{{ t('adm.an_detail', lang) }}</h3>
         <div class="analytics-table-wrap">
             <table class="analytics-table">
                 <thead>
@@ -91,12 +152,10 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    {% endif %}
+        {% endif %}
 
-    <!-- Recent events -->
-    <div class="admin-section">
-        <h2 class="admin-section-title">{{ t('adm.an_recent', lang) }}</h2>
+        <!-- Recent events -->
+        <h3 style="margin:20px 0 10px;font-size:0.95rem;font-weight:600;">{{ t('adm.an_recent', lang) }}</h3>
         {% if recent %}
         <div class="analytics-table-wrap">
             <table class="analytics-table">
@@ -125,11 +184,9 @@
         {% else %}
         <p class="empty-msg">{{ t('adm.an_no_events', lang) }}</p>
         {% endif %}
-    </div>
 
-    <!-- S3 files -->
-    <div class="admin-section">
-        <h2 class="admin-section-title">{{ t('adm.an_s3_files', lang) }}</h2>
+        <!-- S3 files -->
+        <h3 style="margin:20px 0 10px;font-size:0.95rem;font-weight:600;">{{ t('adm.an_s3_files', lang) }}</h3>
         {% if s3_files %}
         <div class="analytics-table-wrap">
             <table class="analytics-table">
@@ -156,4 +213,92 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+(function() {
+    var chartDates = {{ chart_dates | tojson }};
+    var shortDates = chartDates.map(function(d) { return d.slice(5); }); // MM-DD
+
+    // Visits per day
+    new Chart(document.getElementById('chart-visits'), {
+        type: 'line',
+        data: {
+            labels: shortDates,
+            datasets: [{
+                label: 'Visitas',
+                data: {{ visits_series | tojson }},
+                borderColor: '#1a73e8',
+                backgroundColor: 'rgba(26,115,232,0.1)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 2,
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { ticks: { font: { size: 10 }, maxRotation: 45 } }, y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 10 } } } }
+        }
+    });
+
+    // Games per day
+    new Chart(document.getElementById('chart-games'), {
+        type: 'bar',
+        data: {
+            labels: shortDates,
+            datasets: [{
+                label: 'Partidas',
+                data: {{ games_series | tojson }},
+                backgroundColor: '#34a853',
+                borderRadius: 3,
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { ticks: { font: { size: 10 }, maxRotation: 45 } }, y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 10 } } } }
+        }
+    });
+
+    // 24h histogram
+    var hours = Array.from({ length: 24 }, function(_, i) { return i + 'h'; });
+    new Chart(document.getElementById('chart-hours'), {
+        type: 'bar',
+        data: {
+            labels: hours,
+            datasets: [{
+                label: 'Eventos',
+                data: {{ hour_histogram | tojson }},
+                backgroundColor: '#9c27b0',
+                borderRadius: 2,
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { ticks: { font: { size: 10 } } }, y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 10 } } } }
+        }
+    });
+
+    // Language pie
+    var langCounts = {{ lang_counts | tojson }};
+    var langLabels = Object.keys(langCounts);
+    var langValues = Object.values(langCounts);
+    var langColors = ['#ea4335', '#1a73e8', '#34a853', '#fbbc04', '#9c27b0'];
+    new Chart(document.getElementById('chart-lang'), {
+        type: 'pie',
+        data: {
+            labels: langLabels.map(function(l) { return l.toUpperCase(); }),
+            datasets: [{
+                data: langValues,
+                backgroundColor: langColors,
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 14 } } }
+        }
+    });
+})();
+</script>
 {% endblock %}

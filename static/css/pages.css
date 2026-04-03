@@ -406,6 +406,60 @@
 }
 .profile-detail:last-child { border-bottom: none; }
 
+.editable-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.edit-pencil {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    background: none;
+    color: var(--gray-400);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.15s;
+    padding: 0;
+    flex-shrink: 0;
+}
+.edit-pencil:hover {
+    color: var(--blue-500);
+    background: var(--gray-100);
+}
+.edit-pencil svg {
+    width: 14px;
+    height: 14px;
+}
+.inline-edit-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 8px 0 4px;
+}
+.inline-edit-form input {
+    flex: 1;
+    min-width: 150px;
+    padding: 7px 12px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-family: var(--font-sans);
+}
+.inline-edit-form input:focus {
+    outline: none;
+    border-color: var(--blue-500);
+    box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
+}
+.btn-sm {
+    padding: 6px 14px !important;
+    font-size: 0.82rem !important;
+}
+
 /* ── Profile ranking cards ─────────────────────────────── */
 .profile-rankings-grid {
     display: grid;

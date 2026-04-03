@@ -16,6 +16,7 @@ from core.templates import templates
 from services.analytics import (
     get_counters, get_recent_events, get_daily_counters, get_total_events,
     count_s3_events_today, list_s3_event_files, load_recent_events_s3,
+    get_daily_counters_range,
 )
 from services.games import GamesService
 from services.quiz import get_all_variables, get_datasets, get_sources, toggle_variable, reload_var_config
@@ -324,12 +325,10 @@ async def admin_analytics(request: Request):
     # Merge in-memory recent events with S3 historical events
     memory_events = get_recent_events(limit=50)
     s3_events = load_recent_events_s3(limit=50)
-    # Use oldest in-memory ts as cutoff to avoid duplicates
     oldest_mem_ts = memory_events[-1]["ts"] if memory_events else ""
     s3_only = [e for e in s3_events if e.get("ts", "") < oldest_mem_ts] if oldest_mem_ts else s3_events
     recent = (memory_events + s3_only)[:50]
 
-    # Separate base event types from sub-counters (contain #)
     base_types = sorted(
         [(k, v) for k, v in counters.items() if "#" not in k],
         key=lambda x: x[1], reverse=True,
@@ -339,6 +338,53 @@ async def admin_analytics(request: Request):
         key=lambda x: x[1], reverse=True,
     )
 
+    # ── Statistics section ──
+    from datetime import datetime as dt, timezone as tz, timedelta
+    GAME_TYPES = ["flags", "outline", "comparison", "ordering", "geostats", "map-challenge", "relief-challenge"]
+    now = dt.now(tz.utc)
+    today_str = now.strftime("%Y-%m-%d")
+
+    # Fetch daily data for last 30 days
+    daily_range = get_daily_counters_range(days=30)
+    daily_by_date = {d["date"]: d["counters"] for d in daily_range}
+
+    # Build per-game stats: today, week (7d), month (30d), all-time
+    game_stats = {}
+    for gt in GAME_TYPES:
+        all_time = counters.get(f"match_finished#{gt}", 0)
+        today_cnt = daily.get(f"match_finished#{gt}", 0)
+        week_cnt = sum(
+            daily_by_date.get((now - timedelta(days=i)).strftime("%Y-%m-%d"), {}).get(f"match_finished#{gt}", 0)
+            for i in range(7)
+        )
+        month_cnt = sum(
+            daily_by_date.get((now - timedelta(days=i)).strftime("%Y-%m-%d"), {}).get(f"match_finished#{gt}", 0)
+            for i in range(30)
+        )
+        game_stats[gt] = {"today": today_cnt, "week": week_cnt, "month": month_cnt, "total": all_time}
+
+    # Time series for charts (last 30 days): visits per day, games per day
+    chart_dates = [(now - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(29, -1, -1)]
+    visits_series = [daily_by_date.get(d, {}).get("page_view", 0) for d in chart_dates]
+    games_series = [daily_by_date.get(d, {}).get("match_finished", 0) for d in chart_dates]
+
+    # 24h histogram: use today's sub-counter data not available per hour via counters,
+    # so approximate from recent events in ring buffer
+    hour_histogram = [0] * 24
+    all_recent = get_recent_events(limit=500)
+    for ev in all_recent:
+        try:
+            ts = ev.get("ts", "")
+            if ts[:10] == today_str:
+                h = int(ts[11:13])
+                hour_histogram[h] += 1
+        except Exception:
+            pass
+
+    # Language pie: all-time match_finished by language
+    LANGUAGES = ["es", "en", "fr", "it", "ru"]
+    lang_counts = {l: counters.get(f"match_finished#{l}", 0) for l in LANGUAGES}
+
     return templates.TemplateResponse("admin/analytics.html", {
         "request": request, "lang": lang, "section": "analytics",
         "counters": counters, "total_events": total_events,
@@ -346,6 +392,14 @@ async def admin_analytics(request: Request):
         "daily": daily, "recent": recent,
         "s3_today": s3_today, "s3_files": s3_files,
         "is_admin": True,
+        # Statistics
+        "game_types": GAME_TYPES,
+        "game_stats": game_stats,
+        "chart_dates": chart_dates,
+        "visits_series": visits_series,
+        "games_series": games_series,
+        "hour_histogram": hour_histogram,
+        "lang_counts": lang_counts,
     })
 
 

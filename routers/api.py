@@ -465,6 +465,7 @@ async def save_match_result(
         "user_id": user["user_id"], "match_id": match["match_id"],
         "game_type": payload.game_type, "mode": payload.mode,
         "score": payload.score, "total": payload.total,
+        "language": user.get("language", "es"),
     })
 
     # Save daily challenge result for one-time enforcement + rankings
