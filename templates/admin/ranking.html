@@ -130,7 +130,7 @@ document.querySelectorAll('.lb-tab').forEach(btn => {
 
             const res = await fetch(url);
             const data = await res.json();
-            const entries = data.entries || [];
+            const entries = data.ranking || data.entries || [];
             if (!entries.length) { el.innerHTML = '<p style="color:var(--gray-400);">No entries</p>'; return; }
 
             let html = '<table class="admin-table" style="margin-top:8px;font-size:0.85rem;"><thead><tr><th>#</th><th>User</th><th>Score</th></tr></thead><tbody>';
