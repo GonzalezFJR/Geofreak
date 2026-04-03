@@ -175,6 +175,26 @@
         </div>
         {% endif %}
 
+        <!-- Per-game rankings -->
+        {% if game_ranking_positions %}
+        <div class="profile-section">
+            <h2>{{ t('lb.by_game_ranking', lang) }}</h2>
+            <div class="profile-rankings-grid">
+                {% for gp in game_ranking_positions %}
+                <div class="profile-rank-card profile-rank-card--game">
+                    <img src="/static/img/icons/{{ gp.game_type }}.svg" alt="{{ gp.label }}" class="profile-rank-icon">
+                    <div class="profile-rank-label">{{ gp.label }}</div>
+                    {% if gp.position %}
+                    <div class="profile-rank-pos">#{{ gp.position if gp.position <= 1000 else '1000+' }}</div>
+                    {% else %}
+                    <div class="profile-rank-pos profile-rank-na">—</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Best scores -->
         <div class="profile-section">
             <h2>{{ t('prof.best_scores', lang) }}</h2>

@@ -523,7 +523,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.rankings": "Mis rankings",
         "prof.daily_ranking": "Desafío diario",
         "prof.season_ranking": "Temporada",
-        "prof.weekly_ranking": "Semanal",
+        "prof.absolute_ranking": "Absoluto",
 
         # Social / Friends
         "soc.friends": "Amigos",
@@ -1376,7 +1376,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.rankings": "My rankings",
         "prof.daily_ranking": "Daily challenge",
         "prof.season_ranking": "Season",
-        "prof.weekly_ranking": "Weekly",
+        "prof.absolute_ranking": "Absolute",
 
         # Social / Friends
         "soc.friends": "Friends",
@@ -2205,7 +2205,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.rankings": "Mes classements",
         "prof.daily_ranking": "Défi quotidien",
         "prof.season_ranking": "Saison",
-        "prof.weekly_ranking": "Hebdomadaire",
+        "prof.absolute_ranking": "Absolu",
 
         # Social / Friends
         "soc.friends": "Amis",
@@ -2995,7 +2995,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.rankings": "Le mie classifiche",
         "prof.daily_ranking": "Sfida giornaliera",
         "prof.season_ranking": "Stagione",
-        "prof.weekly_ranking": "Settimanale",
+        "prof.absolute_ranking": "Assoluto",
 
         # Social / Friends
         "soc.friends": "Amici",
@@ -3785,7 +3785,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "prof.rankings": "Мои рейтинги",
         "prof.daily_ranking": "Ежедневный вызов",
         "prof.season_ranking": "Сезон",
-        "prof.weekly_ranking": "Недельный",
+        "prof.absolute_ranking": "Абсолютный",
 
         # Social / Friends
         "soc.friends": "Друзья",

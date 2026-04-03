@@ -30,6 +30,7 @@ from services.quiz import generate_comparison_set, generate_ordering_set
 from services.analytics import track
 from services.user_stats import record_match_result
 from services.users import get_user_by_id
+from services.scoring import process_ranked_attempt
 
 router = APIRouter(tags=["duels"])
 
@@ -427,3 +428,18 @@ async def _persist_match_results(duel: dict) -> None:
             time_ms=0,
             won=(pid == winner_id),
         )
+        # Feed scoring engine for rankings
+        try:
+            uinfo = get_user_by_id(pid)
+            process_ranked_attempt(
+                user_id=pid,
+                game_type=game_type,
+                score=score,
+                total=total,
+                num_questions=total,
+                time_ms=0,
+                config=config,
+                username=uinfo.get("username", "") if uinfo else "",
+            )
+        except Exception:
+            pass  # Don't break duel flow

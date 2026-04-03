@@ -62,14 +62,86 @@ def _records_table():
 # ── Key builders ─────────────────────────────────────────────────────────────
 
 def build_test_key(game_type: str, config: dict, num_questions: int = 0) -> str:
-    """Build a canonical test key from game type and configuration."""
+    """Build a canonical test key from game type and configuration.
+
+    Format:
+      map-challenge:   {gt}:{dataset}:{continent}:{mode}:{category}:{n}
+      relief-challenge: {gt}:{dataset}:{continent}:{mode}:{category}:{n}
+      others:           {gt}:{dataset}:{continent}:{n}
+
+    Where mode = click|type, category = all|relief|water|coast|...,
+    dataset = countries|cities|us-states|..., continent = all|europe|...
+    """
     dataset = config.get("dataset", "countries")
     continent = config.get("continent", "all")
     n = config.get("questions", config.get("num_questions", num_questions))
     if game_type in ("map-challenge", "relief-challenge"):
+        mode = config.get("game_mode", config.get("mode", "click"))
         category = config.get("category", "all")
-        return f"{game_type}:{dataset}:{continent}:{category}:{n}"
+        return f"{game_type}:{dataset}:{continent}:{mode}:{category}:{n}"
     return f"{game_type}:{dataset}:{continent}:{n}"
+
+
+def parse_test_key(test_key: str) -> dict:
+    """Parse a test_key into its components."""
+    parts = test_key.split(":")
+    gt = parts[0]
+    if gt in ("map-challenge", "relief-challenge") and len(parts) >= 6:
+        return {
+            "game_type": gt,
+            "dataset": parts[1],
+            "continent": parts[2],
+            "mode": parts[3],
+            "category": parts[4],
+            "n": int(parts[5]) if parts[5].isdigit() else 0,
+        }
+    elif gt in ("map-challenge", "relief-challenge") and len(parts) == 5:
+        # Legacy format without mode
+        return {
+            "game_type": gt,
+            "dataset": parts[1],
+            "continent": parts[2],
+            "mode": "click",
+            "category": parts[3],
+            "n": int(parts[4]) if parts[4].isdigit() else 0,
+        }
+    elif len(parts) >= 4:
+        return {
+            "game_type": gt,
+            "dataset": parts[1],
+            "continent": parts[2],
+            "mode": "",
+            "category": "",
+            "n": int(parts[3]) if parts[3].isdigit() else 0,
+        }
+    return {"game_type": gt, "dataset": "", "continent": "", "mode": "", "category": "", "n": 0}
+
+
+def build_config_key(test_key: str) -> str:
+    """Build a config key from a test_key by stripping the question count.
+
+    Config keys are used to group rankings across different question counts.
+    Returns e.g. 'map-challenge:countries:all:click:all'
+    or 'flags:countries:all' for standard games.
+    """
+    p = parse_test_key(test_key)
+    gt = p["game_type"]
+    if gt in ("map-challenge", "relief-challenge"):
+        return f"{gt}:{p['dataset']}:{p['continent']}:{p['mode']}:{p['category']}"
+    return f"{gt}:{p['dataset']}:{p['continent']}"
+
+
+# Ranking-eligible config filter: exclude custom relief categories and city country-filtered
+def is_rankable_config(config_key: str) -> bool:
+    """Check if a config key represents a ranking-eligible configuration."""
+    parts = config_key.split(":")
+    gt = parts[0]
+    if gt == "relief-challenge" and len(parts) >= 5:
+        category = parts[4]
+        # Exclude custom multi-type categories (contain commas)
+        if "," in category:
+            return False
+    return True
 
 
 def get_week_key(dt: Optional[datetime] = None) -> str:

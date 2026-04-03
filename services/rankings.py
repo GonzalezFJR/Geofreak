@@ -1,9 +1,11 @@
-"""Rankings service — game, season, and weekly ranking computation.
+"""Rankings service — game, season, and absolute ranking computation.
 
 Computes and materializes rankings into leaderboards_cache:
-  - Per-game rankings (RG)   — best 5 test ratings, weighted sum
-  - Season rankings (RT)     — last 12 weeks, best 4 game rankings
-  - Weekly rankings (RS)     — current/specific week, best 3 game ratings
+  - Per-game/config rankings (absolute) — best 5 test ratings, weighted sum
+  - Per-game/config rankings (season)   — last 12 weeks, percentiles
+  - Global season rankings (RT)         — last 12 weeks, best 4 game rankings
+  - Global absolute rankings            — all-time, best 4 game rankings
+  - Weekly rankings (RS)                — legacy, kept for reference
 """
 
 from collections import defaultdict
@@ -15,8 +17,10 @@ from core.aws import get_dynamodb_resource
 from core.config import get_settings
 from services.scoring import (
     ALL_GAME_TYPES,
+    build_config_key,
     compute_percentile,
     get_week_key,
+    is_rankable_config,
 )
 
 
@@ -142,36 +146,67 @@ def _scan_all_attempts() -> list[dict]:
 TOP_N = 50
 
 
-# ── Game rankings ────────────────────────────────────────────────────────────
+# ── Grouping helper ──────────────────────────────────────────────────────────
+
+def _grouping_key(test_key: str, game_type: str = "") -> str:
+    """Return the ranking grouping key for a test.
+
+    Standard games → game_type (one ranking per game).
+    map/relief → config_key (per dataset:continent:mode:category).
+    Returns "" for non-rankable configs (e.g. custom relief categories).
+    """
+    gt = game_type or test_key.split(":")[0]
+    if gt in ("map-challenge", "relief-challenge"):
+        ck = build_config_key(test_key)
+        if is_rankable_config(ck):
+            return ck
+        return ""
+    return gt
+
+
+# ── Game rankings (absolute — all-time test ratings) ─────────────────────────
 
 def rebuild_game_rankings() -> int:
-    """Rebuild materialized per-game rankings from test_ratings."""
+    """Rebuild materialized per-game/config absolute rankings from test_ratings.
+
+    Standard games → one ranking per game_type.
+    map/relief → one ranking per config_key (dataset:continent:mode:category).
+    """
     all_ratings = _scan_all_ratings()
     if not all_ratings:
         return 0
 
-    # user_id → game_type → [ratings]
-    user_game_ratings: dict[str, dict[str, list[float]]] = defaultdict(
+    # user_id → grouping_key → [ratings]
+    user_group_ratings: dict[str, dict[str, list[float]]] = defaultdict(
         lambda: defaultdict(list)
     )
     for item in all_ratings:
         uid = item["user_id"]
+        tk = item.get("test_key", "")
         gt = item.get("game_type", "")
         rating = float(item.get("rating", 0))
-        user_game_ratings[uid][gt].append(rating)
+        gk = _grouping_key(tk, gt)
+        if not gk:
+            continue
+        user_group_ratings[uid][gk].append(rating)
 
-    user_ids = list(user_game_ratings.keys())
+    user_ids = list(user_group_ratings.keys())
     usernames = _load_usernames(user_ids)
+
+    # Collect all grouping keys
+    all_keys: set[str] = set()
+    for games in user_group_ratings.values():
+        all_keys.update(games.keys())
 
     count = 0
     now = datetime.now(timezone.utc).isoformat()
 
-    for game_type in ALL_GAME_TYPES:
+    for gk in sorted(all_keys):
         entries: list[dict] = []
-        for uid, games in user_game_ratings.items():
-            if game_type not in games:
+        for uid, games in user_group_ratings.items():
+            if gk not in games:
                 continue
-            ratings = games[game_type]
+            ratings = games[gk]
             rg = compute_game_ranking(ratings)
             rg_final = compute_game_ranking_final(rg, len(ratings))
             entries.append({
@@ -186,11 +221,12 @@ def rebuild_game_rankings() -> int:
         for i, e in enumerate(entries[:TOP_N], 1):
             e["rank"] = i
 
-        lid = f"game#{game_type}#ranking"
+        lid = f"game#{gk}#ranking"
         _lb_table().put_item(Item={
             "leaderboard_id": lid,
             "scope": "game",
-            "game_type": game_type,
+            "game_type": gk.split(":")[0],
+            "config_key": gk,
             "metric": "ranking",
             "entries": entries[:TOP_N],
             "updated_at": now,
@@ -200,18 +236,25 @@ def rebuild_game_rankings() -> int:
     return count
 
 
-def get_user_game_ranking(user_id: str, game_type: str) -> dict:
-    """Compute a single user's game ranking on-the-fly."""
+def get_user_game_ranking(user_id: str, grouping_key: str) -> dict:
+    """Compute a single user's game ranking on-the-fly.
+
+    grouping_key is either a game_type (e.g. "flags") or a config_key
+    (e.g. "map-challenge:countries:all:click:all").
+    """
     from boto3.dynamodb.conditions import Key
 
     resp = _ratings_table().query(
         KeyConditionExpression=Key("user_id").eq(user_id),
     )
-    ratings = [
-        float(item["rating"])
-        for item in resp.get("Items", [])
-        if item.get("game_type") == game_type
-    ]
+    ratings = []
+    for item in resp.get("Items", []):
+        tk = item.get("test_key", "")
+        gt = item.get("game_type", "")
+        gk = _grouping_key(tk, gt)
+        if gk == grouping_key:
+            ratings.append(float(item["rating"]))
+
     if not ratings:
         return {"rg": 0, "rg_final": 0, "tests_valid": 0}
 
@@ -222,6 +265,90 @@ def get_user_game_ranking(user_id: str, game_type: str) -> dict:
         "rg_final": round(rg_final, 4),
         "tests_valid": len(ratings),
     }
+
+
+# ── Game rankings (season — last 12 weeks) ──────────────────────────────────
+
+def rebuild_game_season_rankings() -> int:
+    """Rebuild per-game/config season rankings from last 12 weeks of attempts."""
+    now = datetime.now(timezone.utc)
+    season_weeks = {get_week_key(now - timedelta(weeks=w)) for w in range(12)}
+
+    all_attempts = _scan_all_attempts()
+    season_attempts = [
+        a for a in all_attempts if a.get("week_key") in season_weeks
+    ]
+    if not season_attempts:
+        return 0
+
+    # All-time scores by test (for percentile computation)
+    test_scores: dict[str, list[float]] = defaultdict(list)
+    for a in all_attempts:
+        test_scores[a.get("test_key", "")].append(float(a.get("score_s", 0)))
+
+    # Per-user, per-grouping_key: best score per test
+    user_gk_tests: dict[str, dict[str, dict[str, float]]] = defaultdict(
+        lambda: defaultdict(lambda: defaultdict(float))
+    )
+    for a in season_attempts:
+        uid = a.get("user_id", "")
+        tk = a.get("test_key", "")
+        gt = a.get("game_type", "")
+        ss = float(a.get("score_s", 0))
+        gk = _grouping_key(tk, gt)
+        if not gk:
+            continue
+        if ss > user_gk_tests[uid][gk][tk]:
+            user_gk_tests[uid][gk][tk] = ss
+
+    user_ids = list(user_gk_tests.keys())
+    usernames = _load_usernames(user_ids)
+
+    # Collect all grouping keys
+    all_keys: set[str] = set()
+    for gk_tests in user_gk_tests.values():
+        all_keys.update(gk_tests.keys())
+
+    count = 0
+    now_str = datetime.now(timezone.utc).isoformat()
+
+    for gk in sorted(all_keys):
+        entries: list[dict] = []
+        for uid in user_ids:
+            tests = user_gk_tests[uid].get(gk, {})
+            if not tests:
+                continue
+            percentiles = []
+            for tk, best_score in tests.items():
+                p = compute_percentile(best_score, test_scores.get(tk, []))
+                percentiles.append(p)
+            rg = compute_game_ranking(percentiles)
+            rg_final = compute_game_ranking_final(rg, len(percentiles))
+            entries.append({
+                "user_id": uid,
+                "username": usernames.get(uid, "???"),
+                "value": Decimal(str(round(rg_final, 4))),
+                "rg": Decimal(str(round(rg, 4))),
+                "tests_valid": len(tests),
+            })
+
+        entries.sort(key=lambda e: float(e["value"]), reverse=True)
+        for i, e in enumerate(entries[:TOP_N], 1):
+            e["rank"] = i
+
+        lid = f"game-season#{gk}#ranking"
+        _lb_table().put_item(Item={
+            "leaderboard_id": lid,
+            "scope": "game-season",
+            "game_type": gk.split(":")[0],
+            "config_key": gk,
+            "metric": "ranking",
+            "entries": entries[:TOP_N],
+            "updated_at": now_str,
+        })
+        count += 1
+
+    return count
 
 
 # ── Season rankings (12-week window) ────────────────────────────────────────
@@ -416,30 +543,132 @@ def rebuild_weekly_rankings(week_key: Optional[str] = None) -> int:
     return 1
 
 
+# ── Global absolute rankings ─────────────────────────────────────────────────
+
+def rebuild_absolute_rankings() -> int:
+    """Rebuild global absolute ranking using all-time attempts."""
+    all_attempts = _scan_all_attempts()
+    if not all_attempts:
+        return 0
+
+    # All-time scores by test (for percentile computation)
+    test_scores: dict[str, list[float]] = defaultdict(list)
+    for a in all_attempts:
+        test_scores[a.get("test_key", "")].append(float(a.get("score_s", 0)))
+
+    # Per-user: best attempt per test, active games/weeks
+    user_test_best: dict[str, dict[str, dict]] = defaultdict(
+        lambda: defaultdict(lambda: {"score_s": 0, "game_type": ""})
+    )
+    user_weeks: dict[str, set[str]] = defaultdict(set)
+    user_games: dict[str, set[str]] = defaultdict(set)
+    user_attempt_counts: dict[str, int] = defaultdict(int)
+
+    for a in all_attempts:
+        uid = a.get("user_id", "")
+        tk = a.get("test_key", "")
+        gt = a.get("game_type", "")
+        ss = float(a.get("score_s", 0))
+        wk = a.get("week_key", "")
+
+        if ss > user_test_best[uid][tk]["score_s"]:
+            user_test_best[uid][tk] = {"score_s": ss, "game_type": gt}
+        user_weeks[uid].add(wk)
+        user_games[uid].add(gt)
+        user_attempt_counts[uid] += 1
+
+    user_ids = list(user_test_best.keys())
+    usernames = _load_usernames(user_ids)
+
+    entries: list[dict] = []
+    for uid in user_ids:
+        n_weeks = len(user_weeks[uid])
+        n_games = len(user_games[uid])
+        eligible = (n_weeks >= 3 and n_games >= 2) or user_attempt_counts[uid] >= 10
+        if not eligible:
+            continue
+
+        game_test_percentiles: dict[str, list[float]] = defaultdict(list)
+        for tk, info in user_test_best[uid].items():
+            p = compute_percentile(info["score_s"], test_scores.get(tk, []))
+            game_test_percentiles[info["game_type"]].append(p)
+
+        game_rankings: list[float] = []
+        for gt, percentiles in game_test_percentiles.items():
+            rg = compute_game_ranking(percentiles)
+            rg_final = compute_game_ranking_final(rg, len(percentiles))
+            game_rankings.append(rg_final)
+
+        if not game_rankings:
+            continue
+
+        rt = compute_season_ranking(game_rankings)
+        rt_final = compute_season_final(rt, n_games, n_weeks)
+
+        entries.append({
+            "user_id": uid,
+            "username": usernames.get(uid, "???"),
+            "value": Decimal(str(round(rt_final, 4))),
+            "rt": Decimal(str(round(rt, 4))),
+            "num_games": n_games,
+            "num_weeks": n_weeks,
+        })
+
+    entries.sort(key=lambda e: float(e["value"]), reverse=True)
+    for i, e in enumerate(entries[:TOP_N], 1):
+        e["rank"] = i
+
+    now_str = datetime.now(timezone.utc).isoformat()
+    _lb_table().put_item(Item={
+        "leaderboard_id": "absolute#all#ranking",
+        "scope": "absolute",
+        "game_type": "all",
+        "metric": "ranking",
+        "entries": entries[:TOP_N],
+        "updated_at": now_str,
+    })
+    return 1
+
+
 # ── Rebuild all ──────────────────────────────────────────────────────────────
 
 def rebuild_all_rankings() -> dict:
     """Rebuild all ranking types. Returns counts."""
     game_count = rebuild_game_rankings()
+    game_season_count = rebuild_game_season_rankings()
     season_count = rebuild_season_rankings()
-    weekly_count = rebuild_weekly_rankings()
+    absolute_count = rebuild_absolute_rankings()
     return {
         "game_rankings": game_count,
+        "game_season_rankings": game_season_count,
         "season_rankings": season_count,
-        "weekly_rankings": weekly_count,
+        "absolute_rankings": absolute_count,
     }
 
 
 # ── Public getters ───────────────────────────────────────────────────────────
 
-def get_game_ranking(game_type: str) -> Optional[dict]:
-    lid = f"game#{game_type}#ranking"
+def get_game_ranking(grouping_key: str) -> Optional[dict]:
+    """Get absolute game/config ranking. grouping_key = game_type or config_key."""
+    lid = f"game#{grouping_key}#ranking"
+    resp = _lb_table().get_item(Key={"leaderboard_id": lid})
+    return resp.get("Item")
+
+
+def get_game_season_ranking(grouping_key: str) -> Optional[dict]:
+    """Get season game/config ranking."""
+    lid = f"game-season#{grouping_key}#ranking"
     resp = _lb_table().get_item(Key={"leaderboard_id": lid})
     return resp.get("Item")
 
 
 def get_season_ranking() -> Optional[dict]:
     resp = _lb_table().get_item(Key={"leaderboard_id": "season#all#ranking"})
+    return resp.get("Item")
+
+
+def get_absolute_ranking() -> Optional[dict]:
+    resp = _lb_table().get_item(Key={"leaderboard_id": "absolute#all#ranking"})
     return resp.get("Item")
 
 
@@ -454,13 +683,21 @@ def get_weekly_ranking(week_key: Optional[str] = None) -> Optional[dict]:
 def get_user_ranking_position(
     user_id: str,
     scope: str = "game",
-    game_type: str = "comparison",
+    grouping_key: str = "comparison",
 ) -> Optional[int]:
-    """Return the user's 1-based position in a cached ranking, or None."""
+    """Return the user's 1-based position in a cached ranking, or None.
+
+    scope: game | game-season | season | absolute | weekly
+    grouping_key: game_type or config_key (for game/game-season scopes)
+    """
     if scope == "game":
-        lb = get_game_ranking(game_type)
+        lb = get_game_ranking(grouping_key)
+    elif scope == "game-season":
+        lb = get_game_season_ranking(grouping_key)
     elif scope == "season":
         lb = get_season_ranking()
+    elif scope == "absolute":
+        lb = get_absolute_ranking()
     elif scope == "weekly":
         lb = get_weekly_ranking()
     else:

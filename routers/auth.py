@@ -87,8 +87,21 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
     ranking_positions = [
         {"label": t("prof.daily_ranking", lang), "position": get_user_daily_ranking_position(uid, "daily-absolute")},
         {"label": t("prof.season_ranking", lang), "position": get_user_ranking_position(uid, "season")},
-        {"label": t("prof.weekly_ranking", lang), "position": get_user_ranking_position(uid, "weekly")},
+        {"label": t("prof.absolute_ranking", lang), "position": get_user_ranking_position(uid, "absolute")},
     ]
+
+    # Per-game ranking positions
+    from services.games import GamesService
+    _LANG_SUFFIX = {"es": "", "en": "_en", "fr": "_fr", "it": "_it", "ru": "_ru"}
+    suffix = _LANG_SUFFIX.get(lang, "_en")
+    game_ranking_positions = []
+    for g in GamesService().get_games():
+        gid = g.get("id", "")
+        if gid not in ALL_GAME_TYPES:
+            continue
+        gname = g.get(f"name{suffix}") or g.get("name") or gid
+        pos = get_user_ranking_position(uid, "game", gid)
+        game_ranking_positions.append({"label": gname, "position": pos, "game_type": gid})
 
     return templates.TemplateResponse("auth/profile.html", {
         "request": request, "user": user, "stats": stats, "lang": lang,
@@ -96,6 +109,7 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
         "recent_matches_chart": recent_matches_chart,
         "game_counters": game_counters,
         "ranking_positions": ranking_positions,
+        "game_ranking_positions": game_ranking_positions,
     })
 
 

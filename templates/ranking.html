@@ -59,15 +59,20 @@
     {% elif category == 'global' %}
     <div class="ranking-tabs">
         <a href="/ranking?cat=global&sub=season" class="ranking-tab {{ 'active' if sub == 'season' }}">{{ t('lb.season', lang) }}</a>
-        <a href="/ranking?cat=global&sub=weekly" class="ranking-tab {{ 'active' if sub == 'weekly' }}">{{ t('lb.weekly', lang) }}</a>
+        <a href="/ranking?cat=global&sub=absolute" class="ranking-tab {{ 'active' if sub == 'absolute' }}">{{ t('lb.absolute', lang) }}</a>
     </div>
     {% elif category == 'game' %}
-    <div class="ranking-game-select">
+    <div class="ranking-game-gallery">
         {% for gt in game_types %}
-        <a href="/ranking?cat=game&game={{ gt }}" class="game-btn {{ 'active' if game_type == gt }}">
-            {{ game_names.get(gt, gt) }}
+        <a href="/ranking?cat=game&game={{ gt }}&sub={{ sub or 'absolute' }}" class="ranking-game-card {{ 'active' if game_type == gt }}">
+            <img src="/static/img/icons/{{ gt }}.svg" alt="{{ game_names.get(gt, gt) }}" class="ranking-game-card__icon">
+            <span class="ranking-game-card__name">{{ game_names.get(gt, gt) }}</span>
         </a>
         {% endfor %}
+    </div>
+    <div class="ranking-tabs">
+        <a href="/ranking?cat=game&game={{ game_type }}&sub=season" class="ranking-tab {{ 'active' if sub == 'season' }}">{{ t('lb.season', lang) }}</a>
+        <a href="/ranking?cat=game&game={{ game_type }}&sub=absolute" class="ranking-tab {{ 'active' if sub == 'absolute' or not sub }}">{{ t('lb.absolute', lang) }}</a>
     </div>
     {% endif %}
 

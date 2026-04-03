@@ -49,6 +49,7 @@ from services.tournaments import (
 from services.analytics import track
 from services.user_stats import record_match_result
 from services.users import get_user_by_id
+from services.scoring import process_ranked_attempt
 
 router = APIRouter(tags=["tournaments"])
 
@@ -579,3 +580,33 @@ async def _persist_tournament_results(tourn: dict) -> None:
             time_ms=0,
             won=(pid == winner_id),
         )
+
+    # Feed scoring engine per-round for rankings
+    try:
+        all_rounds = get_all_rounds(tid)
+        usernames = {}
+        for pid in players:
+            uinfo = get_user_by_id(pid)
+            usernames[pid] = uinfo.get("username", "") if uinfo else ""
+        for rnd in all_rounds:
+            rnd_gt = rnd.get("game_type", "ordering")
+            rnd_config = rnd.get("config", {})
+            rnd_scores = rnd.get("round_scores", {})
+            rnd_questions = rnd.get("questions", [])
+            rnd_total = len(rnd_questions)
+            if rnd_total == 0:
+                continue
+            for pid in players:
+                rs = int(rnd_scores.get(pid, 0))
+                process_ranked_attempt(
+                    user_id=pid,
+                    game_type=rnd_gt,
+                    score=rs,
+                    total=rnd_total,
+                    num_questions=rnd_total,
+                    time_ms=0,
+                    config=rnd_config,
+                    username=usernames.get(pid, ""),
+                )
+    except Exception:
+        pass  # Don't break tournament flow

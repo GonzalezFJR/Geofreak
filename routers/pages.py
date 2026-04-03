@@ -16,8 +16,9 @@ from services.games import GamesService
 from services.analytics import track
 from services.rankings import (
     get_game_ranking,
+    get_game_season_ranking,
     get_season_ranking,
-    get_weekly_ranking,
+    get_absolute_ranking,
     get_user_ranking_position,
 )
 from services.daily_rankings import (
@@ -126,12 +127,12 @@ async def ranking_page(
     elif cat == "global":
         sub = sub or "season"
         from core.i18n import t
-        sub_labels = {"season": t("lb.season", lang), "weekly": t("lb.weekly", lang)}
+        sub_labels = {"season": t("lb.season", lang), "absolute": t("lb.absolute", lang)}
         category_title = t("lb.global_ranking", lang) + " — " + sub_labels.get(sub, "")
         if sub == "season":
             lb = get_season_ranking()
-        elif sub == "weekly":
-            lb = get_weekly_ranking()
+        elif sub == "absolute":
+            lb = get_absolute_ranking()
         else:
             lb = None
         entries = lb.get("entries", []) if lb else []
@@ -142,13 +143,18 @@ async def ranking_page(
     elif cat == "game":
         gt = game if game and game in ALL_GAME_TYPES else game_types[0]
         game_type = gt
+        sub = sub or "absolute"
         from core.i18n import t
-        category_title = t("lb.by_game_ranking", lang) + " — " + game_names.get(gt, gt)
-        lb = get_game_ranking(gt)
+        sub_label = t("lb.season", lang) if sub == "season" else t("lb.absolute", lang)
+        category_title = t("lb.by_game_ranking", lang) + " — " + game_names.get(gt, gt) + " — " + sub_label
+        if sub == "season":
+            lb = get_game_season_ranking(gt)
+        else:
+            lb = get_game_ranking(gt)
         entries = lb.get("entries", []) if lb else []
         updated_at = lb.get("updated_at") if lb else None
         if user:
-            user_pos = get_user_ranking_position(user["user_id"], "game", gt)
+            user_pos = get_user_ranking_position(user["user_id"], f"game-{sub}" if sub == "season" else "game", gt)
     else:
         category = None  # show category cards
         sub = None

@@ -677,6 +677,7 @@ var GeoGame = {
         if (typeof ReliefGame !== 'undefined' && ReliefGame.getConfig) {
             var rc = ReliefGame.getConfig();
             if (rc.category) payload.config.category = rc.category;
+            if (rc.mode) payload.config.game_mode = rc.mode;
         }
         fetch('/api/matches/result', {
             method: 'POST',

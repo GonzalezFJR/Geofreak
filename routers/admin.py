@@ -285,7 +285,7 @@ async def admin_user_details(request: Request, user_id: str):
 
     rankings = {
         "season": get_user_ranking_position(user_id, "season"),
-        "weekly": get_user_ranking_position(user_id, "weekly"),
+        "absolute": get_user_ranking_position(user_id, "absolute"),
         "daily_absolute": get_user_daily_ranking_position(user_id, "daily-absolute"),
         "daily_monthly": get_user_daily_ranking_position(user_id, "daily-monthly"),
     }
