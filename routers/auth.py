@@ -426,6 +426,125 @@ async def api_me(user=Depends(get_current_user)):
     return _safe_user(user)
 
 
+# ── Google OAuth ──────────────────────────────────────────────────────────────
+
+import secrets
+import urllib.parse
+import httpx
+
+GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
+GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
+GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
+
+
+@router.get("/auth/google/login")
+async def google_login(request: Request):
+    """Redirect user to Google consent screen."""
+    settings = get_settings()
+    if not settings.google_client_id:
+        raise HTTPException(500, "Google OAuth not configured")
+    state = secrets.token_urlsafe(32)
+    request.session["oauth_state"] = state
+    params = {
+        "client_id": settings.google_client_id,
+        "redirect_uri": f"{settings.base_url}/auth/google/callback",
+        "response_type": "code",
+        "scope": "openid email profile",
+        "access_type": "offline",
+        "state": state,
+        "prompt": "select_account",
+    }
+    return RedirectResponse(f"{GOOGLE_AUTH_URL}?{urllib.parse.urlencode(params)}")
+
+
+@router.get("/auth/google/callback")
+async def google_callback(request: Request, code: str = "", state: str = "", error: str = ""):
+    """Handle the callback from Google after user consents."""
+    lang = get_lang(request)
+    settings = get_settings()
+
+    if error or not code:
+        return RedirectResponse("/login", status_code=303)
+
+    # Verify state to prevent CSRF
+    saved_state = request.session.pop("oauth_state", None)
+    if not saved_state or saved_state != state:
+        return templates.TemplateResponse("auth/login.html", {
+            "request": request, "error": "Invalid OAuth state.", "lang": lang,
+        })
+
+    # Exchange authorization code for tokens
+    async with httpx.AsyncClient() as client:
+        token_resp = await client.post(GOOGLE_TOKEN_URL, data={
+            "code": code,
+            "client_id": settings.google_client_id,
+            "client_secret": settings.google_client_secret,
+            "redirect_uri": f"{settings.base_url}/auth/google/callback",
+            "grant_type": "authorization_code",
+        })
+        if token_resp.status_code != 200:
+            return templates.TemplateResponse("auth/login.html", {
+                "request": request, "error": "Google authentication failed.", "lang": lang,
+            })
+        tokens = token_resp.json()
+
+        # Get user info from Google
+        userinfo_resp = await client.get(GOOGLE_USERINFO_URL, headers={
+            "Authorization": f"Bearer {tokens['access_token']}",
+        })
+        if userinfo_resp.status_code != 200:
+            return templates.TemplateResponse("auth/login.html", {
+                "request": request, "error": "Could not get Google user info.", "lang": lang,
+            })
+        guser = userinfo_resp.json()
+
+    google_email = guser.get("email", "").lower()
+    if not google_email:
+        return templates.TemplateResponse("auth/login.html", {
+            "request": request, "error": "No email from Google.", "lang": lang,
+        })
+
+    # Check if user exists by email
+    user = get_user_by_email(google_email)
+
+    if user:
+        # Existing user — log them in
+        if user.get("status") != "active":
+            return templates.TemplateResponse("auth/login.html", {
+                "request": request,
+                "error": "Cuenta desactivada." if lang == "es" else "Account disabled.",
+                "lang": lang,
+            })
+        track("session_started", {"user_id": user["user_id"], "method": "google"})
+        update_user(user["user_id"], {
+            "last_login": datetime.now(timezone.utc).isoformat(),
+            "email_verified": True,
+        })
+    else:
+        # New user — create account
+        google_name = guser.get("name", "").replace(" ", "_").lower()
+        # Generate unique username from Google name
+        base_username = re.sub(r'[^a-zA-Z0-9_]', '', google_name)[:15] or "user"
+        username = base_username
+        suffix = 1
+        while get_user_by_username(username):
+            username = f"{base_username}{suffix}"
+            suffix += 1
+
+        user = create_user(
+            username=username,
+            email=google_email,
+            password_hash="",  # no password for Google-only users
+            language=lang,
+        )
+        update_user(user["user_id"], {"email_verified": True, "auth_provider": "google"})
+        track("user_registered", {"user_id": user["user_id"], "username": username, "method": "google"})
+
+    response = RedirectResponse("/profile", status_code=303)
+    _set_auth_cookies(response, user["user_id"])
+    return response
+
+
 # ── Helpers ──────────────────────────────────────────────────────────────────
 
 def _set_auth_cookies(response, user_id: str):

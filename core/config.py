@@ -71,6 +71,10 @@ class Settings(BaseSettings):
     docker_container_name: str = "geofreak-app"
     docker_image_name: str = "geofreak"
 
+    # Google OAuth
+    google_client_id: str = ""
+    google_client_secret: str = ""
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
