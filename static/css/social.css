@@ -294,6 +294,100 @@
     margin-top: 4px;
 }
 
+/* ─── Public profile sections (rankings, daily) ──────────── */
+.pub-section {
+    margin-bottom: 28px;
+}
+.pub-section h2 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 14px;
+}
+.pub-rankings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+}
+.pub-rank-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    text-align: center;
+}
+.pub-rank-card--game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.pub-rank-icon {
+    width: 28px;
+    height: 28px;
+}
+.pub-rank-label {
+    font-size: 0.78rem;
+    color: var(--gray-500);
+    line-height: 1.2;
+}
+.pub-rank-pos {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--blue-600);
+    margin-top: 2px;
+}
+.pub-rank-na {
+    color: var(--gray-300);
+}
+
+/* ─── Daily challenge on public profile ───────────────────── */
+.pub-daily {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 18px 24px;
+}
+.pub-daily-stars {
+    display: flex;
+    gap: 4px;
+}
+.daily-star {
+    font-size: 1.6rem;
+    color: var(--gray-300);
+}
+.daily-star.filled {
+    color: #f59e0b;
+}
+.pub-daily-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.pub-daily-score {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--gray-800);
+}
+.pub-daily-rs {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+}
+.pub-daily-empty {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+    color: var(--gray-400);
+    font-size: 0.95rem;
+}
+
 /* ─── Responsive ──────────────────────────────────────────── */
 @media (max-width: 640px) {
     .friends-page { padding: 80px 12px 40px; }

@@ -529,7 +529,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.friends": "Amigos",
         "soc.friends_title": "👥 Amigos",
         "soc.friends_subtitle": "Gestiona tus amistades y solicitudes",
-        "soc.search_users": "Buscar usuarios…",
+        "soc.search_users": "Buscar por nombre o email…",
         "soc.search_btn": "Buscar",
         "soc.add_friend": "Añadir amigo",
         "soc.remove_friend": "Eliminar amigo",
@@ -549,6 +549,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.matches_played": "Partidas",
         "soc.view_profile": "Ver perfil",
         "soc.pending_badge": "pendientes",
+        "soc.daily_challenge": "Reto diario de hoy",
+        "soc.daily_not_played": "Aún no ha jugado el reto diario de hoy",
 
         # Profile enhanced
         "prof.game": "Juego",
@@ -1385,7 +1387,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.friends": "Friends",
         "soc.friends_title": "👥 Friends",
         "soc.friends_subtitle": "Manage your friendships and requests",
-        "soc.search_users": "Search users…",
+        "soc.search_users": "Search by name or email…",
         "soc.search_btn": "Search",
         "soc.add_friend": "Add friend",
         "soc.remove_friend": "Remove friend",
@@ -1405,6 +1407,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.matches_played": "Matches",
         "soc.view_profile": "View profile",
         "soc.pending_badge": "pending",
+        "soc.daily_challenge": "Today's daily challenge",
+        "soc.daily_not_played": "Has not played today's daily challenge yet",
 
         "prof.game": "Game",
         "prof.score": "Score",
@@ -2217,7 +2221,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.friends": "Amis",
         "soc.friends_title": "👥 Amis",
         "soc.friends_subtitle": "Gérez vos amitiés et demandes",
-        "soc.search_users": "Chercher des utilisateurs…",
+        "soc.search_users": "Chercher par nom ou email…",
         "soc.search_btn": "Chercher",
         "soc.add_friend": "Ajouter un ami",
         "soc.remove_friend": "Supprimer un ami",
@@ -2237,6 +2241,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.matches_played": "Parties",
         "soc.view_profile": "Voir le profil",
         "soc.pending_badge": "en attente",
+        "soc.daily_challenge": "Défi quotidien d'aujourd'hui",
+        "soc.daily_not_played": "N'a pas encore joué au défi quotidien d'aujourd'hui",
 
         # Duels
         "duel.lobby_title": "⚔️ Duels",
@@ -3010,7 +3016,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.friends": "Amici",
         "soc.friends_title": "👥 Amici",
         "soc.friends_subtitle": "Gestisci le tue amicizie e richieste",
-        "soc.search_users": "Cerca utenti…",
+        "soc.search_users": "Cerca per nome o email…",
         "soc.search_btn": "Cerca",
         "soc.add_friend": "Aggiungi amico",
         "soc.remove_friend": "Rimuovi amico",
@@ -3030,6 +3036,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.matches_played": "Partite",
         "soc.view_profile": "Vedi profilo",
         "soc.pending_badge": "in sospeso",
+        "soc.daily_challenge": "Sfida giornaliera di oggi",
+        "soc.daily_not_played": "Non ha ancora giocato la sfida giornaliera di oggi",
 
         # Duels
         "duel.lobby_title": "⚔️ Duelli",
@@ -3803,7 +3811,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.friends": "Друзья",
         "soc.friends_title": "👥 Друзья",
         "soc.friends_subtitle": "Управляйте друзьями и запросами",
-        "soc.search_users": "Искать пользователей…",
+        "soc.search_users": "Искать по имени или email…",
         "soc.search_btn": "Искать",
         "soc.add_friend": "Добавить друга",
         "soc.remove_friend": "Удалить друга",
@@ -3823,6 +3831,8 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "soc.matches_played": "Матчи",
         "soc.view_profile": "Профиль",
         "soc.pending_badge": "ожидание",
+        "soc.daily_challenge": "Ежедневный вызов сегодня",
+        "soc.daily_not_played": "Ещё не играл в ежедневный вызов сегодня",
 
         # Duels
         "duel.lobby_title": "⚔️ Дуэли",

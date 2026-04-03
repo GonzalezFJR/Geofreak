@@ -67,6 +67,36 @@ async def public_profile(request: Request, username: str, user=Depends(get_optio
         rel = get_friendship(user["user_id"], target["user_id"])
         friendship_status = rel.get("status") if rel else None
 
+    # Ranking positions
+    from core.i18n import t
+    from services.rankings import get_user_ranking_position
+    from services.scoring import ALL_GAME_TYPES
+    from services.daily_rankings import get_user_daily_ranking_position
+    from services.games import GamesService
+    from services.daily_challenge import get_user_daily_result
+
+    uid = target["user_id"]
+    ranking_positions = [
+        {"label": t("prof.daily_ranking", lang), "position": get_user_daily_ranking_position(uid, "daily-absolute")},
+        {"label": t("prof.season_ranking", lang), "position": get_user_ranking_position(uid, "season")},
+        {"label": t("prof.absolute_ranking", lang), "position": get_user_ranking_position(uid, "absolute")},
+    ]
+
+    # Per-game ranking positions
+    _LANG_SUFFIX = {"es": "", "en": "_en", "fr": "_fr", "it": "_it", "ru": "_ru"}
+    suffix = _LANG_SUFFIX.get(lang, "_en")
+    game_ranking_positions = []
+    for g in GamesService().get_games():
+        gid = g.get("id", "")
+        if gid not in ALL_GAME_TYPES:
+            continue
+        gname = g.get(f"name{suffix}") or g.get("name") or gid
+        pos = get_user_ranking_position(uid, "game", gid)
+        game_ranking_positions.append({"label": gname, "position": pos, "game_type": gid})
+
+    # Daily challenge result
+    daily_result = get_user_daily_result(uid)
+
     return templates.TemplateResponse("social/public_profile.html", {
         "request": request,
         "user": user,
@@ -75,6 +105,9 @@ async def public_profile(request: Request, username: str, user=Depends(get_optio
         "stats": stats,
         "friends_count": len(friends_list),
         "friendship_status": friendship_status,
+        "ranking_positions": ranking_positions,
+        "game_ranking_positions": game_ranking_positions,
+        "daily_result": daily_result,
     })
 
 
@@ -137,24 +170,58 @@ async def api_user_search(
     q: str = Query(..., min_length=2, max_length=50),
     user: Optional[dict] = Depends(get_optional_user),
 ):
-    """Search users by username prefix. Returns max 10 results."""
-    from boto3.dynamodb.conditions import Key, Attr
+    """Search users by exact username, exact email, or username contains."""
+    from services.users import get_user_by_email
+
+    current_id = user["user_id"] if user else None
+    q_stripped = q.strip()
+
+    # 1) Exact email match (if query looks like an email)
+    if "@" in q_stripped:
+        found = get_user_by_email(q_stripped)
+        if found and found.get("user_id") != current_id:
+            return {"results": [{
+                "user_id": found["user_id"],
+                "username": found["username"],
+                "created_at": found.get("created_at", ""),
+            }]}
+        return {"results": []}
+
+    # 2) Exact username match via GSI (fast)
+    exact = get_user_by_username(q_stripped)
+    results = []
+    seen_ids = set()
+    if exact and exact.get("user_id") != current_id:
+        results.append({
+            "user_id": exact["user_id"],
+            "username": exact["username"],
+            "created_at": exact.get("created_at", ""),
+        })
+        seen_ids.add(exact["user_id"])
+
+    # 3) Username contains scan (paginated, capped at 200 items read)
+    from boto3.dynamodb.conditions import Attr
     from core.aws import get_dynamodb_resource
     from core.config import get_settings
 
     table = get_dynamodb_resource().Table(get_settings().table_name("users"))
+    q_low = q_stripped.lower()
+    scan_kwargs = {
+        "FilterExpression": Attr("username").contains(q_low) | Attr("username").contains(q_stripped),
+        "ProjectionExpression": "user_id, username, created_at",
+    }
+    items_read = 0
+    max_read = 200
+    scan_results = []
+    while items_read < max_read:
+        resp = table.scan(**scan_kwargs)
+        scan_results.extend(resp.get("Items", []))
+        items_read += resp.get("ScannedCount", 0)
+        if "LastEvaluatedKey" not in resp or items_read >= max_read:
+            break
+        scan_kwargs["ExclusiveStartKey"] = resp["LastEvaluatedKey"]
 
-    # DynamoDB doesn't support LIKE/prefix on GSI easily.
-    # For MVP: scan with filter (fine for < 10K users).
-    resp = table.scan(
-        FilterExpression=Attr("username").contains(q.lower()) | Attr("username").contains(q),
-        ProjectionExpression="user_id, username, created_at",
-        Limit=50,
-    )
-    results = resp.get("Items", [])
-
-    # Sort by relevance (exact match first, then prefix, then contains)
-    q_low = q.lower()
+    # Sort by relevance (exact first, then prefix, then contains)
     def sort_key(item):
         name = item.get("username", "").lower()
         if name == q_low:
@@ -163,11 +230,15 @@ async def api_user_search(
             return (1, name)
         return (2, name)
 
-    results.sort(key=sort_key)
+    scan_results.sort(key=sort_key)
 
-    # Exclude current user if logged in
-    current_id = user["user_id"] if user else None
-    results = [r for r in results if r.get("user_id") != current_id][:10]
+    for r in scan_results:
+        uid = r.get("user_id")
+        if uid and uid != current_id and uid not in seen_ids:
+            results.append(r)
+            seen_ids.add(uid)
+        if len(results) >= 10:
+            break
 
     return {"results": results}
 

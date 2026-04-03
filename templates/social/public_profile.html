@@ -50,6 +50,68 @@
             <div class="ps-label">{{ t('prof.friends_count', lang) }}</div>
         </div>
     </div>
+
+    <!-- Rankings -->
+    {% if ranking_positions %}
+    <div class="pub-section">
+        <h2>{{ t('prof.rankings', lang) }}</h2>
+        <div class="pub-rankings-grid">
+            {% for rp in ranking_positions %}
+            <div class="pub-rank-card">
+                <div class="pub-rank-label">{{ rp.label }}</div>
+                {% if rp.position %}
+                <div class="pub-rank-pos">#{{ rp.position if rp.position <= 1000 else '1000+' }}</div>
+                {% else %}
+                <div class="pub-rank-pos pub-rank-na">—</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Per-game rankings -->
+    {% if game_ranking_positions %}
+    <div class="pub-section">
+        <h2>{{ t('lb.by_game_ranking', lang) }}</h2>
+        <div class="pub-rankings-grid">
+            {% for gp in game_ranking_positions %}
+            <div class="pub-rank-card pub-rank-card--game">
+                <img src="/static/img/icons/{{ gp.game_type }}.svg" alt="{{ gp.label }}" class="pub-rank-icon">
+                <div class="pub-rank-label">{{ gp.label }}</div>
+                {% if gp.position %}
+                <div class="pub-rank-pos">#{{ gp.position if gp.position <= 1000 else '1000+' }}</div>
+                {% else %}
+                <div class="pub-rank-pos pub-rank-na">—</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Daily Challenge -->
+    <div class="pub-section">
+        <h2>{{ t('soc.daily_challenge', lang) }}</h2>
+        {% if daily_result %}
+        <div class="pub-daily">
+            <div class="pub-daily-stars">
+                {% set stars = daily_result.stars | default(0) | int %}
+                {% for i in range(3) %}
+                <span class="daily-star {{ 'filled' if i < stars else '' }}">★</span>
+                {% endfor %}
+            </div>
+            <div class="pub-daily-info">
+                <span class="pub-daily-score">{{ daily_result.score | default(0) }} / {{ daily_result.total | default(0) }}</span>
+                {% if daily_result.ranking_score is defined %}
+                <span class="pub-daily-rs">S: {{ "%.0f" | format(daily_result.ranking_score | default(0) | float) }}</span>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <div class="pub-daily-empty">{{ t('soc.daily_not_played', lang) }}</div>
+        {% endif %}
+    </div>
 </section>
 {% endblock %}
 
