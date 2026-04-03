@@ -148,3 +148,67 @@ def save_user_daily_result(user_id: str, result: dict) -> None:
             ":r": result,
         },
     )
+
+
+def reset_daily_challenge_for_all() -> int:
+    """Clear last_daily_date for all users so everyone can replay today's challenge.
+
+    Also deletes today's daily_scores and the materialized daily ranking.
+    Returns the number of user_stats records cleared.
+    """
+    today = _today_utc()
+    settings = get_settings()
+    dynamo = get_dynamodb_resource()
+
+    # 1. Clear last_daily_date on all user_stats where it equals today
+    stats_table = dynamo.Table(settings.table_name("user_stats"))
+    count = 0
+    resp = stats_table.scan(
+        ProjectionExpression="user_id, last_daily_date",
+    )
+    items = resp.get("Items", [])
+    while "LastEvaluatedKey" in resp:
+        resp = stats_table.scan(
+            ProjectionExpression="user_id, last_daily_date",
+            ExclusiveStartKey=resp["LastEvaluatedKey"],
+        )
+        items.extend(resp.get("Items", []))
+
+    for item in items:
+        if item.get("last_daily_date") == today:
+            stats_table.update_item(
+                Key={"user_id": item["user_id"]},
+                UpdateExpression="REMOVE last_daily_date, last_daily_result",
+            )
+            count += 1
+
+    # 2. Delete today's daily_scores entries
+    ds_table = dynamo.Table(settings.table_name("daily_scores"))
+    ds_resp = ds_table.scan(
+        FilterExpression="#d = :today",
+        ExpressionAttributeNames={"#d": "date"},
+        ExpressionAttributeValues={":today": today},
+        ProjectionExpression="user_id, #d",
+    )
+    for item in ds_resp.get("Items", []):
+        ds_table.delete_item(Key={"user_id": item["user_id"], "date": today})
+    while "LastEvaluatedKey" in ds_resp:
+        ds_resp = ds_table.scan(
+            FilterExpression="#d = :today",
+            ExpressionAttributeNames={"#d": "date"},
+            ExpressionAttributeValues={":today": today},
+            ProjectionExpression="user_id, #d",
+            ExclusiveStartKey=ds_resp["LastEvaluatedKey"],
+        )
+        for item in ds_resp.get("Items", []):
+            ds_table.delete_item(Key={"user_id": item["user_id"], "date": today})
+
+    # 3. Delete materialized daily ranking for today
+    lb_table = dynamo.Table(settings.table_name("leaderboards_cache"))
+    try:
+        lb_table.delete_item(Key={"leaderboard_id": f"daily-day#{today}#ranking"})
+    except Exception:
+        pass
+
+    log.info("Daily challenge reset: cleared %d user_stats records for %s", count, today)
+    return count

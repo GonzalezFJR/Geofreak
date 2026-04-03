@@ -634,6 +634,15 @@ async def admin_daily(request: Request):
     })
 
 
+@router.post("/daily/reset")
+async def admin_daily_reset(request: Request):
+    """Reset today's daily challenge so all users can replay it."""
+    _require_auth(request)
+    from services.daily_challenge import reset_daily_challenge_for_all
+    count = reset_daily_challenge_for_all()
+    return JSONResponse({"ok": True, "cleared": count})
+
+
 @router.post("/daily/generate")
 async def admin_daily_generate(
     request: Request,

@@ -49,8 +49,11 @@ var OrderingGame = (function () {
     function loadData(settings) {
         var isDaily = GAME_CONFIG && GAME_CONFIG.daily;
         if (isDaily) {
-            var cached = _getDailyCache();
-            if (cached) { showAlreadyPlayed(cached); return; }
+            var loggedIn = typeof IS_LOGGED_IN !== 'undefined' && IS_LOGGED_IN;
+            if (!loggedIn) {
+                var cached = _getDailyCache();
+                if (cached) { showAlreadyPlayed(cached); return; }
+            }
             fetch('/api/daily-challenge')
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
@@ -58,6 +61,7 @@ var OrderingGame = (function () {
                         showAlreadyPlayed(data.result);
                         return;
                     }
+                    try { localStorage.removeItem(_dailyTodayKey()); } catch (e) {}
                     questions = data.questions || [];
                     currentIdx = 0;
                     totalScore = 0;

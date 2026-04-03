@@ -35,6 +35,18 @@
         </div>
     </div>
 
+    <!-- Reset current challenge -->
+    <div class="admin-game-card">
+        <h3>🔄 {{ t('adm.daily_reset_title', lang) }}</h3>
+        <p style="font-size:0.85rem;color:var(--gray-500);margin-bottom:12px;">
+            {{ t('adm.daily_reset_desc', lang) }}
+        </p>
+        <button class="admin-btn admin-btn--danger" id="btn-reset-daily" onclick="resetDailyChallenge()">
+            🔄 {{ t('adm.daily_reset_btn', lang) }}
+        </button>
+        <span id="reset-daily-result" style="margin-left:12px;font-size:0.85rem;"></span>
+    </div>
+
     <!-- Generate form -->
     <div class="admin-game-card">
         <h3>⚡ {{ t('adm.daily_generate', lang) }}</h3>
@@ -333,6 +345,31 @@ function closePreview(e) {
     if (e.target === document.getElementById('preview-modal')) {
         document.getElementById('preview-modal').style.display = 'none';
     }
+}
+
+function resetDailyChallenge() {
+    if (!confirm('¿Reiniciar el desafío diario para todos los jugadores?')) return;
+    var btn = document.getElementById('btn-reset-daily');
+    var res = document.getElementById('reset-daily-result');
+    btn.disabled = true;
+    res.textContent = '⏳ ...';
+    fetch('/admin/daily/reset', {method: 'POST'})
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.ok) {
+                res.textContent = '✅ ' + data.cleared + ' usuarios reiniciados';
+                res.style.color = 'var(--green-600)';
+            } else {
+                res.textContent = '❌ Error';
+                res.style.color = 'red';
+            }
+            btn.disabled = false;
+        })
+        .catch(function() {
+            res.textContent = '❌ Error de red';
+            res.style.color = 'red';
+            btn.disabled = false;
+        });
 }
 </script>
 {% endblock %}
