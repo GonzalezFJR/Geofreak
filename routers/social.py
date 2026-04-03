@@ -3,7 +3,7 @@
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from pydantic import BaseModel
 
 from core.auth import get_current_user, get_optional_user
@@ -30,24 +30,7 @@ router = APIRouter(tags=["social"])
 
 @router.get("/friends", response_class=HTMLResponse)
 async def friends_page(request: Request, user=Depends(get_current_user)):
-    lang = get_lang(request)
-    friends_list = get_friends(user["user_id"])
-    pending_in = get_pending_received(user["user_id"])
-    pending_out = get_pending_sent(user["user_id"])
-
-    # Enrich with usernames
-    friends_list = _enrich_friends(friends_list, "friend_user_id")
-    pending_in = _enrich_friends(pending_in, "friend_user_id")
-    pending_out = _enrich_friends(pending_out, "friend_user_id")
-
-    return templates.TemplateResponse("social/friends.html", {
-        "request": request,
-        "user": user,
-        "lang": lang,
-        "friends": friends_list,
-        "pending_in": pending_in,
-        "pending_out": pending_out,
-    })
+    return RedirectResponse("/profile#friends", status_code=303)
 
 
 # ── Public profile page (viewable by anyone) ────────────────────────────────

@@ -2,6 +2,7 @@
 
 {% block page_head %}
 <link rel="stylesheet" href="https://unpkg.com/cropperjs@1.6.2/dist/cropper.min.css">
+<link rel="stylesheet" href="/static/css/social.css?v={{ V }}">
 {% endblock %}
 
 {% block title %}{{ t('prof.title', lang) }} — {{ user.username }} — GeoFreak{% endblock %}
@@ -59,98 +60,29 @@
         <div class="stat-card">
             <div class="stat-value">{{ friends_count }}</div>
             <div class="stat-label">{{ t('prof.friends_count', lang) }}</div>
-            <a href="/friends">{{ t('prof.see_friends', lang) }}</a>
         </div>
     </div>
 
     <!-- Action buttons -->
     <div class="profile-actions">
         <a href="/games" class="btn-accent">{{ t('prof.play', lang) }}</a>
-        <a href="/friends" class="prof-btn-outline">{{ t('prof.see_friends', lang) }}</a>
         <a href="/logout" class="prof-btn-outline prof-btn-logout">{{ t('prof.logout', lang) }}</a>
     </div>
 
     <!-- Tabs -->
     <div class="profile-tabs">
-        <button class="tab-btn active" data-tab="config">{{ t('prof.tab_config', lang) }}</button>
-        <button class="tab-btn" data-tab="stats">{{ t('prof.tab_stats', lang) }}</button>
+        <button class="tab-btn active" data-tab="stats">{{ t('prof.tab_stats', lang) }}</button>
+        <button class="tab-btn" data-tab="friends">
+            {{ t('prof.tab_friends', lang) }}
+            {% if pending_in | length > 0 %}
+            <span class="tab-badge">{{ pending_in | length }}</span>
+            {% endif %}
+        </button>
+        <button class="tab-btn" data-tab="config">{{ t('prof.tab_config', lang) }}</button>
     </div>
 
-    <!-- Tab: Configuración -->
-    <div id="tab-config" class="tab-content">
-
-        <!-- Account details -->
-        <div class="profile-section">
-            <h2>{{ t('prof.account', lang) }}</h2>
-            <div class="profile-detail">
-                <span class="label">{{ t('prof.user', lang) }}</span>
-                <span>{{ user.username }}</span>
-            </div>
-            <div class="profile-detail">
-                <span class="label">{{ t('prof.email', lang) }}</span>
-                <span class="profile-email-row">
-                    {{ user.email }}
-                    {% if not user.email_verified %}
-                    <span class="profile-unverified-badge">({{ t('prof.unverified', lang) }})</span>
-                    <form method="post" action="/profile/resend-verification" class="profile-verify-form">
-                        <button type="submit" class="btn-resend-verify" title="{{ t('prof.resend_verify', lang) }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                            </svg>
-                        </button>
-                    </form>
-                    {% endif %}
-                </span>
-            </div>
-            <div class="profile-detail">
-                <span class="label">{{ t('prof.role', lang) }}</span>
-                <span>{{ (user.role or user.plan or 'free') | capitalize }}</span>
-            </div>
-        </div>
-
-        <!-- Change email -->
-        <div class="profile-section">
-            <h2>{{ t('prof.change_email', lang) }}</h2>
-            {% if request.query_params.get('em_sent') %}
-            <div class="auth-success">{{ t('prof.email_sent', lang) }}</div>
-            {% endif %}
-            {% if request.query_params.get('em_error') == 'invalid' %}
-            <div class="auth-error">{{ t('prof.email_invalid', lang) }}</div>
-            {% elif request.query_params.get('em_error') == 'taken' %}
-            <div class="auth-error">{{ t('prof.email_taken', lang) }}</div>
-            {% endif %}
-            <form method="post" action="/profile/change-email" class="profile-form">
-                <input type="email" name="new_email" placeholder="{{ t('prof.new_email', lang) }}" required>
-                <button type="submit" class="btn-accent">{{ t('prof.send_confirm', lang) }}</button>
-            </form>
-        </div>
-
-        <!-- Change password -->
-        <div class="profile-section">
-            <h2>{{ t('prof.change_pw', lang) }}</h2>
-            {% if request.query_params.get('pw_ok') %}
-            <div class="auth-success">{{ t('prof.pw_changed', lang) }}</div>
-            {% endif %}
-            {% if request.query_params.get('pw_error') == 'wrong_pw' %}
-            <div class="auth-error">{{ t('prof.pw_wrong', lang) }}</div>
-            {% elif request.query_params.get('pw_error') == 'too_short' %}
-            <div class="auth-error">{{ t('prof.pw_short', lang) }}</div>
-            {% elif request.query_params.get('pw_error') == 'mismatch' %}
-            <div class="auth-error">{{ t('prof.pw_mismatch', lang) }}</div>
-            {% endif %}
-            <form method="post" action="/profile/change-password" class="profile-form">
-                <input type="password" name="current_password" placeholder="{{ t('prof.current_pw', lang) }}" required>
-                <input type="password" name="new_password" placeholder="{{ t('auth.new_password', lang) }}" required minlength="8">
-                <input type="password" name="new_password2" placeholder="{{ t('auth.repeat_password', lang) }}" required minlength="8">
-                <button type="submit" class="btn-accent">{{ t('prof.change_pw_btn', lang) }}</button>
-            </form>
-        </div>
-
-    </div><!-- /tab-config -->
-
     <!-- Tab: Mis stats -->
-    <div id="tab-stats" class="tab-content" style="display:none">
+    <div id="tab-stats" class="tab-content">
 
         <!-- Rankings -->
         {% if ranking_positions %}
@@ -248,7 +180,225 @@
         </div>
 
     </div><!-- /tab-stats -->
+
+    <!-- Tab: Amigos -->
+    <div id="tab-friends" class="tab-content" style="display:none">
+
+        <!-- Search -->
+        <div class="friend-search">
+            <input type="text" id="user-search" placeholder="{{ t('soc.search_users', lang) }}" autocomplete="off">
+            <button id="search-btn">{{ t('soc.search_btn', lang) }}</button>
+        </div>
+        <div class="search-results" id="search-results"></div>
+
+        <!-- Sub-tabs -->
+        <div class="friends-tabs">
+            <div class="ftab active" data-tab="friends">
+                {{ t('soc.my_friends', lang) }} ({{ friends | length }})
+            </div>
+            <div class="ftab" data-tab="received">
+                {{ t('soc.pending_received', lang) }}
+                {% if pending_in | length > 0 %}
+                <span class="badge">{{ pending_in | length }}</span>
+                {% endif %}
+            </div>
+            <div class="ftab" data-tab="sent">
+                {{ t('soc.pending_sent', lang) }} ({{ pending_out | length }})
+            </div>
+        </div>
+
+        <!-- Friends list -->
+        <div class="tab-panel active" id="panel-friends">
+            {% if friends %}
+            <div class="friend-list">
+                {% for f in friends %}
+                <div class="friend-card" id="fc-{{ f.friend_user_id }}">
+                    <div class="fc-avatar">{{ f.username[0] | upper }}</div>
+                    <div class="fc-info">
+                        <div class="fc-name"><a href="/user/{{ f.username }}">{{ f.username }}</a></div>
+                        <div class="fc-meta">{{ t('soc.member_since', lang) }} {{ f.friend_created_at[:10] }}</div>
+                    </div>
+                    <div class="fc-actions">
+                        <button class="btn-danger" onclick="friendAction('remove','{{ f.friend_user_id }}','fc-{{ f.friend_user_id }}')">{{ t('soc.remove_friend', lang) }}</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="friends-empty">
+                <span>👥</span>
+                {{ t('soc.no_friends', lang) }}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Pending received -->
+        <div class="tab-panel" id="panel-received">
+            {% if pending_in %}
+            <div class="friend-list">
+                {% for f in pending_in %}
+                <div class="friend-card" id="pr-{{ f.friend_user_id }}">
+                    <div class="fc-avatar" style="background: var(--green-500);">{{ f.username[0] | upper }}</div>
+                    <div class="fc-info">
+                        <div class="fc-name"><a href="/user/{{ f.username }}">{{ f.username }}</a></div>
+                        <div class="fc-meta">{{ f.created_at[:10] }}</div>
+                    </div>
+                    <div class="fc-actions">
+                        <button class="btn-accept" onclick="friendAction('accept','{{ f.friend_user_id }}','pr-{{ f.friend_user_id }}')">{{ t('soc.accept', lang) }}</button>
+                        <button class="btn-danger" onclick="friendAction('reject','{{ f.friend_user_id }}','pr-{{ f.friend_user_id }}')">{{ t('soc.reject', lang) }}</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="friends-empty">
+                <span>📭</span>
+                {{ t('soc.no_pending', lang) }}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Pending sent -->
+        <div class="tab-panel" id="panel-sent">
+            {% if pending_out %}
+            <div class="friend-list">
+                {% for f in pending_out %}
+                <div class="friend-card" id="ps-{{ f.friend_user_id }}">
+                    <div class="fc-avatar" style="background: var(--gray-400);">{{ f.username[0] | upper }}</div>
+                    <div class="fc-info">
+                        <div class="fc-name">{{ f.username }}</div>
+                        <div class="fc-meta">{{ f.created_at[:10] }}</div>
+                    </div>
+                    <div class="fc-actions">
+                        <button class="btn-danger" onclick="friendAction('reject','{{ f.friend_user_id }}','ps-{{ f.friend_user_id }}')">{{ t('soc.cancel', lang) }}</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="friends-empty">
+                <span>📤</span>
+                {{ t('soc.no_pending', lang) }}
+            </div>
+            {% endif %}
+        </div>
+
+    </div><!-- /tab-friends -->
+
+    <!-- Tab: Configuración -->
+    <div id="tab-config" class="tab-content" style="display:none">
+
+        <!-- Account details -->
+        <div class="profile-section">
+            <h2>{{ t('prof.account', lang) }}</h2>
+            <div class="profile-detail">
+                <span class="label">{{ t('prof.user', lang) }}</span>
+                <span>{{ user.username }}</span>
+            </div>
+            <div class="profile-detail">
+                <span class="label">{{ t('prof.email', lang) }}</span>
+                <span class="profile-email-row">
+                    {{ user.email }}
+                    {% if not user.email_verified %}
+                    <span class="profile-unverified-badge">({{ t('prof.unverified', lang) }})</span>
+                    <form method="post" action="/profile/resend-verification" class="profile-verify-form">
+                        <button type="submit" class="btn-resend-verify" title="{{ t('prof.resend_verify', lang) }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                            </svg>
+                        </button>
+                    </form>
+                    {% endif %}
+                </span>
+            </div>
+            <div class="profile-detail">
+                <span class="label">{{ t('prof.role', lang) }}</span>
+                <span>{{ (user.role or user.plan or 'free') | capitalize }}</span>
+            </div>
+        </div>
+
+        <!-- Change username -->
+        <div class="profile-section">
+            <h2>{{ t('prof.change_username', lang) }}</h2>
+            {% if request.query_params.get('un_ok') %}
+            <div class="auth-success">{{ t('prof.username_changed', lang) }}</div>
+            {% endif %}
+            {% if request.query_params.get('un_error') == 'invalid' %}
+            <div class="auth-error">{{ t('prof.username_invalid', lang) }}</div>
+            {% elif request.query_params.get('un_error') == 'taken' %}
+            <div class="auth-error">{{ t('prof.username_taken', lang) }}</div>
+            {% endif %}
+            <form method="post" action="/profile/change-username" class="profile-form">
+                <input type="text" name="new_username" placeholder="{{ t('prof.new_username', lang) }}" required
+                       minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+" value="{{ user.username }}">
+                <button type="submit" class="btn-accent">{{ t('prof.save', lang) }}</button>
+            </form>
+            <p class="auth-hint">{{ t('auth.user_hint', lang) }}</p>
+        </div>
+
+        <!-- Change email -->
+        <div class="profile-section">
+            <h2>{{ t('prof.change_email', lang) }}</h2>
+            {% if request.query_params.get('em_sent') %}
+            <div class="auth-success">{{ t('prof.email_sent', lang) }}</div>
+            {% endif %}
+            {% if request.query_params.get('em_error') == 'invalid' %}
+            <div class="auth-error">{{ t('prof.email_invalid', lang) }}</div>
+            {% elif request.query_params.get('em_error') == 'taken' %}
+            <div class="auth-error">{{ t('prof.email_taken', lang) }}</div>
+            {% endif %}
+            <form method="post" action="/profile/change-email" class="profile-form">
+                <input type="email" name="new_email" placeholder="{{ t('prof.new_email', lang) }}" required>
+                <button type="submit" class="btn-accent">{{ t('prof.send_confirm', lang) }}</button>
+            </form>
+        </div>
+
+        <!-- Change password -->
+        {% if user.get('auth_provider') != 'google' or user.get('password_hash') %}
+        <div class="profile-section">
+            <h2>{{ t('prof.change_pw', lang) }}</h2>
+            {% if request.query_params.get('pw_ok') %}
+            <div class="auth-success">{{ t('prof.pw_changed', lang) }}</div>
+            {% endif %}
+            {% if request.query_params.get('pw_error') == 'wrong_pw' %}
+            <div class="auth-error">{{ t('prof.pw_wrong', lang) }}</div>
+            {% elif request.query_params.get('pw_error') == 'too_short' %}
+            <div class="auth-error">{{ t('prof.pw_short', lang) }}</div>
+            {% elif request.query_params.get('pw_error') == 'mismatch' %}
+            <div class="auth-error">{{ t('prof.pw_mismatch', lang) }}</div>
+            {% endif %}
+            <form method="post" action="/profile/change-password" class="profile-form">
+                <input type="password" name="current_password" placeholder="{{ t('prof.current_pw', lang) }}" required>
+                <input type="password" name="new_password" placeholder="{{ t('auth.new_password', lang) }}" required minlength="8">
+                <input type="password" name="new_password2" placeholder="{{ t('auth.repeat_password', lang) }}" required minlength="8">
+                <button type="submit" class="btn-accent">{{ t('prof.change_pw_btn', lang) }}</button>
+            </form>
+        </div>
+        {% endif %}
+
+    </div><!-- /tab-config -->
 </div>
+
+<!-- Google new-user name modal -->
+{% if google_new %}
+<div id="google-name-modal" class="crop-modal-overlay" role="dialog" aria-modal="true">
+    <div class="crop-modal">
+        <h3>{{ t('prof.welcome_google', lang) }}</h3>
+        <p class="crop-hint">{{ t('prof.choose_username', lang) }}</p>
+        <form method="post" action="/profile/change-username" class="profile-form" style="flex-direction:column;">
+            <input type="text" name="new_username" value="{{ user.username }}" required
+                   minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+"
+                   style="width:100%;box-sizing:border-box;">
+            <p class="auth-hint" style="margin-top:-4px;">{{ t('auth.user_hint', lang) }}</p>
+            <div class="crop-actions">
+                <button type="button" class="prof-btn-outline" onclick="document.getElementById('google-name-modal').style.display='none'">{{ t('prof.keep_name', lang) }}</button>
+                <button type="submit" class="btn-accent">{{ t('prof.save', lang) }}</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
 
 <!-- Crop modal -->
 <div id="crop-modal" class="crop-modal-overlay" style="display:none" role="dialog" aria-modal="true">
@@ -270,7 +420,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
 (function () {
-    /* ── Tabs ── */
+    /* ── Main Tabs ── */
     function switchTab(name) {
         document.querySelectorAll('.tab-btn').forEach(function(b) {
             b.classList.toggle('active', b.dataset.tab === name);
@@ -280,9 +430,93 @@
         });
     }
     document.querySelectorAll('.tab-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
+        btn.addEventListener('click', function() {
+            switchTab(btn.dataset.tab);
+            history.replaceState(null, '', '#' + btn.dataset.tab);
+        });
     });
-    if (window.location.hash === '#stats') switchTab('stats');
+    var hash = window.location.hash.replace('#', '');
+    if (['stats', 'friends', 'config'].indexOf(hash) !== -1) switchTab(hash);
+
+    /* ── Friends sub-tabs ── */
+    document.querySelectorAll('.ftab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.ftab').forEach(function(t) { t.classList.remove('active'); });
+            document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+            tab.classList.add('active');
+            document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+        });
+    });
+
+    /* ── Friends search ── */
+    var T_ADD = {{ t('soc.add_friend', lang) | tojson }};
+    var T_SENT = {{ t('soc.request_sent', lang) | tojson }};
+    var T_ALREADY = {{ t('soc.already_friends', lang) | tojson }};
+    var T_EXISTS = {{ t('soc.request_exists', lang) | tojson }};
+    var T_NO_RESULTS = {{ t('soc.no_results', lang) | tojson }};
+
+    var searchInput = document.getElementById('user-search');
+    var searchBtn = document.getElementById('search-btn');
+    var resultsDiv = document.getElementById('search-results');
+
+    async function doSearch() {
+        var q = searchInput.value.trim();
+        if (q.length < 2) { resultsDiv.classList.remove('active'); return; }
+        try {
+            var resp = await fetch('/api/users/search?q=' + encodeURIComponent(q));
+            var data = await resp.json();
+            if (!data.results || data.results.length === 0) {
+                resultsDiv.innerHTML = '<div class="search-result-item"><span class="sr-name">' + T_NO_RESULTS + '</span></div>';
+            } else {
+                resultsDiv.innerHTML = data.results.map(function(u) {
+                    return '<div class="search-result-item">' +
+                        '<a href="/user/' + u.username + '" class="sr-name">' + u.username + '</a>' +
+                        '<div class="sr-actions"><button class="btn-sm btn-add" onclick="sendRequest(\'' + u.user_id + '\', this)">' + T_ADD + '</button></div>' +
+                        '</div>';
+                }).join('');
+            }
+            resultsDiv.classList.add('active');
+        } catch(e) { console.error(e); }
+    }
+    if (searchBtn) {
+        searchBtn.addEventListener('click', doSearch);
+        searchInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') doSearch(); });
+    }
+    document.addEventListener('click', function(e) {
+        if (resultsDiv && !resultsDiv.contains(e.target) && e.target !== searchInput && e.target !== searchBtn) {
+            resultsDiv.classList.remove('active');
+        }
+    });
+
+    window.sendRequest = async function(userId, btn) {
+        btn.disabled = true;
+        try {
+            var resp = await fetch('/api/friends/request', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({target_user_id: userId}),
+            });
+            var data = await resp.json();
+            if (data.ok) { btn.textContent = '✓ ' + T_SENT; }
+            else if (data.reason === 'already_friends') { btn.textContent = T_ALREADY; }
+            else if (data.reason === 'request_exists') { btn.textContent = T_EXISTS; }
+        } catch(e) { console.error(e); btn.disabled = false; }
+    };
+
+    window.friendAction = async function(action, userId, cardId) {
+        try {
+            var resp = await fetch('/api/friends/' + action, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({target_user_id: userId}),
+            });
+            var data = await resp.json();
+            if (data.ok) {
+                var card = document.getElementById(cardId);
+                if (card) card.remove();
+            }
+        } catch(e) { console.error(e); }
+    };
 
     /* ── Chart ── */
     var matches = {{ recent_matches_chart | tojson | safe }};

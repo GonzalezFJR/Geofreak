@@ -30,7 +30,7 @@ from services.users import (
 from services.email import send_welcome, send_password_reset, send_email_change_confirm, send_verify_email
 from services.analytics import track
 from services.user_stats import ensure_user_stats
-from services.friendships import get_friends
+from services.friendships import get_friends, get_pending_received, get_pending_sent
 from services.matches import get_match
 from services.rankings import get_user_ranking_position
 from services.daily_rankings import get_user_daily_ranking_position
@@ -63,9 +63,19 @@ async def register_page(request: Request, user=Depends(get_optional_user)):
 @router.get("/profile", response_class=HTMLResponse)
 async def profile_page(request: Request, user=Depends(get_current_user)):
     lang = get_lang(request)
-    stats = ensure_user_stats(user["user_id"])
-    friends_list = get_friends(user["user_id"])
+    uid = user["user_id"]
+    stats = ensure_user_stats(uid)
+    friends_list = get_friends(uid)
     friends_count = len(friends_list)
+    pending_in = get_pending_received(uid)
+    pending_out = get_pending_sent(uid)
+
+    # Enrich friends with usernames
+    friends_list = _enrich_friends(friends_list, "friend_user_id")
+    pending_in = _enrich_friends(pending_in, "friend_user_id")
+    pending_out = _enrich_friends(pending_out, "friend_user_id")
+
+    google_new = request.query_params.get("google_new") == "1"
 
     # Best scores per game type
     best_scores = _build_best_scores(stats)
@@ -83,7 +93,6 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
 
     # Ranking positions
     from core.i18n import t
-    uid = user["user_id"]
     ranking_positions = [
         {"label": t("prof.daily_ranking", lang), "position": get_user_daily_ranking_position(uid, "daily-absolute")},
         {"label": t("prof.season_ranking", lang), "position": get_user_ranking_position(uid, "season")},
@@ -110,6 +119,10 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
         "game_counters": game_counters,
         "ranking_positions": ranking_positions,
         "game_ranking_positions": game_ranking_positions,
+        "friends": friends_list,
+        "pending_in": pending_in,
+        "pending_out": pending_out,
+        "google_new": google_new,
     })
 
 
@@ -325,6 +338,25 @@ async def reset_password(
     })
 
 
+# ── Profile: change username ────────────────────────────────────────────────
+
+@router.post("/profile/change-username")
+async def change_username(
+    request: Request,
+    new_username: str = Form(...),
+    user=Depends(get_current_user),
+):
+    new_username = new_username.strip()
+    if not USERNAME_RE.match(new_username):
+        return RedirectResponse("/profile?un_error=invalid", status_code=303)
+    if new_username == user["username"]:
+        return RedirectResponse("/profile", status_code=303)
+    if get_user_by_username(new_username):
+        return RedirectResponse("/profile?un_error=taken", status_code=303)
+    update_user(user["user_id"], {"username": new_username})
+    return RedirectResponse("/profile?un_ok=1", status_code=303)
+
+
 # ── Profile: change password ────────────────────────────────────────────────
 
 @router.post("/profile/change-password")
@@ -506,6 +538,7 @@ async def google_callback(request: Request, code: str = "", state: str = "", err
 
     # Check if user exists by email
     user = get_user_by_email(google_email)
+    is_new_user = user is None
 
     if user:
         # Existing user — log them in
@@ -540,7 +573,8 @@ async def google_callback(request: Request, code: str = "", state: str = "", err
         update_user(user["user_id"], {"email_verified": True, "auth_provider": "google"})
         track("user_registered", {"user_id": user["user_id"], "username": username, "method": "google"})
 
-    response = RedirectResponse("/profile", status_code=303)
+    redirect_url = "/profile?google_new=1" if is_new_user else "/profile"
+    response = RedirectResponse(redirect_url, status_code=303)
     _set_auth_cookies(response, user["user_id"])
     return response
 
@@ -590,3 +624,16 @@ def _build_best_scores(stats: dict) -> list[dict]:
             })
     result.sort(key=lambda m: m.get("best_score", 0), reverse=True)
     return result
+
+
+def _enrich_friends(items: list[dict], uid_field: str) -> list[dict]:
+    """Add username, created_at to each friendship row."""
+    for item in items:
+        friend = get_user_by_id(item.get(uid_field, ""))
+        if friend:
+            item["username"] = friend.get("username", "???")
+            item["friend_created_at"] = friend.get("created_at", "")
+        else:
+            item["username"] = "???"
+            item["friend_created_at"] = ""
+    return items

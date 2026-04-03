@@ -42,7 +42,7 @@
                 {% elif user %}
                 <a href="/ranking" class="nav-link">{{ t('nav.ranking', lang) }}</a>
                 <a href="/map" class="nav-link">{{ t('nav.map', lang) }}</a>
-                <a href="/friends" class="nav-link nav-friends" id="nav-friends">{{ t('soc.friends', lang) }}</a>
+                <a href="/profile#friends" class="nav-link nav-friends" id="nav-friends">{{ t('soc.friends', lang) }}</a>
                 <a href="/profile" class="nav-link">{{ user.username }}</a>
                 <a href="/logout" class="nav-link nav-logout">{{ t('nav.logout', lang) }}</a>
                 {% else %}
