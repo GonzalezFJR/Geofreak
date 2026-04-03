@@ -205,6 +205,30 @@ TABLE_DEFS: list[tuple] = [
         ],
         [],
     ),
+    # 15. daily_scores  (PK=user_id, SK=date)
+    #     GSI: date-score-index (PK=date, SK=score_s) for daily leaderboards
+    (
+        "daily_scores",
+        [
+            {"AttributeName": "user_id", "KeyType": "HASH"},
+            {"AttributeName": "date", "KeyType": "RANGE"},
+        ],
+        [
+            {"AttributeName": "user_id", "AttributeType": "S"},
+            {"AttributeName": "date", "AttributeType": "S"},
+            {"AttributeName": "score_s", "AttributeType": "N"},
+        ],
+        [
+            {
+                "IndexName": "date-score-index",
+                "KeySchema": [
+                    {"AttributeName": "date", "KeyType": "HASH"},
+                    {"AttributeName": "score_s", "KeyType": "RANGE"},
+                ],
+                "Projection": {"ProjectionType": "ALL"},
+            },
+        ],
+    ),
 ]
 
 

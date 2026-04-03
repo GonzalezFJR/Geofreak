@@ -279,3 +279,92 @@ ranked_attempts (scan) → weekly rankings (RS_final)
 ### Frontend
 
 El campo `ranked: true|false` se envía desde el frontend basado en si el temporizador estaba activo (`timeLimit > 0`). Las partidas sin tiempo (`ranked: false`) se guardan normalmente en match history pero **no entran en el sistema competitivo**.
+
+---
+
+## 9. Desafío Diario — Rankings independientes
+
+El desafío diario tiene su propia categoría de rankings, separada del sistema competitivo por juego. Solo una prueba al día, siempre con temporizador.
+
+**Solo usuarios loggeados participan en rankings.**
+
+### Score diario
+
+Se calcula con las mismas fórmulas que los juegos individuales:
+
+$$S = 1000 \cdot q^3 \cdot \frac{1}{1 + 0.35 \cdot \frac{t_{pp}}{t_{ref}}} \cdot \left(1 - e^{-n/15}\right)$$
+
+donde $t_{ref}$ se toma del `secs_per_item` configurado para el desafío diario (por defecto 15s).
+
+### Ranking diario
+
+Clasificación del día: todos los participantes del día ordenados por $S$ descendente. Sin requisitos de elegibilidad.
+
+### Ranking mensual (mes natural)
+
+Para cada mes natural (Abril, Mayo, etc.):
+
+$$R_{mensual} = \bar{S} \cdot B_{constancia}$$
+
+donde:
+- $\bar{S}$ = promedio de los scores $S$ del usuario en el mes
+- $B_{constancia} = 1 + 0.5 \cdot \left(\frac{d_{jugados}}{d_{mes}}\right)^{0.7}$
+- $d_{jugados}$ = días jugados en el mes
+- $d_{mes}$ = días totales del mes
+
+**Tabla de ejemplo (mes de 30 días, avg S = 400):**
+
+| Días jugados | $B_{constancia}$ | $R_{mensual}$ |
+|-------------|-----------------|---------------|
+| 1 | 1.03 | 412 |
+| 5 | 1.12 | 448 |
+| 10 | 1.22 | 488 |
+| 15 | 1.31 | 524 |
+| 20 | 1.38 | 552 |
+| 25 | 1.45 | 580 |
+| 30 | 1.50 | 600 |
+
+**Elegibilidad:** mínimo 3 días jugados en el mes.
+
+### Ranking absoluto (all-time)
+
+$$R_{abs} = R_{EMA} \cdot B_{constancia}$$
+
+donde:
+- $R_{EMA}$ = Media Móvil Exponencial de los scores diarios ($\alpha = 0.12$)
+  - Para cada día jugado: $R = (1-\alpha) \cdot R + \alpha \cdot S$
+  - Para cada día perdido: $R = R \cdot 0.995$ (decay muy suave)
+- $B_{constancia} = 1 + 0.4 \cdot \left(\frac{d_{recientes}}{30}\right)^{0.6}$
+- $d_{recientes}$ = días jugados en los últimos 30 días
+
+**Propiedades del diseño:**
+- Un score perfecto un solo día **no** supera a alguien que lleva 10+ días jugando bien
+- Perder un día aplica un decay de solo 0.5% — no es catastrófico
+- La EMA da más peso a actuaciones recientes
+- El bonus de constancia premia la regularidad pero no domina sobre la calidad
+
+**Elegibilidad:** mínimo 5 días jugados en total.
+
+### Tabla DynamoDB
+
+| Tabla | PK | SK | GSI | Propósito |
+|-------|----|----|-----|-----------|
+| `daily_scores` | `user_id` (S) | `date` (S) | `date-score-index` (PK=`date`, SK=`score_s` N) | Un registro por usuario×día |
+
+Los rankings se materializan en `leaderboards_cache`.
+
+### Endpoints API
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/rankings/daily/today?date=2026-04-03` | Ranking del día |
+| GET | `/api/rankings/daily/monthly?month=2026-04` | Ranking mensual |
+| GET | `/api/rankings/daily/absolute` | Ranking absoluto all-time |
+| GET | `/api/rankings/daily/rebuild` | Reconstruir rankings diarios |
+| GET | `/api/user/daily-scores?limit=30` | Scores diarios del usuario |
+
+### Servicio
+
+| Archivo | Responsabilidad |
+|---------|----------------|
+| `services/daily_rankings.py` | Scoring diario, rankings día/mes/absoluto, materialización |

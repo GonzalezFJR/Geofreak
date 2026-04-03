@@ -38,6 +38,15 @@ from services.rankings import (
     get_user_ranking_position,
     rebuild_all_rankings,
 )
+from services.daily_rankings import (
+    save_daily_score,
+    get_daily_day_ranking,
+    get_daily_monthly_ranking,
+    get_daily_absolute_ranking,
+    get_user_daily_ranking_position,
+    get_user_daily_scores,
+    rebuild_all_daily_rankings,
+)
 
 router = APIRouter(tags=["api"])
 
@@ -466,6 +475,23 @@ async def save_match_result(
             "time_ms": payload.time_ms,
             "match_id": match["match_id"],
         })
+        # Save daily score for daily challenge rankings
+        try:
+            from datetime import datetime, timezone
+            today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            save_daily_score(
+                user_id=user["user_id"],
+                username=user.get("username", ""),
+                date=today,
+                game_type=payload.game_type,
+                score=payload.score,
+                total=payload.total,
+                time_ms=payload.time_ms,
+                num_questions=payload.num_questions or payload.total,
+                config=payload.config,
+            )
+        except Exception:
+            pass  # daily scoring failure must not break match saving
 
     # Process ranked attempt (competitive scoring system)
     scoring_result = None
@@ -652,3 +678,74 @@ async def api_records(config_key: str):
     """Get records for a specific test configuration."""
     records = get_records(config_key)
     return {"config_key": config_key, "records": records}
+
+
+# ── Daily challenge ranking endpoints ────────────────────────────────────────
+
+@router.get("/rankings/daily/today")
+async def api_daily_today_ranking(
+    date: Optional[str] = Query(None, description="Date YYYY-MM-DD, defaults to today"),
+    user: Optional[dict] = Depends(get_optional_user),
+):
+    """Daily challenge ranking for today (or a specific date)."""
+    lb = get_daily_day_ranking(date)
+    result = {
+        "ranking": lb["entries"] if lb else [],
+        "date": lb.get("date", date) if lb else date,
+        "updated_at": lb.get("updated_at") if lb else None,
+    }
+    if user:
+        pos = get_user_daily_ranking_position(user["user_id"], "daily-day", date)
+        result["user_position"] = pos
+    return result
+
+
+@router.get("/rankings/daily/monthly")
+async def api_daily_monthly_ranking(
+    month: Optional[str] = Query(None, description="Month key like 2026-04"),
+    user: Optional[dict] = Depends(get_optional_user),
+):
+    """Daily challenge monthly ranking (calendar month)."""
+    lb = get_daily_monthly_ranking(month)
+    result = {
+        "ranking": lb["entries"] if lb else [],
+        "month_key": lb.get("month_key", month) if lb else month,
+        "updated_at": lb.get("updated_at") if lb else None,
+    }
+    if user:
+        pos = get_user_daily_ranking_position(user["user_id"], "daily-monthly", month)
+        result["user_position"] = pos
+    return result
+
+
+@router.get("/rankings/daily/absolute")
+async def api_daily_absolute_ranking(
+    user: Optional[dict] = Depends(get_optional_user),
+):
+    """Daily challenge all-time ranking."""
+    lb = get_daily_absolute_ranking()
+    result = {
+        "ranking": lb["entries"] if lb else [],
+        "updated_at": lb.get("updated_at") if lb else None,
+    }
+    if user:
+        pos = get_user_daily_ranking_position(user["user_id"], "daily-absolute")
+        result["user_position"] = pos
+    return result
+
+
+@router.get("/rankings/daily/rebuild")
+async def api_rebuild_daily_rankings(user: dict = Depends(get_current_user)):
+    """Manually trigger daily challenge ranking rebuild."""
+    counts = rebuild_all_daily_rankings()
+    return {"status": "ok", "rebuilt": counts}
+
+
+@router.get("/user/daily-scores")
+async def api_user_daily_scores(
+    limit: int = Query(30, ge=1, le=90),
+    user: dict = Depends(get_current_user),
+):
+    """Return the current user's recent daily challenge scores."""
+    scores = get_user_daily_scores(user["user_id"], limit=limit)
+    return {"scores": scores}
