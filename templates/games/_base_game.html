@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/games.css">
+<link rel="stylesheet" href="/static/css/games.css?v={{ V }}">
 {% endblock %}
 
 {% block content %}
@@ -156,7 +156,7 @@
 var GAME_CONFIG = {{ game_json | safe }};
 var IS_LOGGED_IN = {{ 'true' if user else 'false' }};
 </script>
-<script src="/static/js/games/game-customize.js"></script>
-<script src="/static/js/games/common.js"></script>
+<script src="/static/js/games/game-customize.js?v={{ V }}"></script>
+<script src="/static/js/games/common.js?v={{ V }}"></script>
 {% block game_scripts %}{% endblock %}
 {% endblock %}

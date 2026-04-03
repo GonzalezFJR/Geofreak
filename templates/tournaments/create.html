@@ -3,8 +3,8 @@
 {% block title %}{{ t('trn.design_title', lang) }}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/games.css">
-<link rel="stylesheet" href="/static/css/tournaments.css">
+<link rel="stylesheet" href="/static/css/games.css?v={{ V }}">
+<link rel="stylesheet" href="/static/css/tournaments.css?v={{ V }}">
 {% endblock %}
 
 {% block content %}
@@ -151,6 +151,6 @@ window.TRN_T = {
     oceania: {{ t('game.oceania', lang)|tojson }}
 };
 </script>
-<script src="/static/js/tournaments/lobby.js"></script>
+<script src="/static/js/tournaments/lobby.js?v={{ V }}"></script>
 {% endif %}
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block title %}{{ game_field(game, 'name', lang) }} — {{ t('room.duel', lang) }}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/duels.css">
+<link rel="stylesheet" href="/static/css/duels.css?v={{ V }}">
 {% endblock %}
 
 {% block content %}
@@ -267,5 +267,5 @@ var ROOM_T = {
     copied: {{ t('room.copied', lang) | tojson }},
 };
 </script>
-<script src="/static/js/duels/room-lobby.js"></script>
+<script src="/static/js/duels/room-lobby.js?v={{ V }}"></script>
 {% endblock %}

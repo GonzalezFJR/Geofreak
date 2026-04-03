@@ -3,8 +3,8 @@
 {% block title %}{{ t('trn.play_title', lang) }}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/games.css">
-<link rel="stylesheet" href="/static/css/tournaments.css">
+<link rel="stylesheet" href="/static/css/games.css?v={{ V }}">
+<link rel="stylesheet" href="/static/css/tournaments.css?v={{ V }}">
 {% endblock %}
 
 {% block content %}
@@ -205,5 +205,5 @@ window.TRN_T = {
     }
 };
 </script>
-<script src="/static/js/tournaments/play.js"></script>
+<script src="/static/js/tournaments/play.js?v={{ V }}"></script>
 {% endblock %}

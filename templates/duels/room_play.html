@@ -3,8 +3,8 @@
 {% block title %}{{ game_field(game, 'name', lang) }} — {{ t('room.duel', lang) }}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/games.css">
-<link rel="stylesheet" href="/static/css/duels.css">
+<link rel="stylesheet" href="/static/css/games.css?v={{ V }}">
+<link rel="stylesheet" href="/static/css/duels.css?v={{ V }}">
 {% endblock %}
 
 {% block content %}
@@ -225,5 +225,5 @@ var ROOM_T = {
 };
 var CURRENT_LANG = {{ lang | tojson }};
 </script>
-<script src="/static/js/duels/room-play.js"></script>
+<script src="/static/js/duels/room-play.js?v={{ V }}"></script>
 {% endblock %}

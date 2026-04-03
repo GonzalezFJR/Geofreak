@@ -2,6 +2,6 @@
 
 {# Base template for pages that use pages.css (auth, public pages, etc.) #}
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/pages.css">
+<link rel="stylesheet" href="/static/css/pages.css?v={{ V }}">
 {% block page_head %}{% endblock %}
 {% endblock %}

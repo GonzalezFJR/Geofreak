@@ -3,7 +3,7 @@
 {% block title %}{{ t('duel.lobby_title', lang) }}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/duels.css">
+<link rel="stylesheet" href="/static/css/duels.css?v={{ V }}">
 {% endblock %}
 
 {% block content %}
@@ -85,6 +85,6 @@ window.DUEL_TRANSLATIONS = {
     joining: "{{ t('duel.joining', lang) }}"
 };
 </script>
-<script src="/static/js/duels/lobby.js"></script>
+<script src="/static/js/duels/lobby.js?v={{ V }}"></script>
 {% endif %}
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block title %}{{ t('duel.play_title', lang) }}{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/duels.css">
+<link rel="stylesheet" href="/static/css/duels.css?v={{ V }}">
 {% endblock %}
 
 {% block content %}
@@ -99,5 +99,5 @@ window.DUEL_T = {
     stat_label_key: "{{ 'label_es' if lang == 'es' else 'label_en' }}"
 };
 </script>
-<script src="/static/js/duels/play.js"></script>
+<script src="/static/js/duels/play.js?v={{ V }}"></script>
 {% endblock %}

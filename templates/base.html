@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/main.css?v={{ V }}">
     {% block extra_head %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -78,7 +78,7 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- Shared utilities -->
-    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/utils.js?v={{ V }}"></script>
     <!-- i18n globals for JS -->
     <script>window.LANG='{{ lang|default("es") }}';window.T={{ t_js(lang|default("es")) | safe }};</script>
     <script>

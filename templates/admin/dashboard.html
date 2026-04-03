@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="/static/css/admin.css">
+<link rel="stylesheet" href="/static/css/admin.css?v={{ V }}">
 {% endblock %}
 
 {% macro game_card(game, show_modes=false) %}
