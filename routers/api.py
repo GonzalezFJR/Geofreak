@@ -467,17 +467,16 @@ async def save_match_result(
         "score": payload.score, "total": payload.total,
     })
 
-    # Save daily challenge result for one-time enforcement
+    # Save daily challenge result for one-time enforcement + rankings
     if payload.mode == "daily":
-        save_user_daily_result(user["user_id"], {
-            "score": payload.score,
-            "total": payload.total,
-            "accuracy": payload.accuracy,
-            "time_ms": payload.time_ms,
-            "match_id": match["match_id"],
-        })
-        # Save daily score for daily challenge rankings
         try:
+            save_user_daily_result(user["user_id"], {
+                "score": payload.score,
+                "total": payload.total,
+                "accuracy": int(payload.accuracy),
+                "time_ms": payload.time_ms,
+                "match_id": match["match_id"],
+            })
             from datetime import datetime, timezone
             today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
             save_daily_score(
