@@ -656,6 +656,8 @@ var GeoStatsGame = (function () {
             ranked: isRanked,
             num_questions: questions.length
         };
+        var defaults = (GAME_CONFIG && GAME_CONFIG.defaults) ? GAME_CONFIG.defaults : {};
+        if (defaults.secs_per_item) payload.config.secs_per_item = defaults.secs_per_item;
         if (isDaily) { _setDailyCache(GeoGame.correct, GeoGame.total, elapsed); }
         fetch('/api/matches/result', {
             method: 'POST',

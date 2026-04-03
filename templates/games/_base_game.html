@@ -62,13 +62,10 @@
 
             <!-- Countdown toggle -->
             {% set def_cd = game.defaults.default_countdown|default('auto') %}
-            {% if def_cd == 'on' %}
-                {% set cd_checked = true %}
-            {% elif def_cd == 'off' %}
+            {% if def_cd == 'off' %}
                 {% set cd_checked = false %}
             {% else %}
-                {# auto: on for quiz/map, off for solo #}
-                {% set cd_checked = game.type != 'solo' %}
+                {% set cd_checked = true %}
             {% endif %}
             <div class="game-setting-group">
                 <label class="game-setting-label">{{ t('game.countdown', lang) }}</label>

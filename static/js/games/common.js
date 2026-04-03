@@ -657,6 +657,7 @@ var GeoGame = {
         if (gameType === 'ordering' || gameType === 'comparison' || gameType === 'geostats') return;
 
         var isRanked = this.settings.timeLimit > 0;
+        var defaults = (GAME_CONFIG && GAME_CONFIG.defaults) ? GAME_CONFIG.defaults : {};
         var payload = {
             game_type: gameType,
             mode: 'solo',
@@ -668,6 +669,9 @@ var GeoGame = {
             ranked: isRanked,
             num_questions: this.total
         };
+        if (defaults.secs_per_item) payload.config.secs_per_item = defaults.secs_per_item;
+        if (defaults.secs_per_item_click) payload.config.secs_per_item_click = defaults.secs_per_item_click;
+        if (defaults.secs_per_item_type) payload.config.secs_per_item_type = defaults.secs_per_item_type;
         // Add dataset/mode for map games
         if (typeof MapGame !== 'undefined' && MapGame.getConfig) {
             var mc = MapGame.getConfig();
