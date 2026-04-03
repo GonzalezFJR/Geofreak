@@ -14,11 +14,19 @@ from core.templates import templates
 from services.email import send_contact
 from services.games import GamesService
 from services.analytics import track
-from services.leaderboards import (
-    get_leaderboard,
-    get_user_position,
-    GAME_TYPES,
+from services.rankings import (
+    get_game_ranking,
+    get_season_ranking,
+    get_weekly_ranking,
+    get_user_ranking_position,
 )
+from services.daily_rankings import (
+    get_daily_day_ranking,
+    get_daily_monthly_ranking,
+    get_daily_absolute_ranking,
+    get_user_daily_ranking_position,
+)
+from services.scoring import ALL_GAME_TYPES
 from services.quiz import get_sources, get_all_variables
 
 log = logging.getLogger(__name__)
@@ -63,36 +71,68 @@ async def relief_map(request: Request, user=Depends(get_optional_user)):
 @router.get("/ranking", response_class=HTMLResponse)
 async def ranking_page(
     request: Request,
-    tab: str = Query("global", regex="^(global|game)$"),
-    metric: str = Query("rating", regex="^(rating|total_matches|best_streak|best_score)$"),
+    cat: Optional[str] = Query(None),
+    sub: Optional[str] = Query(None),
     game: Optional[str] = Query(None),
     user=Depends(get_optional_user),
 ):
     lang = get_lang(request)
     track("page_view", {"page": "ranking"})
 
-    # Load the requested leaderboard
-    if tab == "game" and game and game in GAME_TYPES:
-        lb = get_leaderboard("game", game, "best_score")
-    else:
-        lb = get_leaderboard("global", "all", metric)
-        tab = "global"
-
-    entries = lb["entries"] if lb else []
-    updated_at = lb["updated_at"] if lb else None
-
+    game_types = sorted(ALL_GAME_TYPES)
+    entries = []
+    updated_at = None
     user_pos = None
-    if user:
-        if tab == "game" and game:
-            user_pos = get_user_position(user["user_id"], "game", game, "best_score")
+    category = cat
+    game_type = game or ""
+
+    if cat == "daily":
+        sub = sub or "today"
+        if sub == "today":
+            lb = get_daily_day_ranking()
+        elif sub == "monthly":
+            lb = get_daily_monthly_ranking()
+        elif sub == "absolute":
+            lb = get_daily_absolute_ranking()
         else:
-            user_pos = get_user_position(user["user_id"], "global", "all", metric)
+            lb = None
+        entries = lb.get("entries", []) if lb else []
+        updated_at = lb.get("updated_at") if lb else None
+        if user:
+            scope_map = {"today": "daily-day", "monthly": "daily-monthly", "absolute": "daily-absolute"}
+            user_pos = get_user_daily_ranking_position(user["user_id"], scope_map.get(sub, "daily-day"))
+
+    elif cat == "global":
+        sub = sub or "season"
+        if sub == "season":
+            lb = get_season_ranking()
+        elif sub == "weekly":
+            lb = get_weekly_ranking()
+        else:
+            lb = None
+        entries = lb.get("entries", []) if lb else []
+        updated_at = lb.get("updated_at") if lb else None
+        if user:
+            user_pos = get_user_ranking_position(user["user_id"], sub)
+
+    elif cat == "game":
+        gt = game if game and game in ALL_GAME_TYPES else game_types[0]
+        game_type = gt
+        lb = get_game_ranking(gt)
+        entries = lb.get("entries", []) if lb else []
+        updated_at = lb.get("updated_at") if lb else None
+        if user:
+            user_pos = get_user_ranking_position(user["user_id"], "game", gt)
+    else:
+        category = None  # show category cards
+        sub = None
 
     return templates.TemplateResponse("ranking.html", {
         "request": request, "user": user, "lang": lang,
-        "tab": tab, "metric": metric, "game_type": game or "",
+        "category": category, "sub": sub,
+        "game_type": game_type, "game_types": game_types,
         "entries": entries, "updated_at": updated_at,
-        "user_position": user_pos, "game_types": GAME_TYPES,
+        "user_position": user_pos,
     })
 
 

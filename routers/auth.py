@@ -32,6 +32,9 @@ from services.analytics import track
 from services.user_stats import ensure_user_stats
 from services.friendships import get_friends
 from services.matches import get_match
+from services.rankings import get_user_ranking_position
+from services.daily_rankings import get_user_daily_ranking_position
+from services.scoring import ALL_GAME_TYPES
 
 router = APIRouter(tags=["auth"])
 
@@ -78,11 +81,21 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
         for gt, gs in (stats.get("stats_by_game") or {}).items()
     }
 
+    # Ranking positions
+    from core.i18n import t
+    uid = user["user_id"]
+    ranking_positions = [
+        {"label": t("prof.daily_ranking", lang), "position": get_user_daily_ranking_position(uid, "daily-absolute")},
+        {"label": t("prof.season_ranking", lang), "position": get_user_ranking_position(uid, "season")},
+        {"label": t("prof.weekly_ranking", lang), "position": get_user_ranking_position(uid, "weekly")},
+    ]
+
     return templates.TemplateResponse("auth/profile.html", {
         "request": request, "user": user, "stats": stats, "lang": lang,
         "friends_count": friends_count, "best_scores": best_scores,
         "recent_matches_chart": recent_matches_chart,
         "game_counters": game_counters,
+        "ranking_positions": ranking_positions,
     })
 
 

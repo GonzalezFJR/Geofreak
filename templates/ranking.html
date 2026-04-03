@@ -9,36 +9,62 @@
         <p>{{ t('lb.subtitle', lang) }}</p>
     </div>
 
-    <!-- Tabs: Global / By Game -->
+    {% if not category %}
+    <!-- ── Category cards ─────────────────────────────────── -->
+    <div class="ranking-cards">
+        <a href="/ranking?cat=daily" class="ranking-card ranking-card--daily">
+            <div class="ranking-card__icon">
+                <svg viewBox="0 0 48 48" width="56" height="56">
+                    <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+                    <text x="24" y="30" text-anchor="middle" font-size="22">📅</text>
+                </svg>
+            </div>
+            <h3>{{ t('lb.daily', lang) }}</h3>
+            <p>{{ t('lb.daily_subtitle', lang) }}</p>
+        </a>
+        <a href="/ranking?cat=global" class="ranking-card ranking-card--global">
+            <div class="ranking-card__icon">
+                <svg viewBox="0 0 48 48" width="56" height="56">
+                    <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+                    <text x="24" y="30" text-anchor="middle" font-size="22">🏆</text>
+                </svg>
+            </div>
+            <h3>{{ t('lb.global_ranking', lang) }}</h3>
+            <p>{{ t('lb.global_subtitle', lang) }}</p>
+        </a>
+        <a href="/ranking?cat=game&game={{ game_types[0] }}" class="ranking-card ranking-card--game">
+            <div class="ranking-card__icon">
+                <svg viewBox="0 0 48 48" width="56" height="56">
+                    <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+                    <text x="24" y="30" text-anchor="middle" font-size="22">🎮</text>
+                </svg>
+            </div>
+            <h3>{{ t('lb.by_game_ranking', lang) }}</h3>
+            <p>{{ t('lb.game_subtitle', lang) }}</p>
+        </a>
+    </div>
+
+    {% else %}
+    <!-- ── Back + sub-navigation ──────────────────────────── -->
+    <div class="ranking-back">
+        <a href="/ranking">{{ t('lb.back', lang) }}</a>
+    </div>
+
+    {% if category == 'daily' %}
     <div class="ranking-tabs">
-        <a href="/ranking?tab=global&metric={{ metric }}"
-           class="ranking-tab {{ 'active' if tab == 'global' }}">
-            {{ t('lb.global', lang) }}
-        </a>
-        <a href="/ranking?tab=game&game={{ game_types[0] }}"
-           class="ranking-tab {{ 'active' if tab == 'game' }}">
-            {{ t('lb.by_game', lang) }}
-        </a>
+        <a href="/ranking?cat=daily&sub=today" class="ranking-tab {{ 'active' if sub == 'today' }}">{{ t('lb.today', lang) }}</a>
+        <a href="/ranking?cat=daily&sub=monthly" class="ranking-tab {{ 'active' if sub == 'monthly' }}">{{ t('lb.monthly', lang) }}</a>
+        <a href="/ranking?cat=daily&sub=absolute" class="ranking-tab {{ 'active' if sub == 'absolute' }}">{{ t('lb.absolute', lang) }}</a>
     </div>
-
-    {% if tab == 'global' %}
-    <!-- Metric selector -->
-    <div class="ranking-metrics">
-        {% for m in ['rating', 'total_matches', 'best_streak'] %}
-        <a href="/ranking?tab=global&metric={{ m }}"
-           class="metric-btn {{ 'active' if metric == m }}">
-            {{ t('lb.' + m, lang) }}
-        </a>
-        {% endfor %}
+    {% elif category == 'global' %}
+    <div class="ranking-tabs">
+        <a href="/ranking?cat=global&sub=season" class="ranking-tab {{ 'active' if sub == 'season' }}">{{ t('lb.season', lang) }}</a>
+        <a href="/ranking?cat=global&sub=weekly" class="ranking-tab {{ 'active' if sub == 'weekly' }}">{{ t('lb.weekly', lang) }}</a>
     </div>
-    {% endif %}
-
-    {% if tab == 'game' %}
-    <!-- Game type selector -->
+    {% elif category == 'game' %}
     <div class="ranking-game-select">
         {% for gt in game_types %}
-        <a href="/ranking?tab=game&game={{ gt }}"
-           class="game-btn {{ 'active' if game_type == gt }}">
+        <a href="/ranking?cat=game&game={{ gt }}" class="game-btn {{ 'active' if game_type == gt }}">
             {{ gt | replace('-', ' ') | title }}
         </a>
         {% endfor %}
@@ -65,10 +91,6 @@
             <tr>
                 <th>{{ t('lb.rank', lang) }}</th>
                 <th>{{ t('lb.player', lang) }}</th>
-                <th>{{ t('lb.value', lang) }}</th>
-                {% if tab == 'game' %}
-                <th>{{ t('lb.matches', lang) }}</th>
-                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -78,10 +100,6 @@
                     {% if e.rank == 1 %}🥇{% elif e.rank == 2 %}🥈{% elif e.rank == 3 %}🥉{% else %}{{ e.rank }}{% endif %}
                 </td>
                 <td>{{ e.username }}</td>
-                <td class="value-cell">{{ e.value | int }}</td>
-                {% if tab == 'game' %}
-                <td>{{ e.matches | default(0) | int }}</td>
-                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
@@ -94,8 +112,10 @@
     {% else %}
     <div class="ranking-empty">
         <span>🏆</span>
-        {{ t('lb.empty', lang) }}
+        {{ t('lb.no_entries', lang) }}
     </div>
     {% endif %}
+
+    {% endif %}{# end category check #}
 </section>
 {% endblock %}

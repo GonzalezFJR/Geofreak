@@ -156,6 +156,25 @@
     <!-- Tab: Mis stats -->
     <div id="tab-stats" class="tab-content" style="display:none">
 
+        <!-- Rankings -->
+        {% if ranking_positions %}
+        <div class="profile-section">
+            <h2>{{ t('prof.rankings', lang) }}</h2>
+            <div class="profile-rankings-grid">
+                {% for rp in ranking_positions %}
+                <div class="profile-rank-card">
+                    <div class="profile-rank-label">{{ rp.label }}</div>
+                    {% if rp.position %}
+                    <div class="profile-rank-pos">#{{ rp.position if rp.position <= 1000 else '1000+' }}</div>
+                    {% else %}
+                    <div class="profile-rank-pos profile-rank-na">—</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Best scores -->
         <div class="profile-section">
             <h2>{{ t('prof.best_scores', lang) }}</h2>

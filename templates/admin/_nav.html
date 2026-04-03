@@ -22,4 +22,10 @@
         <span class="admin-tab-icon">🎯</span>
         {{ t('adm.tab_daily', lang) }}
     </a>
+    {% if is_admin %}
+    <a href="/admin/ranking" class="admin-tab {{ 'active' if section == 'ranking' }}">
+        <span class="admin-tab-icon">🏆</span>
+        Ranking
+    </a>
+    {% endif %}
 </nav>

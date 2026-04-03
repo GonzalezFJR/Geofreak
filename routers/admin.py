@@ -254,7 +254,9 @@ async def admin_user_details(request: Request, user_id: str):
     from decimal import Decimal
     from core.aws import get_dynamodb_resource
     from services.user_stats import get_user_stats
-    from services.leaderboards import get_user_position
+    from services.rankings import get_user_ranking_position
+    from services.daily_rankings import get_user_daily_ranking_position
+    from services.scoring import ALL_GAME_TYPES
 
     settings = get_settings()
     table = get_dynamodb_resource().Table(settings.table_name("users"))
@@ -281,12 +283,14 @@ async def admin_user_details(request: Request, user_id: str):
     user = _conv(user)
     stats = _conv(stats)
 
-    try:
-        rank_rating = get_user_position(user_id, "global", "all", "rating")
-        rank_matches = get_user_position(user_id, "global", "all", "total_matches")
-    except Exception:
-        rank_rating = None
-        rank_matches = None
+    rankings = {
+        "season": get_user_ranking_position(user_id, "season"),
+        "weekly": get_user_ranking_position(user_id, "weekly"),
+        "daily_absolute": get_user_daily_ranking_position(user_id, "daily-absolute"),
+        "daily_monthly": get_user_daily_ranking_position(user_id, "daily-monthly"),
+    }
+    for gt in sorted(ALL_GAME_TYPES):
+        rankings[f"game_{gt}"] = get_user_ranking_position(user_id, "game", gt)
 
     return JSONResponse({
         "user": user,
@@ -298,10 +302,7 @@ async def admin_user_details(request: Request, user_id: str):
             "best_streak": stats.get("best_streak", 0),
             "updated_at": stats.get("updated_at", ""),
         },
-        "rankings": {
-            "rating": rank_rating,
-            "total_matches": rank_matches,
-        },
+        "rankings": rankings,
     })
 
 
@@ -740,4 +741,20 @@ async def api_get_datasets_config(request: Request):
     return JSONResponse(content={
         "visible": visible,
         "datasets": {k: {"label_es": v.get("label_es"), "label_en": v.get("label_en"), "visible": v.get("visible"), "exists": v.get("exists")} for k, v in all_datasets.items()}
+    })
+
+
+# ── Ranking ──────────────────────────────────────────────────────────────────
+
+@router.get("/ranking", response_class=HTMLResponse)
+async def admin_ranking(request: Request):
+    ctx = _get_admin_context(request)
+    if not ctx["is_admin"]:
+        return RedirectResponse("/admin", status_code=303)
+    lang = get_lang(request)
+    from services.scoring import ALL_GAME_TYPES
+    return templates.TemplateResponse("admin/ranking.html", {
+        "request": request, "lang": lang,
+        "section": "ranking", "is_admin": True,
+        "game_types": sorted(ALL_GAME_TYPES),
     })

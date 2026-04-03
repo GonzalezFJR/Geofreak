@@ -39,6 +39,7 @@
                     <tr class="{{ 'disabled-row' if u.status == 'disabled' }}" data-user-id="{{ u.user_id }}">
                         <td class="username-cell">
                             <strong>{{ u.username }}</strong>
+                            {% if u.is_fake %}<span class="status-badge" style="background:#f59e0b;color:#fff;font-size:0.65rem;margin-left:4px;">FAKE</span>{% endif %}
                             <span class="user-id-hint">{{ u.user_id[:8] }}…</span>
                         </td>
                         <td>{{ u.email }}</td>
@@ -123,11 +124,8 @@
                 </div>
             </div>
             <div class="um-section">
-                <h3>Ranking global (top 50)</h3>
-                <div class="um-grid">
-                    <div class="um-item"><span class="um-label">Por rating</span><span id="um-rank-rating"></span></div>
-                    <div class="um-item"><span class="um-label">Por partidas</span><span id="um-rank-matches"></span></div>
-                </div>
+                <h3>Rankings</h3>
+                <div id="um-rankings" class="um-grid"></div>
             </div>
         </div>
     </div>
@@ -159,8 +157,9 @@
         document.getElementById('um-email').textContent = '';
         document.getElementById('um-badges').innerHTML = '';
         ['um-plan','um-country','um-language','um-created','um-last-login','um-last-activity',
-         'um-matches','um-wins','um-rating','um-streak','um-rank-rating','um-rank-matches']
+         'um-matches','um-wins','um-rating','um-streak']
             .forEach(function (id) { document.getElementById(id).textContent = '—'; });
+        document.getElementById('um-rankings').innerHTML = '';
 
         // Show avatar placeholder
         const avatarImg = document.getElementById('um-avatar-img');
@@ -200,7 +199,8 @@
             ? '<span class="um-badge um-badge-ok">✓ Verificado</span>'
             : '<span class="um-badge um-badge-warn">✗ Sin verificar</span>';
         const statusBadge = '<span class="um-badge um-badge-' + (u.status || 'active') + '">' + (u.status || 'active') + '</span>';
-        badges.innerHTML = verBadge + statusBadge;
+        const fakeBadge = u.is_fake ? '<span class="um-badge" style="background:#f59e0b;color:#fff;">FAKE</span>' : '';
+        badges.innerHTML = verBadge + statusBadge + fakeBadge;
 
         // Account info
         document.getElementById('um-plan').textContent = u.role || u.plan || 'free';
@@ -217,8 +217,14 @@
         document.getElementById('um-streak').textContent = s.best_streak != null ? s.best_streak : '—';
 
         // Rankings
-        document.getElementById('um-rank-rating').textContent = r.rating ? '#' + r.rating : 'Top 50+';
-        document.getElementById('um-rank-matches').textContent = r.total_matches ? '#' + r.total_matches : 'Top 50+';
+        const rankEl = document.getElementById('um-rankings');
+        let rankHtml = '';
+        for (const [k, v] of Object.entries(r)) {
+            const label = k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            const val = v ? '#' + v : '—';
+            rankHtml += '<div class="um-item"><span class="um-label">' + label + '</span><span>' + val + '</span></div>';
+        }
+        rankEl.innerHTML = rankHtml || '<div class="um-item"><span class="um-label">—</span></div>';
     }
 }());
 </script>
