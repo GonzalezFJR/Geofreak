@@ -38,7 +38,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.geogames_desc": "Juega y compite para poner a prueba tus conocimientos de geografía, demografía y economía.",
         "landing.geoquiz_title": "¿Cuánto sabes de geografía?",
         "landing.geoquiz_desc": "Sitúa países y ciudades en el mapa. Nombra ríos y elementos del relieve. Compite solo o con la comunidad.",
-        "landing.guess_title": "Juegos de adivinar",
+        "landing.guess_title": "Fronteras y símbolos",
         "landing.guess_desc": "Pon a prueba tus conocimientos sobre banderas o formas de países y compite para ser el más rápido.",
         "landing.signup_title": "Únete a GeoFreak",
         "landing.signup_desc": "Regístrate para acceder a mejores juegos y recursos educativos. Guarda tus estadísticas, juega con amigos y compite en los rankings.",
@@ -188,13 +188,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.city_countries_placeholder": "Buscar país...",
 
         # Dashboard
-        "dash.title": "🎮 Juegos GeoFreak",
+        "dash.title": "Juegos GeoFreak",
         "dash.subtitle": "Pon a prueba tus conocimientos del mundo",
         "dash.play": "Jugar",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
-        "dash.subcat_adivina": "Adivina cuál",
+        "dash.subcat_adivina": "Fronteras y símbolos",
         "dash.subcat_mapa": "Sobre el mapa",
+        "dash.signup_msg": "Regístrate para desbloquear todo el contenido",
+        "dash.signup_btn": "Crear cuenta",
+        "dash.login_hint": "¿Ya tienes cuenta?",
 
         # Quiz (flags / outline)
         "quiz.flag": "Bandera",
@@ -907,7 +910,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.geogames_desc": "Play and compete to test your knowledge of geography, demographics and economics.",
         "landing.geoquiz_title": "How much do you know about geography?",
         "landing.geoquiz_desc": "Place countries and cities on the map. Name rivers and relief features. Compete solo or with the community.",
-        "landing.guess_title": "Guessing games",
+        "landing.guess_title": "Borders & symbols",
         "landing.guess_desc": "Test your knowledge of flags or country shapes and compete to be the fastest.",
         "landing.signup_title": "Join GeoFreak",
         "landing.signup_desc": "Sign up to access better games and educational resources. Save your stats, play with friends and compete in the rankings.",
@@ -1057,13 +1060,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.city_countries_placeholder": "Search country...",
 
         # Dashboard
-        "dash.title": "🎮 GeoFreak Games",
+        "dash.title": "GeoFreak Games",
         "dash.subtitle": "Test your knowledge of the world",
         "dash.play": "Play",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
-        "dash.subcat_adivina": "Guess which",
+        "dash.subcat_adivina": "Borders & symbols",
         "dash.subcat_mapa": "On the map",
+        "dash.signup_msg": "Sign up to unlock all content",
+        "dash.signup_btn": "Create account",
+        "dash.login_hint": "Already have an account?",
 
         # Quiz (flags / outline)
         "quiz.flag": "Flag",
@@ -1747,7 +1753,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.geogames_desc": "Jouez et rivalisez pour tester vos connaissances en géographie, démographie et économie.",
         "landing.geoquiz_title": "Que savez-vous de la géographie ?",
         "landing.geoquiz_desc": "Placez pays et villes sur la carte. Nommez rivières et reliefs. Jouez seul ou avec la communauté.",
-        "landing.guess_title": "Jeux de devinettes",
+        "landing.guess_title": "Frontières et symboles",
         "landing.guess_desc": "Testez vos connaissances sur les drapeaux ou les formes des pays et soyez le plus rapide.",
         "landing.signup_title": "Rejoignez GeoFreak",
         "landing.signup_desc": "Inscrivez-vous pour accéder à de meilleurs jeux et ressources. Sauvegardez vos stats, jouez avec des amis et rivalisez dans les classements.",
@@ -1896,13 +1902,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.city_countries_placeholder": "Rechercher pays...",
 
         # Dashboard
-        "dash.title": "🎮 Jeux GeoFreak",
+        "dash.title": "Jeux GeoFreak",
         "dash.subtitle": "Testez vos connaissances du monde",
         "dash.play": "Jouer",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
-        "dash.subcat_adivina": "Devinez lequel",
+        "dash.subcat_adivina": "Frontières et symboles",
         "dash.subcat_mapa": "Sur la carte",
+        "dash.signup_msg": "Inscrivez-vous pour débloquer tout le contenu",
+        "dash.signup_btn": "Créer un compte",
+        "dash.login_hint": "Vous avez déjà un compte ?",
 
         # Quiz
         "quiz.flag": "Drapeau",
@@ -2560,7 +2569,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.geogames_desc": "Gioca e gareggia per testare le tue conoscenze di geografia, demografia ed economia.",
         "landing.geoquiz_title": "Quanto ne sai di geografia?",
         "landing.geoquiz_desc": "Posiziona paesi e città sulla mappa. Nomina fiumi e rilievi. Gioca da solo o con la comunità.",
-        "landing.guess_title": "Giochi di indovinelli",
+        "landing.guess_title": "Confini e simboli",
         "landing.guess_desc": "Metti alla prova le tue conoscenze su bandiere o forme dei paesi e gareggia per essere il più veloce.",
         "landing.signup_title": "Unisciti a GeoFreak",
         "landing.signup_desc": "Registrati per accedere a giochi migliori e risorse educative. Salva le tue statistiche, gioca con amici e gareggia nelle classifiche.",
@@ -2709,13 +2718,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.city_countries_placeholder": "Cerca paese...",
 
         # Dashboard
-        "dash.title": "🎮 Giochi GeoFreak",
+        "dash.title": "Giochi GeoFreak",
         "dash.subtitle": "Metti alla prova le tue conoscenze del mondo",
         "dash.play": "Gioca",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
-        "dash.subcat_adivina": "Indovina quale",
+        "dash.subcat_adivina": "Confini e simboli",
         "dash.subcat_mapa": "Sulla mappa",
+        "dash.signup_msg": "Registrati per sbloccare tutti i contenuti",
+        "dash.signup_btn": "Crea un account",
+        "dash.login_hint": "Hai già un account?",
 
         # Quiz
         "quiz.flag": "Bandiera",
@@ -3374,7 +3386,7 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "landing.geogames_desc": "Играй и соревнуйся, проверяя знания по географии, демографии и экономике.",
         "landing.geoquiz_title": "Что ты знаешь о географии?",
         "landing.geoquiz_desc": "Размести страны и города на карте. Назови реки и рельеф. Играй один или с сообществом.",
-        "landing.guess_title": "Игры на угадывание",
+        "landing.guess_title": "Границы и символы",
         "landing.guess_desc": "Проверь свои знания флагов и форм стран и соревнуйся на скорость.",
         "landing.signup_title": "Присоединяйся к GeoFreak",
         "landing.signup_desc": "Зарегистрируйся для доступа к лучшим играм и ресурсам. Сохраняй статистику, играй с друзьями и соревнуйся в рейтингах.",
@@ -3523,13 +3535,16 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
         "cust.city_countries_placeholder": "Найти страну...",
 
         # Dashboard
-        "dash.title": "🎮 GeoFreak Игры",
+        "dash.title": "GeoFreak Игры",
         "dash.subtitle": "Проверь свои знания о мире",
         "dash.play": "Играть",
         "dash.cat_geofreak": "GeoGames",
         "dash.cat_quiz": "GeoQuiz",
-        "dash.subcat_adivina": "Угадай какой",
+        "dash.subcat_adivina": "Границы и символы",
         "dash.subcat_mapa": "На карте",
+        "dash.signup_msg": "Зарегистрируйтесь, чтобы разблокировать весь контент",
+        "dash.signup_btn": "Создать аккаунт",
+        "dash.login_hint": "Уже есть аккаунт?",
 
         # Quiz
         "quiz.flag": "Флаг",

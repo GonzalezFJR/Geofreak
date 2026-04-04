@@ -12,8 +12,11 @@
     </div>
 
     <!-- GeoGames -->
-    <h2 class="dashboard-category">GeoGames</h2>
-    <div class="games-grid">
+    <div class="dashboard-section">
+        <div class="dashboard-section-header">
+            <h2 class="dashboard-category">GeoGames</h2>
+        </div>
+        <div class="games-grid">
         {% for game in games %}
         {% if game.enabled and game.visible|default(true) and game.type == 'solo' %}
         <div class="game-card" style="--card-color: {{ game.color }}" data-game-id="{{ game.id }}" data-game-name="{{ game_field(game, 'name', lang) }}">
@@ -58,13 +61,17 @@
         {% endif %}
         {% endfor %}
     </div>
+    </div>
 
     <!-- GeoQuiz -->
-    <h2 class="dashboard-category">GeoQuiz</h2>
+    <div class="dashboard-section">
+        <div class="dashboard-section-header">
+            <h2 class="dashboard-category">GeoQuiz</h2>
+        </div>
 
-    <!-- Subcategory: Adivina cuál -->
-    <h3 class="dashboard-subcategory">{{ t('dash.subcat_adivina', lang) }}</h3>
-    <div class="games-grid">
+        <!-- Subcategory: Fronteras y símbolos -->
+        <h3 class="dashboard-subcategory">{{ t('dash.subcat_adivina', lang) }}</h3>
+        <div class="games-grid">
         {% for game in games %}
         {% if game.enabled and game.visible|default(true) and game.subcategory == 'adivina_cual' %}
         {% if game.type == 'quiz' %}
@@ -141,6 +148,21 @@
         {% endif %}
         {% endfor %}
     </div>
+    </div>
+
+    {% if not user %}
+    <!-- Signup CTA -->
+    <div class="dashboard-signup">
+        <div class="dashboard-signup-inner">
+            <img src="/static/img/logo_geofreak.svg" alt="GeoFreak" class="dashboard-signup-logo" width="56" height="56"/>
+            <p class="dashboard-signup-msg">{{ t('dash.signup_msg', lang) }}</p>
+            <div class="dashboard-signup-actions">
+                <a href="/register" class="btn btn-primary">{{ t('dash.signup_btn', lang) }}</a>
+                <span class="dashboard-signup-hint">{{ t('dash.login_hint', lang) }} <a href="/login">{{ t('nav.login', lang) }}</a></span>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </section>
 
 {% include "games/_instructions_modal.html" %}
