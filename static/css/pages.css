@@ -1068,7 +1068,7 @@
     text-align: center;
     padding: 36px 24px 32px;
     border-radius: var(--radius-xl);
-    background: rgba(255,255,255,0.82);
+    background: rgba(255,255,255,0.72);
     border: 1.5px solid var(--gray-200);
     text-decoration: none;
     transition: all 0.3s ease;
@@ -1646,7 +1646,7 @@
     text-align: center;
     padding: 32px 24px 28px;
     border-radius: var(--radius-xl);
-    background: rgba(255,255,255,0.82);
+    background: rgba(255,255,255,0.72);
     border: 1.5px solid var(--gray-200);
     text-decoration: none;
     transition: all 0.3s ease;
@@ -1714,6 +1714,9 @@
 .lgc-btn--brown { background: var(--brown-500); }
 .lgc-btn--green { background: var(--green-500); }
 .landing-game-card:hover .lgc-btn { filter: brightness(0.9); }
+
+/* Comparison icon is more detailed — show it larger */
+a[href*="comparison"] .lgc-icon img { width: 90px; height: 90px; }
 
 /* Tournament highlight box */
 .tournament-highlight {
