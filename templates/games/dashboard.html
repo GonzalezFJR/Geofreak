@@ -154,11 +154,13 @@
     <!-- Signup CTA -->
     <div class="dashboard-signup">
         <div class="dashboard-signup-inner">
-            <img src="/static/img/logo_geofreak.svg" alt="GeoFreak" class="dashboard-signup-logo" width="56" height="56"/>
-            <p class="dashboard-signup-msg">{{ t('dash.signup_msg', lang) }}</p>
-            <div class="dashboard-signup-actions">
-                <a href="/register" class="btn btn-primary">{{ t('dash.signup_btn', lang) }}</a>
-                <span class="dashboard-signup-hint">{{ t('dash.login_hint', lang) }} <a href="/login">{{ t('nav.login', lang) }}</a></span>
+            <img src="/static/img/logo_geofreak.svg" alt="GeoFreak" class="dashboard-signup-logo" width="52" height="52"/>
+            <div class="dashboard-signup-text">
+                <p class="dashboard-signup-msg">{{ t('dash.signup_msg', lang) }}</p>
+                <div class="dashboard-signup-actions">
+                    <a href="/register" class="dashboard-signup-btn">{{ t('dash.signup_btn', lang) }}</a>
+                    <span class="dashboard-signup-hint">{{ t('dash.login_hint', lang) }} <a href="/login">{{ t('nav.login', lang) }}</a></span>
+                </div>
             </div>
         </div>
     </div>
