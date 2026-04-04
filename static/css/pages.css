@@ -1208,7 +1208,7 @@
    ============================================================ */
 .daily-section {
     padding: 60px 24px 40px;
-    background: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.45);
     position: relative;
     z-index: 1;
 }
@@ -1517,7 +1517,7 @@
     transition: background 0.2s;
 }
 .daily-hero:hover .daily-hero-btn { background: rgba(255,255,255,0.3); }
-.daily-hero-icon { flex-shrink: 0; width: 180px; height: auto; }
+.daily-hero-icon { flex-shrink: 0; width: 210px; height: auto; }
 .daily-minimap { flex-shrink: 0; width: 220px; height: auto; overflow: visible; }
 
 /* Map zones — base style: white with transparency */
@@ -1623,12 +1623,12 @@
     position: relative;
     z-index: 1;
 }
-.landing-section--blue { background: rgba(255,255,255,0.75); }
-.landing-section--brown { background: rgba(255,255,255,0.75); }
-.landing-section--green { background: rgba(255,255,255,0.75); }
+.landing-section--blue { background: rgba(255,255,255,0.45); }
+.landing-section--brown { background: rgba(255,255,255,0.45); }
+.landing-section--green { background: rgba(255,255,255,0.45); }
 .landing-section--modes {
     padding: 80px 24px 60px;
-    background: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.45);
 }
 
 .landing-game-grid {
