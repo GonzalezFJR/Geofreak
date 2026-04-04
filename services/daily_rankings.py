@@ -37,6 +37,22 @@ ALPHA_DAILY = 0.12
 CONSISTENCY_WINDOW = 30
 
 TOP_N = 50
+_CACHE_TTL_SECONDS = 300  # 5 min
+
+
+def _is_stale(item: Optional[dict]) -> bool:
+    """Check if a cached ranking is stale or missing."""
+    if not item:
+        return True
+    updated = item.get("updated_at", "")
+    if not updated:
+        return True
+    try:
+        ts = datetime.fromisoformat(updated)
+        age = (datetime.now(timezone.utc) - ts).total_seconds()
+        return age > _CACHE_TTL_SECONDS
+    except (ValueError, TypeError):
+        return True
 
 
 # ── DynamoDB table accessors ─────────────────────────────────────────────────
@@ -513,7 +529,12 @@ def get_daily_day_ranking(date: Optional[str] = None) -> Optional[dict]:
         date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     lid = f"daily-day#{date}#ranking"
     resp = _lb_table().get_item(Key={"leaderboard_id": lid})
-    return resp.get("Item")
+    item = resp.get("Item")
+    if _is_stale(item):
+        rebuild_daily_ranking(date)
+        resp = _lb_table().get_item(Key={"leaderboard_id": lid})
+        item = resp.get("Item")
+    return item
 
 
 def get_daily_monthly_ranking(month_key: Optional[str] = None) -> Optional[dict]:
@@ -522,12 +543,23 @@ def get_daily_monthly_ranking(month_key: Optional[str] = None) -> Optional[dict]
         month_key = f"{now.year:04d}-{now.month:02d}"
     lid = f"daily-monthly#{month_key}#ranking"
     resp = _lb_table().get_item(Key={"leaderboard_id": lid})
-    return resp.get("Item")
+    item = resp.get("Item")
+    if _is_stale(item):
+        year, month = int(month_key[:4]), int(month_key[5:7])
+        rebuild_monthly_ranking(year, month)
+        resp = _lb_table().get_item(Key={"leaderboard_id": lid})
+        item = resp.get("Item")
+    return item
 
 
 def get_daily_absolute_ranking() -> Optional[dict]:
     resp = _lb_table().get_item(Key={"leaderboard_id": "daily-absolute#all#ranking"})
-    return resp.get("Item")
+    item = resp.get("Item")
+    if _is_stale(item):
+        rebuild_absolute_ranking()
+        resp = _lb_table().get_item(Key={"leaderboard_id": "daily-absolute#all#ranking"})
+        item = resp.get("Item")
+    return item
 
 
 def get_user_daily_ranking_position(

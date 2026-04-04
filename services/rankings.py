@@ -144,6 +144,22 @@ def _scan_all_attempts() -> list[dict]:
 
 
 TOP_N = 50
+_CACHE_TTL_SECONDS = 300  # 5 min
+
+
+def _is_stale(item: Optional[dict]) -> bool:
+    """Check if a cached ranking is stale or missing."""
+    if not item:
+        return True
+    updated = item.get("updated_at", "")
+    if not updated:
+        return True
+    try:
+        ts = datetime.fromisoformat(updated)
+        age = (datetime.now(timezone.utc) - ts).total_seconds()
+        return age > _CACHE_TTL_SECONDS
+    except (ValueError, TypeError):
+        return True
 
 
 # ── Grouping helper ──────────────────────────────────────────────────────────
@@ -652,24 +668,44 @@ def get_game_ranking(grouping_key: str) -> Optional[dict]:
     """Get absolute game/config ranking. grouping_key = game_type or config_key."""
     lid = f"game#{grouping_key}#ranking"
     resp = _lb_table().get_item(Key={"leaderboard_id": lid})
-    return resp.get("Item")
+    item = resp.get("Item")
+    if _is_stale(item):
+        rebuild_game_rankings()
+        resp = _lb_table().get_item(Key={"leaderboard_id": lid})
+        item = resp.get("Item")
+    return item
 
 
 def get_game_season_ranking(grouping_key: str) -> Optional[dict]:
     """Get season game/config ranking."""
     lid = f"game-season#{grouping_key}#ranking"
     resp = _lb_table().get_item(Key={"leaderboard_id": lid})
-    return resp.get("Item")
+    item = resp.get("Item")
+    if _is_stale(item):
+        rebuild_game_season_rankings()
+        resp = _lb_table().get_item(Key={"leaderboard_id": lid})
+        item = resp.get("Item")
+    return item
 
 
 def get_season_ranking() -> Optional[dict]:
     resp = _lb_table().get_item(Key={"leaderboard_id": "season#all#ranking"})
-    return resp.get("Item")
+    item = resp.get("Item")
+    if _is_stale(item):
+        rebuild_season_rankings()
+        resp = _lb_table().get_item(Key={"leaderboard_id": "season#all#ranking"})
+        item = resp.get("Item")
+    return item
 
 
 def get_absolute_ranking() -> Optional[dict]:
     resp = _lb_table().get_item(Key={"leaderboard_id": "absolute#all#ranking"})
-    return resp.get("Item")
+    item = resp.get("Item")
+    if _is_stale(item):
+        rebuild_absolute_rankings()
+        resp = _lb_table().get_item(Key={"leaderboard_id": "absolute#all#ranking"})
+        item = resp.get("Item")
+    return item
 
 
 def get_weekly_ranking(week_key: Optional[str] = None) -> Optional[dict]:
@@ -677,7 +713,12 @@ def get_weekly_ranking(week_key: Optional[str] = None) -> Optional[dict]:
         week_key = get_week_key()
     lid = f"weekly#{week_key}#ranking"
     resp = _lb_table().get_item(Key={"leaderboard_id": lid})
-    return resp.get("Item")
+    item = resp.get("Item")
+    if _is_stale(item):
+        rebuild_weekly_rankings(week_key)
+        resp = _lb_table().get_item(Key={"leaderboard_id": lid})
+        item = resp.get("Item")
+    return item
 
 
 def get_user_ranking_position(
