@@ -293,6 +293,8 @@ img {
     color: var(--gray-400);
     padding: 36px 24px 20px;
     font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
 }
 .footer-container { max-width: 960px; margin: 0 auto; }
 .footer-grid {

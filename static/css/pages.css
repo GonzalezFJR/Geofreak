@@ -1146,7 +1146,7 @@
     bottom: 0;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.55;
     background: var(--white);
 }
 .landing-bg-img {
@@ -1203,7 +1203,7 @@
    ============================================================ */
 .daily-section {
     padding: 60px 24px 40px;
-    background: rgba(255,255,255,0.88);
+    background: rgba(255,255,255,0.75);
     position: relative;
     z-index: 1;
 }
@@ -1618,12 +1618,12 @@
     position: relative;
     z-index: 1;
 }
-.landing-section--blue { background: rgba(248,249,250,0.92); }
-.landing-section--brown { background: rgba(255,255,255,0.88); }
-.landing-section--green { background: rgba(248,249,250,0.92); }
+.landing-section--blue { background: rgba(248,249,250,0.78); }
+.landing-section--brown { background: rgba(255,255,255,0.75); }
+.landing-section--green { background: rgba(248,249,250,0.78); }
 .landing-section--modes {
     padding: 80px 24px 60px;
-    background: rgba(255,255,255,0.88);
+    background: rgba(255,255,255,0.75);
 }
 
 .landing-game-grid {
