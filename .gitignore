@@ -41,3 +41,6 @@ static/data/cities15000.txt
 
 # Daily challenge local cache
 static/data/daily_challenges/
+
+# Balance icon daily cache
+static/img/icons/_cache/

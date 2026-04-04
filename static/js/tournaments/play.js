@@ -28,7 +28,7 @@
 
     var GAME_ICONS = {
         ordering: '/static/img/icons/ordering.svg',
-        comparison: '/static/img/icons/comparison.svg',
+        comparison: '/api/comparison-icon',
         geostats: '/static/img/icons/geostats.svg',
         flags: '/static/img/icons/flags.svg',
         outline: '/static/img/icons/outline.svg'

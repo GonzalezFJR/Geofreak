@@ -77,9 +77,18 @@ def create_app():
     # Flush analytics buffer on shutdown
     from contextlib import asynccontextmanager
     from services.analytics import flush as flush_analytics
+    from services.daily_balance import get_daily_balance_svg
+    from pathlib import Path
 
     @asynccontextmanager
     async def lifespan(app):
+        # Generate today's comparison icon with rotating countries
+        try:
+            svg = get_daily_balance_svg()
+            icon_path = Path(__file__).parent / "static" / "img" / "icons" / "comparison.svg"
+            icon_path.write_text(svg, encoding="utf-8")
+        except Exception as e:
+            print(f"[balance] Could not generate daily icon: {e}")
         yield
         flush_analytics()
 

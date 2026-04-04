@@ -5,7 +5,7 @@ import os
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel
 
 from core.auth import get_current_user, get_optional_user
@@ -48,6 +48,7 @@ from services.daily_rankings import (
     rebuild_all_daily_rankings,
     rebuild_daily_ranking,
 )
+from services.daily_balance import get_daily_balance_svg
 
 router = APIRouter(tags=["api"])
 
@@ -751,3 +752,11 @@ async def api_user_daily_scores(
     """Return the current user's recent daily challenge scores."""
     scores = get_user_daily_scores(user["user_id"], limit=limit)
     return {"scores": scores}
+
+
+@router.get("/comparison-icon")
+async def api_comparison_icon():
+    """Return today's animated balance SVG with two rotating countries."""
+    svg = get_daily_balance_svg()
+    return Response(content=svg, media_type="image/svg+xml",
+                    headers={"Cache-Control": "public, max-age=3600"})

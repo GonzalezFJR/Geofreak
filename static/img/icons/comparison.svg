@@ -1,38 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" overflow="visible">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 0 560 280" width="560" height="280" fill="none">
   <style>
     .balance {
-      transform-origin: 32px 22px;
+      transform-origin: 200px 60px;
       animation: tilt 3s ease-in-out infinite;
     }
     @keyframes tilt {
       0%, 100% { transform: rotate(0deg); }
-      25%  { transform: rotate(-14deg); }
-      75%  { transform: rotate(14deg); }
+      25%  { transform: rotate(-12deg); }
+      75%  { transform: rotate(12deg); }
     }
   </style>
 
   <!-- Stand pole -->
-  <line x1="32" y1="22" x2="32" y2="54" stroke="#6a1b9a" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="200" y1="60" x2="200" y2="265" stroke="#2b2b2b" stroke-width="5" stroke-linecap="round"/>
   <!-- Stand base -->
-  <rect x="21" y="53" width="22" height="4.5" rx="2.25" fill="#6a1b9a" opacity="0.55"/>
+  <rect x="155" y="261" width="90" height="12" rx="6" fill="#2b2b2b" opacity="0.55"/>
 
   <!-- Rotating balance (beam + strings + pans) -->
   <g class="balance">
     <!-- Beam -->
-    <line x1="8" y1="22" x2="56" y2="22" stroke="#6a1b9a" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="50" y1="60" x2="350" y2="60" stroke="#2b2b2b" stroke-width="5" stroke-linecap="round"/>
     <!-- Pivot cap -->
-    <circle cx="32" cy="22" r="3.5" fill="#6a1b9a"/>
+    <circle cx="200" cy="60" r="9" fill="#2b2b2b"/>
 
     <!-- Left string -->
-    <line x1="8" y1="22" x2="8" y2="37" stroke="#6a1b9a" stroke-width="1.5"/>
+    <line x1="50" y1="60" x2="50" y2="120" stroke="#2b2b2b" stroke-width="2.5"/>
     <!-- Left pan -->
-    <path d="M1,39 Q8,36.5 15,39" stroke="#6a1b9a" stroke-width="2.2"
-          fill="#6a1b9a" fill-opacity="0.2" stroke-linecap="round"/>
+    <path d="M20,126 Q50,118 80,126" stroke="#2b2b2b" stroke-width="3.5"
+          fill="#2b2b2b" fill-opacity="0.2" stroke-linecap="round"/>
 
     <!-- Right string -->
-    <line x1="56" y1="22" x2="56" y2="37" stroke="#6a1b9a" stroke-width="1.5"/>
+    <line x1="350" y1="60" x2="350" y2="120" stroke="#2b2b2b" stroke-width="2.5"/>
     <!-- Right pan -->
-    <path d="M49,39 Q56,36.5 63,39" stroke="#6a1b9a" stroke-width="2.2"
-          fill="#6a1b9a" fill-opacity="0.2" stroke-linecap="round"/>
+    <path d="M320,126 Q350,118 380,126" stroke="#2b2b2b" stroke-width="3.5"
+          fill="#2b2b2b" fill-opacity="0.2" stroke-linecap="round"/>
   </g>
 </svg>
