@@ -22,6 +22,7 @@ def create_app():
     from fastapi.staticfiles import StaticFiles
     from starlette.middleware.sessions import SessionMiddleware
 
+    from core.auth import TokenRefreshMiddleware
     from routers import pages, api, games, admin, auth, social, duels, tournaments, rooms
 
     settings = get_settings()
@@ -37,6 +38,9 @@ def create_app():
         SessionMiddleware,
         secret_key=settings.secret_key,
     )
+
+    # Auto-refresh expired access tokens using refresh token
+    app.add_middleware(TokenRefreshMiddleware)
 
     # Static files
     static_dir = os.path.join(os.path.dirname(__file__), "static")
