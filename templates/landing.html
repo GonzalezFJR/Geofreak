@@ -30,6 +30,12 @@
 {% endblock %}
 
 {% block content %}
+<!-- Fixed physical map background -->
+<div class="landing-bg" aria-hidden="true">
+    <img src="/static/img/world_land.jpg" alt="" class="landing-bg-img" loading="eager"/>
+    <object data="/static/img/world_land_overlay.svg" type="image/svg+xml" class="landing-bg-svg"></object>
+</div>
+
 <!-- Header -->
 <section class="landing-header">
     <div class="landing-header-inner">
@@ -41,7 +47,7 @@
 <!-- Daily Challenge -->
 <section class="daily-section">
     <a href="/games/daily" class="daily-hero">
-        {% include '_mapamundi.html' %}
+        <img src="/api/comparison-icon" alt="" class="daily-hero-icon" loading="lazy"/>
         <div class="daily-hero-text">
             <h2>{{ t('landing.daily_title', lang) }}</h2>
             <p>{{ t('landing.daily_desc', lang) }}</p>

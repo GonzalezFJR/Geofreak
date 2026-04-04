@@ -1136,12 +1136,53 @@
 .mode-map h3 { color: var(--brown-600); }
 
 /* ============================================================
+   Landing — Fixed physical map background
+   ============================================================ */
+.landing-bg {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    background: var(--white);
+}
+.landing-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+.landing-bg-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    object-fit: cover;
+    object-position: center top;
+}
+@media (max-width: 640px) {
+    .landing-bg {
+        top: 64px;
+        height: 100vw;
+        bottom: auto;
+    }
+}
+
+/* ============================================================
    Landing — Header
    ============================================================ */
 .landing-header {
     padding: 132px 24px 32px;
     text-align: center;
     background: linear-gradient(135deg, #0a2540 0%, #0c2d5a 50%, #0a3d6b 100%);
+    position: relative;
+    z-index: 1;
 }
 .landing-brand {
     font-family: var(--font-display);
@@ -1162,7 +1203,9 @@
    ============================================================ */
 .daily-section {
     padding: 60px 24px 40px;
-    background: var(--white);
+    background: rgba(255,255,255,0.88);
+    position: relative;
+    z-index: 1;
 }
 .section-header {
     text-align: center;
@@ -1366,6 +1409,8 @@
     padding: 80px 24px;
     background: linear-gradient(135deg, var(--blue-600), var(--blue-900));
     text-align: center;
+    position: relative;
+    z-index: 1;
 }
 .signup-content h2 {
     font-family: var(--font-display);
@@ -1467,6 +1512,7 @@
     transition: background 0.2s;
 }
 .daily-hero:hover .daily-hero-btn { background: rgba(255,255,255,0.3); }
+.daily-hero-icon { flex-shrink: 0; width: 180px; height: auto; }
 .daily-minimap { flex-shrink: 0; width: 220px; height: auto; overflow: visible; }
 
 /* Map zones — base style: white with transparency */
@@ -1560,7 +1606,7 @@
 
 @media (max-width: 640px) {
     .daily-hero { flex-direction: column; padding: 28px 20px; gap: 20px; text-align: center; }
-    .daily-hero svg { width: 180px; height: auto; }
+    .daily-hero svg, .daily-hero-icon { width: 180px; height: auto; }
     .quiz-card { flex-direction: column; text-align: center; padding: 28px 20px; }
 }
 
@@ -1569,13 +1615,15 @@
    ============================================================ */
 .landing-section {
     padding: 80px 24px;
+    position: relative;
+    z-index: 1;
 }
-.landing-section--blue { background: var(--gray-50); }
-.landing-section--brown { background: var(--white); }
-.landing-section--green { background: var(--gray-50); }
+.landing-section--blue { background: rgba(248,249,250,0.92); }
+.landing-section--brown { background: rgba(255,255,255,0.88); }
+.landing-section--green { background: rgba(248,249,250,0.92); }
 .landing-section--modes {
     padding: 80px 24px 60px;
-    background: var(--white);
+    background: rgba(255,255,255,0.88);
 }
 
 .landing-game-grid {
