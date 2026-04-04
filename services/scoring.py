@@ -188,14 +188,14 @@ def compute_attempt_score(q: float, n: int, time_seconds: float, tref: float) ->
     """S = 1000 * Q * T * C(n)
 
     Q = q^3            — quality component (precision dominates)
-    T = 1/(1+0.35*tpp/tref)  — time component (speed is secondary)
+    T = 1/(1+0.5*tpp/tref)  — time component (speed is secondary)
     C = 1 - exp(-n/15) — confidence by length (short runs count less)
     """
     if n <= 0 or tref <= 0:
         return 0.0
     Q = q ** 3
     tpp = time_seconds / n
-    T = 1.0 / (1.0 + 0.35 * (tpp / tref))
+    T = 1.0 / (1.0 + 0.5 * (tpp / tref))
     C = 1.0 - math.exp(-n / 15.0)
     return 1000.0 * Q * T * C
 

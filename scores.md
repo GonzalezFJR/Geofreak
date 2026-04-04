@@ -51,7 +51,7 @@ Equivalente a: $q = \frac{\text{promedio por pregunta}}{10}$
 | Componente | Fórmula | Propósito |
 |------------|---------|-----------|
 | Calidad | $Q = q^3$ | La precisión domina. Perder calidad penaliza claramente |
-| Tiempo | $T = \frac{1}{1 + 0.35 \cdot \frac{t_{pp}}{t_{ref}}}$ | La velocidad mejora o desempata, pero es secundaria |
+| Tiempo | $T = \frac{1}{1 + 0.5 \cdot \frac{t_{pp}}{t_{ref}}}$ | La velocidad mejora o desempata, pero es secundaria |
 | Confianza | $C(n) = 1 - e^{-n/15}$ | Partidas cortas cuentan menos |
 
 donde:
@@ -61,7 +61,7 @@ donde:
 
 ### Fórmula final
 
-$$S = 1000 \cdot Q \cdot T \cdot C(n) = 1000 \cdot q^3 \cdot \frac{1}{1 + 0.35 \cdot \frac{t_{pp}}{t_{ref}}} \cdot \left(1 - e^{-n/15}\right)$$
+$$S = 1000 \cdot Q \cdot T \cdot C(n) = 1000 \cdot q^3 \cdot \frac{1}{1 + 0.5 \cdot \frac{t_{pp}}{t_{ref}}} \cdot \left(1 - e^{-n/15}\right)$$
 
 ### Tiempos de referencia por juego
 
@@ -292,7 +292,7 @@ El desafío diario tiene su propia categoría de rankings, separada del sistema 
 
 Se calcula con las mismas fórmulas que los juegos individuales:
 
-$$S = 1000 \cdot q^3 \cdot \frac{1}{1 + 0.35 \cdot \frac{t_{pp}}{t_{ref}}} \cdot \left(1 - e^{-n/15}\right)$$
+$$S = 1000 \cdot q^3 \cdot \frac{1}{1 + 0.5 \cdot \frac{t_{pp}}{t_{ref}}} \cdot \left(1 - e^{-n/15}\right)$$
 
 donde $t_{ref}$ se toma del `secs_per_item` configurado para el desafío diario (por defecto 15s).
 

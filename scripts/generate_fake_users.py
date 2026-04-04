@@ -114,7 +114,7 @@ def generate_scores_for_user(skill: float, num_games: int = 5) -> list[dict]:
             # Compute S
             Q = q ** 3
             tpp = time_seconds / num_q
-            T = 1.0 / (1.0 + 0.35 * (tpp / tref))
+            T = 1.0 / (1.0 + 0.5 * (tpp / tref))
             C = 1.0 - math.exp(-num_q / 15.0)
             score_s = 1000.0 * Q * T * C
 
@@ -261,7 +261,7 @@ def store_daily_scores(user_id: str, username: str, skill: float, settings):
         tref = 20.0
         tpp = tref * (1.2 - 0.5 * q + random.gauss(0, 0.15))
         tpp = max(tref * 0.3, tpp)
-        T = 1.0 / (1.0 + 0.35 * tpp / tref)
+        T = 1.0 / (1.0 + 0.5 * tpp / tref)
         n = random.choice([10, 15, 20])
         C = 1.0 - math.exp(-n / 15.0)
         score_s = 1000.0 * Q * T * C
