@@ -30,10 +30,20 @@
 {% endblock %}
 
 {% block content %}
-<!-- Fixed physical map background -->
-<div class="landing-bg" aria-hidden="true">
+<!-- Fixed physical map background — desktop (world) -->
+<div class="landing-bg landing-bg--desktop" aria-hidden="true">
     <img src="/static/img/world_land.jpg" alt="" class="landing-bg-img" loading="eager"/>
     <object data="/static/img/world_land_overlay.svg" type="image/svg+xml" class="landing-bg-svg"></object>
+</div>
+<!-- Fixed physical map background — mobile (Europe+Africa, even days) -->
+<div class="landing-bg landing-bg--mobile landing-bg--euroafrica" aria-hidden="true">
+    <img src="/static/img/euroafrica_land.jpg" alt="" class="landing-bg-img" loading="eager"/>
+    <object data="/static/img/euroafrica_land_overlay.svg" type="image/svg+xml" class="landing-bg-svg"></object>
+</div>
+<!-- Fixed physical map background — mobile (Americas, odd days) -->
+<div class="landing-bg landing-bg--mobile landing-bg--americas" aria-hidden="true">
+    <img src="/static/img/americas_land.jpg" alt="" class="landing-bg-img" loading="eager"/>
+    <object data="/static/img/americas_land_overlay.svg" type="image/svg+xml" class="landing-bg-svg"></object>
 </div>
 
 <!-- Header -->
@@ -162,6 +172,12 @@
         if(window.scrollY>=32) body.classList.remove('has-topbar');
         else body.classList.add('has-topbar');
     },{passive:true});
+
+    // Mobile: show euroafrica on even days, americas on odd days
+    var day = new Date().getDate();
+    var cls = (day % 2 === 0) ? 'landing-bg--euroafrica' : 'landing-bg--americas';
+    var el = document.querySelector('.' + cls);
+    if (el) el.classList.add('landing-bg--active');
 })();
 </script>
 {% endblock %}

@@ -1068,7 +1068,7 @@
     text-align: center;
     padding: 36px 24px 32px;
     border-radius: var(--radius-xl);
-    background: var(--white);
+    background: rgba(255,255,255,0.82);
     border: 1.5px solid var(--gray-200);
     text-decoration: none;
     transition: all 0.3s ease;
@@ -1149,6 +1149,10 @@
     opacity: 0.55;
     background: var(--white);
 }
+/* Mobile backgrounds hidden by default; shown via JS + media query */
+.landing-bg--mobile {
+    display: none;
+}
 .landing-bg-img {
     width: 100%;
     height: 100%;
@@ -1167,10 +1171,11 @@
     object-position: center top;
 }
 @media (max-width: 640px) {
-    .landing-bg {
-        top: 64px;
-        height: 100vw;
-        bottom: auto;
+    .landing-bg--desktop {
+        display: none;
+    }
+    .landing-bg--mobile.landing-bg--active {
+        display: block;
     }
 }
 
@@ -1618,9 +1623,9 @@
     position: relative;
     z-index: 1;
 }
-.landing-section--blue { background: rgba(248,249,250,0.78); }
+.landing-section--blue { background: rgba(255,255,255,0.75); }
 .landing-section--brown { background: rgba(255,255,255,0.75); }
-.landing-section--green { background: rgba(248,249,250,0.78); }
+.landing-section--green { background: rgba(255,255,255,0.75); }
 .landing-section--modes {
     padding: 80px 24px 60px;
     background: rgba(255,255,255,0.75);
@@ -1641,7 +1646,7 @@
     text-align: center;
     padding: 32px 24px 28px;
     border-radius: var(--radius-xl);
-    background: var(--white);
+    background: rgba(255,255,255,0.82);
     border: 1.5px solid var(--gray-200);
     text-decoration: none;
     transition: all 0.3s ease;
