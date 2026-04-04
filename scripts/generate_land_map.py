@@ -309,7 +309,7 @@ def build_overlay_svg(all_geoms, highlight_geoms, img_w, img_h,
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg"'
         f' viewBox="0 0 {img_w} {img_h}"'
-        f' preserveAspectRatio="xMidYMin slice">\n'
+        f' preserveAspectRatio="xMidYMid slice">\n'
         + "\n".join(border_paths) + "\n"
         + "\n".join(hl_paths) + "\n"
         + "</svg>"
