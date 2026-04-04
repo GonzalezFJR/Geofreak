@@ -1318,6 +1318,7 @@
     font-size: 1rem;
     font-weight: 600;
     color: var(--gray-500);
+    margin-top: 32px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     text-align: center;
@@ -1359,7 +1360,8 @@
 }
 .dashboard-signup-logo {
     flex-shrink: 0;
-    filter: brightness(0) invert(1);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 .dashboard-signup-text {
     flex: 1;
