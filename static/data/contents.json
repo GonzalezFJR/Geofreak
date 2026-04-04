@@ -28,7 +28,9 @@
         "secs_per_item": 20
       },
       "has_continent_filter": true,
-      "allowed_datasets": ["countries"],
+      "allowed_datasets": [
+        "countries"
+      ],
       "enabled": true,
       "visible": true,
       "modes": {
@@ -65,7 +67,9 @@
         "secs_per_item": 20
       },
       "has_continent_filter": true,
-      "allowed_datasets": ["countries"],
+      "allowed_datasets": [
+        "countries"
+      ],
       "enabled": true,
       "visible": true,
       "modes": {
@@ -140,7 +144,7 @@
       "color": "#e65100",
       "type": "solo",
       "defaults": {
-        "time_limit": 400,
+        "time_limit": 600,
         "max_items": 20,
         "n_options": [
           10,
@@ -148,7 +152,9 @@
           30,
           50
         ],
-        "secs_per_item": 20
+        "secs_per_item": 30,
+        "default_difficulty": "normal",
+        "default_countdown": "on"
       },
       "has_continent_filter": true,
       "enabled": true,
@@ -175,7 +181,7 @@
       "color": "#6a1b9a",
       "type": "solo",
       "defaults": {
-        "time_limit": 400,
+        "time_limit": 200,
         "max_items": 20,
         "n_options": [
           10,
@@ -183,7 +189,9 @@
           30,
           50
         ],
-        "secs_per_item": 20
+        "secs_per_item": 10,
+        "default_difficulty": "normal",
+        "default_countdown": "on"
       },
       "has_continent_filter": true,
       "enabled": true,
@@ -211,7 +219,7 @@
       "type": "solo",
       "has_difficulty": false,
       "defaults": {
-        "time_limit": 400,
+        "time_limit": 600,
         "max_items": 20,
         "n_options": [
           10,
@@ -219,8 +227,9 @@
           30,
           50
         ],
-        "secs_per_item": 20,
-        "max_attempts": 5
+        "secs_per_item": 30,
+        "max_attempts": 5,
+        "default_countdown": "on"
       },
       "has_continent_filter": true,
       "enabled": true,
