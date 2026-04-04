@@ -100,7 +100,7 @@
             <div class="pub-daily-info">
                 <span class="pub-daily-score">{{ daily_result.score | default(0) }} / {{ daily_result.total | default(0) }}</span>
                 {% if daily_result.ranking_score is defined %}
-                <span class="pub-daily-rs">S: {{ "%.0f" | format(daily_result.ranking_score | default(0) | float) }}</span>
+                <span class="pub-daily-rs">S: {{ "%.1f" | format(daily_result.ranking_score | default(0) | float) }}</span>
                 {% endif %}
             </div>
         </div>

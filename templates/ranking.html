@@ -102,7 +102,7 @@
                     {% if e.rank == 1 %}<img src="/static/img/icons/medal-gold.svg" class="rank-medal" width="22" height="22" alt="1">{% elif e.rank == 2 %}<img src="/static/img/icons/medal-silver.svg" class="rank-medal" width="22" height="22" alt="2">{% elif e.rank == 3 %}<img src="/static/img/icons/medal-bronze.svg" class="rank-medal" width="22" height="22" alt="3">{% else %}{{ e.rank }}{% endif %}
                 </td>
                 <td>{{ e.username }}</td>
-                <td class="value-cell">{{ e.value | int }}</td>
+                <td class="value-cell">{{ "%.1f" | format(e.value | float) }}</td>
             </tr>
             {% endfor %}
         </tbody>

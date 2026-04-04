@@ -136,7 +136,7 @@ document.querySelectorAll('.lb-tab').forEach(btn => {
             let html = '<table class="admin-table" style="margin-top:8px;font-size:0.85rem;"><thead><tr><th>#</th><th>User</th><th>Score</th></tr></thead><tbody>';
             entries.forEach(e => {
                 const medal = e.rank === 1 ? '🥇' : e.rank === 2 ? '🥈' : e.rank === 3 ? '🥉' : e.rank;
-                html += '<tr><td>' + medal + '</td><td>' + (e.username || e.user_id) + '</td><td>' + (e.value != null ? Math.round(e.value) : '—') + '</td></tr>';
+                html += '<tr><td>' + medal + '</td><td>' + (e.username || e.user_id) + '</td><td>' + (e.value != null ? Number(e.value).toFixed(1) : '—') + '</td></tr>';
             });
             html += '</tbody></table>';
             if (data.updated_at) html += '<p style="color:var(--gray-400);font-size:0.78rem;margin-top:6px;">Updated: ' + data.updated_at.slice(0,16).replace('T',' ') + '</p>';

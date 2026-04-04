@@ -102,7 +102,7 @@ def _build_global_leaderboard(all_stats: list[dict], metric: str, usernames: dic
     for s in all_stats:
         uid = s["user_id"]
         if metric == "rating":
-            value = int(s.get("rating", 1000))
+            value = round(float(s.get("rating", 1000)), 1)
         elif metric == "total_matches":
             value = int(s.get("total_matches", 0))
         elif metric == "best_streak":
