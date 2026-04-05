@@ -330,12 +330,12 @@ def build_overlay_svg(all_geoms, highlight_list, highlight_geoms,
         kt_str, slot_vals = _slot_animation(i, n, total_cycle)
         fill_vals = ";".join(
             v.replace("OFF", "rgba(0,0,0,0)")
-             .replace("ON", "rgba(230,57,70,0.45)")
+             .replace("ON", "rgba(26,115,232,0.45)")
             for v in slot_vals
         )
         stroke_vals = ";".join(
             v.replace("OFF", "rgba(0,0,0,0.2)")
-             .replace("ON", "rgba(193,18,31,0.8)")
+             .replace("ON", "rgba(13,71,161,0.8)")
             for v in slot_vals
         )
         sw_vals = ";".join(

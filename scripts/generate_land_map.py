@@ -52,7 +52,7 @@ LAT_MAX = 75.0
 LAT_MIN = -60.0
 
 SEA_COLOR = (255, 255, 255)
-HIGHLIGHT_COLOR = (230, 57, 70)
+HIGHLIGHT_COLOR = (26, 115, 232)
 HIGHLIGHT_ALPHA = 115  # ~45% of 255
 
 CONTINENT_GROUPS = {
@@ -329,7 +329,7 @@ def render_highlight_frame(base_img, geom, img_w, img_h,
                                       merc_y_top, merc_y_bot)
     color = HIGHLIGHT_COLOR + (HIGHLIGHT_ALPHA,)
     for coords in px_polys:
-        draw.polygon(coords, fill=color, outline=(193, 18, 31, 200))
+        draw.polygon(coords, fill=color, outline=(13, 71, 161, 200))
 
     frame = Image.alpha_over(frame, overlay) if hasattr(Image, 'alpha_over') else Image.alpha_composite(frame, overlay)
     return frame.convert("RGB")

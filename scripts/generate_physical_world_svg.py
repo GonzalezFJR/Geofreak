@@ -280,11 +280,11 @@ def build_overlay_svg(all_geoms, highlight_geoms, img_w, img_h,
                              merc_y_top, merc_y_bot)
         kt_str, slot_vals = _slot_animation(i, n, total_cycle)
         fill_vals = ";".join(
-            v.replace("GREY", "rgba(0,0,0,0)").replace("RED", "rgba(230,57,70,0.45)")
+            v.replace("GREY", "rgba(0,0,0,0)").replace("RED", "rgba(26,115,232,0.45)")
             for v in slot_vals
         )
         stroke_vals = ";".join(
-            v.replace("GREY", "rgba(0,0,0,0.15)").replace("RED", "rgba(193,18,31,0.7)")
+            v.replace("GREY", "rgba(0,0,0,0.15)").replace("RED", "rgba(13,71,161,0.7)")
             for v in slot_vals
         )
         hl_paths.append(
