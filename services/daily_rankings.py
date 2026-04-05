@@ -196,6 +196,46 @@ def get_user_daily_scores(user_id: str, limit: int = 90) -> list[dict]:
     } for item in resp.get("Items", [])]
 
 
+def get_user_daily_stats(user_id: str) -> dict:
+    """Return total daily challenges played, current streak, and best score_s."""
+    from boto3.dynamodb.conditions import Key
+
+    items: list[dict] = []
+    resp = _daily_scores_table().query(
+        KeyConditionExpression=Key("user_id").eq(user_id),
+        ScanIndexForward=False,
+    )
+    items.extend(resp.get("Items", []))
+    while "LastEvaluatedKey" in resp:
+        resp = _daily_scores_table().query(
+            KeyConditionExpression=Key("user_id").eq(user_id),
+            ScanIndexForward=False,
+            ExclusiveStartKey=resp["LastEvaluatedKey"],
+        )
+        items.extend(resp.get("Items", []))
+
+    total = len(items)
+    best_score_s = max((float(it.get("score_s", 0)) for it in items), default=0)
+
+    # Current streak: consecutive days from today backwards
+    today = datetime.now(timezone.utc).date()
+    played_dates = sorted({it["date"] for it in items if it.get("date")}, reverse=True)
+    streak = 0
+    expected = today
+    for d_str in played_dates:
+        try:
+            d = datetime.strptime(d_str, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if d == expected:
+            streak += 1
+            expected = d - timedelta(days=1)
+        elif d < expected:
+            break
+
+    return {"total": total, "streak": streak, "best_score_s": round(best_score_s, 1)}
+
+
 def get_daily_leaderboard(date: str) -> list[dict]:
     """Get all scores for a specific date, ordered by score_s descending."""
     from boto3.dynamodb.conditions import Key

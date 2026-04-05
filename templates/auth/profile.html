@@ -48,14 +48,22 @@
         <div class="stat-card">
             <div class="stat-value">{{ stats.total_matches|default(0) }}</div>
             <div class="stat-label">{{ t('prof.matches', lang) }}</div>
+            <div class="stat-sub">🔥 {{ play_streak }} {{ t('prof.current_streak', lang) }}</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value">{{ stats.total_wins|default(0) }}</div>
-            <div class="stat-label">{{ t('prof.wins', lang) }}</div>
+            <div class="stat-value">{{ daily_stats.total }}</div>
+            <div class="stat-label">{{ t('prof.daily_challenges', lang) }}</div>
+            <div class="stat-sub">🔥 {{ daily_stats.streak }} {{ t('prof.current_streak', lang) }}</div>
         </div>
         <div class="stat-card">
-            <div class="stat-value">{{ stats.best_streak|default(0) if stats.best_streak|default(0) > 0 else '—' }}</div>
-            <div class="stat-label">{{ t('prof.streak', lang) }}</div>
+            <div class="stat-value">{{ max_score_value if max_score_value > 0 else '—' }}</div>
+            <div class="stat-label">{{ t('prof.max_score', lang) }}</div>
+            {% if max_score_value > 0 %}
+            <div class="stat-sub">{{ max_score_game }}</div>
+            {% endif %}
+            {% if daily_stats.best_score_s > 0 %}
+            <div class="stat-sub">{{ t('prof.daily_challenge_label', lang) }}: {{ daily_stats.best_score_s|int }}</div>
+            {% endif %}
         </div>
         <div class="stat-card">
             <div class="stat-value">{{ friends_count }}</div>

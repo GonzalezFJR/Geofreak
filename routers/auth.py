@@ -1,7 +1,7 @@
 """Auth routes — register, login, logout, me, email confirm, password reset."""
 
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, File, HTTPException, Request, Form, UploadFile, status
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
@@ -33,7 +33,7 @@ from services.user_stats import ensure_user_stats
 from services.friendships import get_friends, get_pending_received, get_pending_sent
 from services.matches import get_match
 from services.rankings import get_user_ranking_position
-from services.daily_rankings import get_user_daily_ranking_position
+from services.daily_rankings import get_user_daily_ranking_position, get_user_daily_stats
 from services.scoring import ALL_GAME_TYPES
 
 router = APIRouter(tags=["auth"])
@@ -47,7 +47,7 @@ USERNAME_RE = re.compile(r"^[a-zA-Z0-9_]{3,20}$")
 @router.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request, user=Depends(get_optional_user)):
     if user:
-        return RedirectResponse("/profile", status_code=303)
+        return RedirectResponse("/", status_code=303)
     lang = get_lang(request)
     return templates.TemplateResponse("auth/login.html", {"request": request, "error": "", "lang": lang})
 
@@ -55,7 +55,7 @@ async def login_page(request: Request, user=Depends(get_optional_user)):
 @router.get("/register", response_class=HTMLResponse)
 async def register_page(request: Request, user=Depends(get_optional_user)):
     if user:
-        return RedirectResponse("/profile", status_code=303)
+        return RedirectResponse("/", status_code=303)
     lang = get_lang(request)
     return templates.TemplateResponse("auth/register.html", {"request": request, "error": "", "lang": lang})
 
@@ -80,6 +80,45 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
     # Best scores per game type
     best_scores = _build_best_scores(stats)
 
+    # Overall max score (across all games) and name
+    from services.games import GamesService
+    _LANG_SUFFIX = {"es": "", "en": "_en", "fr": "_fr", "it": "_it", "ru": "_ru"}
+    suffix = _LANG_SUFFIX.get(lang, "_en")
+    game_name_map = {}
+    for g in GamesService().get_games():
+        gid = g.get("id", "")
+        gname = g.get(f"name{suffix}") or g.get("name") or gid
+        game_name_map[gid] = gname
+
+    max_score_game = ""
+    max_score_value = 0
+    by_game_raw = stats.get("stats_by_game") or {}
+    for gt, gs in by_game_raw.items():
+        bs = int(gs.get("best_score", 0))
+        if bs > max_score_value:
+            max_score_value = bs
+            max_score_game = game_name_map.get(gt, gt)
+
+    # Daily challenge stats
+    daily_stats = get_user_daily_stats(uid)
+
+    # Current play streak (consecutive days playing any game)
+    recent = list(stats.get("recent_matches") or [])
+    today = datetime.now(timezone.utc).date()
+    played_dates = sorted({str(m.get("date", ""))[:10] for m in recent if m.get("date")}, reverse=True)
+    play_streak = 0
+    expected = today
+    for d_str in played_dates:
+        try:
+            d = datetime.strptime(d_str, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        if d == expected:
+            play_streak += 1
+            expected = d - timedelta(days=1)
+        elif d < expected:
+            break
+
     # Processed data for charts (convert DynamoDB Decimals to native types)
     recent_matches_chart = [
         {"game_type": str(m.get("game_type", "")), "date": str(m.get("date", ""))[:10]}
@@ -100,15 +139,12 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
     ]
 
     # Per-game ranking positions
-    from services.games import GamesService
-    _LANG_SUFFIX = {"es": "", "en": "_en", "fr": "_fr", "it": "_it", "ru": "_ru"}
-    suffix = _LANG_SUFFIX.get(lang, "_en")
     game_ranking_positions = []
     for g in GamesService().get_games():
         gid = g.get("id", "")
         if gid not in ALL_GAME_TYPES:
             continue
-        gname = g.get(f"name{suffix}") or g.get("name") or gid
+        gname = game_name_map.get(gid, gid)
         pos = get_user_ranking_position(uid, "game", gid)
         game_ranking_positions.append({"label": gname, "position": pos, "game_type": gid})
 
@@ -123,6 +159,10 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
         "pending_in": pending_in,
         "pending_out": pending_out,
         "google_new": google_new,
+        "play_streak": play_streak,
+        "daily_stats": daily_stats,
+        "max_score_value": max_score_value,
+        "max_score_game": max_score_game,
     })
 
 
@@ -163,7 +203,7 @@ async def register(
     send_welcome(email, username, confirm_url, lang)
 
     # Issue tokens
-    response = RedirectResponse("/profile", status_code=303)
+    response = RedirectResponse("/", status_code=303)
     _set_auth_cookies(response, user["user_id"])
     return response
 
@@ -199,7 +239,7 @@ async def login(
 
     track("session_started", {"user_id": user["user_id"]})
     update_user(user["user_id"], {"last_login": datetime.now(timezone.utc).isoformat()})
-    response = RedirectResponse("/profile", status_code=303)
+    response = RedirectResponse("/", status_code=303)
     _set_auth_cookies(response, user["user_id"])
     return response
 
@@ -573,7 +613,7 @@ async def google_callback(request: Request, code: str = "", state: str = "", err
         update_user(user["user_id"], {"email_verified": True, "auth_provider": "google"})
         track("user_registered", {"user_id": user["user_id"], "username": username, "method": "google"})
 
-    redirect_url = "/profile?google_new=1" if is_new_user else "/profile"
+    redirect_url = "/?google_new=1" if is_new_user else "/"
     response = RedirectResponse(redirect_url, status_code=303)
     _set_auth_cookies(response, user["user_id"])
     return response
