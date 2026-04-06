@@ -9,7 +9,7 @@ import logging
 import math
 import random
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 
 from core.aws import get_dynamodb_resource
@@ -28,6 +28,7 @@ FAKE_USERNAMES = [
 
 # Cache: set once per process lifetime; reset on restart
 _seeded_today: str | None = None
+_backfilled: bool = False
 
 
 def _users_table():
@@ -145,8 +146,11 @@ def ensure_fake_daily_scores() -> None:
     """Ensure all 30 fake users have played today's daily challenge.
 
     Safe to call multiple times per day — only generates scores once.
+    On first run ever, backfills previous days of the current month
+    so fake users meet the 3-day minimum for monthly rankings.
+    After generating new scores, forces a ranking rebuild.
     """
-    global _seeded_today
+    global _seeded_today, _backfilled
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     # Fast path: already seeded this process today
@@ -154,16 +158,56 @@ def ensure_fake_daily_scores() -> None:
         return
 
     user_map = _ensure_fake_users()
+    generated = False
 
-    # Check one fake user to see if scores already exist for today
+    # Backfill previous days of the month (only once per process)
+    if not _backfilled:
+        generated = _backfill_month(user_map, today)
+        _backfilled = True
+
+    # Generate today's scores
     first_uid = next(iter(user_map.values()))
-    if _already_played_today(first_uid, today):
-        _seeded_today = today
-        return
+    if not _already_played_today(first_uid, today):
+        log.info("Generating fake daily scores for %s (%d users)", today, len(user_map))
+        for username, uid in user_map.items():
+            _generate_fake_score(uid, username, today)
+        generated = True
 
-    log.info("Generating fake daily scores for %s (%d users)", today, len(user_map))
-    for username, uid in user_map.items():
-        _generate_fake_score(uid, username, today)
+    # Force rebuild rankings if we inserted any new scores
+    if generated:
+        from services.daily_rankings import rebuild_all_daily_rankings
+        rebuild_all_daily_rankings()
+        log.info("Daily rankings rebuilt after fake score generation")
 
     _seeded_today = today
-    log.info("Fake daily scores generated for %s", today)
+
+
+def _backfill_month(user_map: dict[str, str], today_str: str) -> bool:
+    """Backfill daily scores for all previous days of the current month.
+
+    Skips days where the first fake user already has a score.
+    Returns True if any new scores were generated.
+    """
+    from boto3.dynamodb.conditions import Key
+
+    today = datetime.strptime(today_str, "%Y-%m-%d").date()
+    first_day = today.replace(day=1)
+    first_uid = next(iter(user_map.values()))
+    generated = False
+
+    day = first_day
+    while day < today:
+        date_str = day.strftime("%Y-%m-%d")
+        # Check if already backfilled for this day
+        resp = _daily_scores_table().query(
+            KeyConditionExpression=Key("user_id").eq(first_uid) & Key("date").eq(date_str),
+            Limit=1,
+        )
+        if not resp.get("Items"):
+            log.info("Backfilling fake daily scores for %s", date_str)
+            for username, uid in user_map.items():
+                _generate_fake_score(uid, username, date_str)
+            generated = True
+        day += timedelta(days=1)
+
+    return generated
