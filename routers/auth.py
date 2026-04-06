@@ -90,14 +90,16 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
         gname = g.get(f"name{suffix}") or g.get("name") or gid
         game_name_map[gid] = gname
 
-    max_score_game = ""
+    # Max ranking score (score_s) across all attempts
+    from services.scoring import get_user_attempts
+    user_attempts = get_user_attempts(uid, limit=200)
     max_score_value = 0
-    by_game_raw = stats.get("stats_by_game") or {}
-    for gt, gs in by_game_raw.items():
-        bs = int(gs.get("best_score", 0))
-        if bs > max_score_value:
-            max_score_value = bs
-            max_score_game = game_name_map.get(gt, gt)
+    max_score_game = ""
+    for att in user_attempts:
+        ss = float(att.get("score_s", 0))
+        if ss > max_score_value:
+            max_score_value = round(ss)
+            max_score_game = game_name_map.get(att.get("game_type", ""), att.get("game_type", ""))
 
     # Daily challenge stats
     daily_stats = get_user_daily_stats(uid)
@@ -126,7 +128,7 @@ async def profile_page(request: Request, user=Depends(get_current_user)):
         if m.get("date")
     ]
     game_counters = {
-        gt: int(gs.get("matches", 0))
+        game_name_map.get(gt, gt): int(gs.get("matches", 0))
         for gt, gs in (stats.get("stats_by_game") or {}).items()
     }
 

@@ -160,10 +160,10 @@
 
             {% if game_counters %}
             <div class="game-counters">
-                {% for game_type, count in game_counters.items() %}
+                {% for game_name, count in game_counters.items() %}
                 <div class="game-counter-card">
                     <div class="gc-count">{{ count }}</div>
-                    <div class="gc-label">{{ game_type | replace('-', ' ') }}</div>
+                    <div class="gc-label">{{ game_name }}</div>
                 </div>
                 {% endfor %}
             </div>

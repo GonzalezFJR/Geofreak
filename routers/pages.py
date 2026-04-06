@@ -135,6 +135,10 @@ async def ranking_page(
     game_names = _build_game_names(lang)
 
     if cat == "daily":
+        # Ensure fake bot users have played today before fetching rankings
+        from services.fake_daily import ensure_fake_daily_scores
+        ensure_fake_daily_scores()
+
         sub = sub or "today"
         from core.i18n import t
         sub_labels = {"today": t("lb.today", lang), "monthly": t("lb.monthly", lang), "absolute": t("lb.absolute", lang)}

@@ -691,6 +691,9 @@ async def api_daily_today_ranking(
     user: Optional[dict] = Depends(get_optional_user),
 ):
     """Daily challenge ranking for today (or a specific date)."""
+    from services.fake_daily import ensure_fake_daily_scores
+    ensure_fake_daily_scores()
+
     lb = get_daily_day_ranking(date)
     result = {
         "ranking": lb["entries"] if lb else [],
